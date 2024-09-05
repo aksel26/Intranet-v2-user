@@ -1,0 +1,163 @@
+.fc-day {
+  color: rgb(164, 164, 164);
+}
+
+.fc-daygrid {
+  border-radius: 10px;
+  overflow: hidden; /* 테두리가 둥글게 설정되면 내용이 삐져나오지 않도록 합니다 */
+  border: none; /* 바깥 테두리 제거 */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 적당한 그림자 추가 */
+  background-color: #fff; /* 달력 배경색 흰색 */
+}
+
+/* 날짜 테이블 부분 스크롤 없애기 */
+.fc-scroller {
+  overflow: hidden !important;
+}
+
+.fc-toolbar-title {
+  font-size: 1em !important;
+  font-weight: bold;
+}
+.fc-header-toolbar.fc-toolbar {
+  margin-bottom: 1em !important;
+}
+
+.fc-daygrid-day-top {
+  justify-content: center;
+  font-size: 1rem;
+}
+
+.fc-daygrid-day-top > a {
+  width: 100%;
+  text-align: center;
+}
+/* 모든 테두리 제거 */
+.fc-theme-standard td,
+.fc-theme-standard th,
+.fc-theme-standard .fc-scrollgrid,
+.fc-theme-standard .fc-scrollgrid-sync-inner,
+.fc-theme-standard .fc-col-header-cell {
+  border: none !important;
+}
+.fc-button {
+  background-color: white !important;
+  border: none !important;
+  line-height: 1.2 !important;
+}
+.fc-button-primary.fc-today-button {
+  background-color: #005b99 !important;
+  font-size: 0.8rem !important;
+}
+
+.fc-today-button:disabled {
+  background-color: #647b8a;
+  color: white !important;
+}
+
+.fc-button-primary {
+  background-color: #005b99 !important;
+  border-color: #005b99 !important;
+  padding: 5px 12px !important;
+  font-size: 1rem !important;
+  border-radius: 7px !important;
+  color: white !important;
+}
+
+.fc-button-primary:hover {
+  background-color: #45a049;
+  border-color: #45a049;
+}
+
+.fc-button-group {
+  column-gap: 5px;
+}
+.fc .fc-button .fc-icon {
+  font-size: 1em !important;
+  color: black !important;
+}
+.fc-prev-button:active,
+.fc-next-button:active {
+  background-color: #c4e7ff !important;
+}
+
+.fc-prev-button:focus,
+.fc-next-button:focus {
+  box-shadow: none !important;
+}
+.fc-button:focus {
+  box-shadow: none !important;
+}
+.fc-prev-button,
+.fc-next-button {
+  background-color: transparent !important;
+}
+
+.fc-h-event {
+  background-color: transparent !important;
+  border: none !important;
+  text-align: center !important;
+}
+
+.fc-daygrid-day {
+  height: 40px !important; /* 원하는 높이로 설정 */
+}
+.fc-daygrid {
+  box-shadow: none;
+}
+
+.disabled-date {
+  color: #c9c9c9 !important;
+  cursor: default !important;
+}
+
+.fc-day-today {
+  background-color: #ecf7fe !important;
+  border-radius: 7px !important;
+  color: #005b99 !important;
+}
+
+/* 이전 달의 날짜 */
+.fc .fc-cell-shaded,
+.fc .fc-day-disabled {
+  background-color: #ffffff !important; /* 연한 회색 */
+  opacity: 0.7; /* 투명도 설정 */
+}
+
+.fc-customTitle-button {
+  display: hidden !important;
+}
+
+.fc-header-toolbar.fc-toolbar {
+  border-bottom: 1px solid #f3f3f3;
+  margin-bottom: 10px !important;
+  padding-bottom: 10px;
+}
+
+.fc-header-toolbar.fc-toolbar.fc-toolbar-ltr > div > div {
+  display: flex;
+  align-items: center;
+}
+.fc-toolbar-title {
+  font-weight: 500 !important;
+}
+
+.fc-daygrid-day-number {
+  padding: 0 !important;
+  padding-top: 4px !important;
+}
+.fc-daygrid-day-events {
+  margin-bottom: 0 !important;
+}
+
+.fc-day-cell.selected {
+  transition: all 0.5s ease-in-out !important;
+}
+
+.fc-event-title {
+  color: #f58988;
+}
+
+.fc-col-header-cell-cushion {
+  font-size: 0.8rem;
+}
