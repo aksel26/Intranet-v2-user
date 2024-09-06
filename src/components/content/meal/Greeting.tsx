@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { ContentWrapper } from "./ContentWrapper";
+import { ContentWrapper } from "../../Global/ContentWrapper";
 import { Text } from "@mantine/core";
 
 export const Greeting = () => {

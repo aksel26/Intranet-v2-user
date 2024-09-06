@@ -1,31 +1,23 @@
 import React from "react";
-import { ContentWrapper } from "../content/ContentWrapper";
+import { ContentWrapper } from "../Global/ContentWrapper";
 import { Button, Dialog, Flex, Modal, Paper, Text } from "@mantine/core";
 import ClickablePaper from "../Global/ClickablePaper";
 import MealInputForm from "../content/meal/MealInputForm";
 import { useDisclosure } from "@mantine/hooks";
 import { IconArrowBack, IconChevronRight } from "@tabler/icons-react";
+import BottomModal from "../Global/BottomModal";
 
 export const Detail = () => {
   const [opened, { toggle, close }] = useDisclosure(false);
 
   return (
     <ContentWrapper>
-      <Modal
-        radius="md"
-        transitionProps={{ transition: "slide-up", duration: 300, timingFunction: "ease" }} // transitionProps로 전환 효과 설정
-        withCloseButton
-        opened={opened}
-        onClose={close}
-        title="식대입력"
-        // yOffset="85%"
-        // style={{ height: "20rem" }}
-      >
+      <BottomModal opened={opened} onClose={close}>
         <Text c={"gray.7"} size="sm">
           9월 5일 목요일
         </Text>
         <MealInputForm />
-      </Modal>
+      </BottomModal>
       <Flex justify="space-between" align={"center"}>
         <Text size="md" c={"gray.6"}>
           9월 6일 금요일

@@ -3,7 +3,7 @@
 import React from "react";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
-import "../../styles/calendar.css";
+import "../../../styles/calendar.css";
 
 export default function Calendar() {
   return (
