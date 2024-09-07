@@ -48,9 +48,6 @@ export const WelfareBalance = () => {
     <ContentWrapper>
       {commentMemo}
       <ChartSummary />
-      <Card>
-        <DateSubText date={"12월 5일 목요일"} />
-      </Card>
     </ContentWrapper>
   );
 };

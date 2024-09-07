@@ -1,6 +1,13 @@
 "use client";
 import { Flex, Group, Text } from "@mantine/core";
-import { IconBowlSpoon, IconBowlSpoonFilled, IconGiftCard, IconGiftCardFilled, IconUser, IconUserFilled } from "@tabler/icons-react";
+import {
+  IconBowlSpoon,
+  IconBowlSpoonFilled,
+  IconGiftCard,
+  IconGiftCardFilled,
+  IconUser,
+  IconUserFilled,
+} from "@tabler/icons-react";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { LinkComponent } from "../Global/LinkComponent";
@@ -9,9 +16,10 @@ export const Footer = () => {
   const pathname = usePathname();
 
   const [navClickState, setNavClickState] = useState({
-    meal: true,
+    meal: false,
     welfare: false,
     myInfo: false,
+    activity: false,
   });
 
   const ICON_SIZE = 25;
@@ -20,13 +28,15 @@ export const Footer = () => {
 
   useEffect(() => {
     if (pathname.includes("meal")) {
-      setNavClickState((prev) => ({ ...prev, meal: true, welfare: false, myInfo: false }));
+      setNavClickState((prev) => ({ ...prev, meal: true, welfare: false, myInfo: false, activity: false }));
     } else if (pathname.includes("welfare")) {
-      setNavClickState((prev) => ({ ...prev, meal: false, welfare: true, myInfo: false }));
+      setNavClickState((prev) => ({ ...prev, meal: false, welfare: true, myInfo: false, activity: false }));
+    } else if (pathname.includes("myInfo")) {
+      setNavClickState((prev) => ({ ...prev, meal: false, welfare: false, myInfo: true, activity: false }));
     } else {
-      setNavClickState((prev) => ({ ...prev, meal: false, welfare: false, myInfo: true }));
+      setNavClickState((prev) => ({ ...prev, meal: false, welfare: false, myInfo: false, activity: true }));
     }
-  }, []);
+  }, [pathname]);
 
   return (
     <Group justify="space-around" align="center" h={"100%"}>
@@ -40,6 +50,7 @@ export const Footer = () => {
           <Text size="xs">식대</Text>
         </Flex>
       </LinkComponent>
+
       <LinkComponent href="/welfare">
         <Flex direction={"column"} justify={"center"} align={"center"} rowGap={2}>
           {navClickState.welfare ? (
@@ -48,6 +59,16 @@ export const Footer = () => {
             <IconGiftCard size={ICON_SIZE} stroke={STROKE_WIDTH} color={COLOR} />
           )}
           <Text size="xs">복지보인트</Text>
+        </Flex>
+      </LinkComponent>
+      <LinkComponent href="/activity">
+        <Flex direction={"column"} justify={"center"} align={"center"} rowGap={2}>
+          {navClickState.activity ? (
+            <IconGiftCardFilled size={ICON_SIZE} stroke={STROKE_WIDTH} color={COLOR} />
+          ) : (
+            <IconGiftCard size={ICON_SIZE} stroke={STROKE_WIDTH} color={COLOR} />
+          )}
+          <Text size="xs">활동비</Text>
         </Flex>
       </LinkComponent>
 
