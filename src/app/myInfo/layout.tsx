@@ -16,11 +16,7 @@ export default function layout({
         height: 60,
       }}
     >
-      <AppShell.Main>
-        <Container size={"xs"} p={0} h={"100vh"} bg="gray.0">
-          {children}
-        </Container>
-      </AppShell.Main>
+      <AppShell.Main pb={0}>{children}</AppShell.Main>
       <AppShellFooter
         style={{
           position: "fixed",
