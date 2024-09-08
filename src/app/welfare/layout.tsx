@@ -2,7 +2,7 @@
 
 import { Footer } from "@/components/GNB/Footer";
 import { AppShell, AppShellFooter, Container } from "@mantine/core";
-import React from "react";
+import React, { useRef } from "react";
 
 export default function layout({
   children,
@@ -15,11 +15,7 @@ export default function layout({
         height: 60,
       }}
     >
-      <AppShell.Main>
-        <Container size={"xs"} p={0} h={"100vh"} bg="gray.0">
-          {children}
-        </Container>
-      </AppShell.Main>
+      <AppShell.Main pb={0}>{children}</AppShell.Main>
       <AppShellFooter
         style={{
           position: "fixed",
