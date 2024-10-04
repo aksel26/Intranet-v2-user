@@ -1,13 +1,6 @@
 "use client";
 import { Flex, Group, Text } from "@mantine/core";
-import {
-  IconBowlSpoon,
-  IconBowlSpoonFilled,
-  IconGiftCard,
-  IconGiftCardFilled,
-  IconUser,
-  IconUserFilled,
-} from "@tabler/icons-react";
+import { IconBowlSpoon, IconBowlSpoonFilled, IconGiftCard, IconGiftCardFilled, IconUser, IconUserFilled } from "@tabler/icons-react";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { LinkComponent } from "../Global/LinkComponent";
@@ -31,7 +24,7 @@ export const Footer = () => {
       setNavClickState((prev) => ({ ...prev, meal: true, welfare: false, myInfo: false, activity: false }));
     } else if (pathname.includes("welfare")) {
       setNavClickState((prev) => ({ ...prev, meal: false, welfare: true, myInfo: false, activity: false }));
-    } else if (pathname.includes("myInfo")) {
+    } else if (pathname.includes("mypage")) {
       setNavClickState((prev) => ({ ...prev, meal: false, welfare: false, myInfo: true, activity: false }));
     } else {
       setNavClickState((prev) => ({ ...prev, meal: false, welfare: false, myInfo: false, activity: true }));
@@ -72,14 +65,14 @@ export const Footer = () => {
         </Flex>
       </LinkComponent>
 
-      <LinkComponent href="/myInfo">
+      <LinkComponent href="/mypage">
         <Flex direction={"column"} justify={"center"} align={"center"} rowGap={2}>
           {navClickState.myInfo ? (
             <IconUserFilled size={ICON_SIZE} stroke={STROKE_WIDTH} color={COLOR} />
           ) : (
             <IconUser size={ICON_SIZE} stroke={STROKE_WIDTH} color={COLOR} />
           )}
-          <Text size="xs">내 메뉴</Text>
+          <Text size="xs">더보기</Text>
         </Flex>
       </LinkComponent>
     </Group>
