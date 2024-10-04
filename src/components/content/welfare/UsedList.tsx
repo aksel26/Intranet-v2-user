@@ -8,6 +8,9 @@ import dayjs from "dayjs";
 import "dayjs/locale/ko"; //한국어
 import React, { useLayoutEffect, useState } from "react";
 import { ListWrapper } from "./ListWrapper";
+import { useDisclosure } from "@mantine/hooks";
+import BottomModal from "@/components/Global/BottomModal";
+import WelfareInputForm from "./WelfareInputForm";
 dayjs.locale("ko");
 const dummy = [
   {
@@ -78,7 +81,7 @@ const dummy = [
 
 export const UsedList = () => {
   const [value, setValue] = useState<Date | null>(null);
-
+  const [opened, { toggle, close }] = useDisclosure(false);
   useLayoutEffect(() => {
     setValue(dayjs().toDate());
   }, []);
@@ -130,20 +133,13 @@ export const UsedList = () => {
           </React.Fragment>
         ))}
       </ListWrapper>
-      <Affix position={{ bottom: 80, right: 20 }}>
-        {/* <Transition transition="slide-up" mounted={scroll.y > 0}>
-          {(transitionStyles) => ( */}
-        <Button
-          //   size="xs"
-          color="blue.9"
-          leftSection={<IconPlus style={{ width: rem(16), height: rem(16) }} />}
-
-          //   onClick={() => scrollTo({ y: 0 })}
-        >
+      <BottomModal opened={opened} onClose={close} title={"복지포인트 입력"}>
+        <WelfareInputForm />
+      </BottomModal>
+      <Affix position={{ bottom: 80, right: 20 }} zIndex={1000}>
+        <Button onClick={toggle} color="blue.9" leftSection={<IconPlus style={{ width: rem(16), height: rem(16) }} />}>
           내역추가
         </Button>
-        {/* )}
-        </Transition> */}
       </Affix>
     </Flex>
   );

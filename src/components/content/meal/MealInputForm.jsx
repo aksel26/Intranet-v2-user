@@ -1,3 +1,4 @@
+"use client";
 import { Button, Flex, TextInput } from "@mantine/core";
 import React from "react";
 

@@ -3,31 +3,26 @@ import { Modal, Box, MantineTheme } from "@mantine/core";
 interface BottomModalProps {
   opened: boolean;
   onClose: () => void;
+  title: string;
   children: React.ReactNode;
 }
-const BottomModal: React.FC<BottomModalProps> = ({ opened, onClose, children }) => {
+const BottomModal: React.FC<BottomModalProps> = ({ title, opened, onClose, children }) => {
   return (
     <Modal
+      zIndex={1001}
       opened={opened}
       onClose={onClose}
       radius="md"
       withCloseButton={false}
-      title="식대입력"
+      title={title}
       transitionProps={{ transition: "slide-up", duration: 300, timingFunction: "ease" }} // transitionProps로 전환 효과 설정
       styles={{
-        // inner: {
-        //   padding: 0,
-        // },
         content: {
           position: "absolute",
           bottom: "calc(env(safe-area-inset-bottom) + 16px)",
           maxHeight: "80vh",
           width: "90%",
-
-          //   borderTopLeftRadius: theme.radius.lg,
-          //   borderTopRightRadius: theme.radius.lg,
-          // transform: "translateY(100%)",
-          // animation: "slideUp 300ms ease-out forwards",
+          zIndex: 1000,
         },
       }}
     >

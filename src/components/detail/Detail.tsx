@@ -12,7 +12,7 @@ export const Detail = () => {
 
   return (
     <ContentWrapper>
-      <BottomModal opened={opened} onClose={close}>
+      <BottomModal opened={opened} onClose={close} title={"식대입력"}>
         <Text c={"gray.7"} size="sm">
           9월 5일 목요일
         </Text>
