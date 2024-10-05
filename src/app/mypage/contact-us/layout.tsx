@@ -1,7 +1,7 @@
 "use client";
 
 import { Footer } from "@/components/GNB/Footer";
-import { AppShell, AppShellFooter, Container } from "@mantine/core";
+import { AppShell, AppShellFooter } from "@mantine/core";
 import React from "react";
 
 export default function layout({
@@ -15,17 +15,7 @@ export default function layout({
         height: 60,
       }}
     >
-      <AppShell.Main pb={0}>
-        <Container
-          size={"xs"}
-          p={0}
-          bg="gray.0"
-          h={"100vh"}
-          style={{ scrollPaddingBottom: "52px", overflowY: "auto", scrollSnapType: "y mandatory" }}
-        >
-          {children}
-        </Container>
-      </AppShell.Main>
+      <AppShell.Main pb={0}>{children}</AppShell.Main>
       <AppShellFooter
         style={{
           position: "fixed",

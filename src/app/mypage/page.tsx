@@ -1,13 +1,21 @@
 "use client";
 
-import { Box, Container, Flex, Image, NavLink, Text } from "@mantine/core";
-import { IconChevronRight, IconClover2, IconGauge, IconInfoSquareRounded, IconList, IconQrcode, IconUser, IconUserFilled } from "@tabler/icons-react";
+import { Flex, Image, NavLink, Text } from "@mantine/core";
+import {
+  IconChevronRight,
+  IconClover2,
+  IconInfoSquareRounded,
+  IconList,
+  IconQrcode,
+  IconUser,
+} from "@tabler/icons-react";
 import NextImage from "next/image";
+import Link from "next/link";
 import myImage from "../../../public/images/ACG_LOGO.png";
 
 const Main = () => {
   return (
-    <Container size={"xs"} p={0} bg="gray.0" h={"calc(100vh - 52px)"} style={{ scrollPaddingBottom: "52px", overflowY: "auto", scrollSnapType: "y mandatory" }}>
+    <>
       <Flex direction={"column"} rowGap={"xl"} p={"md"} pt={40}>
         <Flex columnGap={"xs"} align={"end"}>
           <IconUser />
@@ -49,15 +57,17 @@ const Main = () => {
             leftSection={<IconQrcode size="1.5rem" stroke={1.1} />}
             rightSection={<IconChevronRight size="0.8rem" stroke={1.5} className="mantine-rotate-rtl" />}
           />
-          <NavLink
-            href="#required-for-focus"
-            label="문의하기"
-            leftSection={<IconInfoSquareRounded size="1.5rem" stroke={1.1} />}
-            rightSection={<IconChevronRight size="0.8rem" stroke={1.5} className="mantine-rotate-rtl" />}
-          />
+          <Link href={"/mypage/contact-us"} passHref legacyBehavior>
+            <NavLink
+              href="#required-for-focus"
+              label="문의하기"
+              leftSection={<IconInfoSquareRounded size="1.5rem" stroke={1.1} />}
+              rightSection={<IconChevronRight size="0.8rem" stroke={1.5} className="mantine-rotate-rtl" />}
+            />
+          </Link>
         </Flex>
       </Flex>
-    </Container>
+    </>
   );
 };
 
