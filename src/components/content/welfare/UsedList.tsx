@@ -104,7 +104,7 @@ export const UsedList = () => {
       <ListWrapper>
         {dummy.map((item, index, arr) => (
           <React.Fragment key={index}>
-            <Card py={0}>
+            <Card py={0} mb={"md"}>
               <Flex align={"center"} columnGap={"sm"}>
                 {item.isApproved ? <IconCircleCheckFilled color="#005b9a" /> : <IconCircle color="#005b9a" />}
 
@@ -128,8 +128,9 @@ export const UsedList = () => {
                   </Group>
                 </Stack>
               </Flex>
-              {index + 1 === arr.length ? null : <Divider my="sm" />}
+              {/* {index + 1 === arr.length ? null : <Divider my="sm" />} */}
             </Card>
+            {index === 2 && <Divider my="md" mt={0} label="10월" labelPosition="center" px={"md"} />}
           </React.Fragment>
         ))}
       </ListWrapper>

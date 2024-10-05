@@ -26,7 +26,7 @@ const BottomModal: React.FC<BottomModalProps> = ({ title, opened, onClose, child
         },
       }}
     >
-      <Box p="md" pt={0}>
+      <Box p="xs" pt={0}>
         {children}
       </Box>
     </Modal>
