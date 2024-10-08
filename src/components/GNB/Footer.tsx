@@ -1,4 +1,3 @@
-"use client";
 import { Flex, Group, Text } from "@mantine/core";
 import { IconBowlSpoon, IconBowlSpoonFilled, IconGiftCard, IconGiftCardFilled, IconUser, IconUserFilled } from "@tabler/icons-react";
 import { usePathname } from "next/navigation";
@@ -33,8 +32,8 @@ export const Footer = () => {
 
   return (
     <Group justify="space-around" align="center" h={"100%"}>
-      <LinkComponent href="/meal">
-        <Flex direction={"column"} justify={"center"} align={"center"} rowGap={2}>
+      <LinkComponent style={{ width: "20%" }} href="/meal">
+        <Flex direction={"column"} justify={"center"} align={"center"} rowGap={2} w={"100%"}>
           {navClickState.meal ? (
             <IconBowlSpoonFilled color={COLOR} size={ICON_SIZE} stroke={STROKE_WIDTH} />
           ) : (
@@ -44,7 +43,7 @@ export const Footer = () => {
         </Flex>
       </LinkComponent>
 
-      <LinkComponent href="/welfare">
+      <LinkComponent style={{ width: "20%" }} href="/welfare">
         <Flex direction={"column"} justify={"center"} align={"center"} rowGap={2}>
           {navClickState.welfare ? (
             <IconGiftCardFilled size={ICON_SIZE} stroke={STROKE_WIDTH} color={COLOR} />
@@ -54,7 +53,7 @@ export const Footer = () => {
           <Text size="xs">복지보인트</Text>
         </Flex>
       </LinkComponent>
-      <LinkComponent href="/activity">
+      <LinkComponent style={{ width: "20%" }} href="/activity">
         <Flex direction={"column"} justify={"center"} align={"center"} rowGap={2}>
           {navClickState.activity ? (
             <IconGiftCardFilled size={ICON_SIZE} stroke={STROKE_WIDTH} color={COLOR} />
@@ -65,7 +64,7 @@ export const Footer = () => {
         </Flex>
       </LinkComponent>
 
-      <LinkComponent href="/mypage">
+      <LinkComponent style={{ width: "20%" }} href="/mypage">
         <Flex direction={"column"} justify={"center"} align={"center"} rowGap={2}>
           {navClickState.myInfo ? (
             <IconUserFilled size={ICON_SIZE} stroke={STROKE_WIDTH} color={COLOR} />
