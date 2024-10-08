@@ -2,10 +2,11 @@ import React from "react";
 import { ContentWrapper } from "../Global/ContentWrapper";
 import { Button, Dialog, Flex, Modal, Paper, Text } from "@mantine/core";
 import ClickablePaper from "../Global/ClickablePaper";
-import MealInputForm from "../content/meal/MealInputForm";
+
 import { useDisclosure } from "@mantine/hooks";
 import { IconArrowBack, IconChevronRight } from "@tabler/icons-react";
 import BottomModal from "../Global/BottomModal";
+import MealInputForm from "../content/meal/MealInputForm";
 
 export const Detail = () => {
   const [opened, { toggle, close }] = useDisclosure(false);
@@ -13,9 +14,6 @@ export const Detail = () => {
   return (
     <ContentWrapper>
       <BottomModal opened={opened} onClose={close} title={"식대입력"}>
-        <Text c={"gray.7"} size="sm">
-          9월 5일 목요일
-        </Text>
         <MealInputForm />
       </BottomModal>
       <Flex justify="space-between" align={"center"}>
