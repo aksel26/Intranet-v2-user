@@ -14,30 +14,29 @@ export default function Home() {
   const form = useForm({
     mode: "uncontrolled",
     initialValues: {
-      userId: "",
-      userPassword: "",
+      id: "",
+      password: "",
       saveId: false,
     },
 
     validate: {
-      userId: (value) => (/^[a-z|A-Z|0-9|]+$/.test(value) ? null : "영문으로 입력해 주세요."),
+      id: (value) => (/^[a-z|A-Z|0-9|]+$/.test(value) ? null : "영문으로 입력해 주세요."),
     },
   });
 
   const submit = async (value: any) => {
-    const { userId, userPassword } = value;
-    console.log("🚀 ~ submit ~ value:", value);
+    const { id, password } = value;
 
-    await fetch("https://meal.acg-playground.com/login", {
+    await fetch("https://test-acg-playground.insahr.co.kr/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ userId, password: userPassword }),
+      body: JSON.stringify({ id, password: password }),
     })
       .then((response) => response.json())
-      .then(async ({ status, message }) => {
-        if (status === 400 || status === 401) {
+      .then(async ({ statusCode, message, data }) => {
+        if (statusCode === 400 || statusCode === 401) {
           notifications.show({
             title: "로그인 오류",
             message: message,
@@ -46,7 +45,11 @@ export default function Home() {
             icon: xIcon,
           });
         }
-        router.push("/meal");
+
+        if (statusCode === 200) {
+          router.push("/meal");
+          sessionStorage.setItem("token", JSON.stringify(data));
+        }
       });
   };
   return (
@@ -58,15 +61,15 @@ export default function Home() {
             width: "300px",
           }}
         >
-          <TextInput size="md" withAsterisk label="아이디" placeholder="아이디를 입력해 주세요." key={form.key("userId")} {...form.getInputProps("userId")} />
+          <TextInput size="md" withAsterisk label="아이디" placeholder="아이디를 입력해 주세요." key={form.key("id")} {...form.getInputProps("id")} />
           <Space h="md" />
           <TextInput
             size="md"
             withAsterisk
             label="비밀번호"
             placeholder="비밀번호를 입력해 주세요."
-            key={form.key("userPassword")}
-            {...form.getInputProps("userPassword")}
+            key={form.key("password")}
+            {...form.getInputProps("password")}
           />
 
           <Checkbox mt="md" label="아이디 기억하기" key={form.key("saveId")} {...form.getInputProps("saveId", { type: "checkbox" })} />
