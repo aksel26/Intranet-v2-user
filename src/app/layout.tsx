@@ -4,6 +4,8 @@ import "./globals.css";
 
 import { GlobalContainer } from "@/components/Global/GlobalContainer";
 import { Metadata } from "next";
+import Providers from "@/components/Global/config/Provider";
+import StoreProvider from "@/components/Global/config/StoreProvider";
 
 export const metadata: Metadata = {
   title: "My Next.js PWA",
@@ -25,7 +27,11 @@ export default function RootLayout({
         <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width" />
       </head>
       <body style={{ height: "100vh" }}>
-        <GlobalContainer>{children}</GlobalContainer>
+        <Providers>
+          <StoreProvider>
+            <GlobalContainer>{children}</GlobalContainer>
+          </StoreProvider>
+        </Providers>
       </body>
     </html>
   );
