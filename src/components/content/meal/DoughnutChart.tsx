@@ -1,15 +1,19 @@
 import { Doughnut } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+import { mealStore } from "@/lib/store/\bmealStore";
 
 // 필요한 차트 요소를 등록
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 const DoughnutChart = () => {
+  const { mealBudget, mealExpense, mealBalance } = mealStore((state) => state.mealInfo.mealStats);
+
+  const overExpense = (mealExpense as number) - (mealBudget as number);
   const data = {
     labels: ["사용한 금액", "남은 금액", "초과금액"],
     datasets: [
       {
-        data: [12000, 310000, 32000],
+        data: [mealExpense, mealBalance, overExpense],
         backgroundColor: ["#005b99", "#cedde9", "#fca5a5"], // 메인 컬러, 서브 컬러(회색)
         borderWidth: 0, // 테두리 제거
         borderRadius: 10, // 모서리 둥글게
