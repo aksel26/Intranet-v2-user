@@ -11,7 +11,6 @@ const mealApi = axios.create({
 mealApi.interceptors.request.use(
   (config) => {
     const userInfo = sessionStorage.getItem("token");
-    console.log("🚀 ~ userInfo:", userInfo);
     const token = userInfo ? JSON.parse(userInfo).accessToken : null;
     if (token) {
       config.headers["Authorization"] = `Bearer ${token}`;

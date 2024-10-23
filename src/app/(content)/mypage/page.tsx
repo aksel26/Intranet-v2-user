@@ -1,17 +1,10 @@
 "use client";
 
-import { Flex, Image, NavLink, Text } from "@mantine/core";
-import {
-  IconChevronRight,
-  IconClover2,
-  IconInfoSquareRounded,
-  IconList,
-  IconQrcode,
-  IconUser,
-} from "@tabler/icons-react";
+import { Box, Divider, Flex, Grid, Group, Image, NavLink, Stack, Text } from "@mantine/core";
+import { IconChevronRight, IconClover2, IconInfoSquareRounded, IconList, IconQrcode, IconUser } from "@tabler/icons-react";
 import NextImage from "next/image";
 import Link from "next/link";
-import myImage from "../../../public/images/ACG_LOGO.png";
+import myImage from "../../../../public/images/ACG_LOGO.png";
 
 const Main = () => {
   return (
@@ -23,18 +16,32 @@ const Main = () => {
             더보기
           </Text>
         </Flex>
-        <Flex bg={"#005b99"} align={"center"} mih={100} columnGap={"xl"} px={"xl"}>
-          <Image component={NextImage} src={myImage} alt="My image" w={"auto"} h={"1rem"} />
-          <Flex direction={"column"}>
-            <Flex align={"center"} columnGap={"xs"}>
+        <Flex bg={"#005b99"} align={"center"} mih={100} columnGap={"xl"} p={"md"} style={{ position: "relative", borderRadius: 7 }}>
+          <Image component={NextImage} src={myImage} alt="My image" w={"auto"} h={"1rem"} style={{ position: "absolute", right: 20, top: 20 }} />
+          <Flex direction={"column"} rowGap={"md"}>
+            <Box>
               <Text size={"xl"} fw={700} c={"white"}>
                 김효효효
               </Text>
               <Text c={"white"}>위원</Text>
-            </Flex>
-            <Text c={"white"} size={"xs"}>
-              Assessment40팀
-            </Text>
+            </Box>
+
+            <Group gap={"xs"}>
+              <Text c={"white"} size={"xs"}>
+                Assessment40팀
+              </Text>
+              <Divider orientation="vertical" />
+
+              <Text c={"white"} size={"xs"}>
+                hmkim@acghr.co.kr
+              </Text>
+
+              <Divider orientation="vertical" />
+              <Divider size="sm" orientation="vertical" />
+              <Text c={"white"} size={"xs"}>
+                010-2222-2222
+              </Text>
+            </Group>
           </Flex>
         </Flex>
         <Flex direction={"column"} rowGap={"md"}>
