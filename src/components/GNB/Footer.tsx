@@ -1,3 +1,4 @@
+"use client";
 import { Flex, Group, Text } from "@mantine/core";
 import { IconBowlSpoon, IconBowlSpoonFilled, IconGiftCard, IconGiftCardFilled, IconUser, IconUserFilled } from "@tabler/icons-react";
 import { usePathname } from "next/navigation";

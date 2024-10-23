@@ -4,8 +4,6 @@ import { theme } from "@/lib/theme";
 import { MantineProvider } from "@mantine/core";
 import { Notifications } from "@mantine/notifications";
 import React from "react";
-import { useEffect, useState } from "react";
-import SplashScreen from "@/components/splashScreen/SplashScreen";
 export const GlobalContainer = ({ children }: { children: React.ReactNode }) => {
   //   const [isLoading, setIsLoading] = useState(true);
 
@@ -18,7 +16,6 @@ export const GlobalContainer = ({ children }: { children: React.ReactNode }) => 
     <MantineProvider theme={theme}>
       <Notifications />
       {children}
-      {/* {isLoading ? <SplashScreen /> : children} */}
     </MantineProvider>
   );
 };

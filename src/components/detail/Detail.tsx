@@ -1,15 +1,42 @@
-import React from "react";
-import { ContentWrapper } from "../Global/ContentWrapper";
-import { Button, Dialog, Flex, Modal, Paper, Text } from "@mantine/core";
+"use client";
+
+import { Button, Flex, Text } from "@mantine/core";
 import ClickablePaper from "../Global/ClickablePaper";
+import { ContentWrapper } from "../Global/ContentWrapper";
 
 import { useDisclosure } from "@mantine/hooks";
 import { IconArrowBack, IconChevronRight } from "@tabler/icons-react";
 import BottomModal from "../Global/BottomModal";
 import MealInputForm from "../content/meal/MealInputForm";
+import { useEffect, useState } from "react";
+import dayjs from "dayjs";
+import "dayjs/locale/ko";
+import { mealStore } from "@/lib/store/mealStore";
+import { currentDateStore } from "@/lib/store/dateStore";
+dayjs.locale("ko");
 
 export const Detail = () => {
   const [opened, { toggle, close }] = useDisclosure(false);
+  const { meals } = mealStore((state) => state.mealInfo);
+
+  const { currentDate } = currentDateStore((state) => state);
+
+  const [targetList, setTargetList] = useState<any>();
+
+  useEffect(() => {
+    // const date = dayjs(currentDate).format("MM월 DD일 dddd");
+    // setCurrentDate(date);
+
+    setTargetList(
+      meals.filter((item: any) => {
+        if (item.start === dayjs(currentDate).format("YYYY-MM-DD")) {
+          return item;
+        }
+      })
+    );
+  }, [currentDate]);
+
+  console.log(targetList);
 
   return (
     <ContentWrapper>
@@ -18,7 +45,7 @@ export const Detail = () => {
       </BottomModal>
       <Flex justify="space-between" align={"center"}>
         <Text size="md" c={"gray.6"}>
-          9월 6일 금요일
+          {dayjs(currentDate).date()}
         </Text>
         <Button size="xs" leftSection={<IconArrowBack size={14} />} variant="default">
           초기화

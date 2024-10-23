@@ -8,23 +8,23 @@ export const theme = createTheme({
     // You can add more custom colors here
   },
   cursorType: "pointer",
-  defaultRadius: "md",
+  // defaultRadius: "md",
   components: {
     Paper: {
-      styles: (theme: MantineTheme) => ({
-        root: {
-          cursor: "pointer",
-          transition: "all 0.2s ease",
-          "&:hover": {
-            transform: "translateY(-2px)",
-            boxShadow: theme.shadows.md,
-          },
-          "&:active": {
-            transform: "translateY(0)",
-            boxShadow: theme.shadows.sm,
-          },
-        },
-      }),
+      // styles: (theme: MantineTheme) => ({
+      //   root: {
+      //     cursor: "pointer",
+      //     transition: "all 0.2s ease",
+      //     "&:hover": {
+      //       transform: "translateY(-2px)",
+      //       boxShadow: theme.shadows.md,
+      //     },
+      //     "&:active": {
+      //       transform: "translateY(0)",
+      //       boxShadow: theme.shadows.sm,
+      //     },
+      //   },
+      // }),
     },
     Box: {
       defaultProps: {
@@ -36,6 +36,7 @@ export const theme = createTheme({
         style: { borderRadius: "8px" },
       },
     },
+
     Flex: {
       defaultProps: {
         style: { borderRadius: "8px" },
@@ -47,16 +48,6 @@ export const theme = createTheme({
         style: { borderRadius: "8px" },
       },
     },
-    AppShell: AppShell.extend({
-      styles: () => ({
-        main: {
-          // paddingBottom: "120px", // 네비게이션 바 높이만큼 패딩 추가
-          // height: "calc(100vh - 60px)",
-          overflowY: "auto",
-          // scrollPaddingBottom: "60px",
-        },
-      }),
-    }),
   },
 
   /** Put your other mantine theme overrides here */
