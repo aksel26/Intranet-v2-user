@@ -1,6 +1,6 @@
 // combinedStore.ts
 import { create } from "zustand";
-import { mealStore } from "./\bmealStore";
+import { mealStore } from "./mealStore";
 
 interface CombinedStore {
   store1: ReturnType<typeof mealStore>;
