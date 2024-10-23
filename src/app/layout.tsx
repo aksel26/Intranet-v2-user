@@ -5,16 +5,17 @@ import "./globals.css";
 import { GlobalContainer } from "@/components/Global/GlobalContainer";
 import { Metadata } from "next";
 import Providers from "@/components/Global/config/Provider";
-import StoreProvider from "@/components/Global/config/StoreProvider";
+// import StoreProvider from "@/components/Global/config/StoreProvider";
+// import { GlobalLayout } from "@/components/Global/layout/globalLayout";
 
-export const metadata: Metadata = {
-  title: "My Next.js PWA",
-  description: "A Progressive Web App built with Next.js",
-  manifest: "/manifest.json",
-  themeColor: "#000000",
-  viewport: "width=device-width, initial-scale=1",
-  icons: [{ rel: "apple-touch-icon", url: "/icon-192x192.png" }],
-};
+// export const metadata: Metadata = {
+//   title: "My Next.js PWA",
+//   description: "A Progressive Web App built with Next.js",
+//   manifest: "/manifest.json",
+//   themeColor: "#000000",
+//   viewport: "width=device-width, initial-scale=1",
+//   icons: [{ rel: "apple-touch-icon", url: "/icon-192x192.png" }],
+// };
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -28,9 +29,9 @@ export default function RootLayout({
       </head>
       <body style={{ height: "100vh" }}>
         <Providers>
-          <StoreProvider>
-            <GlobalContainer>{children}</GlobalContainer>
-          </StoreProvider>
+          {/* <StoreProvider> */}
+          <GlobalContainer>{children}</GlobalContainer>
+          {/* </StoreProvider> */}
         </Providers>
       </body>
     </html>
