@@ -1,13 +1,38 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import "../../../styles/calendar.css";
+import { Paper } from "@mantine/core";
+import { mealStore } from "@/lib/store/mealStore";
+import { titleRender } from "@/utils/calendarFetch";
+import dayjs from "dayjs";
+import { currentDateStore } from "@/lib/store/dateStore";
 
 export default function Calendar() {
+  const { meals } = mealStore((state) => state.mealInfo);
+  const { setCurrentDate } = currentDateStore((state) => state);
+  const [calendarFormat, setCalendarFormat] = useState<any>();
+
+  const renderEvent = () => {
+    const calendarFormat = meals.map((item: any) => {
+      if (item.holidayYN === "N") {
+        return { start: item.start, title: titleRender(item.lunch.attendance) };
+      } else {
+        return { start: item.start, title: "공휴일" };
+      }
+    });
+
+    setCalendarFormat(calendarFormat);
+  };
+
+  useEffect(() => {
+    renderEvent();
+  }, [meals]);
+
   return (
-    <>
+    <Paper p="sm" py={"lg"}>
       <FullCalendar
         initialView="dayGridMonth"
         headerToolbar={{
@@ -24,18 +49,15 @@ export default function Calendar() {
           today: "오늘",
         }}
         weekends={true}
-        events={[
-          { title: "이벤트 1", date: "2024-09-01" },
-          { title: "이벤트 2", start: "2024-09-05" },
-        ]}
+        events={calendarFormat}
         eventClick={(info) => {
-          alert("Event: " + info.event.title);
+          if (info.event.start) setCurrentDate(info.event.start);
         }}
         height="auto"
         locale="ko"
         plugins={[dayGridPlugin]}
         dayCellContent={(arg) => arg.dayNumberText.replace("일", "")}
       />
-    </>
+    </Paper>
   );
 }
