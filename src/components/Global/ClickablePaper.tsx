@@ -16,7 +16,7 @@ export default function ClickablePaper({ children, onClick, style, ...others }: 
   };
 
   return (
-    <Paper component="button" withBorder p="md" onClick={handleClick} {...others}>
+    <Paper component="button" radius={"lg"} withBorder p="sm" py={"sm"} onClick={handleClick} {...others}>
       {children}
     </Paper>
   );

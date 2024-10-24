@@ -1,18 +1,18 @@
 "use client";
 
 import { Button, Flex, Text } from "@mantine/core";
-import ClickablePaper from "../Global/ClickablePaper";
 import { ContentWrapper } from "../Global/ContentWrapper";
 
+import { currentDateStore } from "@/lib/store/dateStore";
+import { mealStore } from "@/lib/store/mealStore";
 import { useDisclosure } from "@mantine/hooks";
-import { IconArrowBack, IconChevronRight } from "@tabler/icons-react";
-import BottomModal from "../Global/BottomModal";
-import MealInputForm from "../content/meal/MealInputForm";
-import { useEffect, useState } from "react";
+import { IconArrowBack } from "@tabler/icons-react";
 import dayjs from "dayjs";
 import "dayjs/locale/ko";
-import { mealStore } from "@/lib/store/mealStore";
-import { currentDateStore } from "@/lib/store/dateStore";
+import { useEffect, useState } from "react";
+import BottomModal from "../Global/BottomModal";
+import { DetailCard } from "../content/meal/DetailCard";
+import MealInputForm from "../content/meal/MealInputForm";
 dayjs.locale("ko");
 
 export const Detail = () => {
@@ -51,12 +51,14 @@ export const Detail = () => {
           초기화
         </Button>
       </Flex>
-      <ClickablePaper onClick={toggle}>
+      {/* <ClickablePaper onClick={toggle}>
         <Flex justify="space-between" align={"center"}>
           <Text size="sm">입력하지 않으셨네요!</Text>
           <IconChevronRight color="gray" size={18} />
         </Flex>
-      </ClickablePaper>
+      </ClickablePaper> */}
+
+      <DetailCard toggle={toggle} />
     </ContentWrapper>
   );
 };

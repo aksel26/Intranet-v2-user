@@ -10,7 +10,7 @@ export const MealBalance = () => {
   const { mealBalance, userName } = mealStore((state) => state.mealInfo.mealStats);
   return (
     <Paper radius="lg" p="sm" py={"md"}>
-      <Stack>
+      <Stack gap={0}>
         <Group
           py={"xs"}
           px="md"
@@ -18,8 +18,7 @@ export const MealBalance = () => {
             borderRadius: theme.radius.md, // 또는 sm, lg, xl 등
           })}
         >
-          <Image component={NextImage} src={myImage} alt="My image" w={"2.3rem"} h={"2.3rem"} />
-          <Stack gap={"xs"}>
+          <Stack gap={0}>
             <Text fw={700}>
               안녕하세요,
               <Text component="span" fw={700} c={"blue.9"} mr={5}>

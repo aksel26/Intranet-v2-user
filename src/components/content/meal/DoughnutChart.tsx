@@ -8,7 +8,7 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 const DoughnutChart = () => {
   const { mealBudget, mealExpense, mealBalance } = mealStore((state) => state.mealInfo.mealStats);
 
-  const overExpense = (mealExpense as number) - (mealBudget as number);
+  const overExpense = (mealBudget as number) - (mealBudget as number);
   const data = {
     labels: ["사용한 금액", "남은 금액", "초과금액"],
     datasets: [
