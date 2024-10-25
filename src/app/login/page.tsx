@@ -1,8 +1,7 @@
 "use client";
 
-import { Box, Button, Center, Checkbox, Container, Group, PasswordInput, rem, Space, TextInput } from "@mantine/core";
+import { Box, Button, Checkbox, Group, PasswordInput, rem, Space, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { IconX, IconCheck } from "@tabler/icons-react";
 
 import { notifications } from "@mantine/notifications";
 import { useRouter } from "next/navigation";
@@ -41,17 +40,15 @@ export default function Login() {
             message: message,
             position: "top-center",
             color: "red",
-            icon: xIcon,
           });
         }
 
         if (statusCode === 200) {
-          router.push("/meal");
+          router.push("/content/meal");
           sessionStorage.setItem("token", JSON.stringify(data));
         }
       });
   };
-  const xIcon = <IconX style={{ width: rem(20), height: rem(20) }} />;
   return (
     <Box w={"80%"}>
       <form onSubmit={form.onSubmit((values) => submit(values))}>

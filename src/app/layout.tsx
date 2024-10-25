@@ -5,6 +5,7 @@ import "./globals.css";
 import { GlobalContainer } from "@/components/Global/GlobalContainer";
 import { Metadata } from "next";
 import Providers from "@/components/Global/config/Provider";
+import { ColorSchemeScript } from "@mantine/core";
 // import StoreProvider from "@/components/Global/config/StoreProvider";
 // import { GlobalLayout } from "@/components/Global/layout/globalLayout";
 
@@ -26,6 +27,7 @@ export default function RootLayout({
       <head>
         <title>하이</title>
         <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width" />
+        <ColorSchemeScript />
       </head>
       <body style={{ height: "100vh" }}>
         <Providers>
