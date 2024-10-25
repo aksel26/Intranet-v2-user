@@ -6,7 +6,7 @@ import { Detail } from "@/components/detail/Detail";
 import { useGetMeals } from "@/hooks/useMeals";
 import { mealStateStore } from "@/lib/store/mealStore";
 import { useCombinedStore } from "@/lib/store/CombinedSotre";
-import { Container, Flex } from "@mantine/core";
+import { Container, Flex, Select } from "@mantine/core";
 import { useEffect } from "react";
 
 interface mealState {

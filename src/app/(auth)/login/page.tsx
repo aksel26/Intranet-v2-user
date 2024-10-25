@@ -44,7 +44,7 @@ export default function Login() {
         }
 
         if (statusCode === 200) {
-          router.push("/content/meal");
+          router.push("/meal");
           sessionStorage.setItem("token", JSON.stringify(data));
         }
       });

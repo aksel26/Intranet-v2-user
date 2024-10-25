@@ -33,7 +33,7 @@ export const Footer = () => {
 
   return (
     <Group justify="space-around" align="center" h={"100%"}>
-      <LinkComponent style={{ width: "20%" }} href="/content/meal">
+      <LinkComponent style={{ width: "20%" }} href="/meal">
         <Flex direction={"column"} justify={"center"} align={"center"} rowGap={2} w={"100%"}>
           {navClickState.meal ? (
             <IconBowlSpoonFilled color={COLOR} size={ICON_SIZE} stroke={STROKE_WIDTH} />
@@ -44,7 +44,7 @@ export const Footer = () => {
         </Flex>
       </LinkComponent>
 
-      <LinkComponent style={{ width: "20%" }} href="/content/welfare">
+      <LinkComponent style={{ width: "20%" }} href="/welfare">
         <Flex direction={"column"} justify={"center"} align={"center"} rowGap={2}>
           {navClickState.welfare ? (
             <IconGiftCardFilled size={ICON_SIZE} stroke={STROKE_WIDTH} color={COLOR} />
@@ -54,7 +54,7 @@ export const Footer = () => {
           <Text size="xs">복지보인트</Text>
         </Flex>
       </LinkComponent>
-      <LinkComponent style={{ width: "20%" }} href="/content/activity">
+      <LinkComponent style={{ width: "20%" }} href="/activity">
         <Flex direction={"column"} justify={"center"} align={"center"} rowGap={2}>
           {navClickState.activity ? (
             <IconGiftCardFilled size={ICON_SIZE} stroke={STROKE_WIDTH} color={COLOR} />
@@ -65,7 +65,7 @@ export const Footer = () => {
         </Flex>
       </LinkComponent>
 
-      <LinkComponent style={{ width: "20%" }} href="/content/mypage">
+      <LinkComponent style={{ width: "20%" }} href="/mypage">
         <Flex direction={"column"} justify={"center"} align={"center"} rowGap={2}>
           {navClickState.myInfo ? (
             <IconUserFilled size={ICON_SIZE} stroke={STROKE_WIDTH} color={COLOR} />

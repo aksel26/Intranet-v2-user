@@ -10,7 +10,7 @@ interface BottomModalProps {
 const BottomModal: React.FC<BottomModalProps> = ({ title, opened, onClose, children }) => {
   return (
     <Modal
-      zIndex={1001}
+      zIndex={100}
       opened={opened}
       onClose={onClose}
       radius="md"
@@ -32,7 +32,7 @@ const BottomModal: React.FC<BottomModalProps> = ({ title, opened, onClose, child
           bottom: "calc(env(safe-area-inset-bottom) + 16px)",
           maxHeight: "80vh",
           width: "90%",
-          zIndex: 1000,
+          // zIndex: 1000,
         },
       }}
     >
