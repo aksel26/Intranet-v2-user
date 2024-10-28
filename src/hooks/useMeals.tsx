@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import * as api from "../app/api/meal/mealApi";
+import * as api from "../app/api/get/getApi";
 
 type TMeals = {
   year: number;
