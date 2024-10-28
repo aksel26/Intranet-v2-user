@@ -2,6 +2,10 @@ export type TMealsParams = {
   year: number;
   month: number;
 };
+export type TWelfaresParams = {
+  year: number;
+  month: number;
+};
 
 export type TMeal = {
   id: number;

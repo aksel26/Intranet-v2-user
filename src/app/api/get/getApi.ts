@@ -1,4 +1,4 @@
-import { TMealsParams } from "@/lib/types/meal";
+import { TMealsParams, TWelfaresParams } from "@/lib/types/meal";
 import axios from "axios";
 
 const getApi = axios.create({
@@ -25,4 +25,5 @@ getApi.interceptors.request.use(
 // export const getMeals = () => jsonPlaceholderApi.get('/posts');
 
 export const getMeals = ({ year, month }: TMealsParams) => getApi.get(`/users/meals`, { params: { year, month } });
+export const getWelfares = ({ year, month }: TWelfaresParams) => getApi.get(`/users/welfares`, { params: { year, month } });
 export const getMe = () => getApi.get(`/users/me`);

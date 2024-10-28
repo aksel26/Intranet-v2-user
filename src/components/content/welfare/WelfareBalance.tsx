@@ -11,10 +11,12 @@ import { useMemo, useState } from "react";
 import { DateSubText } from "@/template/DateSubText";
 // const DoughnutChart = dynamic(() => import("./DoughnutChart"), { ssr: false });
 
-export const WelfareBalance = () => {
+export const WelfareBalance = ({ welfareStats }: any) => {
   const pathname = usePathname();
 
   // const [currentPage, setCurrentPage] = useState(pathname);
+
+  console.log(welfareStats);
 
   return (
     <ContentWrapper>
