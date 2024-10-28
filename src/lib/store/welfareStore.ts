@@ -1,28 +1,23 @@
 import { create } from "zustand";
-import { devtools } from "zustand/middleware";
+import { TWelfareInfo } from "../types/welfare";
 
-interface mealInfoState {
-  // bears: 0,
-  // increasePopulation: () => set(state => ({ bears: state.bears + 1 })),
-  // removeAllBears: () => set({ bears: 0 })
+export interface welfareStateStore {
+  welfareInfo: TWelfareInfo;
+  setwelfareInfo: (welfareInfo: TWelfareInfo) => void;
 }
 
-// export const useAppStore = create<any>((set) => ({
-//   bears: 0,
-//   increasePopulation: () => set((state: any) => ({ bears: state.bears + 1 })),
-//   removeAllBears: () => set({ bears: 0 }),
-// }));
+export const welfareStore = create<welfareStateStore>((set) => ({
+  welfareInfo: {
+    welfareStats: {
+      year: "",
+      month: "",
+      welfareBudget: 0,
+      welfareExpense: 0,
+      welfareBalance: 0,
+      userName: "",
+    },
 
-// // const useStore = create(devtools(useAppStore));
-
-// export default useAppStore;
-
-const store = (set: any) => ({
-  bears: 0,
-  increasePopulation: () => set((state: any) => ({ bears: state.bears + 1 })),
-  removeAllBears: () => set({ bears: 0 }),
-});
-
-const useAppStore = create(devtools(store));
-
-export default useAppStore;
+    welfares: [],
+  },
+  setwelfareInfo: (welfareInfo: TWelfareInfo) => set({ welfareInfo }),
+}));

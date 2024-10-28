@@ -79,7 +79,7 @@ const dummy = [
   },
 ];
 
-export const UsedList = () => {
+export const UsedList = ({ welfares }: any) => {
   const [value, setValue] = useState<Date | null>(null);
   const [opened, { toggle, close }] = useDisclosure(false);
   useLayoutEffect(() => {
