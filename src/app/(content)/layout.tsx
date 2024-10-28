@@ -17,19 +17,22 @@ export default function ContentLayout({ children }: { children: React.ReactNode 
       }}
     >
       <AppShell.Header withBorder={false}>
-        {/* <Image src={"/public/images/ACG_LOGO.png"} height={60} width={200} alt="logo" /> */}
-        <Flex align={"center"} h={"100%"} p={"md"} justify={"space-between"} px={"xl"}>
-          <Image component={NextImage} src={myImage} alt="My image" fit="contain" h={20} w={80} />
-          <Button size="xs" variant="subtle">
-            로그아웃
-          </Button>
-        </Flex>
+        <Container size="xs" style={{ margin: "0 auto" }} h={"100%"}>
+          <Flex align={"center"} p={"md"} justify={"space-between"} px={"xl"}>
+            <Image component={NextImage} src={myImage} alt="My image" fit="contain" h={20} w={80} />
+            <Button size="xs" variant="subtle">
+              로그아웃
+            </Button>
+          </Flex>
+        </Container>
       </AppShell.Header>
       <AppShell.Main>
         <Container size={"xs"}>{children}</Container>
       </AppShell.Main>
-      <AppShellFooter>
-        <Footer />
+      <AppShellFooter withBorder={false}>
+        <Container size="xs" style={{ margin: "0 auto", borderTop: "1px solid #e9e9e9" }} h={"100%"}>
+          <Footer />
+        </Container>
       </AppShellFooter>
     </AppShell>
   );
