@@ -1,10 +1,10 @@
 "use client";
-import DoughnutChart from "@/components/content/meal/DoughnutChart";
-import { mealStore } from "@/lib/store/mealStore";
+import ChartComponent from "@/components/content/meal/DoughnutChart";
 import { Flex, NumberFormatter, rem, Text } from "@mantine/core";
 
-export const ChartSummary = () => {
-  const { mealBudget, mealExpense, mealBalance } = mealStore((state) => state.mealInfo.mealStats);
+export const ChartSummary = ({ stats }: any) => {
+  const { budget, expenses, balance } = stats;
+
   return (
     <>
       <Flex columnGap={"sm"}>
@@ -14,7 +14,7 @@ export const ChartSummary = () => {
               사용가능 금액
             </Text>
             <Text component="span" c={"gray.6"}>
-              <NumberFormatter thousandSeparator value={mealBudget} suffix=" 원" />
+              <NumberFormatter thousandSeparator value={budget || 0} suffix=" 원" />
             </Text>
           </Flex>
           <Flex>
@@ -22,7 +22,7 @@ export const ChartSummary = () => {
               사용한 금액
             </Text>
             <Text component="span" c={"gray.6"}>
-              <NumberFormatter thousandSeparator value={mealExpense} suffix=" 원" />
+              <NumberFormatter thousandSeparator value={expenses || 0} suffix=" 원" />
             </Text>
           </Flex>
           <Flex>
@@ -30,12 +30,12 @@ export const ChartSummary = () => {
               남은 금액
             </Text>
             <Text component="span" c={"gray.6"}>
-              <NumberFormatter thousandSeparator value={mealBalance} suffix=" 원" />
+              <NumberFormatter thousandSeparator value={balance || 0} suffix=" 원" />
             </Text>
           </Flex>
         </Flex>
         <Flex p={rem(8)} w={"30%"} mah={100} justify={"center"}>
-          <DoughnutChart />
+          <ChartComponent stats={stats} />
         </Flex>
       </Flex>
     </>
