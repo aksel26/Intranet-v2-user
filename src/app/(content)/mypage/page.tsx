@@ -1,12 +1,22 @@
 "use client";
 
-import { Box, Divider, Flex, Grid, Group, Image, NavLink, Stack, Text } from "@mantine/core";
+import { useGetMe } from "@/hooks/useGetUser";
+import { Box, Divider, Flex, Group, Image, NavLink, Skeleton, Text } from "@mantine/core";
 import { IconChevronRight, IconClover2, IconInfoSquareRounded, IconList, IconQrcode, IconUser } from "@tabler/icons-react";
 import NextImage from "next/image";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import myImage from "../../../../public/images/ACG_LOGO.png";
 
 const Main = () => {
+  const { data, isLoading, error } = useGetMe();
+
+  const [user, setUser] = useState<any>();
+
+  useEffect(() => {
+    data && setUser(data.data.data);
+  }, [data]);
+
   return (
     <>
       <Flex direction={"column"} rowGap={"xl"} p={"md"} pt={40}>
@@ -16,34 +26,37 @@ const Main = () => {
             더보기
           </Text>
         </Flex>
-        <Flex bg={"#005b99"} align={"center"} mih={100} columnGap={"xl"} p={"md"} style={{ position: "relative", borderRadius: 7 }}>
-          <Image component={NextImage} src={myImage} alt="My image" w={"auto"} h={"1rem"} style={{ position: "absolute", right: 20, top: 20 }} />
-          <Flex direction={"column"} rowGap={"md"}>
-            <Box>
-              <Text size={"xl"} fw={700} c={"white"}>
-                김효효효
-              </Text>
-              <Text c={"white"}>위원</Text>
-            </Box>
 
-            <Group gap={"xs"}>
-              <Text c={"white"} size={"xs"}>
-                Assessment40팀
-              </Text>
-              <Divider orientation="vertical" />
+        <Skeleton visible={isLoading} h={130}>
+          <Flex bg={"#005b99"} align={"center"} mih={100} columnGap={"xl"} p={"md"} style={{ position: "relative", borderRadius: 7 }}>
+            <Image component={NextImage} src={myImage} alt="CI" w={"auto"} h={"1rem"} style={{ position: "absolute", right: 20, top: 20 }} />
+            <Flex direction={"column"} rowGap={"md"}>
+              <Box>
+                <Text size={"xl"} fw={700} c={"white"}>
+                  {user?.userName}
+                </Text>
+                <Text c={"white"}>{user?.gradeName}</Text>
+              </Box>
 
-              <Text c={"white"} size={"xs"}>
-                hmkim@acghr.co.kr
-              </Text>
+              <Group gap={"xs"}>
+                <Text c={"white"} size={"xs"}>
+                  {user?.teamName}
+                </Text>
+                <Divider orientation="vertical" />
 
-              <Divider orientation="vertical" />
-              <Divider size="sm" orientation="vertical" />
-              <Text c={"white"} size={"xs"}>
-                010-2222-2222
-              </Text>
-            </Group>
+                <Text c={"white"} size={"xs"}>
+                  {user?.userEmail}
+                </Text>
+
+                <Divider orientation="vertical" />
+
+                <Text c={"white"} size={"xs"}>
+                  {user?.userCell}
+                </Text>
+              </Group>
+            </Flex>
           </Flex>
-        </Flex>
+        </Skeleton>
         <Flex direction={"column"} rowGap={"md"}>
           <NavLink
             href="#required-for-focus"
