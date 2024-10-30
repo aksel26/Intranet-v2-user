@@ -26,10 +26,10 @@ const Main = () => {
   }, [data]);
 
   return (
-    <Container size={"xs"} p={0} bg="gray.0" h={"calc(100vh - 52px)"} style={{ scrollPaddingBottom: "52px", overflowY: "auto", scrollSnapType: "y mandatory" }}>
+    <Container size={"xs"} p={0} bg="gray.0" style={{ scrollPaddingBottom: "52px", overflowY: "auto", scrollSnapType: "y mandatory" }}>
       <Flex direction={"column"} rowGap={"sm"}>
         <TopTitle />
-        <WelfareBalance />
+        {/* <WelfareBalance /> */}
         <UsedList />
       </Flex>
     </Container>

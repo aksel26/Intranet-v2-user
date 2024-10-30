@@ -8,7 +8,7 @@ export const ChartSummary = ({ stats }: any) => {
   return (
     <>
       <Flex columnGap={"sm"}>
-        <Flex p={"xs"} px="md" direction="column" rowGap={"4px"} w={"70%"}>
+        <Flex py={"xs"} pr="md" direction="column" rowGap={"4px"} w={"70%"}>
           <Flex>
             <Text c={"gray.6"} w="120px">
               사용가능 금액

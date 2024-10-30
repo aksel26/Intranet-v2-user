@@ -15,7 +15,7 @@ const ChartComponent = ({ stats }: any) => {
 
   const pathname = usePathname();
 
-  const chartRef = useRef<ChartJS<"doughnut"> | null>(null);
+  // const chartRef = useRef<ChartJS<"doughnut"> | null>(null);
 
   const remainingAmount = budget - expenses;
 
@@ -51,19 +51,19 @@ const ChartComponent = ({ stats }: any) => {
     },
   };
 
-  useEffect(() => {
-    // 차트 인스턴스 초기화
-    return () => {
-      if (chartRef.current) {
-        chartRef.current.destroy();
-      }
-    };
-  }, [pathname]);
+  // useEffect(() => {
+  //   // 차트 인스턴스 초기화
+  //   return () => {
+  //     if (chartRef.current) {
+  //       chartRef.current.destroy();
+  //     }
+  //   };
+  // }, [pathname]);
 
   return (
     <DoughnutChart
       data={data}
-      ref={chartRef}
+      // ref={chartRef}
       options={options}
       key={pathname} // 라우트가 변경될 때마다 새로운 key 값
     />

@@ -2,9 +2,10 @@
 
 import { mealStore } from "@/lib/store/mealStore";
 import { ChartSummary } from "@/template/ChartSummary";
-import { Group, NumberFormatter, Paper, Stack, Text } from "@mantine/core";
+import { Box, Flex, Group, NumberFormatter, Paper, Stack, Text } from "@mantine/core";
 import { useEffect, useState } from "react";
-
+import NumberFlow from "@number-flow/react";
+import dayjs from "dayjs";
 export const MealBalance = () => {
   const [statsInfo, setStatsInfo] = useState<any>({
     balance: 0,
@@ -18,34 +19,37 @@ export const MealBalance = () => {
   }, [stats]);
 
   return (
-    <Paper radius="lg" p="sm" py={"md"}>
-      <Stack gap={0}>
-        <Group
-          py={"xs"}
-          px="md"
-          style={(theme) => ({
-            borderRadius: theme.radius.md, // 또는 sm, lg, xl 등
-          })}
-        >
-          <Stack gap={0}>
-            <Text fw={700}>
-              안녕하세요,
-              <Text component="span" fw={700} c={"blue.9"} mr={5}>
-                {stats.userName}
-              </Text>
-              님,
+    <Flex direction={"column"} bg={"white"} px="md" py="lg" rowGap={"md"}>
+      <Box>
+        <Text size="xl" fw={700}>
+          식대
+        </Text>
+        <Text size="sm" fw={500} c={"gray.6"}>
+          {dayjs().format("MM월 DD일 dddd")}
+        </Text>
+      </Box>
+      <Box>
+        <Flex direction={"column"}>
+          <Text fw={700} c={"blue.9"}>
+            {stats.userName}{" "}
+            <Text c={"gray.9"} component="span" mr={0}>
+              님의 잔여 식대는
             </Text>
-            <Text>
-              이번달은
-              <Text mx={5} component="span" c={"blue.9"} fw={700} size="xl">
-                <NumberFormatter thousandSeparator value={stats.mealBalance || 0} suffix=" 원" />
-              </Text>
-              남으셨네요!
+          </Text>
+
+          <Flex align={"center"}>
+            <Text mx={5} component="span" c={"blue.9"} fw={700} size="xl">
+              <NumberFlow
+                value={Number(stats.mealBalance) || 0}
+                // value={Number(welfareStats.welfareBalance) || 0}
+                locales="ko-KR" // Intl.NumberFormat locales
+              />
             </Text>
-          </Stack>
-        </Group>
-        <ChartSummary stats={statsInfo} />
-      </Stack>
-    </Paper>
+            <Text>원 입니다</Text>
+          </Flex>
+        </Flex>
+      </Box>
+      <ChartSummary stats={statsInfo} />
+    </Flex>
   );
 };

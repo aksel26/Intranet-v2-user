@@ -29,54 +29,54 @@ const dummy = [
     accompany: null,
     place: "빽다방",
   },
-  {
-    date: "12월 5일 목요일",
-    amount: 120000,
-    isApproved: true,
-    payer: "사람",
-    place: "와이브루",
-    accompany: ["사람2", "사람1"],
-  },
-  {
-    date: "9월 5일 목요일",
-    amount: 120000,
-    isApproved: true,
-    payer: "사람",
-    place: "와이브루",
-    accompany: ["사람2", "사람1"],
-  },
-  {
-    date: "3월 5일 목요일",
-    amount: 120000,
-    isApproved: false,
-    payer: "사람",
-    place: "와이브루",
-    accompany: ["사람2", "사람1"],
-  },
-  {
-    date: "3월 5일 목요일",
-    amount: 120000,
-    isApproved: false,
-    payer: "사람",
-    place: "와이브루",
-    accompany: ["사람2", "사람1"],
-  },
-  {
-    date: "3월 5일 목요일",
-    amount: 120000,
-    isApproved: false,
-    payer: "사람",
-    place: "와이브루",
-    accompany: ["사람2", "사람1"],
-  },
-  {
-    date: "3월 5일 목요일",
-    amount: 120000,
-    isApproved: false,
-    payer: "사람",
-    place: "와이브루",
-    accompany: ["사람2", "사람1"],
-  },
+  // {
+  //   date: "12월 5일 목요일",
+  //   amount: 120000,
+  //   isApproved: true,
+  //   payer: "사람",
+  //   place: "와이브루",
+  //   accompany: ["사람2", "사람1"],
+  // },
+  // {
+  //   date: "9월 5일 목요일",
+  //   amount: 120000,
+  //   isApproved: true,
+  //   payer: "사람",
+  //   place: "와이브루",
+  //   accompany: ["사람2", "사람1"],
+  // },
+  // {
+  //   date: "3월 5일 목요일",
+  //   amount: 120000,
+  //   isApproved: false,
+  //   payer: "사람",
+  //   place: "와이브루",
+  //   accompany: ["사람2", "사람1"],
+  // },
+  // {
+  //   date: "3월 5일 목요일",
+  //   amount: 120000,
+  //   isApproved: false,
+  //   payer: "사람",
+  //   place: "와이브루",
+  //   accompany: ["사람2", "사람1"],
+  // },
+  // {
+  //   date: "3월 5일 목요일",
+  //   amount: 120000,
+  //   isApproved: false,
+  //   payer: "사람",
+  //   place: "와이브루",
+  //   accompany: ["사람2", "사람1"],
+  // },
+  // {
+  //   date: "3월 5일 목요일",
+  //   amount: 120000,
+  //   isApproved: false,
+  //   payer: "사람",
+  //   place: "와이브루",
+  //   accompany: ["사람2", "사람1"],
+  // },
 ];
 
 export const UsedList = ({ welfares }: any) => {
@@ -119,8 +119,8 @@ export const UsedList = ({ welfares }: any) => {
                     <Divider orientation="vertical" />
                     <Flex>
                       {item.accompany &&
-                        item.accompany.map((name) => (
-                          <Text size="sm" c={"gray.6"}>
+                        item.accompany.map((name, index) => (
+                          <Text size="sm" c={"gray.6"} key={index}>
                             {name}
                           </Text>
                         ))}

@@ -19,13 +19,10 @@ const Main = () => {
 
   return (
     <>
-      <Flex direction={"column"} rowGap={"xl"} p={"md"} pt={40}>
-        <Flex columnGap={"xs"} align={"end"}>
-          <IconUser />
-          <Text fw={900} size={"1.5rem"}>
-            더보기
-          </Text>
-        </Flex>
+      <Flex direction={"column"} rowGap={"xl"} pt={"lg"} p={"sm"}>
+        <Text size="xl" fw={700}>
+          더보기
+        </Text>
 
         <Skeleton visible={isLoading} h={130}>
           <Flex bg={"#005b99"} align={"center"} mih={100} columnGap={"xl"} p={"md"} style={{ position: "relative", borderRadius: 7 }}>
