@@ -1,18 +1,13 @@
 "use client";
 
 import Calendar from "@/components/content/meal/Calendar";
-import { MealBalance } from "@/components/content/meal/MealBalance";
+import { TopTitle } from "@/components/content/welfare/TopTitle";
 import { Detail } from "@/components/detail/Detail";
 import { useGetMeals } from "@/hooks/useMeals";
-import { mealStateStore } from "@/lib/store/mealStore";
 import { useCombinedStore } from "@/lib/store/CombinedSotre";
-import { Container, Flex, Select } from "@mantine/core";
+import { mealStateStore } from "@/lib/store/mealStore";
+import { Container, Flex } from "@mantine/core";
 import { useEffect } from "react";
-
-interface mealState {
-  count: number;
-  increment: () => void;
-}
 
 const Main = () => {
   const params = {
@@ -34,7 +29,7 @@ const Main = () => {
   return (
     <Container size={"xs"} p={0} bg="gray.0" style={{ scrollPaddingBottom: "52px", overflowY: "auto", scrollSnapType: "y mandatory" }}>
       <Flex direction={"column"} rowGap={"sm"}>
-        <MealBalance />
+        <TopTitle />
         <Calendar />
         <Detail />
       </Flex>

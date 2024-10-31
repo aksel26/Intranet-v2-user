@@ -2,7 +2,6 @@
 
 import { TopTitle } from "@/components/content/welfare/TopTitle";
 import { UsedList } from "@/components/content/welfare/UsedList";
-import { WelfareBalance } from "@/components/content/welfare/WelfareBalance";
 import { useGetWelfares } from "@/hooks/useGetWelfares";
 import { useCombinedStore } from "@/lib/store/CombinedSotre";
 import { welfareStateStore } from "@/lib/store/welfareStore";
@@ -29,7 +28,6 @@ const Main = () => {
     <Container size={"xs"} p={0} bg="gray.0" style={{ scrollPaddingBottom: "52px", overflowY: "auto", scrollSnapType: "y mandatory" }}>
       <Flex direction={"column"} rowGap={"sm"}>
         <TopTitle />
-        {/* <WelfareBalance /> */}
         <UsedList />
       </Flex>
     </Container>
