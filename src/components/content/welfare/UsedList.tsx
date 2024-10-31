@@ -1,6 +1,6 @@
 "use client";
 import { DateSubText } from "@/template/DateSubText";
-import { Affix, Button, Card, Divider, Flex, Group, NumberFormatter, rem, Stack, Text } from "@mantine/core";
+import { Affix, Button, Card, Divider, Flex, Group, Indicator, NumberFormatter, Pill, rem, Stack, Text } from "@mantine/core";
 import { MonthPickerInput } from "@mantine/dates";
 import "@mantine/dates/styles.css";
 import { IconChevronDown, IconCircle, IconCircleCheckFilled, IconPlus } from "@tabler/icons-react";
@@ -11,23 +11,40 @@ import { ListWrapper } from "./ListWrapper";
 import { useDisclosure } from "@mantine/hooks";
 import BottomModal from "@/components/Global/BottomModal";
 import WelfareInputForm from "./WelfareInputForm";
+import { useGetUsers } from "@/hooks/useGetUsers";
 dayjs.locale("ko");
 const dummy = [
   {
-    date: "12월 5일 목요일",
-    amount: 120000,
-    isApproved: true,
-    payer: "사람",
-    accompany: ["사람2"],
-    place: "스타벅스",
+    welfareIdx: 42,
+    userIdx: 2,
+    targetDay: "2024-11-05",
+    content: "스타벅스 용산점",
+    amount: 5500,
+    payerName: "김현민",
+    selfWrittenYN: "Y",
+    payeeList: [],
+    isApproved: true, // 참고
   },
   {
-    date: "12월 5일 목요일",
-    amount: 100000,
-    isApproved: false,
-    payer: "사람1",
-    accompany: null,
-    place: "빽다방",
+    welfareIdx: 39,
+    userIdx: 2,
+    targetDay: "2024-11-04",
+    content: "메가커피",
+    amount: null,
+    payerName: "이승현",
+    selfWrittenYN: "N",
+    payeeList: [
+      {
+        userIdx: 2,
+        userName: "김현민",
+      },
+      {
+        userIdx: 3,
+        userName: "윤용설",
+      },
+    ],
+
+    isApproved: false, // 참고
   },
   // {
   //   date: "12월 5일 목요일",
@@ -109,22 +126,29 @@ export const UsedList = ({ welfares }: any) => {
                 {item.isApproved ? <IconCircleCheckFilled color="#005b9a" /> : <IconCircle color="#005b9a" />}
 
                 <Stack gap={2.5}>
-                  <DateSubText date={item.date} />
-                  <NumberFormatter thousandSeparator value={item.amount} suffix=" 원" style={{ fontWeight: 700 }} />
+                  <DateSubText date={item.targetDay} />
+                  <NumberFormatter thousandSeparator value={item.amount || 0} suffix=" 원" style={{ fontWeight: 700 }} />
 
                   <Group gap={"xs"}>
                     <Text size="sm" c={"gray.6"}>
-                      {item.place}
+                      {item.content}
                     </Text>
                     <Divider orientation="vertical" />
-                    <Flex>
-                      {item.accompany &&
-                        item.accompany.map((name, index) => (
-                          <Text size="sm" c={"gray.6"} key={index}>
-                            {name}
-                          </Text>
+
+                    <Pill size="sm" c={"blue.8"} bg={"blue.1"} key={index}>
+                      {item.selfWrittenYN === "Y" ? "직접결제" : "OOO 위원 결제"}
+                    </Pill>
+
+                    {/* <Divider orientation="vertical" /> */}
+
+                    <Group gap={5}>
+                      {item.payeeList &&
+                        item.payeeList.map((list, index) => (
+                          <Pill size="sm" c={"gray.6"} key={index}>
+                            {list.userName}
+                          </Pill>
                         ))}
-                    </Flex>
+                    </Group>
                   </Group>
                 </Stack>
               </Flex>
