@@ -12,8 +12,8 @@ export const Holiday = () => {
         <Flex bg={"blue.0"} justify={"center"} align={"center"} p={4}>
           <IconHoliday width={30} height={25} color={"#fdcb67"} />
         </Flex>
-        <Text size="xs" c={"gray.6"}>
-          반차 / 연차일 경우 식대가 제공되지 않습니다.
+        <Text size="xs" c={"gray.6"} ta={"left"}>
+          반차 / 연차일 경우 <br /> 식대가 제공되지 않습니다.
         </Text>
       </Flex>
       <ArrowRight color="gray" width={18} />

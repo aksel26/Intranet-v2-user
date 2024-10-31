@@ -1,144 +1,227 @@
 "use client";
-import { Button, Flex, Tabs, TextInput } from "@mantine/core";
+import { currentDateStore } from "@/lib/store/dateStore";
+import { Button, Flex, Modal, Select, Tabs, Text, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { useState } from "react";
-import Select from "react-select";
+import dayjs from "dayjs";
+import "dayjs/locale/ko";
+import { forwardRef, useEffect, useRef, useState } from "react";
+dayjs.locale("ko");
+interface ModalInputForm2Props {
+  opened: boolean;
+  close: any;
+}
 
-export default function MealInputForm() {
-  const [opened, setOpened] = useState(false);
+type MealData = {
+  payerName: string;
+  place: string;
+  amount: number;
+  attendance?: string;
+};
+
+type FormValues = {
+  targetDay: string;
+  attendance: string;
+  breakfast: MealData;
+  lunch: MealData;
+  dinner: MealData;
+};
+
+type MealType = "breakfast" | "lunch" | "dinner";
+
+const ModalInputForm = forwardRef<HTMLDivElement, ModalInputForm2Props>(({ opened, close }, ref) => {
+  const [openedModal, setOpenedModal] = useState(false);
   const [searchValue, setSearchValue] = useState("");
+  const [isActive, setIsActive] = useState(false);
+  const [currentTab, setCurrentTab] = useState<MealType>("breakfast");
 
-  const handleSearchChange = (value: string) => {
-    setSearchValue(value);
-    setOpened(value.length > 0); // 입력이 시작되면 드롭다운 열기
-  };
+  const innerRef = useRef<HTMLDivElement>(null); // 내부에서 사용할 ref 생성
 
-  const form = useForm({
-    mode: "uncontrolled",
+  const { currentDate } = currentDateStore((state) => state);
+
+  const form = useForm<FormValues>({
     initialValues: {
-      "breakfast-payerName": "",
-      "breakfast-place": "",
-      "breakfast-price": "",
+      targetDay: "",
+      attendance: "근무",
+      breakfast: {
+        payerName: "",
+        place: "",
+        amount: 0,
+      },
+      lunch: {
+        payerName: "이승현",
+        place: "김가네",
+        amount: 5000,
+      },
+      dinner: {
+        payerName: "",
+        place: "",
+        amount: 0,
+      },
     },
-
-    // validate: {
-    //   "breakfast-payerName": (value) => (/^\S+@\S+$/.test(value) ? null : "Invalid email"),
-    // },
   });
 
-  const options = [
-    { value: "chocolate", label: "Chocolate" },
-    { value: "strawberry", label: "Strawberry" },
-    { value: "vanilla", label: "Vanilla" },
-  ];
+  const handleSelectChange = (value: any) => {
+    form.setFieldValue(`${currentTab}.payerName`, value);
+    setOpenedModal(false);
+    setSearchValue("");
+    setIsActive(false); // 선택 시 active 상태 해제
+  };
+
+  useEffect(() => {
+    form.setFieldValue("targetDay", dayjs(currentDate).format("YYYY-MM-DD"));
+  }, [currentDate]);
+
+  useEffect(() => {
+    renderAttendance();
+  }, [currentTab]);
+
+  const renderAttendance = () => {
+    if (currentTab === "lunch") {
+      return (
+        <Select
+          label="근태"
+          placeholder="근태 유형을 선택해 주세요."
+          data={["근무", "반차", "휴가", "재택근무"]}
+          searchable
+          styles={{
+            dropdown: {
+              zIndex: 1001, // 드롭다운의 z-index를 수동으로 설정
+            },
+          }}
+          key={form.key(`${currentTab}.attendance`)}
+          {...form.getInputProps(`${currentTab}.attendance`)}
+        />
+      );
+    } else {
+      return null;
+    }
+  };
+
+  // forwardedRef를 innerRef와 연결
+  useEffect(() => {
+    if (!ref) return;
+
+    if (typeof ref === "function") {
+      ref(innerRef.current);
+    } else {
+      ref.current = innerRef.current;
+    }
+  }, [ref]);
 
   return (
-    <Flex direction={"column"} rowGap={10} className="modal-parent-portal">
-      <form onSubmit={form.onSubmit((values) => console.log(values))}>
-        <Tabs defaultValue="lunch">
-          <Tabs.List grow>
-            <Tabs.Tab value="breakfast">조식</Tabs.Tab>
-            <Tabs.Tab value="lunch">중식</Tabs.Tab>
-            <Tabs.Tab value="dinner">석식</Tabs.Tab>
-          </Tabs.List>
+    <>
+      <Modal
+        opened={opened}
+        onClose={close}
+        size="xl"
+        ref={ref}
+        zIndex={100}
+        radius="md"
+        withCloseButton={false}
+        title={
+          <Flex align={"end"} columnGap={"sm"}>
+            <Text fw={700} size="lg">
+              식대 입력
+            </Text>
+            <Text c={"gray.7"} size="sm">
+              {dayjs(currentDate).format("MM월 DD일 dddd")}
+            </Text>
+          </Flex>
+        }
+        transitionProps={{ transition: "slide-up", duration: 300, timingFunction: "ease" }} // transitionProps로 전환 효과 설정
+        styles={{
+          content: {
+            position: "absolute",
+            bottom: "calc(env(safe-area-inset-bottom) + 16px)",
+            maxHeight: "80vh",
+            width: "90%",
+            // zIndex: 1000,
+          },
+        }}
+      >
+        <Flex direction={"column"} rowGap={10} className="modal-parent-portal">
+          <form onSubmit={form.onSubmit((values) => console.log(values))}>
+            <Tabs defaultValue={currentTab} onChange={(e: any) => setCurrentTab(e)}>
+              <Tabs.List grow>
+                <Tabs.Tab value="breakfast">조식</Tabs.Tab>
+                <Tabs.Tab value="lunch">중식</Tabs.Tab>
+                <Tabs.Tab value="dinner">석식</Tabs.Tab>
+              </Tabs.List>
+              <Tabs.Panel value={currentTab}>
+                <Flex direction={"column"} rowGap={10} py={"md"}>
+                  <Select
+                    label="결제자"
+                    placeholder="결제자를 선택해 주세요."
+                    data={["김정현", "이혜빈", "윤용설", "신효은", "이승현", "김현민"]}
+                    searchable
+                    value={form.values[currentTab].payerName}
+                    onChange={(value: any) => handleSelectChange(value)}
+                    searchValue={searchValue}
+                    onSearchChange={(newValue: any) => {
+                      setSearchValue(newValue);
+                      if (isActive) {
+                        setOpenedModal(true);
+                      }
+                    }}
+                    comboboxProps={{
+                      position: "bottom",
+                      middlewares: { flip: true, shift: true },
+                      portalProps: {
+                        target: innerRef?.current ?? undefined,
+                      },
+                    }}
+                    styles={{
+                      dropdown: {
+                        position: "absolute",
+                        zIndex: 1000,
+                      },
+                      input: {
+                        cursor: "pointer",
+                      },
+                    }}
+                    dropdownOpened={openedModal && isActive} // active 상태일 때만 드롭다운 표시
+                    onDropdownClose={() => {
+                      setOpenedModal(false);
+                      setSearchValue("");
+                    }}
+                    onClick={() => {
+                      setIsActive(true); // 클릭 시 active 상태로 변경
+                      setOpenedModal(true); // 클릭 시 드롭다운 열기
+                    }}
+                    onBlur={() => {
+                      if (!form.values[currentTab].payerName) {
+                        setIsActive(false); // 값이 없을 때 포커스를 잃으면 active 상태 해제
+                      }
+                    }}
+                    error={form.errors["currentTab.payerName"]}
+                  />
+                  <TextInput
+                    key={form.key(`${currentTab}.place`)}
+                    {...form.getInputProps(`${currentTab}.place`)}
+                    label="식당명"
+                    placeholder="식당 상호명을 입력해 주세요."
+                  />
+                  <TextInput
+                    key={form.key(`${currentTab}.amount`)}
+                    {...form.getInputProps(`${currentTab}.amount`)}
+                    label="금액"
+                    placeholder="금액을 입력해 주세요."
+                  />
 
-          <Tabs.Panel value="breakfast">
-            <Flex direction={"column"} rowGap={10} py={"md"}>
-              {/* <Select
-                label="결제자"
-                placeholder="결제자를 선택해 주세요."
-                data={["김정현", "이혜빈", "윤용설", "신효은", "이승현", "김현민"]}
-                searchable
-                styles={{
-                  dropdown: {
-                    zIndex: 1001, // 드롭다운의 z-index를 수동으로 설정
-                  },
-                }}
-                comboboxProps={{
-                  // position: "bottom",
-                  middlewares: { flip: true, shift: true },
-                  // Modal의 portal container를 target으로 지정
-                  portalProps: {
-                    target: ".modal-parent-portal",
-                  },
-                }}
-                key={form.key("breakfast-payerName")}
-                {...form.getInputProps("breakfast-payerName")}
-                searchValue={searchValue}
-                onSearchChange={handleSearchChange} // 검색 입력 시 드롭다운 제어
-                dropdownOpened={opened} // 드롭다운 열림 여부 상태로 관리
-                onDropdownClose={() => setOpened(false)} // 드롭다운 닫기
-              /> */}
-              <Select options={options} />
-
-              <TextInput
-                key={form.key("breakfast-place")}
-                {...form.getInputProps("breakfast-place")}
-                label="식당명"
-                placeholder="식당 상호명을 입력해 주세요."
-              />
-              <TextInput key={form.key("breakfast-price")} {...form.getInputProps("breakfast-price")} label="금액" placeholder="금액을 입력해 주세요." />
-            </Flex>
-          </Tabs.Panel>
-
-          <Tabs.Panel value="lunch">
-            <Flex direction={"column"} rowGap={10} py={"md"}>
-              {/* <Select
-                label="결제자"
-                placeholder="결제자를 선택해 주세요."
-                data={["김정현", "이혜빈", "윤용설", "신효은", "이승현", "김현민"]}
-                searchable
-                styles={{
-                  dropdown: {
-                    zIndex: 1001, // 드롭다운의 z-index를 수동으로 설정
-                  },
-                }}
-                searchValue={searchValue}
-                onSearchChange={handleSearchChange} // 검색 입력 시 드롭다운 제어
-                dropdownOpened={opened} // 드롭다운 열림 여부 상태로 관리
-                onDropdownClose={() => setOpened(false)} // 드롭다운 닫기
-              /> */}
-              <TextInput label="식당명" placeholder="식당 상호명을 입력해 주세요." />
-              <TextInput label="금액" placeholder="금액을 입력해 주세요." />
-              {/* <Select
-                label="근태"
-                placeholder="근태 유형을 선택해 주세요."
-                data={["근무", "반차", "휴가", "재택근무"]}
-                searchable
-                styles={{
-                  dropdown: {
-                    zIndex: 1001, // 드롭다운의 z-index를 수동으로 설정
-                  },
-                }}
-              /> */}
-            </Flex>
-          </Tabs.Panel>
-
-          <Tabs.Panel value="dinner">
-            <Flex direction={"column"} rowGap={10} py={"md"}>
-              {/* <Select
-                label="결제자"
-                placeholder="결제자를 선택해 주세요."
-                data={["김정현", "이혜빈", "윤용설", "신효은", "이승현", "김현민"]}
-                searchable
-                styles={{
-                  dropdown: {
-                    zIndex: 1001, // 드롭다운의 z-index를 수동으로 설정
-                  },
-                }}
-                searchValue={searchValue}
-                onSearchChange={handleSearchChange} // 검색 입력 시 드롭다운 제어
-                dropdownOpened={opened} // 드롭다운 열림 여부 상태로 관리
-                onDropdownClose={() => setOpened(false)} // 드롭다운 닫기
-              /> */}
-              <TextInput label="식당명" placeholder="식당 상호명을 입력해 주세요." />
-              <TextInput label="금액" placeholder="금액을 입력해 주세요." />
-            </Flex>
-          </Tabs.Panel>
-        </Tabs>
-
-        <Button type="submit">저장하기</Button>
-      </form>
-    </Flex>
+                  {renderAttendance()}
+                </Flex>
+              </Tabs.Panel>
+              <Button fullWidth type="submit">
+                저장하기
+              </Button>
+            </Tabs>
+          </form>
+        </Flex>
+      </Modal>
+    </>
   );
-}
+});
+
+ModalInputForm.displayName = "ModalInputForm";
+
+export default ModalInputForm;
