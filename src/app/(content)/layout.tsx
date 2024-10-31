@@ -18,7 +18,7 @@ export default function ContentLayout({ children }: { children: React.ReactNode 
     >
       <AppShell.Header withBorder={false}>
         <Container size="xs" style={{ margin: "0 auto" }} h={"100%"}>
-          <Flex align={"center"} p={"md"} justify={"space-between"} px={"xl"}>
+          <Flex align={"center"} py={"md"} justify={"space-between"} px={"md"}>
             <Image component={NextImage} src={myImage} alt="My image" fit="contain" h={20} w={80} />
             <Button size="xs" variant="subtle">
               로그아웃

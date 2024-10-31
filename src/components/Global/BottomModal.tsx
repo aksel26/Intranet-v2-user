@@ -1,13 +1,15 @@
 "use client";
 import React from "react";
 import { Modal, Box, MantineTheme, Text, Flex } from "@mantine/core";
+import dayjs from "dayjs";
 interface BottomModalProps {
   opened: boolean;
   onClose: () => void;
   title: string;
   children: React.ReactNode;
+  date?: Date;
 }
-const BottomModal: React.FC<BottomModalProps> = ({ title, opened, onClose, children }) => {
+const BottomModal: React.FC<BottomModalProps> = ({ title, date, opened, onClose, children }) => {
   return (
     <Modal
       zIndex={100}
@@ -21,7 +23,7 @@ const BottomModal: React.FC<BottomModalProps> = ({ title, opened, onClose, child
             {title}
           </Text>
           <Text c={"gray.7"} size="sm">
-            9월 5일 목요일
+            {date ? dayjs(date).format("MM월 DD일 dddd") : ""}
           </Text>
         </Flex>
       }
