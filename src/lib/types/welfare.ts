@@ -18,3 +18,15 @@ export type TWelfareInfo = {
   welfareStats: TWelfareStats;
   welfares: TWelfare[];
 };
+
+export interface TWelfareList {
+  welfareIdx: number;
+  userIdx: number;
+  targetDay: string;
+  content: string;
+  amount: number;
+  payerName: string;
+  selfWrittenYN: string;
+  payeeList: number;
+  isApproved: boolean; //number;
+}
