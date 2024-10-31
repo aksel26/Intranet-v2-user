@@ -26,4 +26,6 @@ getApi.interceptors.request.use(
 
 export const getMeals = ({ year, month }: TMealsParams) => getApi.get(`/users/meals`, { params: { year, month } });
 export const getWelfares = ({ year, month }: TWelfaresParams) => getApi.get(`/users/welfares`, { params: { year, month } });
+export const getActivities = ({ year, month }: TWelfaresParams) => getApi.get(`/users/activities`, { params: { year, month } });
 export const getMe = () => getApi.get(`/users/me`);
+export const getUsers = () => getApi.get(`/users/ids`);
