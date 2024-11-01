@@ -1,32 +1,62 @@
 "use client";
 
+import useLogout from "@/hooks/useLogout";
+import { useSubmitForm } from "@/hooks/useSubmitForm";
 import { Box, Button, Divider, Flex, Radio, Text, Textarea, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
+import { notifications } from "@mantine/notifications";
 import { IconChevronLeft } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 const ContactUs = () => {
-  // useForm 훅을 이용해 폼 상태 관리
+  const router = useRouter();
+  const [userName, setUserName] = useState("");
+  const { mutate: submit, isError, isSuccess } = useSubmitForm();
+
   const form = useForm({
     initialValues: {
-      name: "기본이름 박제",
-      type: "quesiton",
-      content: "",
+      name: "",
+      category: "question",
+      text: "",
     },
-
     validate: {
-      content: (value) => (value.length < 5 ? "최소 5자 이상 입력해 주세요." : null),
-      type: (value) => (value ? null : "유형을 반드시 선택해 주세요."),
+      text: (value) => (value.length < 5 ? "최소 5자 이상 입력해 주세요." : null),
+      category: (value) => (value ? null : "유형을 반드시 선택해 주세요."),
     },
   });
+
+  useEffect(() => {
+    const value = sessionStorage.getItem("token");
+    if (value) {
+      const { userName } = JSON.parse(value);
+      setUserName(userName);
+      form.setFieldValue("name", userName); // form의 name 필드값을 업데이트
+    }
+  }, []);
 
   // 폼 제출 처리
   const handleSubmit = (values: any) => {
     console.log(values);
     alert("Form submitted");
-  };
 
-  const router = useRouter();
+    const { text, category } = values;
+
+    submit(
+      { text: text, category: category },
+      {
+        onSuccess: () => {
+          notifications.show({
+            title: "문의하기",
+            message: "정상적으로 접수되었습니다.",
+            position: "top-center",
+            color: "green",
+          });
+          router.back();
+        },
+      }
+    );
+  };
 
   const goBack = () => router.back();
 
@@ -58,7 +88,7 @@ const ContactUs = () => {
 
         <Radio.Group
           label="문의 유형"
-          {...form.getInputProps("type")}
+          {...form.getInputProps("category")}
           required
           styles={{
             label: {
@@ -67,9 +97,9 @@ const ContactUs = () => {
           }}
         >
           <Flex columnGap={"lg"} mt="xs">
-            <Radio value="quesiton" label="질문" />
+            <Radio value="question" label="질문" />
             <Radio value="bug" label="버그" />
-            <Radio value="suggestion" label="제안" />
+            <Radio value="proposal" label="제안" />
           </Flex>
         </Radio.Group>
 
@@ -86,7 +116,7 @@ const ContactUs = () => {
           }}
           label="내용"
           placeholder="내용을 작성해 주세요."
-          {...form.getInputProps("content")} // form의 message 상태와 연결
+          {...form.getInputProps("text")} // form의 message 상태와 연결
           required
           minRows={10}
           autosize={false} // 자동 크기 조절 비활성화
