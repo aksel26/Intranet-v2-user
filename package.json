@@ -12,6 +12,7 @@
     "@emotion/react": "^11.13.3",
     "@fullcalendar/core": "^6.1.15",
     "@fullcalendar/daygrid": "^6.1.15",
+    "@fullcalendar/interaction": "^6.1.15",
     "@fullcalendar/react": "^6.1.15",
     "@mantine/core": "^7.12.2",
     "@mantine/dates": "^7.12.2",
@@ -25,6 +26,7 @@
     "chart.js": "^4.4.4",
     "dayjs": "^1.11.13",
     "framer-motion": "^11.4.0",
+    "hammerjs": "^2.0.8",
     "next": "14.2.7",
     "next-pwa": "^5.6.0",
     "react": "^18",
@@ -35,6 +37,7 @@
   },
   "devDependencies": {
     "@svgr/webpack": "^8.1.0",
+    "@types/hammerjs": "^2.0.46",
     "@types/node": "^20",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
