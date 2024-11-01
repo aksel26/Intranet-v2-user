@@ -1,19 +1,26 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import "../../../styles/calendar.css";
 import { Paper } from "@mantine/core";
 import { mealStore } from "@/lib/store/mealStore";
 import { titleRender } from "@/utils/calendarFetch";
-import dayjs from "dayjs";
 import { currentDateStore } from "@/lib/store/dateStore";
+import { CalendarApi, DateSelectArg } from "@fullcalendar/core/index.js";
+import Hammer from "hammerjs";
+import dayjs from "dayjs";
+import interactionPlugin from "@fullcalendar/interaction"; // needed for dayClick
 
-export default function Calendar() {
+export default function Calendar({ setCalendarYearMonth }: any) {
   const { meals } = mealStore((state) => state.mealInfo);
   const { setCurrentDate } = currentDateStore((state) => state);
   const [calendarFormat, setCalendarFormat] = useState<any>();
+
+  const calendarRef = useRef<FullCalendar>(null);
+
+  const containerRef = useRef<HTMLDivElement>(null);
 
   const renderEvent = () => {
     const calendarFormat = meals.map((item: any) => {
@@ -31,9 +38,54 @@ export default function Calendar() {
     renderEvent();
   }, [meals]);
 
+  useEffect(() => {
+    const containerEl = containerRef.current;
+    if (!containerEl) return;
+
+    // Hammer 인스턴스 생성
+    const hammer = new Hammer(containerEl);
+
+    // 수평 방향 스와이프만 감지하도록 설정
+    hammer.get("swipe").set({
+      direction: Hammer.DIRECTION_HORIZONTAL,
+      threshold: 50,
+    });
+
+    // 스와이프 이벤트 핸들러
+    hammer.on("swipeleft swiperight", (e: any) => {
+      const calendarApi: CalendarApi | undefined = calendarRef.current?.getApi();
+      if (!calendarApi) return;
+
+      if (e.type === "swiperight") {
+        calendarApi.prev(); // 이전 달
+      } else if (e.type === "swipeleft") {
+        calendarApi.next(); // 다음 달
+      }
+    });
+
+    // 클린업 함수
+    return () => {
+      hammer.destroy();
+    };
+  }, []);
+
+  const handleDatesSet = (selectInfo: any) => {
+    const { start } = selectInfo;
+
+    const year = dayjs(start).year();
+    const month = dayjs(start).month() + 1;
+
+    setCalendarYearMonth((prev: any) => ({ ...prev, year: year, month: month }));
+    // 날짜 선택 처리
+  };
+
+  const handleDateSelect = (arg: any) => setCurrentDate(arg.start);
+
   return (
-    <Paper p="sm" py={"lg"}>
+    <Paper p="sm" py={"lg"} ref={containerRef}>
       <FullCalendar
+        ref={calendarRef}
+        datesSet={handleDatesSet}
         initialView="dayGridMonth"
         headerToolbar={{
           left: "prev,title,next",
@@ -53,9 +105,11 @@ export default function Calendar() {
         eventClick={(info) => {
           if (info.event.start) setCurrentDate(info.event.start);
         }}
+        // dateClick={handleDateSelect}
+        select={handleDateSelect}
         height="auto"
         locale="ko"
-        plugins={[dayGridPlugin]}
+        plugins={[dayGridPlugin, interactionPlugin]}
         dayCellContent={(arg) => arg.dayNumberText.replace("일", "")}
       />
     </Paper>

@@ -7,15 +7,17 @@ import { useGetMeals } from "@/hooks/useMeals";
 import { useCombinedStore } from "@/lib/store/CombinedSotre";
 import { mealStateStore } from "@/lib/store/mealStore";
 import { Container, Flex } from "@mantine/core";
-import { useEffect } from "react";
+import dayjs from "dayjs";
+import { useEffect, useState } from "react";
 
 const Main = () => {
-  const params = {
-    year: 2024,
-    month: 10,
-  };
+  const nowMonthYear = dayjs();
+  const [calendarYearMonth, setCalendarYearMonth] = useState({
+    year: nowMonthYear.year(),
+    month: nowMonthYear.month() + 1,
+  });
 
-  const { data: mealInfo, isLoading, error } = useGetMeals(params);
+  const { data: mealInfo, isLoading, error } = useGetMeals(calendarYearMonth);
 
   const { store1 } = useCombinedStore() as { store1: mealStateStore };
 
@@ -30,7 +32,7 @@ const Main = () => {
     <Container size={"xs"} p={0} bg="gray.0" style={{ scrollPaddingBottom: "52px", overflowY: "auto", scrollSnapType: "y mandatory" }}>
       <Flex direction={"column"} rowGap={"sm"}>
         <TopTitle />
-        <Calendar />
+        <Calendar setCalendarYearMonth={setCalendarYearMonth} />
         <Detail />
       </Flex>
     </Container>
