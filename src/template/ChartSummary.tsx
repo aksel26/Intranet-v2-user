@@ -16,17 +16,17 @@ const PriceInfo = ({ text, price }: { text: string; price: number | string | und
 };
 
 export const ChartSummary = () => {
-  const { mealBudget, mealExpense, mealBalance } = mealStore((state) => state.mealInfo.mealStats);
+  // const { mealBudget, mealExpense, mealBalance } = mealStore((state) => state.mealInfo.mealStats);
   return (
     <>
       <Flex columnGap={"sm"}>
         <Flex p={"xs"} px="md" direction="column" rowGap={"4px"} w={"70%"}>
-          <PriceInfo text="사용가능 금액" price={mealBudget} />
+          {/* <PriceInfo text="사용가능 금액" price={mealBudget} />
           <PriceInfo text="사용한 금액" price={mealExpense} />
-          <PriceInfo text="남은 금액" price={mealBalance} />
+          <PriceInfo text="남은 금액" price={mealBalance} /> */}
         </Flex>
         <Flex p={rem(8)} w={"30%"} mah={100} justify={"center"}>
-          <ChartComponent stats={stats} />
+          {/* <ChartComponent stats={stats} /> */}
         </Flex>
       </Flex>
     </>
