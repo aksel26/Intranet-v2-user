@@ -1,6 +1,7 @@
 "use client";
+import { useSubmitForm, useSubmitFormMeal } from "@/hooks/useSubmitForm";
 import { currentDateStore } from "@/lib/store/dateStore";
-import { Button, Flex, Modal, Select, Tabs, Text, TextInput } from "@mantine/core";
+import { Button, Flex, Modal, NumberInput, Select, Tabs, Text, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import dayjs from "dayjs";
 import "dayjs/locale/ko";
@@ -12,9 +13,9 @@ interface ModalInputForm2Props {
 }
 
 type MealData = {
-  payerName: string;
-  place: string;
-  amount: number;
+  payerName: string | null;
+  place: string | null;
+  amount: number | null | undefined;
   attendance?: string;
 };
 
@@ -32,11 +33,13 @@ const ModalInputForm = forwardRef<HTMLDivElement, ModalInputForm2Props>(({ opene
   const [openedModal, setOpenedModal] = useState(false);
   const [searchValue, setSearchValue] = useState("");
   const [isActive, setIsActive] = useState(false);
-  const [currentTab, setCurrentTab] = useState<MealType>("breakfast");
+  const [currentTab, setCurrentTab] = useState<MealType>("lunch");
 
   const innerRef = useRef<HTMLDivElement>(null); // 내부에서 사용할 ref 생성
 
   const { currentDate } = currentDateStore((state) => state);
+
+  const { mutate } = useSubmitFormMeal();
 
   const form = useForm<FormValues>({
     initialValues: {
@@ -45,17 +48,17 @@ const ModalInputForm = forwardRef<HTMLDivElement, ModalInputForm2Props>(({ opene
       breakfast: {
         payerName: "",
         place: "",
-        amount: 0,
+        amount: null,
       },
       lunch: {
-        payerName: "이승현",
-        place: "김가네",
-        amount: 5000,
+        payerName: "",
+        place: "",
+        amount: null,
       },
       dinner: {
         payerName: "",
         place: "",
-        amount: 0,
+        amount: null,
       },
     },
   });
@@ -88,8 +91,8 @@ const ModalInputForm = forwardRef<HTMLDivElement, ModalInputForm2Props>(({ opene
               zIndex: 1001, // 드롭다운의 z-index를 수동으로 설정
             },
           }}
-          key={form.key(`${currentTab}.attendance`)}
-          {...form.getInputProps(`${currentTab}.attendance`)}
+          key={form.key(`attendance`)}
+          {...form.getInputProps(`attendance`)}
         />
       );
     } else {
@@ -107,6 +110,11 @@ const ModalInputForm = forwardRef<HTMLDivElement, ModalInputForm2Props>(({ opene
       ref.current = innerRef.current;
     }
   }, [ref]);
+
+  const submit = (values: any) => {
+    console.log("🚀 ~ submit ~ values:", values);
+    mutate(values);
+  };
 
   return (
     <>
@@ -140,7 +148,7 @@ const ModalInputForm = forwardRef<HTMLDivElement, ModalInputForm2Props>(({ opene
         }}
       >
         <Flex direction={"column"} rowGap={10} className="modal-parent-portal">
-          <form onSubmit={form.onSubmit((values) => console.log(values))}>
+          <form onSubmit={form.onSubmit(submit)}>
             <Tabs defaultValue={currentTab} onChange={(e: any) => setCurrentTab(e)}>
               <Tabs.List grow>
                 <Tabs.Tab value="breakfast">조식</Tabs.Tab>
@@ -149,6 +157,7 @@ const ModalInputForm = forwardRef<HTMLDivElement, ModalInputForm2Props>(({ opene
               </Tabs.List>
               <Tabs.Panel value={currentTab}>
                 <Flex direction={"column"} rowGap={10} py={"md"}>
+                  {renderAttendance()}
                   <Select
                     label="결제자"
                     placeholder="결제자를 선택해 주세요."
@@ -201,14 +210,23 @@ const ModalInputForm = forwardRef<HTMLDivElement, ModalInputForm2Props>(({ opene
                     label="식당명"
                     placeholder="식당 상호명을 입력해 주세요."
                   />
-                  <TextInput
+
+                  <NumberInput
                     key={form.key(`${currentTab}.amount`)}
                     {...form.getInputProps(`${currentTab}.amount`)}
                     label="금액"
                     placeholder="금액을 입력해 주세요."
+                    thousandSeparator=","
+                    hideControls
+                    suffix=" 원"
                   />
-
-                  {renderAttendance()}
+                  {/* <TextInput
+                    type="number"
+                    key={form.key(`${currentTab}.amount`)}
+                    {...form.getInputProps(`${currentTab}.amount`)}
+                    label="금액"
+                    placeholder="금액을 입력해 주세요."
+                  /> */}
                 </Flex>
               </Tabs.Panel>
               <Button fullWidth type="submit">
