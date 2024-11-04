@@ -15,18 +15,19 @@ const PriceInfo = ({ text, price }: { text: string; price: number | string | und
   );
 };
 
-export const ChartSummary = () => {
+export const ChartSummary = ({ statsInfo }: any) => {
+  const { balance, budget, expenses } = statsInfo;
   // const { mealBudget, mealExpense, mealBalance } = mealStore((state) => state.mealInfo.mealStats);
   return (
     <>
       <Flex columnGap={"sm"}>
         <Flex p={"xs"} px="md" direction="column" rowGap={"4px"} w={"70%"}>
-          {/* <PriceInfo text="사용가능 금액" price={mealBudget} />
-          <PriceInfo text="사용한 금액" price={mealExpense} />
-          <PriceInfo text="남은 금액" price={mealBalance} /> */}
+          <PriceInfo text="사용가능 금액" price={budget} />
+          <PriceInfo text="사용한 금액" price={expenses} />
+          <PriceInfo text="남은 금액" price={balance} />
         </Flex>
         <Flex p={rem(8)} w={"30%"} mah={100} justify={"center"}>
-          {/* <ChartComponent stats={stats} /> */}
+          <ChartComponent stats={statsInfo} />
         </Flex>
       </Flex>
     </>

@@ -1,5 +1,6 @@
+"use client";
+
 import { useMutation } from "@tanstack/react-query";
-import React from "react";
 import * as api from "../app/api/post/postApi";
 
 export const useSubmitForm = () => {

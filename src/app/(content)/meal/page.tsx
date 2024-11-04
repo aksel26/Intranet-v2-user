@@ -4,7 +4,8 @@ import Calendar from "@/components/content/meal/Calendar";
 import { TopTitle } from "@/components/content/welfare/TopTitle";
 import { Detail } from "@/components/detail/Detail";
 import { useGetMeals } from "@/hooks/useMeals";
-import { useCombinedStore } from "@/lib/store/CombinedSotre";
+import { useCombinedStore } from "@/lib/store/CombinedStore";
+
 import { mealStateStore } from "@/lib/store/mealStore";
 import { Container, Flex } from "@mantine/core";
 import dayjs from "dayjs";

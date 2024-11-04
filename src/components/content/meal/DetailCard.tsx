@@ -1,18 +1,38 @@
 "use client";
 
-import ClickablePaper from "@/components/Global/ClickablePaper";
+import { Blank } from "./detailCard/Blank";
 import { Holiday } from "./detailCard/Holiday";
+import { Attend } from "./detailCard/Working";
 
-export const DetailCard = ({ toggle }: any) => {
-  return (
-    <ClickablePaper onClick={toggle}>
-      {/* <Flex justify="space-between" align={"center"}>
-        <Text size="sm">입력하지 않으셨네요!</Text>
-        <IconChevronRight color="gray" size={18} />
-      </Flex> */}
+const mealType = ["breakfast", "lunch", "dinner"];
+export const DetailCard = ({ toggle, targetList }: any) => {
+  const makeArray = () => {
+    return mealType.map((meal) => ({
+      [meal]: targetList[0][meal],
+    }));
+  };
 
-      {/* <Attend /> */}
-      <Holiday />
-    </ClickablePaper>
-  );
+  const processMealData = (data: any) => {
+    return data.map((mealItem: any) => {
+      const [mealType, mealInfo] = Object.entries(mealItem)[0];
+      return {
+        type: mealType,
+        data: mealInfo,
+      };
+    });
+  };
+
+  if (targetList) {
+    if (targetList?.length < 1) {
+      return <Blank toggle={toggle} />;
+    } else if (targetList[0].lunch.attendance === "근무") {
+      const foramtted = makeArray();
+      const processedData = processMealData(foramtted);
+      return processedData.map((item: any, index: any) => {
+        return <Attend key={index} toggle={toggle} values={item} />;
+      });
+    } else {
+      return <Holiday />;
+    }
+  }
 };

@@ -1,6 +1,5 @@
 "use client";
 
-import useLogout from "@/hooks/useLogout";
 import { useSubmitForm } from "@/hooks/useSubmitForm";
 import { Box, Button, Divider, Flex, Radio, Text, Textarea, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
@@ -37,7 +36,6 @@ const ContactUs = () => {
 
   // 폼 제출 처리
   const handleSubmit = (values: any) => {
-    console.log(values);
     alert("Form submitted");
 
     const { text, category } = values;

@@ -8,7 +8,6 @@ import { usePathname } from "next/navigation";
 export const TopTitle = () => {
   const pathName = usePathname();
   const { typeTitle, statsInfo } = useTopTitle({ pathName });
-  console.log("🚀 ~ TopTitle ~ statsInfo:", statsInfo);
 
   return (
     <Flex direction={"column"} bg={"white"} px="md" py="lg" rowGap={"md"}>
@@ -41,7 +40,7 @@ export const TopTitle = () => {
           </Flex>
         </Flex>
       </Box>
-      <ChartSummary stats={statsInfo} />
+      <ChartSummary statsInfo={statsInfo} />
     </Flex>
   );
 };

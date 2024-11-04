@@ -1,8 +1,11 @@
 "use client";
-import { useSubmitForm, useSubmitFormMeal } from "@/hooks/useSubmitForm";
-import { currentDateStore } from "@/lib/store/dateStore";
+import { useSubmitFormMeal } from "@/hooks/useSubmitForm";
+import { calendarDateStore } from "@/lib/store/calendarDateStore";
+import { updateQueries } from "@/utils/invalidQueries";
+
 import { Button, Flex, Modal, NumberInput, Select, Tabs, Text, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
+import { notifications } from "@mantine/notifications";
 import dayjs from "dayjs";
 import "dayjs/locale/ko";
 import { forwardRef, useEffect, useRef, useState } from "react";
@@ -36,14 +39,14 @@ const ModalInputForm = forwardRef<HTMLDivElement, ModalInputForm2Props>(({ opene
   const [currentTab, setCurrentTab] = useState<MealType>("lunch");
 
   const innerRef = useRef<HTMLDivElement>(null); // 내부에서 사용할 ref 생성
-
-  const { currentDate } = currentDateStore((state) => state);
+  const { calendarDate } = calendarDateStore((state) => state);
+  // const { currentDate } = currentDateStore((state) => state);
 
   const { mutate } = useSubmitFormMeal();
 
   const form = useForm<FormValues>({
     initialValues: {
-      targetDay: "",
+      targetDay: dayjs(calendarDate.start).format("YYYY-MM-DD"),
       attendance: "근무",
       breakfast: {
         payerName: "",
@@ -70,9 +73,9 @@ const ModalInputForm = forwardRef<HTMLDivElement, ModalInputForm2Props>(({ opene
     setIsActive(false); // 선택 시 active 상태 해제
   };
 
-  useEffect(() => {
-    form.setFieldValue("targetDay", dayjs(currentDate).format("YYYY-MM-DD"));
-  }, [currentDate]);
+  // useEffect(() => {
+  //   form.setFieldValue("targetDay", dayjs(currentDate).format("YYYY-MM-DD"));
+  // }, [currentDate]);
 
   useEffect(() => {
     renderAttendance();
@@ -84,7 +87,7 @@ const ModalInputForm = forwardRef<HTMLDivElement, ModalInputForm2Props>(({ opene
         <Select
           label="근태"
           placeholder="근태 유형을 선택해 주세요."
-          data={["근무", "반차", "휴가", "재택근무"]}
+          data={["근무", "오전 반차", "오후 반차", "휴가", "재택근무"]}
           searchable
           styles={{
             dropdown: {
@@ -112,8 +115,19 @@ const ModalInputForm = forwardRef<HTMLDivElement, ModalInputForm2Props>(({ opene
   }, [ref]);
 
   const submit = (values: any) => {
-    console.log("🚀 ~ submit ~ values:", values);
-    mutate(values);
+    form.setFieldValue("targetDay", dayjs(calendarDate.start).format("YYYY-MM-DD"));
+    mutate(values, {
+      onSuccess: () => {
+        notifications.show({
+          title: "식대 입력",
+          message: "식대 내역이 저장되었습니다.",
+          position: "top-center",
+          color: "green",
+        });
+        close();
+        updateQueries(["meals"]);
+      },
+    });
   };
 
   return (
@@ -132,7 +146,7 @@ const ModalInputForm = forwardRef<HTMLDivElement, ModalInputForm2Props>(({ opene
               식대 입력
             </Text>
             <Text c={"gray.7"} size="sm">
-              {dayjs(currentDate).format("MM월 DD일 dddd")}
+              {/* {dayjs(currentDate).format("MM월 DD일 dddd")} */}
             </Text>
           </Flex>
         }

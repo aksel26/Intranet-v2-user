@@ -1,11 +1,9 @@
 "use client";
 import { Footer } from "@/components/GNB/Footer";
-import { AppShell, AppShellFooter, Button, Container, Flex, Group, Image } from "@mantine/core";
+import { AppShell, AppShellFooter, Container } from "@mantine/core";
 // import Image from "next/image";
-import React from "react";
-import NextImage from "next/image";
-import myImage from "../../../public/images/ACG_LOGO_GRAY.png";
 import Header from "@/components/GNB/Header";
+import React from "react";
 
 export default function ContentLayout({ children }: { children: React.ReactNode }) {
   return (

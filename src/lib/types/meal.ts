@@ -8,11 +8,24 @@ export type TWelfaresParams = {
 };
 
 export type TMeal = {
-  id: number;
-  date: string;
-  meal: string;
-  amount: number;
-  userName: string;
+  start: string;
+  holidayYN: string;
+  breakfast: {
+    payerName: null;
+    place: null;
+    amount: null;
+  };
+  lunch: {
+    payerName: string;
+    place: string;
+    amount: number;
+    attendance: string;
+  };
+  dinner: {
+    payerName: null;
+    place: null;
+    amount: null;
+  };
 };
 
 export type TMealStats = {
@@ -23,8 +36,32 @@ export type TMealStats = {
   mealBalance: string | number | undefined;
   userName: string;
 };
+// export type TMealCurrentDataDetail = {
+//   start: string;
+//   holidayYN: string;
+//   breakfast: {
+//     payerName: null;
+//     place: null;
+//     amount: null;
+//   };
+//   lunch: {
+//     payerName: string;
+//     place: string;
+//     amount: number;
+//     attendance: string;
+//   };
+//   dinner: {
+//     payerName: null;
+//     place: null;
+//     amount: null;
+//   };
+// };
 
 export type TMealInfo = {
   mealStats: TMealStats;
   meals: TMeal[];
 };
+
+// export type TCurrentMealData = {
+//   currentMealData: TMealCurrentDataDetail;
+// };

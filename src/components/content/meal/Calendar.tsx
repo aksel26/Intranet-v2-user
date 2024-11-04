@@ -1,25 +1,23 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
-import FullCalendar from "@fullcalendar/react";
-import dayGridPlugin from "@fullcalendar/daygrid";
-import "../../../styles/calendar.css";
-import { Paper } from "@mantine/core";
 import { mealStore } from "@/lib/store/mealStore";
 import { titleRender } from "@/utils/calendarFetch";
-import { currentDateStore } from "@/lib/store/dateStore";
-import { CalendarApi, DateSelectArg } from "@fullcalendar/core/index.js";
-import Hammer from "hammerjs";
-import dayjs from "dayjs";
+import { CalendarApi } from "@fullcalendar/core/index.js";
+import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction"; // needed for dayClick
+import FullCalendar from "@fullcalendar/react";
+import { Paper } from "@mantine/core";
+import dayjs from "dayjs";
+import Hammer from "hammerjs";
+import { useEffect, useRef, useState } from "react";
+import "../../../styles/calendar.css";
+import { useCombinedStore } from "@/lib/store/CombinedStore";
+import { CalendarDate } from "@/lib/store/calendarDateStore";
 
 export default function Calendar({ setCalendarYearMonth }: any) {
   const { meals } = mealStore((state) => state.mealInfo);
-  const { setCurrentDate } = currentDateStore((state) => state);
   const [calendarFormat, setCalendarFormat] = useState<any>();
-
   const calendarRef = useRef<FullCalendar>(null);
-
   const containerRef = useRef<HTMLDivElement>(null);
 
   const renderEvent = () => {
@@ -76,10 +74,15 @@ export default function Calendar({ setCalendarYearMonth }: any) {
     const month = dayjs(start).month() + 1;
 
     setCalendarYearMonth((prev: any) => ({ ...prev, year: year, month: month }));
+
     // 날짜 선택 처리
   };
 
-  const handleDateSelect = (arg: any) => setCurrentDate(arg.start);
+  const { calendarDateStore } = useCombinedStore() as { calendarDateStore: CalendarDate };
+
+  const handleDateSelect = (arg: any) => {
+    calendarDateStore.setCurrentCalendarDate(arg.start);
+  };
 
   return (
     <Paper p="sm" py={"lg"} ref={containerRef}>
@@ -103,7 +106,8 @@ export default function Calendar({ setCalendarYearMonth }: any) {
         weekends={true}
         events={calendarFormat}
         eventClick={(info) => {
-          if (info.event.start) setCurrentDate(info.event.start);
+          console.log(info.event);
+          // if (info.event.start) setCurrentMealData(info.event.start);
         }}
         // dateClick={handleDateSelect}
         select={handleDateSelect}

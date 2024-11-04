@@ -1,6 +1,6 @@
 "use client";
 
-import { useCombinedStore } from "@/lib/store/CombinedSotre";
+import { useCombinedStore } from "@/lib/store/CombinedStore";
 import { useRef } from "react";
 
 export default function StoreProvider({ children }: { children: React.ReactNode }) {

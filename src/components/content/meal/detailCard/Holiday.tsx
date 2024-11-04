@@ -1,7 +1,6 @@
 "use client";
 
-import React from "react";
-import { Divider, Flex, Group, NumberFormatter, Text } from "@mantine/core";
+import { Flex, Text } from "@mantine/core";
 import ArrowRight from "../../../../../public/icons/arrow-right.svg";
 import IconHoliday from "../../../../../public/icons/holiday.svg";
 

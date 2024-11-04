@@ -15,10 +15,6 @@ export default function WelfareInputForm() {
   const [targetDate, setTargetDate] = useState<Date | null>(null);
   const [selectedPayee, setSelectedPayee] = useState([]);
 
-  console.log("🚀 ~ WelfareInputForm ~ userList:", userList?.data.data);
-
-  console.log("🚀 ~ useEffect ~ data:", users);
-
   const selectPayee = (e: any) => {
     setSelectedPayee(e);
   };
@@ -35,8 +31,6 @@ export default function WelfareInputForm() {
     setUsers(userList?.data.data);
   }, [userList]);
   const submitForm = (values: any) => {
-    console.log("🚀 ~ submitForm ~ values:", values);
-
     const payeeIdxs = selectedPayee.map((item: any) => item.userIdx);
 
     return {};

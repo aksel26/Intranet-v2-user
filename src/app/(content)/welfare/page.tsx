@@ -3,7 +3,8 @@
 import { TopTitle } from "@/components/content/welfare/TopTitle";
 import { UsedList } from "@/components/content/welfare/UsedList";
 import { useGetWelfares } from "@/hooks/useGetWelfares";
-import { useCombinedStore } from "@/lib/store/CombinedSotre";
+import { useCombinedStore } from "@/lib/store/CombinedStore";
+
 import { welfareStateStore } from "@/lib/store/welfareStore";
 import { Container, Flex } from "@mantine/core";
 import { useEffect } from "react";
