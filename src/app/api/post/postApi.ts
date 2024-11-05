@@ -1,4 +1,3 @@
-import { TMealsParams, TWelfaresParams } from "@/lib/types/meal";
 import axios from "axios";
 
 const postApi = axios.create({
@@ -27,6 +26,7 @@ postApi.interceptors.request.use(
 export const logout = () => postApi.post(`/logout`);
 export const submitForm = (values: any) => postApi.post(`/users/qna`, values);
 export const submitMeal = (values: any) => postApi.post(`/users/meals`, values);
+export const deleteMeal = (values: any) => postApi.delete(`/users/meals/${values}`);
 
 // export const getWelfares = ({ year, month }: TWelfaresParams) => getApi.get(`/users/welfares`, { params: { year, month } });
 // export const getActivities = ({ year, month }: TWelfaresParams) => getApi.get(`/users/activities`, { params: { year, month } });

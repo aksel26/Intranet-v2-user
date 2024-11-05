@@ -1,14 +1,24 @@
 "use client";
 import { Button, Divider, Flex, Group, NumberFormatter, Text } from "@mantine/core";
-import React from "react";
+import React, { useCallback } from "react";
 import ArrowRight from "../../../../../public/icons/arrow-right.svg";
 import { BreakfastIcon } from "../icon/BreakfastIcon";
 import { LunchIcon } from "../icon/LunchIcon";
 import { DinnerIcon } from "../icon/DinnerIcon";
 
+const isBlank = (data: any) => {
+  const { payerName, place, amount } = data;
+  if (payerName.length === 0 && place.length === 0 && amount === null) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
 export const Attend = ({ type, toggle, values }: any) => {
   const { data } = values;
-  const renderIcon = (type: any) => {
+
+  const renderIcon = useCallback((type: any) => {
     if (type === "breakfast") {
       return <BreakfastIcon />;
     } else if (type === "lunch") {
@@ -16,18 +26,21 @@ export const Attend = ({ type, toggle, values }: any) => {
     } else {
       return <DinnerIcon />;
     }
-  };
+  }, []);
+
+  if (isBlank(data)) return null;
 
   return (
     <Button
       justify="space-between"
       fullWidth
-      variant="outline"
+      variant="subtle"
       size="xl"
       onClick={toggle}
       radius="md"
       rightSection={<ArrowRight color="gray" width={18} />}
       pl={"md"}
+      style={{ border: "1px solid green" }}
     >
       <Group>
         {renderIcon(type)}

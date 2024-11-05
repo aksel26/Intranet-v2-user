@@ -106,8 +106,7 @@ export default function Calendar({ setCalendarYearMonth }: any) {
         weekends={true}
         events={calendarFormat}
         eventClick={(info) => {
-          console.log(info.event);
-          // if (info.event.start) setCurrentMealData(info.event.start);
+          if (info.event.start) calendarDateStore.setCurrentCalendarDate(info.event.start);
         }}
         // dateClick={handleDateSelect}
         select={handleDateSelect}

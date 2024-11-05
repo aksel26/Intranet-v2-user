@@ -1,39 +1,29 @@
 "use client";
 
-import { TopTitle } from "@/components/content/welfare/TopTitle";
-import { UsedList } from "@/components/content/welfare/UsedList";
-import { useGetActivities } from "@/hooks/useGetActivity";
-import { useGetWelfares } from "@/hooks/useGetWelfares";
-import { activityStateStore } from "@/lib/store/actiivityStore";
-import { useCombinedStore } from "@/lib/store/CombinedStore";
-
-import { welfareStateStore } from "@/lib/store/welfareStore";
+import { ToptitleActivity } from "@/components/content/activity/ToptitleActivity";
+import { UsedListActivity } from "@/components/content/activity/UsedListActivity";
 import { Container, Flex } from "@mantine/core";
-import { useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
+import dayjs from "dayjs";
+import { useState } from "react";
+import * as api from "../../api/get/getApi";
+const ActivityMain = () => {
+  const nowMonthYear = dayjs();
+  const [calendarYearMonth, setCalendarYearMonth] = useState({
+    year: nowMonthYear.year(),
+    month: nowMonthYear.month() + 1,
+  });
 
-const Main = () => {
-  const params = {
-    year: 2024,
-    month: 10,
-  };
-  const { data, isLoading, error } = useGetActivities(params);
+  const { data, isLoading, isError } = useQuery({ queryKey: ["activity", calendarYearMonth], queryFn: () => api.getActivities(calendarYearMonth) });
 
-  // const { activityStore } = useCombinedStore() as { activityStore: activityStateStore };
-
-  // useEffect(() => {
-  //   if (data) {
-  //     const result = data?.data.data;
-  //     activityStore.setActivityInfo(result);
-  //   }
-  // }, [data]);
   return (
     <Container size={"xs"} p={0} bg="gray.0" style={{ scrollPaddingBottom: "52px", overflowY: "auto", scrollSnapType: "y mandatory" }}>
       <Flex direction={"column"} rowGap={"sm"}>
-        <TopTitle />
-        <UsedList />
+        <ToptitleActivity />
+        <UsedListActivity />
       </Flex>
     </Container>
   );
 };
 
-export default Main;
+export default ActivityMain;

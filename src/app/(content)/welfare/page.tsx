@@ -2,19 +2,22 @@
 
 import { TopTitle } from "@/components/content/welfare/TopTitle";
 import { UsedList } from "@/components/content/welfare/UsedList";
-import { useGetWelfares } from "@/hooks/useGetWelfares";
 import { useCombinedStore } from "@/lib/store/CombinedStore";
 
 import { welfareStateStore } from "@/lib/store/welfareStore";
 import { Container, Flex } from "@mantine/core";
-import { useEffect } from "react";
-
+import { useQuery } from "@tanstack/react-query";
+import dayjs from "dayjs";
+import { useEffect, useState } from "react";
+import * as api from "../../api/get/getApi";
 const Main = () => {
-  const params = {
-    year: 2024,
-    month: 10,
-  };
-  const { data, isLoading, error } = useGetWelfares(params);
+  const nowMonthYear = dayjs();
+  const [calendarYearMonth, setCalendarYearMonth] = useState({
+    year: nowMonthYear.year(),
+    month: nowMonthYear.month() + 1,
+  });
+
+  const { data, isLoading, isError } = useQuery({ queryKey: ["welfares", calendarYearMonth], queryFn: () => api.getWelfares(calendarYearMonth) });
 
   const { welfareStore } = useCombinedStore() as { welfareStore: welfareStateStore };
 
@@ -29,7 +32,7 @@ const Main = () => {
     <Container size={"xs"} p={0} bg="gray.0" style={{ scrollPaddingBottom: "52px", overflowY: "auto", scrollSnapType: "y mandatory" }}>
       <Flex direction={"column"} rowGap={"sm"}>
         <TopTitle />
-        <UsedList />
+        <UsedList setCalendarYearMonth={setCalendarYearMonth} />
       </Flex>
     </Container>
   );

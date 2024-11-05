@@ -7,15 +7,16 @@ import { IconChevronDown, IconCircle, IconCircleCheckFilled, IconPlus } from "@t
 import dayjs from "dayjs";
 import "dayjs/locale/ko"; //한국어
 import React, { useLayoutEffect, useState } from "react";
-import { ListWrapper } from "./ListWrapper";
+// import { ListWrapper } from "./ListWrapper";
 import { useDisclosure } from "@mantine/hooks";
 import BottomModal from "@/components/Global/BottomModal";
-import WelfareInputForm from "./WelfareInputForm";
+// import WelfareInputForm from "./WelfareInputForm";
 import { useGetUsers } from "@/hooks/useGetUsers";
 import { welfareStore } from "@/lib/store/welfareStore";
+import { ListWrapper } from "../welfare/ListWrapper";
 dayjs.locale("ko");
 
-export const UsedList = ({ setCalendarYearMonth }: any) => {
+export const UsedListActivity = ({ setCalendarYearMonth }: any) => {
   const { welfareInfo } = welfareStore((state) => state);
   const [selectMonth, setSelectMonth] = useState<Date | null>(dayjs().toDate());
   const [opened, { toggle, close }] = useDisclosure(false);
@@ -47,7 +48,7 @@ export const UsedList = ({ setCalendarYearMonth }: any) => {
         {
           welfareInfo.welfares.length < 1 ? (
             <Text ta={"center"} mt={40} c={"gray.7"}>
-              {selectMonth && selectMonth?.getMonth() + 1}월에는 복지포인트 사용 내역이 없어요.
+              {selectMonth && selectMonth?.getMonth() + 1}월에는 활동비 사용 내역이 없어요.
             </Text>
           ) : null
           // welfareInfo.welfares?.map((item, index, arr) => (
@@ -88,9 +89,9 @@ export const UsedList = ({ setCalendarYearMonth }: any) => {
           // ))
         }
       </ListWrapper>
-      <BottomModal opened={opened} onClose={close} title={"복지포인트 입력"}>
+      {/* <BottomModal opened={opened} onClose={close} title={"복지포인트 입력"}>
         <WelfareInputForm />
-      </BottomModal>
+      </BottomModal> */}
       <Affix position={{ bottom: 80, right: 20 }} zIndex={1000}>
         <Button radius={"lg"} onClick={toggle} color="blue.9" leftSection={<IconPlus style={{ width: rem(16), height: rem(16) }} />}>
           내역추가

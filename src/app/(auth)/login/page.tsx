@@ -1,9 +1,9 @@
 "use client";
 
-import { Box, Button, Checkbox, Group, PasswordInput, rem, Space, TextInput } from "@mantine/core";
+import notification from "@/components/GNB/Notification";
+import { Box, Button, Checkbox, Group, PasswordInput, Space, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 
-import { notifications } from "@mantine/notifications";
 import { useRouter } from "next/navigation";
 
 export default function Login() {
@@ -35,11 +35,10 @@ export default function Login() {
       .then((response) => response.json())
       .then(async ({ statusCode, message, data }) => {
         if (statusCode === 400 || statusCode === 401) {
-          notifications.show({
+          notification({
             title: "로그인 오류",
-            message: message,
-            position: "top-center",
             color: "red",
+            message: message,
           });
         }
 

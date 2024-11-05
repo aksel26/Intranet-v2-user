@@ -29,3 +29,4 @@ export const getWelfares = ({ year, month }: TWelfaresParams) => getApi.get(`/us
 export const getActivities = ({ year, month }: TWelfaresParams) => getApi.get(`/users/activities`, { params: { year, month } });
 export const getMe = () => getApi.get(`/users/me`);
 export const getUsers = () => getApi.get(`/users/ids`);
+export const getQnA = () => getApi.get(`/users/qna`);

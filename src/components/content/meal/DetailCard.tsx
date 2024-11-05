@@ -32,7 +32,7 @@ export const DetailCard = ({ toggle, targetList }: any) => {
         return <Attend key={index} toggle={toggle} values={item} />;
       });
     } else {
-      return <Holiday />;
+      return <Holiday toggle={toggle} />;
     }
   }
 };

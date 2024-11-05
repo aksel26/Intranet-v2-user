@@ -1,16 +1,15 @@
 "use client";
 
-import { useGetMe } from "@/hooks/useGetUser";
 import { Box, Divider, Flex, Group, Image, NavLink, Skeleton, Text } from "@mantine/core";
-import { IconChevronRight, IconClover2, IconInfoSquareRounded, IconList, IconQrcode, IconUser } from "@tabler/icons-react";
+import { IconChevronRight, IconClover2, IconInfoSquareRounded, IconList, IconQrcode } from "@tabler/icons-react";
+import { useQuery } from "@tanstack/react-query";
 import NextImage from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import myImage from "../../../../public/images/ACG_LOGO.png";
-
+import * as api from "../../api/get/getApi";
 const Main = () => {
-  const { data, isLoading, error } = useGetMe();
-
+  const { data, isLoading, isError } = useQuery({ queryKey: ["me"], queryFn: () => api.getMe() });
   const [user, setUser] = useState<any>();
 
   useEffect(() => {
@@ -74,7 +73,7 @@ const Main = () => {
             leftSection={<IconQrcode size="1.5rem" stroke={1.1} />}
             rightSection={<IconChevronRight size="0.8rem" stroke={1.5} className="mantine-rotate-rtl" />}
           />
-          <Link href={"/mypage/contact-us"} passHref legacyBehavior>
+          <Link href={"/mypage/list"} passHref legacyBehavior>
             <NavLink
               href="#required-for-focus"
               label="문의하기"

@@ -8,9 +8,10 @@ import { useCombinedStore } from "@/lib/store/CombinedStore";
 
 import { mealStateStore } from "@/lib/store/mealStore";
 import { Container, Flex } from "@mantine/core";
+import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
-
+import * as api from "../../api/get/getApi";
 const Main = () => {
   const nowMonthYear = dayjs();
   const [calendarYearMonth, setCalendarYearMonth] = useState({
@@ -18,16 +19,17 @@ const Main = () => {
     month: nowMonthYear.month() + 1,
   });
 
-  const { data: mealInfo, isLoading, error } = useGetMeals(calendarYearMonth);
+  const { data, isLoading, isError } = useQuery({ queryKey: ["meals", calendarYearMonth], queryFn: () => api.getMeals(calendarYearMonth) });
+  console.log("🚀 ~ Main ~ data:", data);
 
-  const { store1 } = useCombinedStore() as { store1: mealStateStore };
+  const { mealStore } = useCombinedStore() as { mealStore: mealStateStore };
 
   useEffect(() => {
-    if (mealInfo) {
-      const result = mealInfo.data.data;
-      store1.setMealInfo(result);
+    if (data) {
+      const result = data.data.data;
+      mealStore.setMealInfo(result);
     }
-  }, [mealInfo]);
+  }, [data]);
 
   return (
     <Container size={"xs"} p={0} bg="gray.0" style={{ scrollPaddingBottom: "52px", overflowY: "auto", scrollSnapType: "y mandatory" }}>

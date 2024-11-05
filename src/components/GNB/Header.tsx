@@ -26,10 +26,12 @@ export default function Header() {
     });
   };
 
+  const goMain = () => router.push("/meal");
+
   return (
     <Container size="xs" style={{ margin: "0 auto" }} h={"100%"}>
       <Flex align={"center"} py={"md"} justify={"space-between"} px={"md"}>
-        <Image component={NextImage} src={myImage} alt="My image" fit="contain" h={20} w={80} />
+        <Image onClick={goMain} component={NextImage} src={myImage} alt="My image" fit="contain" h={20} w={80} style={{ cursor: "pointer" }} />
         <Button size="xs" variant="subtle" onClick={handleLogout}>
           로그아웃
         </Button>
