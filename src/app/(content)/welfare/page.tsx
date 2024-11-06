@@ -18,6 +18,7 @@ const Main = () => {
   });
 
   const { data, isLoading, isError } = useQuery({ queryKey: ["welfares", calendarYearMonth], queryFn: () => api.getWelfares(calendarYearMonth) });
+  console.log("🚀 ~ Main ~ data:", data);
 
   const { welfareStore } = useCombinedStore() as { welfareStore: welfareStateStore };
 

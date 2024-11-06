@@ -1,8 +1,16 @@
 export type TWelfare = {
-  id: number;
-  date: string;
-  welfare: string;
-  amount: number;
+  welfareIdx: number;
+  userIdx: number;
+  targetDay: string;
+  content: string;
+  amount: number | null;
+  payerName: string | null;
+  selfWrittenYN: string;
+  payeeList: TPayeeList[];
+};
+
+export type TPayeeList = {
+  userIdx: number;
   userName: string;
 };
 

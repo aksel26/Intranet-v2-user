@@ -15,10 +15,12 @@ const isBlank = (data: any) => {
   }
 };
 
-export const Attend = ({ type, toggle, values }: any) => {
-  const { data } = values;
+export const Attend = ({ toggle, values }: any) => {
+  console.log("🚀 ~ Attend ~ values:", values);
+  const { data, type } = values;
 
   const renderIcon = useCallback((type: any) => {
+    console.log("🚀 ~ renderIcon ~ type:", type);
     if (type === "breakfast") {
       return <BreakfastIcon />;
     } else if (type === "lunch") {
@@ -34,13 +36,13 @@ export const Attend = ({ type, toggle, values }: any) => {
     <Button
       justify="space-between"
       fullWidth
-      variant="subtle"
+      variant="default"
       size="xl"
       onClick={toggle}
-      radius="md"
+      radius="lg"
       rightSection={<ArrowRight color="gray" width={18} />}
       pl={"md"}
-      style={{ border: "1px solid green" }}
+      // style={{ border: "1px solid green" }}
     >
       <Group>
         {renderIcon(type)}

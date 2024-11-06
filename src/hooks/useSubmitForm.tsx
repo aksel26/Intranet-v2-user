@@ -15,6 +15,12 @@ export const useSubmitFormMeal = () => {
   });
 };
 
+export const useSubmitFormWelfare = () => {
+  return useMutation({
+    mutationFn: (values: any) => api.submitWelfare(values),
+  });
+};
+
 export const useDeleteMeals = () => {
   return useMutation({
     mutationFn: (values: any) => api.deleteMeal(values),

@@ -5,8 +5,8 @@ import Dinner from "../../../../../public/icons/dinner.svg";
 import { Flex } from "@mantine/core";
 export const DinnerIcon = () => {
   return (
-    <Flex bg={"blue.0"} justify={"center"} align={"center"} p={4}>
-      <Dinner width={30} height={25} color={"#fdcb67"} />
+    <Flex bg={"violet.0"} justify={"center"} align={"center"} p={6}>
+      <Dinner width={25} height={20} color={"#9775fa"} />
     </Flex>
   );
 };

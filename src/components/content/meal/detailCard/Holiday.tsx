@@ -25,12 +25,12 @@ export const Holiday = ({ toggle }: any) => {
       size="lg"
       onClick={toggle}
       radius={"md"}
-      color="green.3"
+      color="lime.3"
       rightSection={<ArrowRight color="#2f9e44" />}
       leftSection={<span />}
     >
-      <Text size="sm" c={"green.8"} fw={700} ta={"center"} style={{ alignSelf: "center" }}>
-        반차 또는 휴무날은 식대가 제공되지 않습니다.
+      <Text size="sm" c={"lime.8"} fw={700} ta={"center"} style={{ alignSelf: "center" }}>
+        반차 또는 휴무날은 식대가 제공되지 않아요.
       </Text>
     </Button>
   );

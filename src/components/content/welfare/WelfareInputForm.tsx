@@ -1,5 +1,5 @@
 "use client";
-import { Button, Flex, LoadingOverlay, MultiSelect, rem, TextInput } from "@mantine/core";
+import { Button, Flex, LoadingOverlay, MultiSelect, NumberInput, rem, TextInput } from "@mantine/core";
 import { DatePickerInput } from "@mantine/dates";
 import { IconCalendar } from "@tabler/icons-react";
 import React, { useEffect, useState } from "react";
@@ -7,37 +7,75 @@ import dayjs from "dayjs";
 import "dayjs/locale/ko";
 import { useGetUsers } from "@/hooks/useGetUsers";
 import { useForm } from "@mantine/form";
+import { useSubmitFormMeal } from "@/hooks/useSubmitForm";
+import { useQueryClient } from "@tanstack/react-query";
+import notification from "@/components/GNB/Notification";
 dayjs.locale("ko");
+
+interface FormValues {
+  targetDay: string;
+  amount: number | null;
+  content: string | null;
+  payerName: string | null;
+  payeeIdxs: number[] | null;
+  selfWrittenYN: string;
+}
 
 export default function WelfareInputForm() {
   const { data: userList, isLoading, isError } = useGetUsers();
   const [users, setUsers] = useState<any>([]);
   const [targetDate, setTargetDate] = useState<Date | null>(null);
+  console.log("🚀 ~ WelfareInputForm ~ targetDate:", targetDate);
   const [selectedPayee, setSelectedPayee] = useState([]);
 
   const selectPayee = (e: any) => {
     setSelectedPayee(e);
   };
 
+  const { mutate } = useSubmitFormMeal();
+
   const form = useForm({
     mode: "uncontrolled",
     initialValues: {
-      selfWrittenYN: "",
+      selfWrittenYN: "Y",
       content: "",
       amount: null,
+      targetDay: "", // Added targetDay
+      payerName: "이승현", // Added payerName
+      payeeIdxs: [], // Added payeeIdxs
     },
   });
   useEffect(() => {
     setUsers(userList?.data.data);
   }, [userList]);
-  const submitForm = (values: any) => {
-    const payeeIdxs = selectedPayee.map((item: any) => item.userIdx);
 
-    return {};
+  const queryClient = useQueryClient();
+
+  const handleSubmit = (values: FormValues) => {
+    const payeeIdxs = selectedPayee.map((item: any) => item.userIdx);
+    console.log(values, payeeIdxs);
+
+    const temp = { ...values };
+
+    temp.payeeIdxs = payeeIdxs;
+    temp.targetDay = dayjs(targetDate).format("YYYY-MM-DD");
+    console.log("👀", temp);
+    mutate(temp, {
+      onSuccess: async () => {
+        await queryClient.invalidateQueries({ queryKey: ["welfares"] });
+        notification({
+          title: "복지포인트",
+          color: "green",
+          message: "복지포인트 내역이 저장되었습니다.",
+        });
+
+        close();
+      },
+    });
   };
 
   return (
-    <form onSubmit={form.onSubmit(submitForm)}>
+    <form onSubmit={form.onSubmit(handleSubmit)}>
       <Flex direction={"column"} rowGap={10}>
         <TextInput label="결제자" value={"본인"} disabled key={form.key("payerName")} {...form.getInputProps("payerName")} />
         <DatePickerInput
@@ -48,7 +86,11 @@ export default function WelfareInputForm() {
           value={targetDate}
           onChange={setTargetDate}
           valueFormat="MM월 D일 dddd"
-          popoverProps={{ zIndex: 1001 }}
+          firstDayOfWeek={0}
+          // popoverProps={{ zIndex: 1001 }}
+          popoverProps={{ withinPortal: false, zIndex: 1001 }}
+          // key={form.key("content")}
+          // {...form.getInputProps("content")}
         />
         {isLoading ? (
           <LoadingOverlay visible={isLoading} zIndex={1000} overlayProps={{ radius: "sm", blur: 2 }} />
@@ -74,7 +116,17 @@ export default function WelfareInputForm() {
           />
         )}
         <TextInput label="사용처" placeholder="결제하신 곳의 상호명을 입력해 주세요." key={form.key("content")} {...form.getInputProps("content")} />
-        <TextInput label="금액" placeholder="금액을 입력해 주세요." key={form.key("amount")} {...form.getInputProps("amount")} />
+
+        <NumberInput
+          label="금액"
+          placeholder="금액을 입력해 주세요."
+          thousandSeparator=","
+          hideControls
+          suffix=" 원"
+          key={form.key("amount")}
+          {...form.getInputProps("amount")}
+        />
+
         <Button type="submit" mt={20}>
           저장하기
         </Button>

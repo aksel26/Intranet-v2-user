@@ -39,7 +39,7 @@ interface ModalInputFormProps {
 
 // Constants
 
-const PAYER_OPTIONS = ["김정현", "이혜빈", "윤용설", "신효은", "이승현", "김현민"];
+const PAYER_OPTIONS = ["김정현", "이혜빈", "이혜빈2", "이혜빈3", "이혜빈4", "이혜빈5", "윤용설", "신효은", "이승현", "김현민"];
 const DEFAULT_MEAL_DATA: MealData = {
   payerName: "",
   place: "",
@@ -103,6 +103,7 @@ const ModalInputForm = forwardRef<HTMLDivElement, ModalInputFormProps>(({ opened
         placeholder="근태 유형을 선택해 주세요."
         data={ATTENDANCE_OPTIONS}
         searchable
+        comboboxProps={{ withinPortal: false }}
         styles={{ dropdown: { zIndex: 1001 } }}
         {...form.getInputProps("attendance")}
       />
@@ -133,11 +134,8 @@ const ModalInputForm = forwardRef<HTMLDivElement, ModalInputFormProps>(({ opened
           setSearchValue(newValue);
           if (isActive) setOpenedModal(true);
         }}
-        comboboxProps={{
-          position: "bottom",
-          middlewares: { flip: true, shift: true },
-          portalProps: { target: innerRef?.current ?? undefined },
-        }}
+        comboboxProps={{ withinPortal: false }}
+        maxDropdownHeight={180}
         styles={{
           dropdown: { position: "absolute", zIndex: 1000 },
           input: { cursor: "pointer" },

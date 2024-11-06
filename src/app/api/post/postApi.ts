@@ -26,6 +26,7 @@ postApi.interceptors.request.use(
 export const logout = () => postApi.post(`/logout`);
 export const submitForm = (values: any) => postApi.post(`/users/qna`, values);
 export const submitMeal = (values: any) => postApi.post(`/users/meals`, values);
+export const submitWelfare = (values: any) => postApi.post(`/users/welfares`, values);
 export const deleteMeal = (values: any) => postApi.delete(`/users/meals/${values}`);
 
 // export const getWelfares = ({ year, month }: TWelfaresParams) => getApi.get(`/users/welfares`, { params: { year, month } });
