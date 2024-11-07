@@ -27,7 +27,10 @@ export const logout = () => postApi.post(`/logout`);
 export const submitForm = (values: any) => postApi.post(`/users/qna`, values);
 export const submitMeal = (values: any) => postApi.post(`/users/meals`, values);
 export const submitWelfare = (values: any) => postApi.post(`/users/welfares`, values);
+export const submitUpdateWelfare = (values: any) => postApi.put(`/users/welfares/${values.queryParams}`, values.body);
+
 export const deleteMeal = (values: any) => postApi.delete(`/users/meals/${values}`);
+export const deleteWelfare = (values: any) => postApi.delete(`/users/welfares/${values}`);
 
 // export const getWelfares = ({ year, month }: TWelfaresParams) => getApi.get(`/users/welfares`, { params: { year, month } });
 // export const getActivities = ({ year, month }: TWelfaresParams) => getApi.get(`/users/activities`, { params: { year, month } });
