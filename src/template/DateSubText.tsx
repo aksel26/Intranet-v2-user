@@ -6,7 +6,7 @@ import "dayjs/locale/ko";
 dayjs.locale("ko");
 
 export const DateSubText = ({ date }: { date: string }) => {
-  const formattedDate = dayjs(date).format("D일 dddd");
+  const formattedDate = dayjs(date).format("MM월 D일 dddd");
 
   return (
     <Text c={"gray.7"} size="xs" my={"sm"} ms={"sm"}>
