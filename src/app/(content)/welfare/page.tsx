@@ -10,7 +10,7 @@ import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import * as api from "../../api/get/getApi";
-const Main = () => {
+const WelfareMain = () => {
   const nowMonthYear = dayjs();
   const [calendarYearMonth, setCalendarYearMonth] = useState({
     year: nowMonthYear.year(),
@@ -18,7 +18,6 @@ const Main = () => {
   });
 
   const { data, isLoading, isError } = useQuery({ queryKey: ["welfares", calendarYearMonth], queryFn: () => api.getWelfares(calendarYearMonth) });
-  console.log("🚀 ~ Main ~ data:", data);
 
   const { welfareStore } = useCombinedStore() as { welfareStore: welfareStateStore };
 
@@ -39,4 +38,4 @@ const Main = () => {
   );
 };
 
-export default Main;
+export default WelfareMain;
