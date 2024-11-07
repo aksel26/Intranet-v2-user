@@ -7,7 +7,7 @@ import dayjs from "dayjs";
 import "dayjs/locale/ko";
 import { useGetUsers } from "@/hooks/useGetUsers";
 import { useForm } from "@mantine/form";
-import { useSubmitFormMeal } from "@/hooks/useSubmitForm";
+import { useSubmitFormMeal, useSubmitFormWelfare } from "@/hooks/useSubmitForm";
 import { useQueryClient } from "@tanstack/react-query";
 import notification from "@/components/GNB/Notification";
 dayjs.locale("ko");
@@ -21,7 +21,7 @@ interface FormValues {
   selfWrittenYN: string;
 }
 
-export default function WelfareInputForm() {
+export default function WelfareInputForm({ onClose }: any) {
   const { data: userList, isLoading, isError } = useGetUsers();
   const [users, setUsers] = useState<any>([]);
   const [targetDate, setTargetDate] = useState<Date | null>(null);
@@ -32,7 +32,7 @@ export default function WelfareInputForm() {
     setSelectedPayee(e);
   };
 
-  const { mutate } = useSubmitFormMeal();
+  const { mutate } = useSubmitFormWelfare();
 
   const form = useForm({
     mode: "uncontrolled",
@@ -68,8 +68,7 @@ export default function WelfareInputForm() {
           color: "green",
           message: "복지포인트 내역이 저장되었습니다.",
         });
-
-        close();
+        onClose();
       },
     });
   };
@@ -87,10 +86,7 @@ export default function WelfareInputForm() {
           onChange={setTargetDate}
           valueFormat="MM월 D일 dddd"
           firstDayOfWeek={0}
-          // popoverProps={{ zIndex: 1001 }}
           popoverProps={{ withinPortal: false, zIndex: 1001 }}
-          // key={form.key("content")}
-          // {...form.getInputProps("content")}
         />
         {isLoading ? (
           <LoadingOverlay visible={isLoading} zIndex={1000} overlayProps={{ radius: "sm", blur: 2 }} />
