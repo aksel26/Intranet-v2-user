@@ -8,6 +8,7 @@ dayjs.locale("ko");
 import { useQuery } from "@tanstack/react-query";
 import { usePathname, useRouter } from "next/navigation";
 import Back from "../../../../../public/icons/arrow-left.svg";
+import Empty from "../../../../../public/icons/no-list.svg";
 
 import * as api from "../../../api/get/getApi";
 
@@ -38,11 +39,19 @@ function page() {
             작성하기
           </Button>
         </Group>
-        <Divider my="xs" />
 
         {isLoading ? (
           <Center h={"55svh"}>
             <Loader size="md" type="dots" />
+          </Center>
+        ) : data?.data.data.length < 1 ? (
+          <Center>
+            <Stack justify="center" align="center">
+              <Empty width="50" height="50" strokeWidth={1.5} color="#858e96" />
+              <Text ta={"center"} c={"gray.6"}>
+                작성내용이 없습니다.
+              </Text>
+            </Stack>
           </Center>
         ) : (
           data?.data.data.map((item: any, index: number) => (
