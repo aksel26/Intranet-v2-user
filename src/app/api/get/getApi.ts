@@ -10,7 +10,7 @@ const getApi = axios.create({
 
 getApi.interceptors.request.use(
   (config) => {
-    const userInfo = sessionStorage.getItem("token");
+    const userInfo = sessionStorage.getItem("user");
     const token = userInfo ? JSON.parse(userInfo).accessToken : null;
     if (token) {
       config.headers["Authorization"] = `Bearer ${token}`;

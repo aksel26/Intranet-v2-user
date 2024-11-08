@@ -28,7 +28,7 @@ const ContactUs = () => {
   });
 
   useEffect(() => {
-    const value = sessionStorage.getItem("token");
+    const value = sessionStorage.getItem("user");
     if (value) {
       const { userName } = JSON.parse(value);
       setUserName(userName);
