@@ -1,6 +1,6 @@
 "use client";
 
-import { activityStore } from "@/lib/store/actiivityStore";
+import { activityStore } from "@/lib/store/activityStore";
 import { mealStore } from "@/lib/store/mealStore";
 import { welfareStore } from "@/lib/store/welfareStore";
 import { useEffect, useState } from "react";
@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 export default function useTopTitle({ pathName }: { pathName: string }) {
   const welfareStats = welfareStore((state) => state.welfareInfo.welfareStats);
   const mealStats = mealStore((state) => state.mealInfo.mealStats);
-  //   const activityStats = activityStore((state) => state.activityInfo.activityStats);
+  const activityStats = activityStore((state) => state.activityInfo.activityStats);
 
   const [statsInfo, setStatsInfo] = useState<any>({
     balance: 0,
@@ -29,12 +29,13 @@ export default function useTopTitle({ pathName }: { pathName: string }) {
       }));
     } else if (pathName.includes("activity")) {
       setTypeTitle("활동비");
-      //   setStatsInfo((prev: any) => ({
-      //     ...prev,
-      //     balance: activityStats.activityBalance,
-      //     budget: activityStats.activityBudget,
-      //     expenses: activityStats.activityExpense,
-      //   }));
+      setStatsInfo((prev: any) => ({
+        ...prev,
+        balance: activityStats.activityBalance,
+        budget: activityStats.activityBudget,
+        expenses: activityStats.activityExpense,
+        hqName: activityStats.hqName,
+      }));
     } else {
       setTypeTitle("식대");
       setStatsInfo((prev: any) => ({
@@ -45,7 +46,7 @@ export default function useTopTitle({ pathName }: { pathName: string }) {
         userName: mealStats.userName,
       }));
     }
-  }, [mealStats, welfareStats]);
+  }, [mealStats, welfareStats, activityStats]);
 
   return { typeTitle, statsInfo };
 }

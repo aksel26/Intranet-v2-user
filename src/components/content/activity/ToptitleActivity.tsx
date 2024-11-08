@@ -23,7 +23,7 @@ export const ToptitleActivity = () => {
         <Flex direction={"column"}>
           <Text fw={700} c={"blue.9"}>
             {/* {statsInfo.userName || ""} */}
-            HR Tech팀
+            {statsInfo.hqName || ""}
             <Text c={"gray.9"} component="span" mr={0}>
               의 잔여 활동비는
             </Text>

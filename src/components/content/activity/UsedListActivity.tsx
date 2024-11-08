@@ -1,35 +1,55 @@
 "use client";
-import { DateSubText } from "@/template/DateSubText";
-import { Affix, Button, Card, Divider, Flex, Group, Indicator, NumberFormatter, Pill, rem, Stack, Text } from "@mantine/core";
+import { ActionIcon, Affix, Button, Card, Divider, Flex, Group, NumberFormatter, Pill, rem, Stack, Text } from "@mantine/core";
 import { MonthPickerInput } from "@mantine/dates";
 import "@mantine/dates/styles.css";
-import { IconChevronDown, IconCircle, IconCircleCheckFilled, IconPlus } from "@tabler/icons-react";
+import { IconChevronDown, IconPlus } from "@tabler/icons-react";
 import dayjs from "dayjs";
 import "dayjs/locale/ko"; //한국어
-import React, { useLayoutEffect, useState } from "react";
-// import { ListWrapper } from "./ListWrapper";
+import React, { useEffect, useState } from "react";
+import ArrowRight from "../../../../public/icons/arrow-right.svg";
 import { useDisclosure } from "@mantine/hooks";
-import BottomModal from "@/components/Global/BottomModal";
-// import WelfareInputForm from "./WelfareInputForm";
-import { useGetUsers } from "@/hooks/useGetUsers";
-import { welfareStore } from "@/lib/store/welfareStore";
+import Checked from "../../../../public/icons/circle-check.svg";
+import { activityStore } from "@/lib/store/activityStore";
 import { ListWrapper } from "../welfare/ListWrapper";
+import { compareMonth } from "@/utils/monthDate";
+import { groupByDate } from "@/utils/welfare/groupByDate";
+import { DateSubText } from "@/template/DateSubText";
+import BottomModal from "@/components/Global/BottomModal";
+import ActivityInputForm from "./ActivityInputForm";
+import ActivityUpdateForm from "./ActivityUpdateForm";
 dayjs.locale("ko");
 
 export const UsedListActivity = ({ setCalendarYearMonth }: any) => {
-  const { welfareInfo } = welfareStore((state) => state);
-  const [selectMonth, setSelectMonth] = useState<Date | null>(dayjs().toDate());
+  const { activityInfo } = activityStore((state) => state);
+  const [selectMonth, setSelectMonth] = useState<[Date | null, Date | null]>([new Date(), new Date()]);
   const [opened, { toggle, close }] = useDisclosure(false);
+  const [openedUpdateForm, { toggle: toggleUpdateForm, close: closeUpdateForm }] = useDisclosure(false);
 
   const icon = <IconChevronDown style={{ width: rem(18), height: rem(18) }} stroke={1.5} />;
 
+  const [dateGroup, setDateGroup] = useState<any>([]);
+
+  const [updateActivityDetail, setUpdateAcitivytDetail] = useState<any>();
+
   const changeMonth = (e: any) => {
-    const year = dayjs(e).year();
-    const month = dayjs(e).month() + 1;
-    setCalendarYearMonth((prev: any) => ({ ...prev, year: year, month: month }));
+    const [sDate, eDate] = e;
+    console.log("🚀 ~ changeMonth ~ e:", e);
+    const year = dayjs(sDate).year();
+    const monthRange = compareMonth(e);
+
+    setCalendarYearMonth((prev: any) => ({ ...prev, year: year, month: monthRange }));
     setSelectMonth(e);
   };
 
+  const handleUpdateActivity = (e: any, detail: any) => {
+    toggleUpdateForm();
+    // openModal();
+    setUpdateAcitivytDetail(detail);
+  };
+
+  useEffect(() => {
+    setDateGroup(groupByDate(activityInfo.activities));
+  }, [activityInfo]);
   return (
     <Flex direction={"column"} bg={"white"}>
       <Flex px={"md"} py={"xs"} justify={"space-between"} align={"center"}>
@@ -38,60 +58,56 @@ export const UsedListActivity = ({ setCalendarYearMonth }: any) => {
           rightSectionPointerEvents="none"
           value={selectMonth}
           onChange={changeMonth}
-          valueFormat="YYYY년 MMM"
+          valueFormat="YYYY년 MM월"
           locale="ko-KR"
           style={{ fontWeight: 700, width: "max-content" }}
           variant="unstyled"
+          allowSingleDateInRange
+          type="range"
         />
       </Flex>
       <ListWrapper>
-        {
-          welfareInfo.welfares.length < 1 ? (
-            <Text ta={"center"} mt={40} c={"gray.7"}>
-              {selectMonth && selectMonth?.getMonth() + 1}월에는 활동비 사용 내역이 없어요.
-            </Text>
-          ) : null
-          // welfareInfo.welfares?.map((item, index, arr) => (
-          //   <React.Fragment key={index}>
-          //     <Card py={0} mb={"md"}>
-          //       <Flex align={"center"} columnGap={"sm"}>
-          //         {item.isApproved ? <IconCircleCheckFilled color="#005b9a" /> : <IconCircle color="#005b9a" />}
+        {activityInfo.activities.length < 1 ? (
+          <Text ta={"center"} mt={40} c={"gray.7"}>
+            {/* {selectMonth && selectMonth?.getMonth() + 1}월에는 활동비 사용 내역이 없어요. */}
+          </Text>
+        ) : (
+          dateGroup?.map((item: any, index: number) => (
+            <React.Fragment key={index}>
+              <DateSubText date={item.date} />
 
-          //         <Stack gap={2.5}>
-          //           <DateSubText date={item.targetDay} />
-          //           <NumberFormatter thousandSeparator value={item.amount || 0} suffix=" 원" style={{ fontWeight: 700 }} />
+              {item.list.map((listContent: any, index: number) => (
+                <Card py={0} mb={"lg"} key={index}>
+                  <Group justify="space-between">
+                    <Flex align={"center"} columnGap={"sm"}>
+                      <Checked width={25} height={20} color={"#1c7ed6"} />
+                      <Stack gap={1}>
+                        <NumberFormatter thousandSeparator value={listContent.amount || 0} suffix=" 원" className="text-md font-bold" />
 
-          //           <Group gap={"xs"}>
-          //             <Text size="sm" c={"gray.6"}>
-          //               {item.content}
-          //             </Text>
-          //             <Divider orientation="vertical" />
-
-          //             <Pill size="sm" c={"blue.8"} bg={"blue.1"} key={index}>
-          //               {item.selfWrittenYN === "Y" ? "직접결제" : "OOO 위원 결제"}
-          //             </Pill>
-
-          //             {/* <Divider orientation="vertical" /> */}
-
-          //             <Group gap={5}>
-          //               {item.payeeList &&
-          //                 item.payeeList.map((list, index) => (
-          //                   <Pill size="sm" c={"gray.6"} key={index}>
-          //                     {list.userName}
-          //                   </Pill>
-          //                 ))}
-          //             </Group>
-          //           </Group>
-          //         </Stack>
-          //       </Flex>
-          //     </Card>
-          //   </React.Fragment>
-          // ))
-        }
+                        <Group gap={"xs"}>
+                          <Text size="sm" c={"gray.6"}>
+                            {listContent.content}
+                          </Text>
+                        </Group>
+                      </Stack>
+                    </Flex>
+                    <ActionIcon variant="subtle" size="xl" onClick={(e) => handleUpdateActivity(e, listContent)}>
+                      <ArrowRight color="gray" width={18} />
+                    </ActionIcon>
+                  </Group>
+                </Card>
+              ))}
+            </React.Fragment>
+          ))
+        )}
       </ListWrapper>
-      {/* <BottomModal opened={opened} onClose={close} title={"복지포인트 입력"}>
-        <WelfareInputForm />
-      </BottomModal> */}
+      <BottomModal opened={opened} onClose={close} title={"활동비 입력"}>
+        <ActivityInputForm onClose={close} />
+      </BottomModal>
+
+      <BottomModal opened={openedUpdateForm} onClose={closeUpdateForm} title={"복지포인트 수정"}>
+        <ActivityUpdateForm onClose={closeUpdateForm} updateActivityDetail={updateActivityDetail} />
+      </BottomModal>
       <Affix position={{ bottom: 80, right: 20 }} zIndex={1000}>
         <Button radius={"lg"} onClick={toggle} color="blue.9" leftSection={<IconPlus style={{ width: rem(16), height: rem(16) }} />}>
           내역추가

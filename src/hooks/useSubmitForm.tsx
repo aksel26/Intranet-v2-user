@@ -20,9 +20,19 @@ export const useSubmitFormWelfare = () => {
     mutationFn: (values: any) => api.submitWelfare(values),
   });
 };
+export const useSubmitFormActivity = () => {
+  return useMutation({
+    mutationFn: (values: any) => api.submitActivity(values),
+  });
+};
 export const useUpdateFormWelfare = () => {
   return useMutation({
     mutationFn: (values: any) => api.submitUpdateWelfare(values),
+  });
+};
+export const useUpdateFormActivity = () => {
+  return useMutation({
+    mutationFn: (values: any) => api.submitUpdateActivity(values),
   });
 };
 
@@ -35,5 +45,10 @@ export const useDeleteMeals = () => {
 export const useDeleteWelfares = () => {
   return useMutation({
     mutationFn: (values: any) => api.deleteWelfare(values),
+  });
+};
+export const useDeleteActivity = () => {
+  return useMutation({
+    mutationFn: (values: any) => api.deleteActivity(values),
   });
 };
