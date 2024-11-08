@@ -25,7 +25,6 @@ export default function WelfareInputForm({ onClose }: any) {
   const { data: userList, isLoading, isError } = useGetUsers();
   const [users, setUsers] = useState<any>([]);
   const [targetDate, setTargetDate] = useState<Date | null>(null);
-  console.log("🚀 ~ WelfareInputForm ~ targetDate:", targetDate);
   const [selectedPayee, setSelectedPayee] = useState([]);
 
   const selectPayee = (e: any) => {
@@ -41,14 +40,24 @@ export default function WelfareInputForm({ onClose }: any) {
       content: "",
       amount: null,
       targetDay: "", // Added targetDay
-      payerName: "이승현", // Added payerName
+      payerName: "", // Added payerName
       payeeIdxs: [], // Added payeeIdxs
     },
   });
+  const [currentUser, setCurrentUser] = useState("");
   useEffect(() => {
-    setUsers(userList?.data.data);
+    setUsers(userList?.data.data.filter((user: any) => user.userName !== currentUser));
   }, [userList]);
 
+  useEffect(() => {
+    const value = sessionStorage.getItem("user");
+    if (value) {
+      const { userName } = JSON.parse(value);
+      setCurrentUser(userName);
+
+      form.setFieldValue("payerName", userName); // form의 name 필드값을 업데이트
+    }
+  }, []);
   const queryClient = useQueryClient();
 
   const handleSubmit = (values: FormValues) => {

@@ -2,7 +2,8 @@
 import notification from "@/components/GNB/Notification";
 import { useGetUsers } from "@/hooks/useGetUsers";
 import { useDeleteWelfares, useUpdateFormWelfare } from "@/hooks/useSubmitForm";
-import { Button, Flex, Group, LoadingOverlay, MultiSelect, NumberInput, rem, TextInput } from "@mantine/core";
+import { toggleStore } from "@/lib/store/toggleStore";
+import { Button, Flex, Group, LoadingOverlay, MultiSelect, NumberInput, Popover, rem, Text, TextInput } from "@mantine/core";
 import { DatePickerInput } from "@mantine/dates";
 import { useForm } from "@mantine/form";
 import { IconCalendar } from "@tabler/icons-react";
@@ -22,13 +23,17 @@ interface FormValues {
 }
 
 export default function WelfareUpdateForm({ onClose, updateWelfareDetail }: any) {
-  const { welfareIdx, content, amount, payerName } = updateWelfareDetail;
+  const { welfareIdx, content, amount, payerName, selfWrittenYN } = updateWelfareDetail;
+
   const { data: userList, isLoading, isError } = useGetUsers();
   const [users, setUsers] = useState<any>([]);
   const [targetDate, setTargetDate] = useState<Date | null>(null);
-  console.log("🚀 ~ WelfareInputForm ~ targetDate:", dayjs(updateWelfareDetail.targetDay).toDate());
+
   const [selectedPayee, setSelectedPayee] = useState<any>([]);
-  console.log("🚀 ~ WelfareUpdateForm ~ selectedPayee:", selectedPayee);
+
+  const [isSelfWritten, setIsSelfWritten] = useState(selfWrittenYN === "N" ? false : true);
+
+  const { toggleInfo } = toggleStore((state) => state);
 
   const selectPayee = (e: any) => {
     setSelectedPayee(e);
@@ -40,7 +45,7 @@ export default function WelfareUpdateForm({ onClose, updateWelfareDetail }: any)
   const form = useForm({
     mode: "uncontrolled",
     initialValues: {
-      selfWrittenYN: "Y",
+      selfWrittenYN: selfWrittenYN,
       content: content,
       amount: amount,
       payerName: payerName, // Added payerName
@@ -104,10 +109,14 @@ export default function WelfareUpdateForm({ onClose, updateWelfareDetail }: any)
     });
   };
 
+  const handleClose = () => {
+    onClose();
+  };
+
   return (
     <form onSubmit={form.onSubmit(handleSubmit)}>
       <Flex direction={"column"} rowGap={10}>
-        <TextInput label="결제자" value={"본인"} disabled key={form.key("payerName")} {...form.getInputProps("payerName")} />
+        <TextInput label="결제자" disabled key={form.key("payerName")} {...form.getInputProps("payerName")} />
         <DatePickerInput
           label="일자"
           locale="ko"
@@ -118,6 +127,7 @@ export default function WelfareUpdateForm({ onClose, updateWelfareDetail }: any)
           valueFormat="MM월 D일 dddd"
           firstDayOfWeek={0}
           popoverProps={{ withinPortal: false, zIndex: 1001 }}
+          disabled={!isSelfWritten}
         />
         {isLoading ? (
           <LoadingOverlay visible={isLoading} zIndex={1000} overlayProps={{ radius: "sm", blur: 2 }} />
@@ -141,24 +151,55 @@ export default function WelfareUpdateForm({ onClose, updateWelfareDetail }: any)
             }}
             searchable
             defaultValue={updateWelfareDetail.payeeList?.map((item: any) => item.userIdx.toString()) || []}
+            disabled={!isSelfWritten}
           />
         )}
-        <TextInput label="사용처" placeholder="결제하신 곳의 상호명을 입력해 주세요." key={form.key("content")} {...form.getInputProps("content")} />
-
-        <NumberInput
-          label="금액"
-          placeholder="금액을 입력해 주세요."
-          thousandSeparator=","
-          hideControls
-          suffix=" 원"
-          key={form.key("amount")}
-          {...form.getInputProps("amount")}
+        <TextInput
+          label="사용처"
+          placeholder="결제하신 곳의 상호명을 입력해 주세요."
+          key={form.key("content")}
+          {...form.getInputProps("content")}
+          disabled={!isSelfWritten}
         />
+
+        <Popover
+          shadow="lg"
+          radius={"lg"}
+          arrowPosition="side"
+          arrowOffset={9}
+          arrowSize={10}
+          arrowRadius={1}
+          width={170}
+          withArrow
+          opened={toggleInfo.isOpen}
+          position="top-end"
+        >
+          <Popover.Target>
+            <NumberInput
+              label="금액"
+              placeholder="금액을 입력해 주세요."
+              thousandSeparator=","
+              hideControls
+              suffix=" 원"
+              key={form.key("amount")}
+              {...form.getInputProps("amount")}
+            />
+          </Popover.Target>
+          <Popover.Dropdown>
+            <Text size="xs">
+              결제자 본인이 아닌 경우, <br />
+              <Text component="span" fw={900}>
+                금액
+              </Text>
+              만 수정할 수 있어요.
+            </Text>
+          </Popover.Dropdown>
+        </Popover>
         <Group wrap="nowrap">
           <Button fullWidth type="submit" mt={20}>
             수정하기
           </Button>
-          <Button fullWidth type="button" mt={20} color="red" variant="light" onClick={handleDeleteWelfare}>
+          <Button disabled={!isSelfWritten} fullWidth type="button" mt={20} color="red" variant="light" onClick={handleDeleteWelfare}>
             삭제하기
           </Button>
         </Group>
