@@ -1,7 +1,11 @@
 "use client";
 import BottomModal from "@/components/Global/BottomModal";
+import { useDeleteWelfares } from "@/hooks/useSubmitForm";
+import { toggleStore } from "@/lib/store/toggleStore";
 import { welfareStore } from "@/lib/store/welfareStore";
 import { DateSubText } from "@/template/DateSubText";
+import { compareMonth } from "@/utils/monthDate";
+import { groupByDate } from "@/utils/welfare/groupByDate";
 import { ActionIcon, Affix, Button, Card, Divider, Flex, Group, Indicator, NumberFormatter, Pill, Popover, rem, Stack, Text } from "@mantine/core";
 import { MonthPickerInput } from "@mantine/dates";
 import "@mantine/dates/styles.css";
@@ -10,13 +14,10 @@ import { IconChevronDown, IconPlus } from "@tabler/icons-react";
 import dayjs from "dayjs";
 import "dayjs/locale/ko"; //한국어
 import React, { useEffect, useState } from "react";
+import ArrowRight from "../../../../public/icons/arrow-right.svg";
 import Checked from "../../../../public/icons/circle-check.svg";
 import { ListWrapper } from "./ListWrapper";
 import WelfareInputForm from "./WelfareInputForm";
-import { groupByDate } from "@/utils/welfare/groupByDate";
-import { useDeleteWelfares } from "@/hooks/useSubmitForm";
-import { compareMonth } from "@/utils/monthDate";
-import ArrowRight from "../../../../public/icons/arrow-right.svg";
 import WelfareUpdateForm from "./WelfareUpdateForm";
 dayjs.locale("ko");
 
@@ -32,7 +33,7 @@ export const UsedList = ({ setCalendarYearMonth }: any) => {
   const [selectMonth, setSelectMonth] = useState<[Date | null, Date | null]>([new Date(), new Date()]);
 
   const [opened, { toggle, close }] = useDisclosure(false);
-  const [openedUpdateForm, { toggle: toggleUpdateForm, close: closeUpdateFrom }] = useDisclosure(false);
+  const [openedUpdateForm, { toggle: toggleUpdateForm, close: closeUpdateForm }] = useDisclosure(false);
 
   const icon = <IconChevronDown style={{ width: rem(18), height: rem(18) }} stroke={1.5} />;
 
@@ -40,7 +41,6 @@ export const UsedList = ({ setCalendarYearMonth }: any) => {
 
   const changeMonth = (e: any) => {
     const [sDate, eDate] = e;
-    console.log("🚀 ~ changeMonth ~ e:", e);
     const year = dayjs(sDate).year();
     const monthRange = compareMonth(e);
 
@@ -50,11 +50,21 @@ export const UsedList = ({ setCalendarYearMonth }: any) => {
 
   const [updateWelfareDetail, setUpdateWelfareDetail] = useState<any>();
 
-  const { mutate } = useDeleteWelfares();
-
   const handleUpdateWelfare = (e: any, detail: any) => {
     toggleUpdateForm();
+    openModal();
     setUpdateWelfareDetail(detail);
+  };
+
+  const { setToggleInfo } = toggleStore();
+
+  const openModal = () => {
+    setToggleInfo(true); // 열기
+  };
+  const handleClose = () => {
+    console.log("????");
+    setToggleInfo(false); // 열기
+    closeUpdateForm();
   };
 
   return (
@@ -106,12 +116,13 @@ export const UsedList = ({ setCalendarYearMonth }: any) => {
                                 <Indicator
                                   inline
                                   label={
-                                    <Text fw={700} c={"blue.8"} size="xs">
+                                    <Text fw={800} c={"blue.8"} size="xs">
                                       +{listContent.payeeList.length}
                                     </Text>
                                   }
-                                  size={20}
+                                  size={10}
                                   color="white"
+                                  zIndex={100}
                                 >
                                   <Button
                                     size="xs"
@@ -157,7 +168,7 @@ export const UsedList = ({ setCalendarYearMonth }: any) => {
                         </Group>
                       </Stack>
                     </Flex>
-                    <ActionIcon variant="subtle" size="lg" onClick={(e) => handleUpdateWelfare(e, listContent)}>
+                    <ActionIcon variant="subtle" size="xl" onClick={(e) => handleUpdateWelfare(e, listContent)}>
                       <ArrowRight color="gray" width={18} />
                     </ActionIcon>
                   </Group>
@@ -167,8 +178,8 @@ export const UsedList = ({ setCalendarYearMonth }: any) => {
           ))
         )}
       </ListWrapper>
-      <BottomModal opened={openedUpdateForm} onClose={closeUpdateFrom} title={"복지포인트 수정"}>
-        <WelfareUpdateForm onClose={closeUpdateFrom} updateWelfareDetail={updateWelfareDetail} />
+      <BottomModal opened={openedUpdateForm} onClose={handleClose} title={"복지포인트 수정"}>
+        <WelfareUpdateForm onClose={handleClose} updateWelfareDetail={updateWelfareDetail} />
       </BottomModal>
       <BottomModal opened={opened} onClose={close} title={"복지포인트 입력"}>
         <WelfareInputForm onClose={close} />
