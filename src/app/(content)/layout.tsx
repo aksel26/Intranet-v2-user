@@ -19,7 +19,9 @@ export default function ContentLayout({ children }: { children: React.ReactNode 
         <Header />
       </AppShell.Header>
       <AppShell.Main>
-        <Container size={"xs"}>{children}</Container>
+        <Container h={"100%"} size={"xs"}>
+          {children}
+        </Container>
       </AppShell.Main>
       <AppShellFooter withBorder={false}>
         <Container size="xs" style={{ margin: "0 auto", borderTop: "1px solid #e9e9e9" }} h={"100%"}>
