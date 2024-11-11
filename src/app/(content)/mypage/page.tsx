@@ -8,13 +8,25 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import myImage from "../../../../public/images/ACG_LOGO.png";
 import * as api from "../../api/get/getApi";
+import { usePathname, useRouter } from "next/navigation";
 const Main = () => {
   const { data, isLoading, isError } = useQuery({ queryKey: ["me"], queryFn: () => api.getMe() });
+
   const [user, setUser] = useState<any>();
 
   useEffect(() => {
     data && setUser(data.data.data);
   }, [data]);
+
+  const router = useRouter();
+  const pathName = usePathname();
+
+  const moveLottery = () => {
+    router.push(`${pathName}/lottery`);
+  };
+  const moveLunchGroup = () => {
+    router.push(`${pathName}/lunch-group`);
+  };
 
   return (
     <>
@@ -36,7 +48,7 @@ const Main = () => {
 
               <Group gap={"xs"}>
                 <Text c={"white"} size={"xs"}>
-                  {user?.teamName}
+                  {user?.teamName || user?.hqName}
                 </Text>
                 <Divider orientation="vertical" />
 
@@ -53,26 +65,12 @@ const Main = () => {
             </Flex>
           </Flex>
         </Skeleton>
-        <Flex direction={"column"} rowGap={"md"}>
-          <NavLink
-            href="#required-for-focus"
-            label="점심조 뽑기"
-            leftSection={<IconClover2 size="1.5rem" stroke={1.1} />}
-            rightSection={<IconChevronRight size="0.8rem" stroke={1.5} className="mantine-rotate-rtl" />}
-          />
-          <NavLink
-            href="#required-for-focus"
-            label="점심조 현황"
-            leftSection={<IconList size="1.5rem" stroke={1.1} />}
-            rightSection={<IconChevronRight size="0.8rem" stroke={1.5} className="mantine-rotate-rtl" />}
-            active
-          />
-          <NavLink
-            href="#required-for-focus"
-            label="QR코드로 앱 공유하기"
-            leftSection={<IconQrcode size="1.5rem" stroke={1.1} />}
-            rightSection={<IconChevronRight size="0.8rem" stroke={1.5} className="mantine-rotate-rtl" />}
-          />
+        <Flex direction={"column"} rowGap={"xs"}>
+          <NavLink href="#required-for-focus" label="점심조" leftSection={<IconClover2 size="1.5rem" stroke={1.1} />} childrenOffset={28}>
+            <NavLink label="점심 조 뽑기" onClick={moveLottery} />
+            <NavLink label="현황보기" onClick={moveLunchGroup} />
+          </NavLink>
+
           <Link href={"/mypage/list"} passHref legacyBehavior>
             <NavLink
               href="#required-for-focus"
