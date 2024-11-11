@@ -49,7 +49,7 @@ export default function ActivityInputForm({ onClose }: any) {
     temp.targetDay = dayjs(targetDate).format("YYYY-MM-DD");
     mutate(temp, {
       onSuccess: async () => {
-        await queryClient.invalidateQueries({ queryKey: ["activity"] });
+        await queryClient.invalidateQueries({ queryKey: ["qna"] });
         notification({
           title: "활동비",
           color: "green",

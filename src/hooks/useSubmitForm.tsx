@@ -52,3 +52,9 @@ export const useDeleteActivity = () => {
     mutationFn: (values: any) => api.deleteActivity(values),
   });
 };
+
+export const useDeleteQna = () => {
+  return useMutation({
+    mutationFn: (values: any) => api.deleteQna(values),
+  });
+};
