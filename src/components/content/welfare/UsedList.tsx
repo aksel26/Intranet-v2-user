@@ -16,6 +16,7 @@ import "dayjs/locale/ko"; //한국어
 import React, { useEffect, useState } from "react";
 import ArrowRight from "../../../../public/icons/arrow-right.svg";
 import Checked from "../../../../public/icons/circle-check.svg";
+import UnChecked from "../../../../public/icons/circle.svg";
 import { ListWrapper } from "./ListWrapper";
 import WelfareInputForm from "./WelfareInputForm";
 import WelfareUpdateForm from "./WelfareUpdateForm";
@@ -97,7 +98,12 @@ export const UsedList = ({ setCalendarYearMonth }: any) => {
                 <Card py={0} mb={"lg"} key={index}>
                   <Group justify="space-between">
                     <Flex align={"center"} columnGap={"sm"}>
-                      <Checked width={25} height={20} color={"#1c7ed6"} />
+                      {listContent.confirmYN === "Y" ? (
+                        <Checked width={25} height={20} color={"#1c7ed6"} />
+                      ) : (
+                        <UnChecked width={25} height={20} color={"#1c7ed6"} />
+                      )}
+
                       <Stack gap={1}>
                         <NumberFormatter thousandSeparator value={listContent.amount || 0} suffix=" 원" className="text-md font-bold" />
 
