@@ -10,13 +10,14 @@ import ArrowRight from "../../../../public/icons/arrow-right.svg";
 import { useDisclosure } from "@mantine/hooks";
 import Checked from "../../../../public/icons/circle-check.svg";
 import { activityStore } from "@/lib/store/activityStore";
-import { ListWrapper } from "../welfare/ListWrapper";
+// import { ListWrapper } from "../welfarePoint/ListWrapper";
 import { compareMonth } from "@/utils/monthDate";
 import { groupByDate } from "@/utils/welfare/groupByDate";
 import { DateSubText } from "@/template/DateSubText";
 import BottomModal from "@/components/Global/BottomModal";
 import ActivityInputForm from "./ActivityInputForm";
 import ActivityUpdateForm from "./ActivityUpdateForm";
+import { ListWrapper } from "../welfare/ListWrapper";
 dayjs.locale("ko");
 
 export const UsedListActivity = ({ setCalendarYearMonth }: any) => {
