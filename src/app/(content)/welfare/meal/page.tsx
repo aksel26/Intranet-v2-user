@@ -1,7 +1,7 @@
 "use client";
 
 import Calendar from "@/components/content/meal/Calendar";
-import { TopTitle } from "@/components/content/welfare/TopTitle";
+
 import { Detail } from "@/components/detail/Detail";
 import { useGetMeals } from "@/hooks/useMeals";
 import { useCombinedStore } from "@/lib/store/CombinedStore";
@@ -11,7 +11,8 @@ import { Container, Flex } from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
-import * as api from "../../api/get/getApi";
+import * as api from "@/app/api/get/getApi";
+import { TopTitle } from "@/components/content/welfare/TopTitle";
 const Main = () => {
   const nowMonthYear = dayjs();
   const [calendarYearMonth, setCalendarYearMonth] = useState({

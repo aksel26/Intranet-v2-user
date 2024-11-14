@@ -7,14 +7,14 @@ dayjs.locale("ko");
 
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { usePathname, useRouter } from "next/navigation";
-import Back from "../../../../../public/icons/arrow-left.svg";
-import Empty from "../../../../../public/icons/no-list.svg";
+import Back from "/public/icons/arrow-left.svg";
+import Empty from "/public/icons/no-list.svg";
 
-import * as api from "../../../api/get/getApi";
+import * as api from "@/app/api/get/getApi";
 import { useDeleteQna } from "@/hooks/useSubmitForm";
 import { useState } from "react";
 import notification from "@/components/GNB/Notification";
-import ArrowRight from "../../../../../public/icons/arrow-right.svg";
+import ArrowRight from "/public/icons/arrow-right.svg";
 import { useDisclosure } from "@mantine/hooks";
 function page() {
   const router = useRouter();

@@ -9,7 +9,7 @@ import { Container, Flex } from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
-import * as api from "../../api/get/getApi";
+import * as api from "../../../api/get/getApi";
 const WelfareMain = () => {
   const nowMonthYear = dayjs();
   const [calendarYearMonth, setCalendarYearMonth] = useState({

@@ -3,8 +3,8 @@ import React, { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ActionIcon, Box, Button, Flex, Group, Text } from "@mantine/core";
 import { useRouter } from "next/navigation";
-import Back from "../../../../../public/icons/arrow-left.svg";
-import ArrowRight from "../../../../../public/icons/arrow-right.svg";
+import Back from "/public/icons/arrow-left.svg";
+import ArrowRight from "/public/icons/arrow-right.svg";
 interface Paper extends HTMLDivElement {
   paperRef?: React.RefObject<HTMLDivElement>;
 }
@@ -208,7 +208,7 @@ const LotteryComponent: React.FC = () => {
 
   const goBack = () => router.back();
 
-  const goLunchGroup = () => router.push("/mypage/lunch-group");
+  const goLunchGroup = () => router.push("/welfare/mypage/lunch-group");
 
   return (
     <Flex direction={"column"} pt={"lg"} justify={"space-between"}>

@@ -6,7 +6,7 @@ import { Container, Flex } from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
-import * as api from "../../api/get/getApi";
+import * as api from "@/app/api/get/getApi";
 import { activityStore } from "@/lib/store/activityStore";
 const ActivityMain = () => {
   const nowMonthYear = dayjs();
