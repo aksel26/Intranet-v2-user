@@ -22,7 +22,7 @@ export const Footer = () => {
   useEffect(() => {
     if (pathname.includes("meal")) {
       setNavClickState((prev) => ({ ...prev, meal: true, welfare: false, myInfo: false, activity: false }));
-    } else if (pathname.includes("welfare")) {
+    } else if (pathname.includes("welfarePoint")) {
       setNavClickState((prev) => ({ ...prev, meal: false, welfare: true, myInfo: false, activity: false }));
     } else if (pathname.includes("mypage")) {
       setNavClickState((prev) => ({ ...prev, meal: false, welfare: false, myInfo: true, activity: false }));
@@ -33,7 +33,7 @@ export const Footer = () => {
 
   return (
     <Group justify="space-around" align="center" h={"100%"}>
-      <LinkComponent style={{ width: "20%", cursor: "pointer" }} href="/meal">
+      <LinkComponent style={{ width: "20%", cursor: "pointer" }} href="/welfare/meal">
         <Flex direction={"column"} justify={"center"} align={"center"} rowGap={2} w={"100%"}>
           {navClickState.meal ? (
             <IconBowlSpoonFilled color={COLOR} size={ICON_SIZE} stroke={STROKE_WIDTH} />
@@ -44,7 +44,7 @@ export const Footer = () => {
         </Flex>
       </LinkComponent>
 
-      <LinkComponent style={{ width: "20%", cursor: "pointer" }} href="/welfare">
+      <LinkComponent style={{ width: "20%", cursor: "pointer" }} href="/welfare/welfarePoint">
         <Flex direction={"column"} justify={"center"} align={"center"} rowGap={2}>
           {navClickState.welfare ? (
             <IconGiftCardFilled size={ICON_SIZE} stroke={STROKE_WIDTH} color={COLOR} />
@@ -54,7 +54,7 @@ export const Footer = () => {
           <Text size="xs">복지보인트</Text>
         </Flex>
       </LinkComponent>
-      <LinkComponent style={{ width: "20%", cursor: "pointer" }} href="/activity">
+      <LinkComponent style={{ width: "20%", cursor: "pointer" }} href="/welfare/activity">
         <Flex direction={"column"} justify={"center"} align={"center"} rowGap={2}>
           {navClickState.activity ? (
             <IconGiftCardFilled size={ICON_SIZE} stroke={STROKE_WIDTH} color={COLOR} />
@@ -65,7 +65,7 @@ export const Footer = () => {
         </Flex>
       </LinkComponent>
 
-      <LinkComponent style={{ width: "20%", cursor: "pointer" }} href="/mypage">
+      <LinkComponent style={{ width: "20%", cursor: "pointer" }} href="/welfare/mypage">
         <Flex direction={"column"} justify={"center"} align={"center"} rowGap={2}>
           {navClickState.myInfo ? (
             <IconUserFilled size={ICON_SIZE} stroke={STROKE_WIDTH} color={COLOR} />
