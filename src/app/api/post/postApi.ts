@@ -32,6 +32,11 @@ export const submitActivity = (values: any) => postApi.post(`/users/activities`,
 export const submitUpdateWelfare = (values: any) => postApi.put(`/users/welfares/${values.queryParams}`, values.body);
 export const submitUpdateActivity = (values: any) => postApi.put(`/users/activities/${values.queryParams}`, values.body);
 
+// 내 비밀번호 변경 API
+export const changePassword = (values: any) => postApi.patch(`/users/me/password`, values);
+// 로그인한 사용자 기본정보 수정 API
+export const changeMyInfo = (values: any) => postApi.put(`/users/me`, values);
+
 export const deleteMeal = (values: any) => postApi.delete(`/users/meals/${values}`);
 export const deleteWelfare = (values: any) => postApi.delete(`/users/welfares/${values}`);
 export const deleteActivity = (values: any) => postApi.delete(`/users/activities/${values}`);

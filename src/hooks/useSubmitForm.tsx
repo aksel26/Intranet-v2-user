@@ -36,6 +36,17 @@ export const useUpdateFormActivity = () => {
   });
 };
 
+export const useChangePassword = () => {
+  return useMutation({
+    mutationFn: (values: any) => api.changePassword(values),
+  });
+};
+export const useChangeMyInfo = () => {
+  return useMutation({
+    mutationFn: (values: any) => api.changeMyInfo(values),
+  });
+};
+
 export const useDeleteMeals = () => {
   return useMutation({
     mutationFn: (values: any) => api.deleteMeal(values),
