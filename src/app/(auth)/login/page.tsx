@@ -43,7 +43,7 @@ export default function Login() {
         }
 
         if (statusCode === 200) {
-          router.push("/meal");
+          router.push("/welfare/meal");
           sessionStorage.setItem("user", JSON.stringify(data));
         }
       });
