@@ -2,10 +2,13 @@
 import { Footer } from "@/components/GNB/Footer";
 import { AppShell, AppShellFooter, Badge, Box, Burger, Button, Container, Flex, Group, Image, NavLink, Skeleton, Stack, Text } from "@mantine/core";
 // import Image from "next/image";
+import useLogout from "@/hooks/useLogout";
 import { useDisclosure } from "@mantine/hooks";
+import { notifications } from "@mantine/notifications";
 import { useQuery } from "@tanstack/react-query";
 import NextImage from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import * as api from "../api/get/getApi";
 import myImage from "/public/images/ACG_LOGO_GRAY.png";
@@ -19,10 +22,36 @@ export default function ContentLayout({ children }: { children: React.ReactNode 
   useEffect(() => {
     data && setUser(data.data.data);
   }, [data]);
+
+  const { mutate: logout, isError: isError_logout, isSuccess: isSuccess_logout } = useLogout();
+
+  const router = useRouter();
+  const handleLogout = async () => {
+    logout(undefined, {
+      onError: () => {
+        notifications.show({
+          title: "로그아웃",
+          message: "로그아웃을 실패하였습니다",
+          position: "top-center",
+          color: "red",
+        });
+      },
+      onSuccess: () => {
+        notifications.show({
+          title: "로그아웃",
+          message: "로그아웃되었습니다. 다시 로그인해 주세요.",
+          position: "top-center",
+          color: "green",
+        });
+        router.push("/");
+      },
+    });
+  };
+
   return (
     <AppShell
       header={{
-        height: 30,
+        height: 50,
       }}
       navbar={{ width: 350, breakpoint: "sm", collapsed: { mobile: !mobileOpened, desktop: !desktopOpened } }}
       footer={{
@@ -33,20 +62,20 @@ export default function ContentLayout({ children }: { children: React.ReactNode 
     >
       <AppShell.Header withBorder={false}>
         {/* <Header opened={opened} toggle={toggle} /> */}
-        <Group h={"100%"} p={"sm"}>
+        <Group h={"100%"} py={"lg"} px={"xl"}>
           <Burger opened={mobileOpened} onClick={toggleMobile} hiddenFrom="sm" size="sm" />
           <Burger opened={desktopOpened} onClick={toggleDesktop} visibleFrom="sm" size="sm" />
         </Group>
       </AppShell.Header>
       <AppShell.Main>{children}</AppShell.Main>
-      <AppShell.Navbar p="md">
+      <AppShell.Navbar p="md" withBorder={false}>
         <Group justify="space-between" mb={"lg"}>
           <Group>
             <Burger opened={mobileOpened} onClick={toggleMobile} hiddenFrom="sm" size="sm" />
             <Image component={NextImage} src={myImage} alt="My image" fit="contain" h={20} w={80} style={{ cursor: "pointer" }} />
           </Group>
 
-          <Button size="xs" variant="light">
+          <Button size="xs" variant="light" onClick={handleLogout}>
             로그아웃
           </Button>
         </Group>
