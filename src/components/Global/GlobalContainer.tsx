@@ -15,7 +15,7 @@ export const GlobalContainer = ({ children }: { children: React.ReactNode }) => 
 
   const theme = createTheme({
     defaultRadius: "md",
-    fontFamily: "NanumSquareNeo, sans-serif",
+    fontFamily: "NanumSquareNeoVariable, sans-serif",
   });
   return (
     <MantineProvider theme={theme}>
