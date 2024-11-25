@@ -7,7 +7,7 @@ import { useGetMeals } from "@/hooks/useMeals";
 import { useCombinedStore } from "@/lib/store/CombinedStore";
 
 import { mealStateStore } from "@/lib/store/mealStore";
-import { Container, Flex } from "@mantine/core";
+import { Container, Flex, Grid, GridCol, Paper, Text } from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
@@ -33,12 +33,21 @@ const Main = () => {
   }, [data]);
 
   return (
-    <Container size={"xs"} p={0} bg="gray.0" style={{ scrollPaddingBottom: "52px", overflowY: "auto", scrollSnapType: "y mandatory" }}>
-      <Flex direction={"column"} rowGap={"sm"}>
-        <TopTitle />
-        <Calendar setCalendarYearMonth={setCalendarYearMonth} />
-        <Detail />
-      </Flex>
+    <Container fluid p={"lg"} style={{ scrollPaddingBottom: "52px", overflowY: "auto", scrollSnapType: "y mandatory" }}>
+      <Grid>
+        <GridCol span={{ base: 12, md: 6 }}>
+          <TopTitle />
+          <GridCol span={{ base: 12, md: 12 }}>
+            <Paper bg={"white"} radius={"lg"}>
+              <Text>날짜리스트</Text>
+            </Paper>
+          </GridCol>
+        </GridCol>
+        <GridCol span={{ base: 12, md: 6 }}>
+          <Calendar setCalendarYearMonth={setCalendarYearMonth} />
+          <Detail />
+        </GridCol>
+      </Grid>
     </Container>
   );
 };
