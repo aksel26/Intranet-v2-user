@@ -1,9 +1,8 @@
 "use client";
-import { Footer } from "@/components/GNB/Footer";
-import { AppShell, AppShellFooter, Badge, Box, Burger, Button, Center, Container, Flex, Group, Image, NavLink, Skeleton, Stack, Text } from "@mantine/core";
+import { AppShell, Box, Burger, Button, Flex, Group, Image, NavLink, rem, Skeleton, Stack, Text } from "@mantine/core";
 // import Image from "next/image";
 import useLogout from "@/hooks/useLogout";
-import { useDisclosure } from "@mantine/hooks";
+import { useDisclosure, useHeadroom } from "@mantine/hooks";
 import { notifications } from "@mantine/notifications";
 import { useQuery } from "@tanstack/react-query";
 import NextImage from "next/image";
@@ -49,11 +48,14 @@ export default function ContentLayout({ children }: { children: React.ReactNode 
   };
 
   const clickLogo = () => router.push("/main");
+  const pinned = useHeadroom({ fixedAt: 60 });
 
   return (
     <AppShell
       header={{
         height: 50,
+        collapsed: !pinned,
+        offset: false,
       }}
       navbar={{ width: 350, breakpoint: "sm", collapsed: { mobile: !mobileOpened, desktop: !desktopOpened } }}
       layout="alt"
@@ -66,7 +68,9 @@ export default function ContentLayout({ children }: { children: React.ReactNode 
           <Burger opened={desktopOpened} onClick={toggleDesktop} visibleFrom="sm" size="sm" />
         </Group>
       </AppShell.Header>
-      <AppShell.Main styles={{ main: { background: "#f2f2f2" } }}>{children}</AppShell.Main>
+      <AppShell.Main styles={{ main: { background: "#f2f2f2" } }} pt={`calc(${rem(50)}`}>
+        {children}
+      </AppShell.Main>
       <AppShell.Navbar p="md" withBorder={false}>
         <Group justify="space-between" mb={"lg"}>
           <Group>
