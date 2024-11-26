@@ -9,7 +9,7 @@ export const DateSubText = ({ date }: { date: string }) => {
   const formattedDate = dayjs(date).format("MM월 D일 dddd");
 
   return (
-    <Text c={"gray.7"} size="xs" my={"sm"} ms={"sm"}>
+    <Text c={"dimmed"} size="xs" mt={"xs"}>
       {formattedDate}
     </Text>
   );

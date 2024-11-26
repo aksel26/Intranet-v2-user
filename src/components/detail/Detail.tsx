@@ -44,9 +44,9 @@ export const Detail = () => {
   }, [meals, calendarDate]);
 
   return (
-    <Flex direction="column" bg={"white"} px="md" py="lg" rowGap={"sm"}>
+    <Flex direction="column" px="sm" pb="lg" rowGap={"sm"}>
       <Flex justify="space-between" align={"center"}>
-        <Text size="md" c={"gray.6"}>
+        <Text size="xs" c={"gray.6"}>
           {dayjs(calendarDate).format("MM월 DD일 dddd")}
         </Text>
         <Button size="xs" color="red" variant="outline" onClick={deleteAll}>

@@ -47,18 +47,18 @@ export const Attend = ({ toggle, values }: any) => {
       <Group>
         {renderIcon(type)}
         <Flex direction={"column"} align={"flex-start"}>
-          <Text size="md" fw={700} c={"blue.8"}>
+          <Text size="sm" fw={700} c={"blue.8"}>
             <NumberFormatter thousandSeparator value={data?.amount || 0} />
             <Text component="span" size="sm" ml={2}>
               원
             </Text>
           </Text>
           <Group>
-            <Text c={"gray.6"} size="sm">
+            <Text c={"gray.6"} size="xs">
               {data?.place || ""}
             </Text>
             <Divider size={"xs"} orientation="vertical" />
-            <Text c={"gray.6"} size="sm">
+            <Text c={"gray.6"} size="xs">
               {data?.payerName || ""}
             </Text>
           </Group>
