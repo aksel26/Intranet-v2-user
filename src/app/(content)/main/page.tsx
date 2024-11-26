@@ -209,7 +209,7 @@ function page() {
           <Paper p={"lg"} radius={"lg"}>
             <Group justify="space-between" align="flex-start">
               <Title order={5}>근태 현황 +10</Title>
-              <ActionIcon size={"sm"} variant="transparent" onClick={toggle}>
+              <ActionIcon size={"sm"} variant="transparent" onClick={toggle} color="gray">
                 <ArrowDown />
               </ActionIcon>
             </Group>
