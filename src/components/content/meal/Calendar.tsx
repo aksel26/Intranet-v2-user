@@ -6,13 +6,14 @@ import { CalendarApi } from "@fullcalendar/core/index.js";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction"; // needed for dayClick
 import FullCalendar from "@fullcalendar/react";
-import { Paper } from "@mantine/core";
+import { Divider, Paper, Title } from "@mantine/core";
 import dayjs from "dayjs";
 import Hammer from "hammerjs";
 import { useEffect, useRef, useState } from "react";
 import "../../../styles/calendar.css";
 import { useCombinedStore } from "@/lib/store/CombinedStore";
 import { CalendarDate } from "@/lib/store/calendarDateStore";
+import { Detail } from "@/components/detail/Detail";
 
 export default function Calendar({ setCalendarYearMonth }: any) {
   const { meals } = mealStore((state) => state.mealInfo);
@@ -85,7 +86,10 @@ export default function Calendar({ setCalendarYearMonth }: any) {
   };
 
   return (
-    <Paper p="sm" py={"lg"} ref={containerRef}>
+    <Paper bg={"white"} px="md" py="lg" radius={"lg"} ref={containerRef}>
+      <Title order={5} mb={"md"}>
+        식대 입력하기
+      </Title>
       <FullCalendar
         ref={calendarRef}
         datesSet={handleDatesSet}
@@ -115,6 +119,8 @@ export default function Calendar({ setCalendarYearMonth }: any) {
         plugins={[dayGridPlugin, interactionPlugin]}
         dayCellContent={(arg) => arg.dayNumberText.replace("일", "")}
       />
+      <Divider my={"lg"} />
+      <Detail />
     </Paper>
   );
 }

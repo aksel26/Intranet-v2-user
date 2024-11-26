@@ -2,17 +2,19 @@
 
 import Calendar from "@/components/content/meal/Calendar";
 
-import { Detail } from "@/components/detail/Detail";
-import { useGetMeals } from "@/hooks/useMeals";
 import { useCombinedStore } from "@/lib/store/CombinedStore";
 
+import * as api from "@/app/api/get/getApi";
+import LunchGroup from "@/components/content/meal/LunchGroup";
+import { TopTitle } from "@/components/content/welfare/TopTitle";
+import useTopTitle from "@/hooks/useTopTitle";
 import { mealStateStore } from "@/lib/store/mealStore";
-import { Container, Flex, Grid, GridCol, Paper, Text } from "@mantine/core";
+import { ChartSummary } from "@/template/ChartSummary";
+import { Container, Grid, GridCol, Stack } from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import * as api from "@/app/api/get/getApi";
-import { TopTitle } from "@/components/content/welfare/TopTitle";
 const Main = () => {
   const nowMonthYear = dayjs();
   const [calendarYearMonth, setCalendarYearMonth] = useState({
@@ -24,7 +26,8 @@ const Main = () => {
   console.log("🚀 ~ Main ~ data:", data);
 
   const { mealStore } = useCombinedStore() as { mealStore: mealStateStore };
-
+  const pathName = usePathname();
+  const { typeTitle, statsInfo } = useTopTitle({ pathName });
   useEffect(() => {
     if (data) {
       const result = data.data.data;
@@ -35,17 +38,17 @@ const Main = () => {
   return (
     <Container fluid p={"lg"} style={{ scrollPaddingBottom: "52px", overflowY: "auto", scrollSnapType: "y mandatory" }}>
       <Grid>
-        <GridCol span={{ base: 12, md: 6 }}>
-          <TopTitle />
-          <GridCol span={{ base: 12, md: 12 }}>
-            <Paper bg={"white"} radius={"lg"}>
-              <Text>날짜리스트</Text>
-            </Paper>
-          </GridCol>
+        <GridCol span={{ base: 12, md: 8 }}>
+          <Stack>
+            <TopTitle />
+            <ChartSummary statsInfo={statsInfo} />
+            <LunchGroup />
+
+            {/* <CalendarList /> */}
+          </Stack>
         </GridCol>
-        <GridCol span={{ base: 12, md: 6 }}>
+        <GridCol span={{ base: 12, md: 4 }}>
           <Calendar setCalendarYearMonth={setCalendarYearMonth} />
-          <Detail />
         </GridCol>
       </Grid>
     </Container>
