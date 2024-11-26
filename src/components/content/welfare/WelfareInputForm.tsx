@@ -17,8 +17,24 @@ interface FormValues {
   amount: number | null;
   content: string | null;
   payerName: string | null;
-  payeeIdxs: number[] | null;
+  payeeIdxs: string[];
   selfWrittenYN: string;
+}
+interface InputPayload {
+  selfWrittenYN: string;
+  content: string;
+  amount: number | null;
+  targetDay: string | null;
+  payerName: string;
+  payeeIdxs: string[];
+}
+interface OutputPayload {
+  selfWrittenYN: string;
+  content: string | null;
+  amount: number | null;
+  targetDay: string;
+  payerName: string | null;
+  payeeIdxs: number[];
 }
 
 export default function WelfareInputForm({ onClose }: any) {
@@ -39,7 +55,7 @@ export default function WelfareInputForm({ onClose }: any) {
       selfWrittenYN: "Y",
       content: "",
       amount: null,
-      targetDay: "", // Added targetDay
+      targetDay: null, // Added targetDay
       payerName: "", // Added payerName
       payeeIdxs: [], // Added payeeIdxs
     },
@@ -60,16 +76,24 @@ export default function WelfareInputForm({ onClose }: any) {
   }, []);
   const queryClient = useQueryClient();
 
-  const handleSubmit = (values: FormValues) => {
-    const payeeIdxs = selectedPayee.map((item: any) => item.userIdx);
-    console.log(values, payeeIdxs);
+  // payload 변환 함수
+  const transformPayload = (input: InputPayload): OutputPayload => {
+    // targetDay를 YYYY-MM-DD 형식으로 변환
+    const date = dayjs(input.targetDay).format("YYYY-MM-DD");
 
-    const temp = { ...values };
+    // payeeIdxs를 number 배열로 변환
+    const numberPayeeIdxs = input.payeeIdxs.map((idx) => Number(idx));
 
-    temp.payeeIdxs = payeeIdxs;
-    temp.targetDay = dayjs(targetDate).format("YYYY-MM-DD");
-    console.log("👀", temp);
-    mutate(temp, {
+    return {
+      ...input,
+      targetDay: date,
+      payeeIdxs: numberPayeeIdxs,
+    };
+  };
+
+  const handleSubmit = (values: InputPayload) => {
+    const payload = transformPayload(values);
+    mutate(payload, {
       onSuccess: async () => {
         await queryClient.invalidateQueries({ queryKey: ["welfares"] });
         notification({
@@ -77,7 +101,9 @@ export default function WelfareInputForm({ onClose }: any) {
           color: "green",
           message: "복지포인트 내역이 저장되었습니다.",
         });
-        onClose();
+        form.reset();
+        setSelectedPayee([]);
+        setTargetDate(null);
       },
     });
   };
@@ -91,8 +117,8 @@ export default function WelfareInputForm({ onClose }: any) {
           locale="ko"
           leftSection={<IconCalendar style={{ width: rem(18), height: rem(18) }} stroke={1.5} />}
           placeholder="사용일자를 선택해 주세요."
-          value={targetDate}
-          onChange={setTargetDate}
+          key={form.key("targetDay")}
+          {...form.getInputProps("targetDay")}
           valueFormat="MM월 D일 dddd"
           firstDayOfWeek={0}
           popoverProps={{ withinPortal: false, zIndex: 1001 }}
@@ -113,10 +139,8 @@ export default function WelfareInputForm({ onClose }: any) {
               label: user.userName,
               searchValue: user.userName,
             }))}
-            onChange={(values) => {
-              const selectedUsers = users?.filter((user: any) => values.includes(user.userIdx.toString()));
-              selectPayee(selectedUsers);
-            }}
+            key={form.key("payeeIdxs")}
+            {...form.getInputProps("payeeIdxs")}
             searchable
           />
         )}

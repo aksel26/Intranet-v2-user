@@ -1,12 +1,29 @@
 "use client";
 import BottomModal from "@/components/Global/BottomModal";
-import { useDeleteWelfares } from "@/hooks/useSubmitForm";
 import { toggleStore } from "@/lib/store/toggleStore";
 import { welfareStore } from "@/lib/store/welfareStore";
 import { DateSubText } from "@/template/DateSubText";
 import { compareMonth } from "@/utils/monthDate";
 import { groupByDate } from "@/utils/welfare/groupByDate";
-import { ActionIcon, Affix, Button, Card, Divider, Flex, Group, Indicator, NumberFormatter, Pill, Popover, rem, Stack, Text } from "@mantine/core";
+import {
+  ActionIcon,
+  Affix,
+  Badge,
+  Button,
+  Card,
+  Divider,
+  Flex,
+  Group,
+  Indicator,
+  NumberFormatter,
+  Paper,
+  Pill,
+  Popover,
+  rem,
+  Stack,
+  Text,
+  Title,
+} from "@mantine/core";
 import { MonthPickerInput } from "@mantine/dates";
 import "@mantine/dates/styles.css";
 import { useDisclosure } from "@mantine/hooks";
@@ -14,9 +31,9 @@ import { IconChevronDown, IconPlus } from "@tabler/icons-react";
 import dayjs from "dayjs";
 import "dayjs/locale/ko"; //한국어
 import React, { useEffect, useState } from "react";
-import ArrowRight from "../../../../public/icons/arrow-right.svg";
-import Checked from "../../../../public/icons/circle-check.svg";
-import UnChecked from "../../../../public/icons/circle.svg";
+import ArrowRight from "/public/icons/arrow-right.svg";
+import Checked from "/public/icons/circle-check.svg";
+import UnChecked from "/public/icons/circle.svg";
 import { ListWrapper } from "./ListWrapper";
 import WelfareInputForm from "./WelfareInputForm";
 import WelfareUpdateForm from "./WelfareUpdateForm";
@@ -24,6 +41,7 @@ dayjs.locale("ko");
 
 export const UsedList = ({ setCalendarYearMonth }: any) => {
   const { welfareInfo } = welfareStore((state) => state);
+  console.log("🚀 ~ UsedList ~ welfareInfo:", welfareInfo);
 
   const [dateGroup, setDateGroup] = useState<any>([]);
 
@@ -69,34 +87,42 @@ export const UsedList = ({ setCalendarYearMonth }: any) => {
   };
 
   return (
-    <Flex direction={"column"} bg={"white"}>
-      <Flex px={"md"} pt={"xs"} justify={"space-between"} align={"center"}>
-        <MonthPickerInput
-          rightSection={icon}
-          rightSectionPointerEvents="none"
-          value={selectMonth}
-          onChange={changeMonth}
-          valueFormat="YYYY년 MM월"
-          locale="ko-KR"
-          style={{ fontWeight: 700, width: "max-content" }}
-          variant="unstyled"
-          allowSingleDateInRange
-          type="range"
-        />
-      </Flex>
+    <Paper bg={"white"} px="lg" py="lg" radius={"lg"}>
+      <Title order={5} mb={"md"}>
+        사용내역 조회
+      </Title>
+      <MonthPickerInput
+        rightSection={icon}
+        rightSectionPointerEvents="none"
+        value={selectMonth}
+        onChange={changeMonth}
+        valueFormat="YYYY년 MM월"
+        locale="ko-KR"
+        style={{ fontWeight: 700, width: "max-content" }}
+        variant="unstyled"
+        allowSingleDateInRange
+        type="range"
+      />
+
       <ListWrapper>
-        {welfareInfo.welfares.length < 1 ? (
-          <Text ta={"center"} mt={40} c={"gray.7"}>
-            {/* {selectMonth && selectMonth?.getMonth() + 1}월에는 복지포인트 사용 내역이 없어요. */}
+        {dateGroup.length < 1 ? (
+          <Text ta={"center"} mt={40} c={"dimmed"} fz={"sm"}>
+            해당 월에는 복지포인트 사용 내역이 없어요.
           </Text>
         ) : (
           dateGroup?.map((item: any, index: number) => (
-            <React.Fragment key={index}>
+            <Stack key={index} gap={4}>
               <DateSubText date={item.date} />
 
               {item.list.map((listContent: any, index: number) => (
-                <Card py={0} mb={"lg"} key={index}>
-                  <Group justify="space-between">
+                <Paper
+                  // size="sm"
+                  key={index}
+                  // variant="subtle"
+
+                  // styles={{ label: { width: "100%" }, root: { height: "100%" } }}
+                >
+                  <Group justify="space-between" w="100%" h={"100%"}>
                     <Flex align={"center"} columnGap={"sm"}>
                       {listContent.confirmYN === "Y" ? (
                         <Checked width={25} height={20} color={"#1c7ed6"} />
@@ -104,18 +130,20 @@ export const UsedList = ({ setCalendarYearMonth }: any) => {
                         <UnChecked width={25} height={20} color={"#1c7ed6"} />
                       )}
 
-                      <Stack gap={1}>
-                        <NumberFormatter thousandSeparator value={listContent.amount || 0} suffix=" 원" className="text-md font-bold" />
+                      <Stack gap={3}>
+                        <Text fw={700} ta={"left"} fz={"sm"}>
+                          <NumberFormatter thousandSeparator value={listContent.amount || 0} suffix=" 원" />
+                        </Text>
 
                         <Group gap={"xs"}>
-                          <Text size="sm" c={"gray.6"}>
+                          <Text fz={"xs"} c={"dimmed"}>
                             {listContent.content}
                           </Text>
                           <Divider orientation="vertical" />
                           {listContent.payeeList.length === 0 ? (
-                            <Pill size="sm" c={"blue.8"} bg={"#ecf5fe"} key={index}>
+                            <Badge size="sm" radius={"xs"} key={index}>
                               {listContent.selfWrittenYN === "Y" ? "직접결제" : `${listContent.payerName} 결제`}
-                            </Pill>
+                            </Badge>
                           ) : (
                             <Popover position="bottom-start" withArrow shadow="xl" arrowSize={10} radius={"lg"}>
                               <Popover.Target>
@@ -130,28 +158,9 @@ export const UsedList = ({ setCalendarYearMonth }: any) => {
                                   color="white"
                                   zIndex={100}
                                 >
-                                  <Button
-                                    size="xs"
-                                    variant="light"
-                                    radius={"xl"}
-                                    key={index}
-                                    py={4}
-                                    px={10}
-                                    classNames={{
-                                      root: "h-[var(--pill-sm-height)] ",
-                                      label: "leading-[var(--pill-sm-height)] h-[var(--pill-sm-height)] flex items-center",
-                                    }}
-                                  >
-                                    <Text
-                                      classNames={{
-                                        root: "leading-[var(--pill-height)]",
-                                      }}
-                                      c={"blue.8"}
-                                      size={"xs"}
-                                    >
-                                      {listContent.selfWrittenYN === "Y" ? "직접결제" : `${listContent.payerName} 결제`}
-                                    </Text>
-                                  </Button>
+                                  <Badge radius={"sm"} variant="light">
+                                    {listContent.selfWrittenYN === "Y" ? "직접결제" : `${listContent.payerName} 결제`}
+                                  </Badge>
                                 </Indicator>
                               </Popover.Target>
                               <Popover.Dropdown>
@@ -174,13 +183,13 @@ export const UsedList = ({ setCalendarYearMonth }: any) => {
                         </Group>
                       </Stack>
                     </Flex>
-                    <ActionIcon variant="subtle" size="xl" onClick={(e) => handleUpdateWelfare(e, listContent)}>
+                    <ActionIcon size={"xl"} variant="subtle" onClick={(e) => handleUpdateWelfare(e, listContent)}>
                       <ArrowRight color="gray" width={18} />
                     </ActionIcon>
                   </Group>
-                </Card>
+                </Paper>
               ))}
-            </React.Fragment>
+            </Stack>
           ))
         )}
       </ListWrapper>
@@ -191,11 +200,11 @@ export const UsedList = ({ setCalendarYearMonth }: any) => {
         <WelfareInputForm onClose={close} />
       </BottomModal>
 
-      <Affix position={{ bottom: 80, right: 20 }} zIndex={1000}>
+      <Affix position={{ bottom: 80, right: 20 }} zIndex={1000} hiddenFrom="md">
         <Button radius={"lg"} onClick={toggle} color="blue.9" leftSection={<IconPlus style={{ width: rem(16), height: rem(16) }} />}>
           내역추가
         </Button>
       </Affix>
-    </Flex>
+    </Paper>
   );
 };
