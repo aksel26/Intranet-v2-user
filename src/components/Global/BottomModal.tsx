@@ -1,7 +1,8 @@
 "use client";
-import React from "react";
-import { Modal, Box, MantineTheme, Text, Flex } from "@mantine/core";
+import { Box, Drawer, Flex, Text } from "@mantine/core";
+import { useMediaQuery } from "@mantine/hooks";
 import dayjs from "dayjs";
+import React from "react";
 interface BottomModalProps {
   opened: boolean;
   onClose: () => void;
@@ -10,38 +11,33 @@ interface BottomModalProps {
   date?: Date;
 }
 const BottomModal: React.FC<BottomModalProps> = ({ title, date, opened, onClose, children }) => {
+  const matches = useMediaQuery("(max-width: 40em)", true, {
+    getInitialValueInEffect: false,
+  });
   return (
-    <Modal
-      zIndex={100}
+    <Drawer
+      offset={12}
+      radius="md"
       opened={opened}
       onClose={onClose}
-      radius="md"
-      withCloseButton={false}
+      position="bottom"
+      maw={350}
+      styles={{ content: { height: "auto", maxWidth: 350, minWidth: 350, flex: matches ? 1 : "none" }, inner: { justifyContent: "center" } }}
       title={
-        <Flex align={"end"} columnGap={"sm"}>
-          <Text fw={700} size="lg">
+        <Flex align="end" columnGap="sm">
+          <Text fw={700} size="md">
             {title}
           </Text>
-          <Text c={"gray.7"} size="sm">
+          <Text c="gray.7" size="xs">
             {date ? dayjs(date).format("MM월 DD일 dddd") : ""}
           </Text>
         </Flex>
       }
-      transitionProps={{ transition: "slide-up", duration: 300, timingFunction: "ease" }} // transitionProps로 전환 효과 설정
-      styles={{
-        content: {
-          position: "absolute",
-          bottom: "calc(env(safe-area-inset-bottom) + 16px)",
-          maxHeight: "80vh",
-          width: "90%",
-          // zIndex: 1000,
-        },
-      }}
     >
       <Box p="xs" pt={0}>
         {children}
       </Box>
-    </Modal>
+    </Drawer>
   );
 };
 
