@@ -4,8 +4,9 @@ import notification from "@/components/GNB/Notification";
 import { useSubmitFormMeal } from "@/hooks/useSubmitForm";
 import { ATTENDANCE_OPTIONS } from "@/lib/enums";
 import { calendarDateStore } from "@/lib/store/calendarDateStore";
-import { Button, Flex, Modal, NumberInput, Select, Tabs, Text, TextInput } from "@mantine/core";
+import { Button, Drawer, Flex, Modal, NumberInput, Select, Tabs, Text, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
+import { useMediaQuery } from "@mantine/hooks";
 import { notifications } from "@mantine/notifications";
 import { useQueryClient } from "@tanstack/react-query";
 import dayjs from "dayjs";
@@ -93,7 +94,9 @@ const ModalInputForm = forwardRef<HTMLDivElement, ModalInputFormProps>(({ opened
     setSearchValue("");
     setIsActive(false);
   };
-
+  const matches = useMediaQuery("(max-width: 40em)", true, {
+    getInitialValueInEffect: false,
+  });
   const renderAttendanceSelect = () => {
     if (currentTab !== "lunch") return null;
 
@@ -166,37 +169,31 @@ const ModalInputForm = forwardRef<HTMLDivElement, ModalInputFormProps>(({ opened
   );
 
   return (
-    <Modal
+    <Drawer
+      offset={12}
+      radius="md"
       opened={opened}
       onClose={close}
-      size="xl"
-      ref={ref}
-      zIndex={100}
-      radius="md"
-      withCloseButton={false}
+      position="bottom"
+      styles={{ content: { height: "auto", minWidth: 350, flex: matches ? 1 : "none" }, inner: { justifyContent: "center" } }}
       title={
         <Flex align="end" columnGap="sm">
-          <Text fw={700} size="lg">
+          <Text fw={700} size="md">
             식대 입력
           </Text>
-          <Text c="gray.7" size="sm">
+          <Text c="gray.7" size="xs">
             {dayjs(calendarDate).format("MM월 DD일 dddd")}
           </Text>
         </Flex>
       }
-      transitionProps={{ transition: "slide-up", duration: 300, timingFunction: "ease" }}
-      styles={{
-        content: {
-          position: "absolute",
-          bottom: "calc(env(safe-area-inset-bottom) + 16px)",
-          maxHeight: "80vh",
-          width: "90%",
-        },
-      }}
     >
       <Flex direction="column" rowGap={10} className="modal-parent-portal">
         <form onSubmit={form.onSubmit(handleSubmit)}>
-          <Tabs defaultValue={currentTab} onChange={(value: string | null) => setCurrentTab(value as MealType)}>
+          <Tabs
+            defaultValue={currentTab}
+            onChange={(value: string | null) => setCurrentTab(value as MealType)}
+            styles={{ tabLabel: { fontSize: "var(--mantine-font-size-xs)" } }}
+          >
             <Tabs.List grow>
               <Tabs.Tab value="breakfast">조식</Tabs.Tab>
               <Tabs.Tab value="lunch">중식</Tabs.Tab>
@@ -209,7 +206,7 @@ const ModalInputForm = forwardRef<HTMLDivElement, ModalInputFormProps>(({ opened
           </Tabs>
         </form>
       </Flex>
-    </Modal>
+    </Drawer>
   );
 });
 
