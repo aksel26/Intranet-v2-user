@@ -46,6 +46,13 @@ export default function Login() {
           router.push("/main");
           sessionStorage.setItem("user", JSON.stringify(data));
         }
+      })
+      .catch((error: any) => {
+        notification({
+          title: "로그인 오류",
+          color: "red",
+          message: "로그인 중 오류가 발생하였습니다.",
+        });
       });
   };
   return (
