@@ -83,7 +83,7 @@ const MyInfo = () => {
     });
   };
   return (
-    <Container size={"lg"} p={0} style={{ scrollPaddingBottom: "52px", overflowY: "auto", scrollSnapType: "y mandatory" }}>
+    <Container fluid p={"lg"} bg={"white"} h={"calc(100vh - 52px)"} style={{ scrollPaddingBottom: "52px", overflowY: "auto", scrollSnapType: "y mandatory" }}>
       <Flex direction={"column"} pt={"lg"} p={"sm"}>
         <Text size="xl" fw={700}>
           내 정보 수정
