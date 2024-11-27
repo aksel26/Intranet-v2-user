@@ -37,7 +37,7 @@ interface OutputPayload {
   payeeIdxs: number[];
 }
 
-export default function WelfareInputForm({ onClose }: any) {
+export default function WelfareInputForm({ onClose, opened }: any) {
   const { data: userList, isLoading, isError } = useGetUsers();
   const [users, setUsers] = useState<any>([]);
   const [targetDate, setTargetDate] = useState<Date | null>(null);
@@ -101,6 +101,7 @@ export default function WelfareInputForm({ onClose }: any) {
           color: "green",
           message: "복지포인트 내역이 저장되었습니다.",
         });
+        opened && onClose();
         form.reset();
         setSelectedPayee([]);
         setTargetDate(null);

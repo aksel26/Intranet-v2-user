@@ -20,6 +20,7 @@ import {
   Pill,
   Popover,
   rem,
+  ScrollArea,
   Stack,
   Text,
   Title,
@@ -103,101 +104,102 @@ export const UsedList = ({ setCalendarYearMonth }: any) => {
         allowSingleDateInRange
         type="range"
       />
+      <ScrollArea>
+        <ListWrapper>
+          {dateGroup.length < 1 ? (
+            <Text ta={"center"} mt={40} c={"dimmed"} fz={"sm"}>
+              해당 월에는 복지포인트 사용 내역이 없어요.
+            </Text>
+          ) : (
+            dateGroup?.map((item: any, index: number) => (
+              <Stack key={index} gap={8}>
+                <DateSubText date={item.date} />
 
-      <ListWrapper>
-        {dateGroup.length < 1 ? (
-          <Text ta={"center"} mt={40} c={"dimmed"} fz={"sm"}>
-            해당 월에는 복지포인트 사용 내역이 없어요.
-          </Text>
-        ) : (
-          dateGroup?.map((item: any, index: number) => (
-            <Stack key={index} gap={4}>
-              <DateSubText date={item.date} />
+                {item.list.map((listContent: any, index: number) => (
+                  <Paper
+                    // size="sm"
+                    key={index}
+                    // variant="subtle"
 
-              {item.list.map((listContent: any, index: number) => (
-                <Paper
-                  // size="sm"
-                  key={index}
-                  // variant="subtle"
+                    // styles={{ label: { width: "100%" }, root: { height: "100%" } }}
+                  >
+                    <Group justify="space-between" w="100%" h={"100%"}>
+                      <Flex align={"center"} columnGap={"sm"}>
+                        {listContent.confirmYN === "Y" ? (
+                          <Checked width={25} height={20} color={"#1c7ed6"} />
+                        ) : (
+                          <UnChecked width={25} height={20} color={"#1c7ed6"} />
+                        )}
 
-                  // styles={{ label: { width: "100%" }, root: { height: "100%" } }}
-                >
-                  <Group justify="space-between" w="100%" h={"100%"}>
-                    <Flex align={"center"} columnGap={"sm"}>
-                      {listContent.confirmYN === "Y" ? (
-                        <Checked width={25} height={20} color={"#1c7ed6"} />
-                      ) : (
-                        <UnChecked width={25} height={20} color={"#1c7ed6"} />
-                      )}
-
-                      <Stack gap={3}>
-                        <Text fw={700} ta={"left"} fz={"sm"}>
-                          <NumberFormatter thousandSeparator value={listContent.amount || 0} suffix=" 원" />
-                        </Text>
-
-                        <Group gap={"xs"}>
-                          <Text fz={"xs"} c={"dimmed"}>
-                            {listContent.content}
+                        <Stack gap={3}>
+                          <Text fw={700} ta={"left"} fz={"sm"}>
+                            <NumberFormatter thousandSeparator value={listContent.amount || 0} suffix=" 원" />
                           </Text>
-                          <Divider orientation="vertical" />
-                          {listContent.payeeList.length === 0 ? (
-                            <Badge size="sm" radius={"xs"} key={index}>
-                              {listContent.selfWrittenYN === "Y" ? "직접결제" : `${listContent.payerName} 결제`}
-                            </Badge>
-                          ) : (
-                            <Popover position="bottom-start" withArrow shadow="xl" arrowSize={10} radius={"lg"}>
-                              <Popover.Target>
-                                <Indicator
-                                  inline
-                                  label={
-                                    <Text fw={800} c={"blue.8"} size="xs">
-                                      +{listContent.payeeList.length}
+
+                          <Group gap={"xs"}>
+                            <Text fz={"xs"} c={"dimmed"}>
+                              {listContent.content}
+                            </Text>
+                            <Divider orientation="vertical" />
+                            {listContent.payeeList.length === 0 ? (
+                              <Badge size="sm" radius={"xs"} key={index}>
+                                {listContent.selfWrittenYN === "Y" ? "직접결제" : `${listContent.payerName} 결제`}
+                              </Badge>
+                            ) : (
+                              <Popover position="bottom-start" withArrow shadow="xl" arrowSize={10} radius={"lg"}>
+                                <Popover.Target>
+                                  <Indicator
+                                    inline
+                                    label={
+                                      <Text fw={800} c={"blue.8"} size="xs">
+                                        +{listContent.payeeList.length}
+                                      </Text>
+                                    }
+                                    size={10}
+                                    color="white"
+                                    zIndex={100}
+                                  >
+                                    <Badge radius={"sm"} variant="light">
+                                      {listContent.selfWrittenYN === "Y" ? "직접결제" : `${listContent.payerName} 결제`}
+                                    </Badge>
+                                  </Indicator>
+                                </Popover.Target>
+                                <Popover.Dropdown>
+                                  <Stack gap={"sm"}>
+                                    <Text c={"gray.8"} size="sm" fw={600}>
+                                      같이 결제한 인원
                                     </Text>
-                                  }
-                                  size={10}
-                                  color="white"
-                                  zIndex={100}
-                                >
-                                  <Badge radius={"sm"} variant="light">
-                                    {listContent.selfWrittenYN === "Y" ? "직접결제" : `${listContent.payerName} 결제`}
-                                  </Badge>
-                                </Indicator>
-                              </Popover.Target>
-                              <Popover.Dropdown>
-                                <Stack gap={"sm"}>
-                                  <Text c={"gray.8"} size="sm" fw={600}>
-                                    같이 결제한 인원
-                                  </Text>
-                                  <Group gap={5}>
-                                    {listContent.payeeList &&
-                                      listContent.payeeList.map((payee: any, index: number) => (
-                                        <Pill size="sm" c={"gray.8"} key={index}>
-                                          {payee.userName}
-                                        </Pill>
-                                      ))}
-                                  </Group>
-                                </Stack>
-                              </Popover.Dropdown>
-                            </Popover>
-                          )}
-                        </Group>
-                      </Stack>
-                    </Flex>
-                    <ActionIcon size={"xl"} variant="subtle" onClick={(e) => handleUpdateWelfare(e, listContent)}>
-                      <ArrowRight color="gray" width={18} />
-                    </ActionIcon>
-                  </Group>
-                </Paper>
-              ))}
-            </Stack>
-          ))
-        )}
-      </ListWrapper>
+                                    <Group gap={5}>
+                                      {listContent.payeeList &&
+                                        listContent.payeeList.map((payee: any, index: number) => (
+                                          <Pill size="sm" c={"gray.8"} key={index}>
+                                            {payee.userName}
+                                          </Pill>
+                                        ))}
+                                    </Group>
+                                  </Stack>
+                                </Popover.Dropdown>
+                              </Popover>
+                            )}
+                          </Group>
+                        </Stack>
+                      </Flex>
+                      <ActionIcon size={"xl"} variant="subtle" onClick={(e) => handleUpdateWelfare(e, listContent)}>
+                        <ArrowRight color="gray" width={18} />
+                      </ActionIcon>
+                    </Group>
+                  </Paper>
+                ))}
+              </Stack>
+            ))
+          )}
+        </ListWrapper>
+      </ScrollArea>
       <BottomModal opened={openedUpdateForm} onClose={handleClose} title={"복지포인트 수정"}>
         <WelfareUpdateForm onClose={handleClose} updateWelfareDetail={updateWelfareDetail} />
       </BottomModal>
       <BottomModal opened={opened} onClose={close} title={"복지포인트 입력"}>
-        <WelfareInputForm onClose={close} />
+        <WelfareInputForm onClose={close} opened={opened} />
       </BottomModal>
 
       <Affix position={{ bottom: 80, right: 20 }} zIndex={1000} hiddenFrom="md">
