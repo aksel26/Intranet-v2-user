@@ -1,8 +1,9 @@
 "use client";
 import notification from "@/components/GNB/Notification";
 import { useSubmitFormActivity } from "@/hooks/useSubmitForm";
-import { Button, Flex, NumberInput, rem, TextInput } from "@mantine/core";
-import { DatePickerInput } from "@mantine/dates";
+import { myInfoStore } from "@/lib/store/myInfoStore";
+import { Button, Flex, NumberInput, rem, Text, TextInput } from "@mantine/core";
+import { DateInput, DatePickerInput } from "@mantine/dates";
 import { useForm } from "@mantine/form";
 import { IconCalendar } from "@tabler/icons-react";
 import { useQueryClient } from "@tanstack/react-query";
@@ -12,16 +13,15 @@ import { useEffect, useState } from "react";
 dayjs.locale("ko");
 
 interface FormValues {
-  targetDay: string;
+  targetDay: string | null;
   amount: number | null;
   content: string | null;
   payerName: string | null;
 }
 
-export default function ActivityInputForm({ onClose }: any) {
+export default function ActivityInputForm({ onClose, opened }: any) {
+  console.log("🚀 ~ ActivityInputForm ~ opened:", opened);
   const queryClient = useQueryClient();
-
-  const [targetDate, setTargetDate] = useState<Date | null>(null);
 
   const { mutate } = useSubmitFormActivity();
 
@@ -46,34 +46,57 @@ export default function ActivityInputForm({ onClose }: any) {
 
   const handleSubmit = (values: FormValues) => {
     const temp = { ...values };
-    temp.targetDay = dayjs(targetDate).format("YYYY-MM-DD");
+
+    temp.targetDay = dayjs(temp.targetDay).format("YYYY-MM-DD");
+
     mutate(temp, {
       onSuccess: async () => {
-        await queryClient.invalidateQueries({ queryKey: ["qna"] });
+        await queryClient.invalidateQueries({ queryKey: ["activity"] });
         notification({
           title: "활동비",
           color: "green",
           message: "활동비 내역이 저장되었습니다.",
         });
-        onClose();
+        form.reset();
+        opened && onClose();
+      },
+      onError: (error: any) => {
+        if (error.status === 403) {
+          notification({
+            title: "활동비",
+            color: "red",
+            message: "작성 권한이 없습니다.",
+          });
+        }
       },
     });
   };
+
+  const { myInfo } = myInfoStore();
+
+  if (myInfo.gradeName === "인턴" || myInfo.gradeName === "위원" || myInfo.gradeName === "선임" || myInfo.gradeName === "책임") {
+    return (
+      <Text fz={"sm"} c={"dimmed"}>
+        활동비 입력 권한이 없습니다.
+      </Text>
+    );
+  }
 
   return (
     <form onSubmit={form.onSubmit(handleSubmit)}>
       <Flex direction={"column"} rowGap={10}>
         <TextInput label="결제자" value={"본인"} disabled key={form.key("payerName")} {...form.getInputProps("payerName")} />
-        <DatePickerInput
+        <DateInput
           label="일자"
           locale="ko"
+          clearable
           leftSection={<IconCalendar style={{ width: rem(18), height: rem(18) }} stroke={1.5} />}
           placeholder="사용일자를 선택해 주세요."
-          value={targetDate}
-          onChange={setTargetDate}
           valueFormat="MM월 D일 dddd"
           firstDayOfWeek={0}
           popoverProps={{ withinPortal: false, zIndex: 1001 }}
+          key={form.key("targetDay")}
+          {...form.getInputProps("targetDay")}
         />
         <TextInput label="사용처" placeholder="결제하신 곳의 상호명을 입력해 주세요." key={form.key("content")} {...form.getInputProps("content")} />
 

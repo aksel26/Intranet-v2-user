@@ -1,5 +1,5 @@
 "use client";
-import { ActionIcon, Affix, Button, Card, Divider, Flex, Group, NumberFormatter, Pill, rem, Stack, Text } from "@mantine/core";
+import { ActionIcon, Affix, Button, Card, Divider, Flex, Group, NumberFormatter, Paper, Pill, rem, Stack, Text, Title } from "@mantine/core";
 import { MonthPickerInput } from "@mantine/dates";
 import "@mantine/dates/styles.css";
 import { IconChevronDown, IconPlus } from "@tabler/icons-react";
@@ -18,6 +18,7 @@ import BottomModal from "@/components/Global/BottomModal";
 import ActivityInputForm from "./ActivityInputForm";
 import ActivityUpdateForm from "./ActivityUpdateForm";
 import { ListWrapper } from "../welfare/ListWrapper";
+import { myInfoStore } from "@/lib/store/myInfoStore";
 dayjs.locale("ko");
 
 export const UsedListActivity = ({ setCalendarYearMonth }: any) => {
@@ -51,26 +52,42 @@ export const UsedListActivity = ({ setCalendarYearMonth }: any) => {
   useEffect(() => {
     setDateGroup(groupByDate(activityInfo.activities));
   }, [activityInfo]);
+
+  const [isAuthorized, setIsAuthorized] = useState(false);
+
+  const { myInfo } = myInfoStore();
+
+  useEffect(() => {
+    if (myInfo.gradeName === "인턴" || myInfo.gradeName === "위원" || myInfo.gradeName === "선임" || myInfo.gradeName === "책임") {
+      setIsAuthorized(false);
+    } else {
+      setIsAuthorized(true);
+    }
+  }, []);
+
   return (
-    <Flex direction={"column"} bg={"white"}>
-      <Flex px={"md"} py={"xs"} justify={"space-between"} align={"center"}>
-        <MonthPickerInput
-          rightSection={icon}
-          rightSectionPointerEvents="none"
-          value={selectMonth}
-          onChange={changeMonth}
-          valueFormat="YYYY년 MM월"
-          locale="ko-KR"
-          style={{ fontWeight: 700, width: "max-content" }}
-          variant="unstyled"
-          allowSingleDateInRange
-          type="range"
-        />
-      </Flex>
+    <Paper bg={"white"} px="lg" py="lg" radius={"lg"}>
+      <Title order={5} mb={"md"}>
+        사용내역 조회
+      </Title>
+
+      <MonthPickerInput
+        rightSection={icon}
+        rightSectionPointerEvents="none"
+        value={selectMonth}
+        onChange={changeMonth}
+        valueFormat="YYYY년 MM월"
+        locale="ko-KR"
+        style={{ fontWeight: 700, width: "max-content" }}
+        variant="unstyled"
+        allowSingleDateInRange
+        type="range"
+      />
+
       <ListWrapper>
         {activityInfo.activities.length < 1 ? (
-          <Text ta={"center"} mt={40} c={"gray.7"}>
-            {/* {selectMonth && selectMonth?.getMonth() + 1}월에는 활동비 사용 내역이 없어요. */}
+          <Text ta={"center"} mt={40} c={"dimmed"} fz={"sm"}>
+            해당 월에는 복지포인트 사용 내역이 없어요.
           </Text>
         ) : (
           dateGroup?.map((item: any, index: number) => (
@@ -78,15 +95,17 @@ export const UsedListActivity = ({ setCalendarYearMonth }: any) => {
               <DateSubText date={item.date} />
 
               {item.list.map((listContent: any, index: number) => (
-                <Card py={0} mb={"lg"} key={index}>
-                  <Group justify="space-between">
+                <Paper key={index}>
+                  <Group justify="space-between" w="100%" h={"100%"}>
                     <Flex align={"center"} columnGap={"sm"}>
                       <Checked width={25} height={20} color={"#1c7ed6"} />
-                      <Stack gap={1}>
-                        <NumberFormatter thousandSeparator value={listContent.amount || 0} suffix=" 원" className="text-md font-bold" />
+                      <Stack gap={3}>
+                        <Text fw={700} ta={"left"} fz={"sm"}>
+                          <NumberFormatter thousandSeparator value={listContent.amount || 0} suffix=" 원" className="text-md font-bold" />
+                        </Text>
 
                         <Group gap={"xs"}>
-                          <Text size="sm" c={"gray.6"}>
+                          <Text fz={"xs"} c={"dimmed"}>
                             {listContent.content}
                           </Text>
                         </Group>
@@ -96,24 +115,24 @@ export const UsedListActivity = ({ setCalendarYearMonth }: any) => {
                       <ArrowRight color="gray" width={18} />
                     </ActionIcon>
                   </Group>
-                </Card>
+                </Paper>
               ))}
             </React.Fragment>
           ))
         )}
       </ListWrapper>
       <BottomModal opened={opened} onClose={close} title={"활동비 입력"}>
-        <ActivityInputForm onClose={close} />
+        <ActivityInputForm onClose={close} opened={opened} />
       </BottomModal>
 
-      <BottomModal opened={openedUpdateForm} onClose={closeUpdateForm} title={"복지포인트 수정"}>
+      <BottomModal opened={openedUpdateForm} onClose={closeUpdateForm} title={"활동비 수정"}>
         <ActivityUpdateForm onClose={closeUpdateForm} updateActivityDetail={updateActivityDetail} />
       </BottomModal>
-      <Affix position={{ bottom: 80, right: 20 }} zIndex={1000}>
+      <Affix position={{ bottom: 80, right: 20 }} zIndex={1000} hidden={!isAuthorized} hiddenFrom="md">
         <Button radius={"lg"} onClick={toggle} color="blue.9" leftSection={<IconPlus style={{ width: rem(16), height: rem(16) }} />}>
           내역추가
         </Button>
       </Affix>
-    </Flex>
+    </Paper>
   );
 };
