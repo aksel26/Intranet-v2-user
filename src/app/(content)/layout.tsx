@@ -1,28 +1,25 @@
 "use client";
-import { AppShell, Box, Burger, Button, Flex, Group, Image, NavLink, rem, Skeleton, Stack, Text } from "@mantine/core";
+import { AppShell, Box, Burger, Button, Flex, Group, Image, Modal, NavLink, rem, Skeleton, Stack, Text } from "@mantine/core";
 // import Image from "next/image";
+import useGetMe from "@/hooks/useGetMe";
 import useLogout from "@/hooks/useLogout";
 import { useDisclosure, useHeadroom } from "@mantine/hooks";
 import { notifications } from "@mantine/notifications";
-import { useQuery } from "@tanstack/react-query";
 import NextImage from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
-import * as api from "../api/get/getApi";
+import React from "react";
 import myImage from "/public/images/ACG_LOGO_GRAY.png";
+
 export default function ContentLayout({ children }: { children: React.ReactNode }) {
+  const pinned = useHeadroom({ fixedAt: 60 });
   const [mobileOpened, { toggle: toggleMobile }] = useDisclosure();
   const [desktopOpened, { toggle: toggleDesktop }] = useDisclosure(true);
-  const { data, isLoading, isError } = useQuery({ queryKey: ["me"], queryFn: () => api.getMe() });
 
-  const [user, setUser] = useState<any>();
-
-  useEffect(() => {
-    data && setUser(data.data.data);
-  }, [data]);
+  const { myInfo, isLoading, isError } = useGetMe();
 
   const { mutate: logout, isError: isError_logout, isSuccess: isSuccess_logout } = useLogout();
+  const [opened, { open, close }] = useDisclosure(false);
 
   const router = useRouter();
   const handleLogout = async () => {
@@ -48,7 +45,6 @@ export default function ContentLayout({ children }: { children: React.ReactNode 
   };
 
   const clickLogo = () => router.push("/main");
-  const pinned = useHeadroom({ fixedAt: 60 });
 
   return (
     <AppShell
@@ -87,24 +83,24 @@ export default function ContentLayout({ children }: { children: React.ReactNode 
             <Flex direction={"column"} rowGap={"md"} w={"100%"}>
               <Box>
                 <Text fz={"lg"} fw={700} c={"blue.9"}>
-                  {user?.userName}
+                  {myInfo?.userName}
                 </Text>
                 <Text c={"blue.9"} fz={"sm"}>
                   <Text fz={"sm"} c={"blue.9"} component="span" mr={5}>
-                    {user?.teamName || user?.hqName}
+                    {myInfo?.teamName || myInfo?.hqName}
                   </Text>
-                  {user?.gradeName}
+                  {myInfo?.gradeName}
                 </Text>
               </Box>
 
               <Group justify="space-between" align="end">
                 <Stack gap={"xs"}>
                   <Text c={"blue.9"} size={"xs"}>
-                    {user?.userEmail}
+                    {myInfo?.userEmail}
                   </Text>
 
                   <Text c={"blue.9"} size={"xs"}>
-                    {user?.userCell}
+                    {myInfo?.userCell}
                   </Text>
                 </Stack>
                 <Text c={"blue.9"} size={"xs"}>
@@ -116,7 +112,7 @@ export default function ContentLayout({ children }: { children: React.ReactNode 
         </Skeleton>
 
         <Group wrap="nowrap" my="sm">
-          <Button fullWidth variant="filled">
+          <Button fullWidth variant="filled" onClick={open}>
             출근하기
           </Button>
           <Button fullWidth variant="filled">
@@ -142,6 +138,9 @@ export default function ContentLayout({ children }: { children: React.ReactNode 
           <Center>ACG</Center>
         </Container>
       </AppShellFooter> */}
+      <Modal opened={opened} onClose={close} title="출근하기" centered>
+        <Text>출근처리됩니다.</Text>
+      </Modal>
     </AppShell>
   );
 }
