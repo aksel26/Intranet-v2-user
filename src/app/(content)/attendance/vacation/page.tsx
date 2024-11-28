@@ -2,8 +2,34 @@
 
 import CalendarAttendance from "@/components/content/attendance/CalendarAttendance";
 import "@/styles/calendar.css";
-import { Badge, Breadcrumbs, Button, Container, Divider, Grid, GridCol, Group, List, Paper, Popover, Stack, Text, ThemeIcon, Title } from "@mantine/core";
+import {
+  Badge,
+  Breadcrumbs,
+  Button,
+  Container,
+  Divider,
+  Drawer,
+  Grid,
+  GridCol,
+  Group,
+  Indicator,
+  List,
+  Paper,
+  Popover,
+  Select,
+  Stack,
+  Text,
+  ThemeIcon,
+  Title,
+} from "@mantine/core";
+import { DatePicker } from "@mantine/dates";
+import { useDisclosure } from "@mantine/hooks";
+import { useState } from "react";
 import IconInfoCircle from "/public/icons/info-circle.svg";
+
+import dayjs from "dayjs";
+import "dayjs/locale/ko";
+dayjs.locale("ko");
 const items = [
   { title: "근태관리", href: "#" },
   { title: "휴가관리", href: "#" },
@@ -19,6 +45,9 @@ const CountText = ({ children }: any) => {
   return <Text size="xs">{children}</Text>;
 };
 function page() {
+  const [opened, { open, close }] = useDisclosure(false);
+  const [value, setValue] = useState<Date[]>([]);
+
   return (
     <Container fluid p={"lg"} style={{ scrollPaddingBottom: "52px", overflowY: "auto", scrollSnapType: "y mandatory" }}>
       <Breadcrumbs mb={"md"}>{items}</Breadcrumbs>
@@ -185,7 +214,7 @@ function page() {
         </GridCol>
         <GridCol span={{ base: 12, md: 7 }}>
           <Stack gap={"md"} h={"100%"}>
-            <Button variant="gradient" fullWidth gradient={{ from: "blue", to: "cyan", deg: 90 }} size="lg">
+            <Button variant="gradient" fullWidth gradient={{ from: "blue", to: "cyan", deg: 90 }} onClick={open}>
               휴가 신청
             </Button>
             <Paper bg={"white"} px="md" py="lg" radius={"lg"}>
@@ -251,6 +280,48 @@ function page() {
           </Stack>
         </GridCol>
       </Grid>
+      <Drawer opened={opened} onClose={close} position="right" title="휴가 신청하기">
+        <DatePicker
+          highlightToday
+          locale="ko"
+          type="multiple"
+          firstDayOfWeek={0}
+          style={{ width: "100%", height: "100%" }}
+          styles={{ month: { width: "100%" }, calendarHeader: { maxWidth: "unset" }, monthCell: { padding: "var(--mantine-spacing-xs)" } }}
+          renderDay={(date) => {
+            const day = date.getDate();
+            const isToday = dayjs(date).isSame(dayjs(), "day");
+            if (day === 14) {
+              return (
+                <Indicator color="yellow" position="top-end" size={10} offset={-5}>
+                  <div>{day}</div>
+                </Indicator>
+              );
+            }
+            if (day === 15) {
+              return (
+                <Indicator color="blue" position="top-end" size={10} offset={-5}>
+                  <div>{day}</div>
+                </Indicator>
+              );
+            }
+            return (
+              <Indicator color="yellow" position="top-end" size={12} processing offset={-5} disabled={!isToday}>
+                <div>{day}</div>
+              </Indicator>
+            );
+          }}
+        />
+        <Text>선택한 일자</Text>
+        <Stack>
+          {value.map((item: any) => (
+            <Group wrap="nowrap" align="flex-end">
+              <Text>{dayjs(item).format("YYYY-MM-DD")}</Text>
+              <Select label="휴가 유형" placeholder="Pick value" data={["연차", "오전 반차", "오후 반차", "오전 반반차", "오후 반반차"]} clearable />
+            </Group>
+          ))}
+        </Stack>
+      </Drawer>
     </Container>
   );
 }
