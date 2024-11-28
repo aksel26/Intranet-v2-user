@@ -1,7 +1,7 @@
 "use client";
 
 import { theme } from "@/lib/theme";
-import { createTheme, MantineProvider } from "@mantine/core";
+import { createTheme, MantineProvider, rem } from "@mantine/core";
 import { Notifications } from "@mantine/notifications";
 import React from "react";
 export const GlobalContainer = ({ children }: { children: React.ReactNode }) => {
@@ -16,6 +16,13 @@ export const GlobalContainer = ({ children }: { children: React.ReactNode }) => 
   const theme = createTheme({
     defaultRadius: "md",
     fontFamily: "NanumSquareNeoVariable, sans-serif",
+    // fontSizes: {
+    //   xs: rem(10),
+    //   sm: rem(11),
+    //   md: rem(14),
+    //   lg: rem(16),
+    //   xl: rem(20),
+    // },
   });
   return (
     <MantineProvider theme={theme}>
