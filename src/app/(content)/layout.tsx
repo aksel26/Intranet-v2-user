@@ -120,7 +120,9 @@ export default function ContentLayout({ children }: { children: React.ReactNode 
           </Button>
         </Group>
         <NavLink label="근태관리" childrenOffset={28}>
-          <NavLink component={Link} href={"/attendance"} label="근태 · 휴가" />
+          <NavLink component={Link} href={"/attendance"} label="근태 · 휴가 메인" />
+          <NavLink component={Link} href={"/attendance/vacation"} label="휴가 관리" />
+          <NavLink component={Link} href={"/attendance/work"} label="근태 관리" />
         </NavLink>
         <NavLink label="검사현황" />
         <NavLink component={Link} label="복지" href={"/welfare/meal"}>
