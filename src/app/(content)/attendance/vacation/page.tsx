@@ -9,10 +9,12 @@ import {
   Container,
   Divider,
   Drawer,
+  FileButton,
   Grid,
   GridCol,
   Group,
   Indicator,
+  Input,
   List,
   Paper,
   Popover,
@@ -47,6 +49,7 @@ const CountText = ({ children }: any) => {
 function page() {
   const [opened, { open, close }] = useDisclosure(false);
   const [value, setValue] = useState<Date[]>([]);
+  const [file, setFile] = useState<File | null>(null);
 
   return (
     <Container fluid p={"lg"} style={{ scrollPaddingBottom: "52px", overflowY: "auto", scrollSnapType: "y mandatory" }}>
@@ -286,8 +289,9 @@ function page() {
           locale="ko"
           type="multiple"
           firstDayOfWeek={0}
-          style={{ width: "100%", height: "100%" }}
-          styles={{ month: { width: "100%" }, calendarHeader: { maxWidth: "unset" }, monthCell: { padding: "var(--mantine-spacing-xs)" } }}
+          onChange={setValue}
+          style={{ width: "100%" }}
+          styles={{ month: { width: "100%" }, calendarHeader: { maxWidth: "unset" } }}
           renderDay={(date) => {
             const day = date.getDate();
             const isToday = dayjs(date).isSame(dayjs(), "day");
@@ -312,14 +316,61 @@ function page() {
             );
           }}
         />
-        <Text>선택한 일자</Text>
-        <Stack>
-          {value.map((item: any) => (
-            <Group wrap="nowrap" align="flex-end">
-              <Text>{dayjs(item).format("YYYY-MM-DD")}</Text>
-              <Select label="휴가 유형" placeholder="Pick value" data={["연차", "오전 반차", "오후 반차", "오전 반반차", "오후 반반차"]} clearable />
-            </Group>
-          ))}
+        <Text my={"sm"}>신청정보</Text>
+        <Stack px="md">
+          {value.length < 1 ? (
+            <Text c={"dimmed"} fz={"sm"} ta={"center"}>
+              캘린더에서 일자를 선택해 주세요.
+            </Text>
+          ) : (
+            <Stack gap={"xs"}>
+              {value.map((item: any) => (
+                <Group wrap="nowrap" justify="space-between">
+                  <Input.Wrapper label="신청일" styles={{ label: { fontSize: "var(--mantine-font-size-xs" } }}>
+                    <Input value={dayjs(item).format("YYYY-MM-DD")} readOnly variant="unstyled" size="sm" w={80} styles={{ wrapper: { fontWeight: 700 } }} />
+                  </Input.Wrapper>
+
+                  <Select
+                    styles={{ label: { fontSize: "var(--mantine-font-size-xs" } }}
+                    checkIconPosition="right"
+                    size="sm"
+                    label="휴가 유형"
+                    placeholder="Pick value"
+                    clearable
+                    data={[
+                      { group: "일반휴가", items: ["연차", "오전 반차", "오후 반차", "오전 반반차", "오후 반반차"] },
+                      { group: "특이사항", items: ["조퇴", "훈련", "대체휴무", "특별휴가", "경조휴무", "무급휴가"] },
+                    ]}
+                  />
+                </Group>
+              ))}
+            </Stack>
+          )}
+          <Divider />
+
+          <Select
+            styles={{ label: { fontSize: "var(--mantine-font-size-xs" } }}
+            size="sm"
+            label="승인자 선택"
+            placeholder="결재 담당자를 선택해 주세요."
+            data={["정진우", "김현근"]}
+            clearable
+            checkIconPosition="right"
+          />
+          {file && (
+            <Text size="xs" ta="center" mt="sm">
+              파일명: {file.name}
+            </Text>
+          )}
+          <FileButton onChange={setFile} accept="image/png,image/jpeg">
+            {(props) => (
+              <Button variant="light" {...props}>
+                첨부사진 올리기
+              </Button>
+            )}
+          </FileButton>
+
+          <Button fullWidth>신청완료</Button>
         </Stack>
       </Drawer>
     </Container>
