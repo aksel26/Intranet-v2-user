@@ -19,7 +19,8 @@ export default function ContentLayout({ children }: { children: React.ReactNode 
   const { myInfo, isLoading, isError } = useGetMe();
 
   const { mutate: logout, isError: isError_logout, isSuccess: isSuccess_logout } = useLogout();
-  const [opened, { open, close }] = useDisclosure(false);
+  const [onWorkTimeOpened, { open: onWorkModalOpen, close: onWorkModalClose }] = useDisclosure(false);
+  const [offWorkTimeOpened, { open: offWorkModalOpen, close: offWorkModalClose }] = useDisclosure(false);
 
   const router = useRouter();
   const handleLogout = async () => {
@@ -112,27 +113,30 @@ export default function ContentLayout({ children }: { children: React.ReactNode 
         </Skeleton>
 
         <Group wrap="nowrap" my="sm">
-          <Button fullWidth variant="filled" onClick={open}>
+          <Button fullWidth variant="filled" onClick={onWorkModalOpen}>
             출근하기
           </Button>
-          <Button fullWidth variant="filled">
+          <Button fullWidth variant="filled" onClick={offWorkModalOpen}>
             퇴근하기
           </Button>
         </Group>
-        <NavLink label="근태관리" childrenOffset={28}>
-          <NavLink component={Link} href={"/attendance"} label="근태 · 휴가 메인" />
+        <NavLink label="근태 · 휴가 관리" childrenOffset={28}>
+          <NavLink component={Link} href={"/attendance"} label="Dashboard" />
           <NavLink component={Link} href={"/attendance/vacation"} label="휴가 관리" />
           <NavLink component={Link} href={"/attendance/work"} label="근태 관리" />
         </NavLink>
         <NavLink label="검사현황" />
-        <NavLink component={Link} label="복지" href={"/welfare/meal"}>
+        <NavLink label="복지" childrenOffset={28}>
           <NavLink component={Link} href={"/welfare/meal"} label="식대" />
           <NavLink component={Link} href={"/welfare/welfarePoint"} label="복지포인트" />
           <NavLink component={Link} href={"/welfare/activity"} label="활동비" />
         </NavLink>
         <NavLink component={Link} href={"/notice"} label="공지사항" />
 
-        <NavLink component={Link} label="내 정보" href={"/myInfo"} />
+        <NavLink label="기타 메뉴">
+          <NavLink component={Link} href={"/survey"} label="설문/리뷰" />
+          <NavLink component={Link} href={"/myInfo"} label="내 정보 수정" />
+        </NavLink>
       </AppShell.Navbar>
       {/* <AppShellFooter withBorder={false}>
         <Container size="xs" style={{ margin: "0 auto", borderTop: "1px solid #e9e9e9" }} h={"100%"}>
@@ -140,8 +144,35 @@ export default function ContentLayout({ children }: { children: React.ReactNode 
           <Center>ACG</Center>
         </Container>
       </AppShellFooter> */}
-      <Modal opened={opened} onClose={close} title="출근하기" centered>
-        <Text>출근처리됩니다.</Text>
+      <Modal opened={onWorkTimeOpened} onClose={onWorkModalClose} title="출근하기" centered size={"xs"}>
+        <Text>
+          {myInfo?.userName} <Text component="span">{myInfo?.gradeName}</Text>님,
+        </Text>
+        <Text>반갑습니다. 👋 </Text>
+        <Text c={"dimmed"} fz={"sm"} mt={"md"}>
+          아래 버튼을 눌러 출근을 완료해 주세요.
+        </Text>
+        <Group wrap="nowrap" mt={"md"}>
+          <Button fullWidth>출근하기</Button>
+          <Button fullWidth variant="light" color="gray.8" onClick={onWorkModalClose}>
+            닫기
+          </Button>
+        </Group>
+      </Modal>
+      <Modal opened={offWorkTimeOpened} onClose={offWorkModalClose} title="퇴근하기" centered size={"xs"}>
+        <Text>
+          {myInfo?.userName} <Text component="span">{myInfo?.gradeName}</Text>님,
+        </Text>
+        <Text>오늘도 수고하셨습니다. 🎉 </Text>
+        <Text c={"dimmed"} fz={"sm"} mt={"md"}>
+          아래 버튼을 눌러 퇴근을 완료해 주세요.
+        </Text>
+        <Group wrap="nowrap" mt={"md"}>
+          <Button fullWidth>퇴근하기</Button>
+          <Button fullWidth variant="light" color="gray.8" onClick={offWorkModalClose}>
+            닫기
+          </Button>
+        </Group>
       </Modal>
     </AppShell>
   );
