@@ -4,9 +4,10 @@ import { useDisclosure } from "@mantine/hooks";
 import React, { useState } from "react";
 import ArrowDown from "/public/icons/arrow-down.svg";
 import ArrowUp from "/public/icons/arrow-up.svg";
+import IconDots from "/public/icons/dots.svg";
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Tooltip, Legend, ChartOptions, ChartData } from "chart.js";
 import dynamic from "next/dynamic";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Tooltip, Legend);
 
@@ -55,6 +56,9 @@ function page() {
       },
     ],
   };
+
+  const router = useRouter();
+  const goNotice = () => router.push("/notice");
   return (
     <Container fluid p={"lg"}>
       <Stack mb={"xl"} gap={4}>
@@ -91,11 +95,16 @@ function page() {
           </Paper>
         </GridCol>
         <GridCol span={{ base: 12, md: 6 }}>
-          <Paper p={"lg"} radius={"lg"}>
+          <Paper p={"lg"} radius={"lg"} className={activeTab === "second" ? "bg-gradient-to-r from-yellow-100 to-red-100" : ""}>
             <Tabs value={activeTab} onChange={setActiveTab} variant="pills" radius={"lg"}>
-              <Tabs.List>
-                <Tabs.Tab value="first">공지사항</Tabs.Tab>
-                <Tabs.Tab value="second">경조사</Tabs.Tab>
+              <Tabs.List justify="space-between">
+                <Group>
+                  <Tabs.Tab value="first">공지사항</Tabs.Tab>
+                  <Tabs.Tab value="second">경조사</Tabs.Tab>
+                </Group>
+                <ActionIcon variant="light" onClick={goNotice}>
+                  <IconDots />
+                </ActionIcon>
               </Tabs.List>
 
               <Tabs.Panel value="first" pt={"md"}>
@@ -127,7 +136,7 @@ function page() {
               </Tabs.Panel>
               <Tabs.Panel value="second" pt={"md"}>
                 <Stack gap={"sm"}>
-                  <Text fz={"sm"}>정정규 위원 생일</Text>
+                  <Text fz={"sm"}> 🎉 정정규 위원 생일</Text>
                 </Stack>
               </Tabs.Panel>
             </Tabs>
