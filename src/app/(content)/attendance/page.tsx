@@ -2,10 +2,11 @@
 import dayGridPlugin from "@fullcalendar/daygrid";
 import FullCalendar from "@fullcalendar/react";
 import { CompositeChart } from "@mantine/charts";
-import { Badge, Breadcrumbs, Container, Divider, Grid, GridCol, Group, List, Paper, rem, Stack, Text, ThemeIcon, Title } from "@mantine/core";
+import { ActionIcon, Badge, Breadcrumbs, Container, Divider, Grid, GridCol, Group, List, Paper, rem, Stack, Text, ThemeIcon, Title } from "@mantine/core";
 import { usePathname, useRouter } from "next/navigation";
 import "../../../styles/calendar.css";
 import IconCircleCheck from "/public/icons/circle-check.svg";
+import IconDots from "/public/icons/dots.svg";
 export const data = [
   {
     date: "1주차",
@@ -36,7 +37,7 @@ export const data = [
 
 const items = [
   { title: "근태관리", href: "#" },
-  { title: "근태 · 휴가 메인", href: "#" },
+  { title: "Dashboard", href: "#" },
 ].map((item, index) => (
   <Text size="lg" fw={700} component="a" key={index}>
     {/* <Anchor href={item.href} key={index}> */}
@@ -49,6 +50,7 @@ function page() {
   const pathName = usePathname();
 
   const goVacation = () => router.push(`${pathName}/vacation`);
+  const goWork = () => router.push(`${pathName}/work`);
   return (
     <Container fluid p={"lg"} style={{ scrollPaddingBottom: "52px", overflowY: "auto", scrollSnapType: "y mandatory" }}>
       <Breadcrumbs mb={"md"}>{items}</Breadcrumbs>
@@ -59,9 +61,12 @@ function page() {
       <Grid>
         <GridCol span={{ base: 12, md: 6 }}>
           <Paper bg={"white"} px="md" py="lg" radius={"lg"}>
-            <Title order={5} mb={"xs"}>
-              출근 요약
-            </Title>
+            <Group justify="space-between" mb={"xs"}>
+              <Title order={5}>출근 요약</Title>
+              <ActionIcon onClick={goWork} variant="default">
+                <IconDots />
+              </ActionIcon>
+            </Group>
             <Group gap={"xl"} align="flex-start" justify="space-evenly">
               <Stack gap={4} justify="center" align="center">
                 <Text>나의 출근 현황</Text>
@@ -81,10 +86,13 @@ function page() {
         </GridCol>
 
         <GridCol span={{ base: 12, md: 6 }}>
-          <Paper bg={"white"} px="md" py="lg" radius={"lg"} onClick={goVacation}>
-            <Title order={5} mb={"xs"}>
-              휴가 요약
-            </Title>
+          <Paper bg={"white"} px="md" py="lg" radius={"lg"}>
+            <Group justify="space-between" mb={"xs"}>
+              <Title order={5}>휴가 요약</Title>
+              <ActionIcon onClick={goVacation} variant="default">
+                <IconDots />
+              </ActionIcon>
+            </Group>
             <Group gap={"sm"} justify="space-evenly">
               <Stack gap={4}>
                 <Text fz={"sm"}>총 연차 수</Text>
