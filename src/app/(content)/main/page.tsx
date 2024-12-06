@@ -8,6 +8,8 @@ import IconDots from "/public/icons/dots.svg";
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Tooltip, Legend, ChartOptions, ChartData } from "chart.js";
 import dynamic from "next/dynamic";
 import { usePathname, useRouter } from "next/navigation";
+import { Calendar } from "@mantine/dates";
+import { DonutChart } from "@mantine/charts";
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Tooltip, Legend);
 
@@ -16,6 +18,12 @@ const LineChart = dynamic(() => import("react-chartjs-2").then((mod) => mod.Line
 });
 
 function page() {
+  const doughnutData = [
+    { name: "USA", value: 400, color: "indigo.6" },
+    { name: "India", value: 300, color: "yellow.6" },
+    { name: "Japan", value: 100, color: "teal.6" },
+    { name: "Other", value: 200, color: "gray.6" },
+  ];
   const [opened, { toggle }] = useDisclosure(false);
   const [activeTab, setActiveTab] = useState<string | null>("first");
   const [workTimeTab, setWorkTimeTab] = useState<string | null>("week");
@@ -72,7 +80,7 @@ function page() {
       </Stack>
       <Grid>
         <GridCol span={{ base: 12, md: 6 }}>
-          <Paper p={"lg"} radius={"lg"}>
+          {/* <Paper p={"lg"} radius={"lg"}>
             <Title order={5} mb={"md"}>
               오늘 일정 +3
             </Title>
@@ -92,57 +100,212 @@ function page() {
                 <Text fz={"sm"}>LG 유플러스 미팅</Text>
               </Group>
             </Stack>
-          </Paper>
+          </Paper> */}
+          <Stack>
+            <Paper p={"lg"} radius={"lg"}>
+              <Title order={5} mb={"md"}>
+                캘린더
+              </Title>
+              <Calendar
+                highlightToday
+                locale="ko"
+                firstDayOfWeek={0}
+                styles={{ month: { width: "100%" }, calendarHeader: { maxWidth: "unset" }, day: { width: "100%", height: 60 } }}
+              />
+            </Paper>
+            <Paper p={"lg"} radius={"lg"}>
+              <Title order={5} mb={"md"}>
+                오늘 일정
+              </Title>
+              <Stack gap={"xs"}>
+                <Group>
+                  <Badge size="md">검사운영</Badge>
+                  <Text fz={"sm"}>LG전자</Text>
+                </Group>
+                <Group>
+                  <Badge size="md">검사운영</Badge>
+                  <Text fz={"sm"}>LG전자</Text>
+                </Group>
+                <Group>
+                  <Badge size="md" color={"green"}>
+                    외근
+                  </Badge>
+                  <Text fz={"sm"}>LG 유플러스 미팅</Text>
+                </Group>
+              </Stack>
+            </Paper>
+          </Stack>
         </GridCol>
         <GridCol span={{ base: 12, md: 6 }}>
-          <Paper p={"lg"} radius={"lg"} className={activeTab === "second" ? "bg-gradient-to-r from-yellow-100 to-red-100" : ""}>
-            <Tabs value={activeTab} onChange={setActiveTab} variant="pills" radius={"lg"}>
-              <Tabs.List justify="space-between">
-                <Group>
-                  <Tabs.Tab value="first">공지사항</Tabs.Tab>
-                  <Tabs.Tab value="second">경조사</Tabs.Tab>
-                </Group>
+          <Stack>
+            <Paper p={"lg"} radius={"lg"} className={activeTab === "second" ? "bg-gradient-to-r from-yellow-100 to-red-100" : ""}>
+              <Tabs value={activeTab} onChange={setActiveTab} variant="pills" radius={"lg"}>
+                <Tabs.List justify="space-between">
+                  <Group>
+                    <Tabs.Tab value="first">공지사항</Tabs.Tab>
+                    <Tabs.Tab value="second">생일자</Tabs.Tab>
+                  </Group>
+                  <ActionIcon variant="light" onClick={goNotice}>
+                    <IconDots />
+                  </ActionIcon>
+                </Tabs.List>
+
+                <Tabs.Panel value="first" pt={"md"}>
+                  <Stack gap={"sm"} px={"sm"}>
+                    <Group justify="space-between" align="center">
+                      <Text fz={"sm"}>11월 외부지출비용 마감</Text>
+                      <Group>
+                        <Text fz={"xs"} c={"dimmed"}>
+                          안지훈
+                        </Text>
+                        <Text fz={"xs"} c={"dimmed"}>
+                          2012.12.11
+                        </Text>
+                      </Group>
+                    </Group>
+                    <Divider />
+                    <Group justify="space-between" align="center">
+                      <Text fz={"sm"}>ACG Monthly Meeting</Text>
+                      <Group>
+                        <Text fz={"xs"} c={"dimmed"}>
+                          안지훈
+                        </Text>
+                        <Text fz={"xs"} c={"dimmed"}>
+                          2012.12.11
+                        </Text>
+                      </Group>
+                    </Group>
+                  </Stack>
+                </Tabs.Panel>
+                <Tabs.Panel value="second" pt={"md"}>
+                  <Stack gap={"md"}>
+                    <Text fz={"sm"}> 🎉 정정규 위원</Text>
+
+                    <Text fz={"sm"}> 🎉 정정규 위원</Text>
+
+                    <Text fz={"sm"}> 🎉 정정규 위원</Text>
+
+                    <Text fz={"sm"}> 🎉 정정규 위원</Text>
+                  </Stack>
+                </Tabs.Panel>
+              </Tabs>
+            </Paper>
+
+            <Paper p={"lg"} radius={"lg"}>
+              <Group justify="space-between">
+                <Title order={5}>나의 근태 현황</Title>
                 <ActionIcon variant="light" onClick={goNotice}>
                   <IconDots />
                 </ActionIcon>
-              </Tabs.List>
+                {/* <Badge size="md" color="blue" radius="md">
+                  정상출근
+                </Badge> */}
+              </Group>
+              <Group justify="space-evenly">
+                <Badge size="lg" color="blue" radius="md">
+                  정상출근
+                </Badge>
 
-              <Tabs.Panel value="first" pt={"md"}>
-                <Stack gap={"sm"} px={"sm"}>
-                  <Group justify="space-between" align="center">
-                    <Text fz={"sm"}>11월 외부지출비용 마감</Text>
-                    <Group>
-                      <Text fz={"xs"} c={"dimmed"}>
-                        안지훈
+                <Divider orientation="vertical" />
+                <Stack gap={"xs"}>
+                  <Group>
+                    <Text size="sm">업무 경과시간</Text>
+                    <Text size="sm" styles={{ root: { letterSpacing: 1.2 } }}>
+                      12:22:00
+                    </Text>
+                  </Group>
+                  <Progress value={50} />
+                </Stack>
+                <Divider orientation="vertical" />
+                <Stack gap={"xs"}>
+                  <Group align="center">
+                    <Text size="sm">전체 휴가일 수</Text>
+                    <Text size="sm" styles={{ root: { letterSpacing: 1.1 } }}>
+                      <Text fw={900} size="xl" component="span">
+                        15
                       </Text>
-                      <Text fz={"xs"} c={"dimmed"}>
-                        2012.12.11
+                      일
+                    </Text>
+                  </Group>
+                  <Group align="center">
+                    <Text size="sm">잔여 휴가일 수</Text>
+                    <Text size="sm" styles={{ root: { letterSpacing: 1.1 } }}>
+                      <Text fw={900} size="xl" component="span">
+                        2.5
                       </Text>
+                      일
+                    </Text>
+                  </Group>
+                </Stack>
+              </Group>
+            </Paper>
+            <Paper p={"lg"} radius={"lg"}>
+              <Group justify="space-between" align="flex-start">
+                <Title order={5}>근태 현황 +10</Title>
+                <ActionIcon size={"sm"} variant="transparent" onClick={toggle} color="gray">
+                  <ArrowDown />
+                </ActionIcon>
+              </Group>
+              <Collapse in={opened}>
+                <Stack gap={"sm"} mt={"md"}>
+                  <Group>
+                    <Badge size="sm">연차</Badge>
+                    <Group gap={7}>
+                      <Text fz={"sm"}>김정순</Text>
+                      <Divider orientation="vertical" />
+                      <Text fz={"sm"}>김정순</Text>
+                      <Divider orientation="vertical" />
+                      <Text fz={"sm"}>김정순</Text>
                     </Group>
                   </Group>
-                  <Divider />
-                  <Group justify="space-between" align="center">
-                    <Text fz={"sm"}>ACG Monthly Meeting</Text>
-                    <Group>
-                      <Text fz={"xs"} c={"dimmed"}>
-                        안지훈
-                      </Text>
-                      <Text fz={"xs"} c={"dimmed"}>
-                        2012.12.11
-                      </Text>
+                  <Group>
+                    <Badge size="sm">오전반반차</Badge>
+                    <Group gap={7}>
+                      <Text fz={"sm"}>김정순</Text>
+                      <Divider orientation="vertical" />
+                      <Text fz={"sm"}>김정순</Text>
+                      <Divider orientation="vertical" />
+                      <Text fz={"sm"}>김정순</Text>
+                    </Group>
+                  </Group>
+                  <Group>
+                    <Badge size="sm">오전반차</Badge>
+                    <Group gap={7}>
+                      <Text fz={"sm"}>김정순</Text>
+                      <Divider orientation="vertical" />
+                      <Text fz={"sm"}>김정순</Text>
+                      <Divider orientation="vertical" />
+                      <Text fz={"sm"}>김정순</Text>
+                    </Group>
+                  </Group>
+                  <Group>
+                    <Badge size="sm">오후반차</Badge>
+                    <Group gap={7}>
+                      <Text fz={"sm"}>김정순</Text>
+                      <Divider orientation="vertical" />
+                      <Text fz={"sm"}>김정순</Text>
+                      <Divider orientation="vertical" />
+                      <Text fz={"sm"}>김정순</Text>
+                    </Group>
+                  </Group>
+                  <Group>
+                    <Badge color="gray" size="sm">
+                      보건휴가
+                    </Badge>
+                    <Group gap={7}>
+                      <Text fz={"sm"}>김정순</Text>
+                      <Divider orientation="vertical" />
+                      <Text fz={"sm"}>김정순</Text>
+                      <Divider orientation="vertical" />
+                      <Text fz={"sm"}>김정순</Text>
                     </Group>
                   </Group>
                 </Stack>
-              </Tabs.Panel>
-              <Tabs.Panel value="second" pt={"md"}>
-                <Stack gap={"sm"}>
-                  <Text fz={"sm"}> 🎉 정정규 위원 생일</Text>
-                </Stack>
-              </Tabs.Panel>
-            </Tabs>
-          </Paper>
+              </Collapse>
+            </Paper>
+          </Stack>
         </GridCol>
-        <GridCol span={{ base: 12, md: 4 }}>
+        {/* <GridCol span={{ base: 12, md: 4 }}>
           <Paper p={"lg"} radius={"lg"}>
             <Group>
               <Title order={5}>나의 근태 현황</Title>
@@ -279,7 +442,7 @@ function page() {
               </Stack>
             </Collapse>
           </Paper>
-        </GridCol>
+        </GridCol> */}
       </Grid>
     </Container>
   );

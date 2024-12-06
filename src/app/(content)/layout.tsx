@@ -11,6 +11,10 @@ import { useRouter } from "next/navigation";
 import React from "react";
 import myImage from "/public/images/ACG_LOGO_GRAY.png";
 
+import dayjs from "dayjs";
+import "dayjs/locale/ko";
+dayjs.locale("ko");
+
 export default function ContentLayout({ children }: { children: React.ReactNode }) {
   const pinned = useHeadroom({ fixedAt: 60 });
   const [mobileOpened, { toggle: toggleMobile }] = useDisclosure();
@@ -54,7 +58,7 @@ export default function ContentLayout({ children }: { children: React.ReactNode 
         collapsed: !pinned,
         offset: false,
       }}
-      navbar={{ width: 350, breakpoint: "sm", collapsed: { mobile: !mobileOpened, desktop: !desktopOpened } }}
+      navbar={{ width: 300, breakpoint: "sm", collapsed: { mobile: !mobileOpened, desktop: !desktopOpened } }}
       layout="alt"
       // pr={!desktopOpened ? 0 : 300}
     >
