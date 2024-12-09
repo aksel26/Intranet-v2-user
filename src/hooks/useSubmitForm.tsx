@@ -69,3 +69,9 @@ export const useDeleteQna = () => {
     mutationFn: (values: any) => api.deleteQna(values),
   });
 };
+
+export const useAssignLunchGroup = () => {
+  return useMutation({
+    mutationFn: (values: any) => api.assignLunchGroup(values),
+  });
+};

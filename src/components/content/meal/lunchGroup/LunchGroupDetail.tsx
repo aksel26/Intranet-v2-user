@@ -1,4 +1,6 @@
-import { ActionIcon, Avatar, Box, Divider, Flex, Group, List, Stack, Text } from "@mantine/core";
+import { getLunchGroup } from "@/app/api/get/getApi";
+import { ActionIcon, Avatar, Box, Divider, Flex, Group, List, LoadingOverlay, Stack, Text } from "@mantine/core";
+import { useQuery } from "@tanstack/react-query";
 import React from "react";
 
 const GroupNumber = ({ groupNumber }: { groupNumber: number }) => {
@@ -9,6 +11,15 @@ const GroupNumber = ({ groupNumber }: { groupNumber: number }) => {
   );
 };
 function LunchGroupDetail() {
+  const { data, isLoading, isError } = useQuery({ queryKey: ["lunchGroup"], queryFn: () => getLunchGroup() });
+  console.log("🚀 ~ LunchGroupDetail ~ data:", data);
+
+  if (!data?.data.data.groups)
+    return (
+      <Text ta={"center"} fz={"sm"} c={"dimmed"} py={"xl"}>
+        뽑기진행 준비중입니다.
+      </Text>
+    );
   return (
     <Box p={"sm"}>
       <Group mb={"lg"}>
@@ -17,131 +28,37 @@ function LunchGroupDetail() {
             기간
           </Text>
           <Text size="xs" c={"dimmed"} component="span">
-            11/29 까지
-          </Text>
-        </Stack>
-        <Stack gap={2}>
-          <Text size="xs" c={"dimmed"}>
-            다음 예정
-          </Text>
-          <Text size="xs" c={"dimmed"} component="span">
-            11/29 까지
+            {data?.data.data.sDate} ~ {data?.data.data.eDate}
           </Text>
         </Stack>
       </Group>
-      <List spacing="lg" size="sm" center>
-        <List.Item icon={<GroupNumber groupNumber={1} />}>
-          <Group gap={"sm"}>
-            <Text size="sm">김현근</Text>
-            <Divider orientation="vertical" size={"sm"} />{" "}
-            <Text component="span" size="sm">
-              김현자
-            </Text>
-            <Divider orientation="vertical" size={"sm"} />{" "}
-            <Text component="span" size="sm">
-              정진옥
-            </Text>
-            <Divider orientation="vertical" size={"sm"} />{" "}
-            <Text component="span" size="sm">
-              박민수
-            </Text>
-            <Divider orientation="vertical" size={"sm"} />{" "}
-            <Text component="span" size="sm">
-              박민숙
-            </Text>
-          </Group>
-        </List.Item>
-        <List.Item icon={<GroupNumber groupNumber={2} />}>
-          <Group gap={"sm"}>
-            <Text size="sm">김현근</Text>
-            <Divider orientation="vertical" size={"sm"} /> <Text size="sm">김현자</Text>
-            <Divider orientation="vertical" size={"sm"} /> <Text size="sm">정진옥</Text>
-            <Divider orientation="vertical" size={"sm"} /> <Text size="sm">박민수</Text>
-            <Divider orientation="vertical" size={"sm"} /> <Text size="sm">박민숙</Text>
-          </Group>
-        </List.Item>
-        <List.Item icon={<GroupNumber groupNumber={3} />}>
-          <Group gap={"sm"}>
-            <Text size="sm">김현근</Text>
-            <Divider orientation="vertical" size={"sm"} /> <Text size="sm">김현자</Text>
-            <Divider orientation="vertical" size={"sm"} /> <Text size="sm">정진옥</Text>
-            <Divider orientation="vertical" size={"sm"} /> <Text size="sm">박민수</Text>
-            <Divider orientation="vertical" size={"sm"} /> <Text size="sm">박민숙</Text>
-          </Group>
-        </List.Item>
-        <List.Item icon={<GroupNumber groupNumber={4} />}>
-          <Group gap={"sm"}>
-            <Text size="sm">김현근</Text>
-            <Divider orientation="vertical" size={"sm"} /> <Text size="sm">김현자</Text>
-            <Divider orientation="vertical" size={"sm"} /> <Text size="sm">정진옥</Text>
-            <Divider orientation="vertical" size={"sm"} /> <Text size="sm">박민수</Text>
-            <Divider orientation="vertical" size={"sm"} /> <Text size="sm">박민숙</Text>
-          </Group>
-        </List.Item>
-        <List.Item icon={<GroupNumber groupNumber={5} />}>
-          <Group gap={"sm"}>
-            <Text size="sm">김현근</Text>
-            <Divider orientation="vertical" size={"sm"} /> <Text size="sm">김현자</Text>
-            <Divider orientation="vertical" size={"sm"} /> <Text size="sm">정진옥</Text>
-            <Divider orientation="vertical" size={"sm"} /> <Text size="sm">박민수</Text>
-            <Divider orientation="vertical" size={"sm"} /> <Text size="sm">박민숙</Text>
-          </Group>
-        </List.Item>
-        <List.Item icon={<GroupNumber groupNumber={5} />}>
-          <Group gap={"sm"}>
-            <Text size="sm">김현근</Text>
-            <Divider orientation="vertical" size={"sm"} /> <Text size="sm">김현자</Text>
-            <Divider orientation="vertical" size={"sm"} /> <Text size="sm">정진옥</Text>
-            <Divider orientation="vertical" size={"sm"} /> <Text size="sm">박민수</Text>
-            <Divider orientation="vertical" size={"sm"} /> <Text size="sm">박민숙</Text>
-          </Group>
-        </List.Item>
-        <List.Item icon={<GroupNumber groupNumber={5} />}>
-          <Group gap={"sm"}>
-            <Text size="sm">김현근</Text>
-            <Divider orientation="vertical" size={"sm"} /> <Text size="sm">김현자</Text>
-            <Divider orientation="vertical" size={"sm"} /> <Text size="sm">정진옥</Text>
-            <Divider orientation="vertical" size={"sm"} /> <Text size="sm">박민수</Text>
-            <Divider orientation="vertical" size={"sm"} /> <Text size="sm">박민숙</Text>
-          </Group>
-        </List.Item>
-        <List.Item icon={<GroupNumber groupNumber={5} />}>
-          <Group gap={"sm"}>
-            <Text size="sm">김현근</Text>
-            <Divider orientation="vertical" size={"sm"} /> <Text size="sm">김현자</Text>
-            <Divider orientation="vertical" size={"sm"} /> <Text size="sm">정진옥</Text>
-            <Divider orientation="vertical" size={"sm"} /> <Text size="sm">박민수</Text>
-            <Divider orientation="vertical" size={"sm"} /> <Text size="sm">박민숙</Text>
-          </Group>
-        </List.Item>
-        <List.Item icon={<GroupNumber groupNumber={5} />}>
-          <Group gap={"sm"}>
-            <Text size="sm">김현근</Text>
-            <Divider orientation="vertical" size={"sm"} /> <Text size="sm">김현자</Text>
-            <Divider orientation="vertical" size={"sm"} /> <Text size="sm">정진옥</Text>
-            <Divider orientation="vertical" size={"sm"} /> <Text size="sm">박민수</Text>
-            <Divider orientation="vertical" size={"sm"} /> <Text size="sm">박민숙</Text>
-          </Group>
-        </List.Item>
-        <List.Item icon={<GroupNumber groupNumber={5} />}>
-          <Group gap={"sm"}>
-            <Text size="sm">김현근</Text>
-            <Divider orientation="vertical" size={"sm"} /> <Text size="sm">김현자</Text>
-            <Divider orientation="vertical" size={"sm"} /> <Text size="sm">정진옥</Text>
-            <Divider orientation="vertical" size={"sm"} /> <Text size="sm">박민수</Text>
-            <Divider orientation="vertical" size={"sm"} /> <Text size="sm">박민숙</Text>
-          </Group>
-        </List.Item>
-        <List.Item icon={<GroupNumber groupNumber={5} />}>
-          <Group gap={"sm"}>
-            <Text size="sm">김현근</Text>
-            <Divider orientation="vertical" size={"sm"} /> <Text size="sm">김현자</Text>
-            <Divider orientation="vertical" size={"sm"} /> <Text size="sm">정진옥</Text>
-            <Divider orientation="vertical" size={"sm"} /> <Text size="sm">박민수</Text>
-            <Divider orientation="vertical" size={"sm"} /> <Text size="sm">박민숙</Text>
-          </Group>
-        </List.Item>
-      </List>
+
+      {isLoading ? (
+        <LoadingOverlay visible zIndex={1000} overlayProps={{ radius: "sm", blur: 2 }} />
+      ) : (
+        <List spacing="md" size="sm" center>
+          {Object.entries(data?.data.data.groups)?.map((item: any, index: number) => (
+            <List.Item icon={<GroupNumber groupNumber={item[0]} />} key={index}>
+              <Group gap={"xl"} ml={"lg"}>
+                {item[1].length === 0 ? (
+                  <Text size="xs" c={"dimmed"}>
+                    아직 배정인원이 없어요.
+                  </Text>
+                ) : (
+                  item[1].map((name: string, index: number, arr: any) => {
+                    return (
+                      <React.Fragment key={index}>
+                        <Text  size="sm">{name}</Text>
+                        {arr.length === index + 1 ? null : <Divider orientation="vertical" size={"xs"} />}
+                      </React.Fragment>
+                    );
+                  })
+                )}
+              </Group>
+            </List.Item>
+          ))}
+        </List>
+      )}
     </Box>
   );
 }

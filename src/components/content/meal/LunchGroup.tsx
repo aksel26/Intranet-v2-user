@@ -1,11 +1,13 @@
 "use client";
 
-import { ActionIcon, Avatar, Box, Divider, Group, List, Modal, Paper, Stack, Text, Title } from "@mantine/core";
+import { ActionIcon, Avatar, Box, Button, Divider, Group, List, Modal, Paper, Stack, Text, Title } from "@mantine/core";
 import { useDisclosure, useMediaQuery } from "@mantine/hooks";
 import React from "react";
 import IconList from "/public/icons/list.svg";
+import IconLottery from "/public/icons/clover.svg";
 import IconRefresh from "/public/icons/refresh.svg";
 import LunchGroupDetail from "./lunchGroup/LunchGroupDetail";
+import LotteryComponent from "./Lottery";
 const GroupNumber = ({ groupNumber }: { groupNumber: number }) => {
   return (
     <Avatar color="blue" radius="md">
@@ -20,6 +22,7 @@ function LunchGroup() {
   });
 
   const [opened, { open, close }] = useDisclosure(false);
+  const [lotteryOpened, { open: lotteryOpen, close: lotteryClose }] = useDisclosure(false);
 
   console.log("🚀 ~ matches ~ matches:", matches);
   return (
@@ -32,6 +35,9 @@ function LunchGroup() {
           </Text>
         </Box>
         <Group>
+          <Button onClick={lotteryOpen} size="xs" variant="gradient" leftSection={<IconLottery />} gradient={{ from: "lime", to: "cyan", deg: 90 }}>
+            점심조 뽑기
+          </Button>
           <ActionIcon variant="default" onClick={open}>
             <IconRefresh />
           </ActionIcon>
@@ -53,6 +59,9 @@ function LunchGroup() {
 
       <Modal opened={opened} onClose={close} title="전체 점심조" centered>
         <LunchGroupDetail />
+      </Modal>
+      <Modal opened={lotteryOpened} onClose={lotteryClose} title="점심조 뽑기" centered>
+        <LotteryComponent lotteryClose={lotteryClose} openGroupList={open} />
       </Modal>
     </Paper>
   );

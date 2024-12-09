@@ -30,3 +30,6 @@ export const getActivities = ({ year, month }: TWelfaresParams) => getApi.get(`/
 export const getMe = () => getApi.get(`/users/me`);
 export const getUsers = () => getApi.get(`/users/ids`);
 export const getQnA = () => getApi.get(`/users/qna`);
+
+// 사용자 점심조 조회 API
+export const getLunchGroup = () => getApi.get(`/users/playground/lunch-group`);

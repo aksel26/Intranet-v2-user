@@ -41,6 +41,10 @@ export const deleteMeal = (values: any) => postApi.delete(`/users/meals/${values
 export const deleteWelfare = (values: any) => postApi.delete(`/users/welfares/${values}`);
 export const deleteActivity = (values: any) => postApi.delete(`/users/activities/${values}`);
 export const deleteQna = (values: any) => postApi.delete(`/users/qna`, { data: values });
+
+// 점심조 뽑기 API
+
+export const assignLunchGroup = (values: any) => postApi.post(`/users/playground/lunch-group`);
 // export const getWelfares = ({ year, month }: TWelfaresParams) => getApi.get(`/users/welfares`, { params: { year, month } });
 // export const getActivities = ({ year, month }: TWelfaresParams) => getApi.get(`/users/activities`, { params: { year, month } });
 // export const getMe = () => getApi.get(`/users/me`);
