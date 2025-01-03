@@ -22,19 +22,19 @@ export default function useTopTitle({ pathName }: { pathName: string }) {
       setTypeTitle("복지포인트");
       setStatsInfo((prev: any) => ({
         ...prev,
-        balance: welfareStats.welfareBalance || 0,
-        budget: welfareStats.welfareBudget || 0,
-        expenses: welfareStats.welfareExpense || 0,
-        userName: welfareStats.userName || 0,
+        balance: welfareStats?.welfareBalance || 0,
+        budget: welfareStats?.welfareBudget || 0,
+        expenses: welfareStats?.welfareExpense || 0,
+        userName: welfareStats?.userName || 0,
       }));
     } else if (pathName.includes("activity")) {
       setTypeTitle("활동비");
       setStatsInfo((prev: any) => ({
         ...prev,
-        balance: activityStats.activityBalance || 0,
-        budget: activityStats.activityBudget || 0,
-        expenses: activityStats.activityExpense || 0,
-        hqName: activityStats.hqName || 0,
+        balance: activityStats?.activityBalance || 0,
+        budget: activityStats?.activityBudget || 0,
+        expenses: activityStats?.activityExpense || 0,
+        hqName: activityStats?.hqName || 0,
       }));
     } else {
       setTypeTitle("식대");
