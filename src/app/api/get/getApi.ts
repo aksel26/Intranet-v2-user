@@ -30,6 +30,8 @@ export const getActivities = ({ year, month }: TWelfaresParams) => getApi.get(`/
 export const getMe = () => getApi.get(`/users/me`);
 export const getUsers = () => getApi.get(`/users/ids`);
 export const getQnA = () => getApi.get(`/users/qna`);
+export const getNotices = ({ pageNo, perPage }: { pageNo: number; perPage: number }) => getApi.get(`/users/notices`, { params: { pageNo, perPage } });
+export const getNoticeDetail = ({ noticeIdx }: { noticeIdx: number }) => getApi.get(`/users/notices/${noticeIdx}`, { params: { noticeIdx: noticeIdx } });
 
 // 사용자 점심조 조회 API
 export const getLunchGroup = () => getApi.get(`/users/playground/lunch-group`);

@@ -1,6 +1,10 @@
 "use client";
 
-import { Breadcrumbs, Container, Group, Input, Paper, Stack, Text, Textarea } from "@mantine/core";
+import useGetNoticeDetail from "@/hooks/useGetNoticeDetail";
+import { convertFileUnit } from "@/utils/convertFileUnit";
+import { Box, Breadcrumbs, Button, Container, Divider, Group, Input, Paper, Skeleton, Stack, Text, Textarea, TextInput, Title } from "@mantine/core";
+import dayjs from "dayjs";
+import { useParams } from "next/navigation";
 import React from "react";
 const items = [
   { title: "공지사항", href: "#" },
@@ -10,41 +14,64 @@ const items = [
     {item.title}
   </Text>
 ));
+
 function page() {
+  const { id } = useParams();
+
+  const { noticeDetails, isLoading, isError } = useGetNoticeDetail({ id });
+  console.log("🚀 ~ page ~ noticeDetails:", noticeDetails);
+  function createMarkup() {
+    if (noticeDetails) {
+      return { __html: noticeDetails?.content };
+    }
+  }
   return (
     <Container fluid p={"lg"} style={{ scrollPaddingBottom: "52px", overflowY: "auto", scrollSnapType: "y mandatory" }}>
       <Breadcrumbs mb={"md"}>{items}</Breadcrumbs>
 
       <Paper bg={"white"} px="md" py="lg" radius={"lg"} h={"100%"}>
-        <Stack>
-          <Group justify="space-between">
-            <Input.Wrapper label="작성자">
-              <Input value={"P&C팀 안지훈 위원"} readOnly variant="unstyled" />
-            </Input.Wrapper>
-            <Input.Wrapper label="작성일">
-              <Input value={"2024-12-12"} readOnly variant="unstyled" />
-            </Input.Wrapper>
-          </Group>
-          <Input.Wrapper label="제목">
-            <Input
-              value={
-                "Non quis irure laboris ex pariatur consequat esse fugiat exercitation ad non. Elit do incididunt aliquip adipisicing non. Sint amet adipisicing excepteur magna irure fugiat deserunt in dolor. Laborum consequat nisi culpa. Consequat sunt eu ipsum."
-              }
-              readOnly
-              variant="unstyled"
-            />
-          </Input.Wrapper>
+        <Stack gap={"sm"}>
+          <Title order={3}>{noticeDetails?.title}</Title>
 
-          <Textarea
-            label="공지 내용"
-            readOnly
-            autosize
-            value={
-              "Adipisicing sint aliquip enim do sunt adipisicing in occaecat eu laborum minimAdipisicing sint aliquip enim do sunt adipisicing in occaecat eu laborum minimAdipisicing sint aliquip enim do sunt adipisicing in occaecat eu laborum minimAdipisicing sint aliquip enim do sunt adipisicing in occaecat eu laborum minim."
-            }
-            variant="unstyled"
-            styles={{ root: { height: "auto" } }}
-          />
+          <Group>
+            <Group>
+              <Text fz={"sm"} c={"dimmed"}>
+                작성일
+              </Text>
+              <Text fz={"sm"} c={"dimmed"}>
+                {dayjs(noticeDetails?.createdAt).format("YYYY-MM-DD")}
+              </Text>{" "}
+            </Group>
+            <Text fz={"sm"} c={"dimmed"}>
+              ·
+            </Text>
+            <Group>
+              <Text fz={"sm"} c={"dimmed"}>
+                작성자
+              </Text>
+              <Text fz={"sm"} c={"dimmed"}>
+                {noticeDetails?.creatorName}
+              </Text>
+            </Group>
+          </Group>
+
+          <Divider />
+
+          <Stack>
+            <Box dangerouslySetInnerHTML={createMarkup()} mih={200} />
+            <Divider />
+
+            <Text fz={"sm"}>첨부파일</Text>
+            {noticeDetails?.imageUrl ? (
+              <Button fz={"sm"} variant="subtle" w={"max-content"}>
+                {`${noticeDetails?.imageName}, [${convertFileUnit(noticeDetails?.imageSize)}]`}
+              </Button>
+            ) : (
+              <Text fz={"sm"} c={"dimmed"}>
+                첨부파일이 존재하지 않습니다.
+              </Text>
+            )}
+          </Stack>
         </Stack>
       </Paper>
     </Container>
