@@ -1,5 +1,12 @@
 "use client";
-import { Button, Divider, Flex, Group, NumberFormatter, Text } from "@mantine/core";
+import {
+  Button,
+  Divider,
+  Flex,
+  Group,
+  NumberFormatter,
+  Text,
+} from "@mantine/core";
 import React, { useCallback } from "react";
 import ArrowRight from "../../../../../public/icons/arrow-right.svg";
 import { BreakfastIcon } from "../icon/BreakfastIcon";
@@ -47,7 +54,7 @@ export const Attend = ({ toggle, values }: any) => {
       <Group>
         {renderIcon(type)}
         <Flex direction={"column"} align={"flex-start"}>
-          <Text size="sm" fw={700} c={"blue.8"}>
+          <Text size="sm" fw={600} c={"blue.8"}>
             <NumberFormatter thousandSeparator value={data?.amount || 0} />
             <Text component="span" size="sm" ml={2}>
               원

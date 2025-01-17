@@ -1,18 +1,37 @@
 "use client";
-import { Anchor, Breadcrumbs, Button, Container, List, ListItem, Paper, Stack, Text, Title } from "@mantine/core";
+import {
+  Anchor,
+  Breadcrumbs,
+  Button,
+  Container,
+  List,
+  ListItem,
+  Paper,
+  Stack,
+  Text,
+  Title,
+} from "@mantine/core";
 import Link from "next/link";
 import React from "react";
 const items = [
   { title: "기타메뉴", href: "#" },
   { title: "설문/리뷰", href: "#" },
 ].map((item, index) => (
-  <Text size="lg" fw={700} component="a" key={index}>
+  <Text size="lg" fw={600} component="a" key={index}>
     {item.title}
   </Text>
 ));
 function page() {
   return (
-    <Container fluid p={"lg"} style={{ scrollPaddingBottom: "52px", overflowY: "auto", scrollSnapType: "y mandatory" }}>
+    <Container
+      fluid
+      p={"lg"}
+      style={{
+        scrollPaddingBottom: "52px",
+        overflowY: "auto",
+        scrollSnapType: "y mandatory",
+      }}
+    >
       <Breadcrumbs separator=">" mb={"md"}>
         {items}
       </Breadcrumbs>

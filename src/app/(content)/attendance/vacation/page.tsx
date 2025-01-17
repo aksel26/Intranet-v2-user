@@ -36,7 +36,7 @@ const items = [
   { title: "근태관리", href: "#" },
   { title: "휴가관리", href: "#" },
 ].map((item, index) => (
-  <Text size="lg" fw={700} component="a" key={index}>
+  <Text size="lg" fw={600} component="a" key={index}>
     {/* <Anchor href={item.href} key={index}> */}
     {item.title}
     {/* </Anchor> */}
@@ -52,7 +52,15 @@ function page() {
   const [file, setFile] = useState<File | null>(null);
 
   return (
-    <Container fluid p={"lg"} style={{ scrollPaddingBottom: "52px", overflowY: "auto", scrollSnapType: "y mandatory" }}>
+    <Container
+      fluid
+      p={"lg"}
+      style={{
+        scrollPaddingBottom: "52px",
+        overflowY: "auto",
+        scrollSnapType: "y mandatory",
+      }}
+    >
       <Breadcrumbs mb={"md"}>{items}</Breadcrumbs>
 
       <Grid>
@@ -63,7 +71,12 @@ function page() {
             </Title>
             <Group gap={"xs"} justify="space-evenly">
               <Stack gap={4}>
-                <Popover width={"auto"} position="top-start" withArrow shadow="md">
+                <Popover
+                  width={"auto"}
+                  position="top-start"
+                  withArrow
+                  shadow="md"
+                >
                   <Popover.Target>
                     <Group align="center" gap={4}>
                       <Text fz={"sm"}>총 연차 수</Text>
@@ -217,7 +230,12 @@ function page() {
         </GridCol>
         <GridCol span={{ base: 12, md: 7 }}>
           <Stack gap={"md"} h={"100%"}>
-            <Button variant="gradient" fullWidth gradient={{ from: "blue", to: "cyan", deg: 90 }} onClick={open}>
+            <Button
+              variant="gradient"
+              fullWidth
+              gradient={{ from: "blue", to: "cyan", deg: 90 }}
+              onClick={open}
+            >
               휴가 신청
             </Button>
             <Paper bg={"white"} px="md" py="lg" radius={"lg"}>
@@ -283,7 +301,12 @@ function page() {
           </Stack>
         </GridCol>
       </Grid>
-      <Drawer opened={opened} onClose={close} position="right" title="휴가 신청하기">
+      <Drawer
+        opened={opened}
+        onClose={close}
+        position="right"
+        title="휴가 신청하기"
+      >
         <DatePicker
           highlightToday
           locale="ko"
@@ -291,26 +314,46 @@ function page() {
           firstDayOfWeek={0}
           onChange={setValue}
           style={{ width: "100%" }}
-          styles={{ month: { width: "100%" }, calendarHeader: { maxWidth: "unset" } }}
+          styles={{
+            month: { width: "100%" },
+            calendarHeader: { maxWidth: "unset" },
+          }}
           renderDay={(date) => {
             const day = date.getDate();
             const isToday = dayjs(date).isSame(dayjs(), "day");
             if (day === 14) {
               return (
-                <Indicator color="yellow" position="top-end" size={10} offset={-5}>
+                <Indicator
+                  color="yellow"
+                  position="top-end"
+                  size={10}
+                  offset={-5}
+                >
                   <div>{day}</div>
                 </Indicator>
               );
             }
             if (day === 15) {
               return (
-                <Indicator color="blue" position="top-end" size={10} offset={-5}>
+                <Indicator
+                  color="blue"
+                  position="top-end"
+                  size={10}
+                  offset={-5}
+                >
                   <div>{day}</div>
                 </Indicator>
               );
             }
             return (
-              <Indicator color="yellow" position="top-end" size={12} processing offset={-5} disabled={!isToday}>
+              <Indicator
+                color="yellow"
+                position="top-end"
+                size={12}
+                processing
+                offset={-5}
+                disabled={!isToday}
+              >
                 <div>{day}</div>
               </Indicator>
             );
@@ -326,20 +369,53 @@ function page() {
             <Stack gap={"xs"}>
               {value.map((item: any) => (
                 <Group wrap="nowrap" justify="space-between">
-                  <Input.Wrapper label="신청일" styles={{ label: { fontSize: "var(--mantine-font-size-xs" } }}>
-                    <Input value={dayjs(item).format("YYYY-MM-DD")} readOnly variant="unstyled" size="sm" w={80} styles={{ wrapper: { fontWeight: 700 } }} />
+                  <Input.Wrapper
+                    label="신청일"
+                    styles={{
+                      label: { fontSize: "var(--mantine-font-size-xs" },
+                    }}
+                  >
+                    <Input
+                      value={dayjs(item).format("YYYY-MM-DD")}
+                      readOnly
+                      variant="unstyled"
+                      size="sm"
+                      w={80}
+                      styles={{ wrapper: { fontWeight: 700 } }}
+                    />
                   </Input.Wrapper>
 
                   <Select
-                    styles={{ label: { fontSize: "var(--mantine-font-size-xs" } }}
+                    styles={{
+                      label: { fontSize: "var(--mantine-font-size-xs" },
+                    }}
                     checkIconPosition="right"
                     size="sm"
                     label="휴가 유형"
                     placeholder="Pick value"
                     clearable
                     data={[
-                      { group: "일반휴가", items: ["연차", "오전 반차", "오후 반차", "오전 반반차", "오후 반반차"] },
-                      { group: "특이사항", items: ["조퇴", "훈련", "대체휴무", "특별휴가", "경조휴무", "무급휴가"] },
+                      {
+                        group: "일반휴가",
+                        items: [
+                          "연차",
+                          "오전 반차",
+                          "오후 반차",
+                          "오전 반반차",
+                          "오후 반반차",
+                        ],
+                      },
+                      {
+                        group: "특이사항",
+                        items: [
+                          "조퇴",
+                          "훈련",
+                          "대체휴무",
+                          "특별휴가",
+                          "경조휴무",
+                          "무급휴가",
+                        ],
+                      },
                     ]}
                   />
                 </Group>

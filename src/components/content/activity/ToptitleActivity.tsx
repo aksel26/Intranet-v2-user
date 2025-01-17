@@ -22,7 +22,7 @@ export const ToptitleActivity = () => {
         </Box>
         <Box>
           <Flex direction={"column"} rowGap={5}>
-            <Text fw={700} c={"blue.9"} fz={"lg"}>
+            <Text fw={600} c={"blue.9"} fz={"lg"}>
               {/* {statsInfo.userName || ""} */}
               {statsInfo.hqName || ""}
               <Text c={"gray.9"} component="span" mr={0} fz={"sm"}>
@@ -31,7 +31,14 @@ export const ToptitleActivity = () => {
             </Text>
 
             <Flex align={"center"}>
-              <Text mx={5} component="span" c={"blue.9"} fw={700} fz={"lg"} styles={{ root: { letterSpacing: 1.0 } }}>
+              <Text
+                mx={5}
+                component="span"
+                c={"blue.9"}
+                fw={600}
+                fz={"lg"}
+                styles={{ root: { letterSpacing: 1.0 } }}
+              >
                 <NumberFlow
                   value={statsInfo.balance}
                   // value={Number(welfareStats.welfareBalance) || 0}

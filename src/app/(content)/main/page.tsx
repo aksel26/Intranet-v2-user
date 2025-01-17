@@ -1,21 +1,61 @@
 "use client";
-import { ActionIcon, Badge, Box, Button, Collapse, Container, Divider, Grid, GridCol, Group, Paper, Progress, Stack, Tabs, Text, Title } from "@mantine/core";
+import {
+  ActionIcon,
+  Badge,
+  Box,
+  Button,
+  Collapse,
+  Container,
+  Divider,
+  Grid,
+  GridCol,
+  Group,
+  Paper,
+  Progress,
+  Stack,
+  Tabs,
+  Text,
+  Title,
+} from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import React, { useState } from "react";
 import ArrowDown from "/public/icons/arrow-down.svg";
-import ArrowUp from "/public/icons/arrow-up.svg";
+import ArrowRight from "/public/icons/arrow-right.svg";
 import IconDots from "/public/icons/dots.svg";
-import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Tooltip, Legend, ChartOptions, ChartData } from "chart.js";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Tooltip,
+  Legend,
+  ChartOptions,
+  ChartData,
+} from "chart.js";
 import dynamic from "next/dynamic";
 import { usePathname, useRouter } from "next/navigation";
 import { Calendar } from "@mantine/dates";
 import { DonutChart } from "@mantine/charts";
+import DashboardNotice from "@/components/Dashboard/notice/DashboardNotice";
+import { myInfoStore } from "@/lib/store/myInfoStore";
+import GreetingMessage from "@/components/Dashboard/greeting/GreetingMessage";
 
-ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Tooltip, Legend);
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Tooltip,
+  Legend
+);
 
-const LineChart = dynamic(() => import("react-chartjs-2").then((mod) => mod.Line), {
-  ssr: false, // 서버사이드 렌더링 비활성화
-});
+const LineChart = dynamic(
+  () => import("react-chartjs-2").then((mod) => mod.Line),
+  {
+    ssr: false, // 서버사이드 렌더링 비활성화
+  }
+);
 
 function page() {
   const doughnutData = [
@@ -69,38 +109,9 @@ function page() {
   const goNotice = () => router.push("/notice");
   return (
     <Container fluid p={"lg"}>
-      <Stack mb={"xl"} gap={4}>
-        <Text>
-          <Text fz={"lg"} component="span" fw={700}>
-            정진숙 위원
-          </Text>
-          님, 반가워요!
-        </Text>
-        <Text size="xs">오늘은 2024년 12월 10일 수요일입니다.</Text>
-      </Stack>
+      <GreetingMessage />
       <Grid>
         <GridCol span={{ base: 12, md: 6 }}>
-          {/* <Paper p={"lg"} radius={"lg"}>
-            <Title order={5} mb={"md"}>
-              오늘 일정 +3
-            </Title>
-            <Stack gap={"xs"}>
-              <Group>
-                <Badge size="md">검사운영</Badge>
-                <Text fz={"sm"}>LG전자</Text>
-              </Group>
-              <Group>
-                <Badge size="md">검사운영</Badge>
-                <Text fz={"sm"}>LG전자</Text>
-              </Group>
-              <Group>
-                <Badge size="md" color={"green"}>
-                  외근
-                </Badge>
-                <Text fz={"sm"}>LG 유플러스 미팅</Text>
-              </Group>
-            </Stack>
-          </Paper> */}
           <Stack>
             <Paper p={"lg"} radius={"lg"}>
               <Title order={5} mb={"md"}>
@@ -110,7 +121,11 @@ function page() {
                 highlightToday
                 locale="ko"
                 firstDayOfWeek={0}
-                styles={{ month: { width: "100%" }, calendarHeader: { maxWidth: "unset" }, day: { width: "100%", height: 60 } }}
+                styles={{
+                  month: { width: "100%" },
+                  calendarHeader: { maxWidth: "unset" },
+                  day: { width: "100%", height: 60 },
+                }}
               />
             </Paper>
             <Paper p={"lg"} radius={"lg"}>
@@ -138,44 +153,39 @@ function page() {
         </GridCol>
         <GridCol span={{ base: 12, md: 6 }}>
           <Stack>
-            <Paper p={"lg"} radius={"lg"} className={activeTab === "second" ? "bg-gradient-to-r from-yellow-100 to-red-100" : ""}>
-              <Tabs value={activeTab} onChange={setActiveTab} variant="pills" radius={"lg"}>
+            <Paper
+              p={"lg"}
+              radius={"lg"}
+              className={
+                activeTab === "second"
+                  ? "bg-gradient-to-r from-yellow-100 to-red-100"
+                  : ""
+              }
+            >
+              <Tabs
+                value={activeTab}
+                onChange={setActiveTab}
+                variant="pills"
+                radius={"lg"}
+              >
                 <Tabs.List justify="space-between">
                   <Group>
                     <Tabs.Tab value="first">공지사항</Tabs.Tab>
                     <Tabs.Tab value="second">생일자</Tabs.Tab>
                   </Group>
-                  <ActionIcon variant="light" onClick={goNotice}>
-                    <IconDots />
-                  </ActionIcon>
+
+                  <Button
+                    size="xs"
+                    variant="subtle"
+                    onClick={goNotice}
+                    rightSection={<ArrowRight />}
+                  >
+                    더보기
+                  </Button>
                 </Tabs.List>
 
                 <Tabs.Panel value="first" pt={"md"}>
-                  <Stack gap={"sm"} px={"sm"}>
-                    <Group justify="space-between" align="center">
-                      <Text fz={"sm"}>11월 외부지출비용 마감</Text>
-                      <Group>
-                        <Text fz={"xs"} c={"dimmed"}>
-                          안지훈
-                        </Text>
-                        <Text fz={"xs"} c={"dimmed"}>
-                          2012.12.11
-                        </Text>
-                      </Group>
-                    </Group>
-                    <Divider />
-                    <Group justify="space-between" align="center">
-                      <Text fz={"sm"}>ACG Monthly Meeting</Text>
-                      <Group>
-                        <Text fz={"xs"} c={"dimmed"}>
-                          안지훈
-                        </Text>
-                        <Text fz={"xs"} c={"dimmed"}>
-                          2012.12.11
-                        </Text>
-                      </Group>
-                    </Group>
-                  </Stack>
+                  <DashboardNotice />
                 </Tabs.Panel>
                 <Tabs.Panel value="second" pt={"md"}>
                   <Stack gap={"md"}>
@@ -242,7 +252,12 @@ function page() {
             <Paper p={"lg"} radius={"lg"}>
               <Group justify="space-between" align="flex-start">
                 <Title order={5}>근태 현황 +10</Title>
-                <ActionIcon size={"sm"} variant="transparent" onClick={toggle} color="gray">
+                <ActionIcon
+                  size={"sm"}
+                  variant="transparent"
+                  onClick={toggle}
+                  color="gray"
+                >
                   <ArrowDown />
                 </ActionIcon>
               </Group>

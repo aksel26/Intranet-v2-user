@@ -2,15 +2,27 @@
 
 import useGetNoticeDetail from "@/hooks/useGetNoticeDetail";
 import { convertFileUnit } from "@/utils/convertFileUnit";
-import { Box, Breadcrumbs, Button, Container, Divider, Group, Input, Paper, Skeleton, Stack, Text, Textarea, TextInput, Title } from "@mantine/core";
+import {
+  ActionIcon,
+  Box,
+  Breadcrumbs,
+  Button,
+  Container,
+  Divider,
+  Group,
+  Modal,
+  Paper,
+  Stack,
+  Text,
+  Title,
+} from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
 import dayjs from "dayjs";
-import { useParams } from "next/navigation";
-import React from "react";
-const items = [
-  { title: "공지사항", href: "#" },
-  { title: "공지사항 상세내용", href: "#" },
-].map((item, index) => (
-  <Text size="lg" fw={700} component="a" key={index}>
+import { useParams, useRouter } from "next/navigation";
+import IconLeft from "/public/icons/arrow-left.svg";
+
+const items = [{ title: "공지사항", href: "#" }].map((item, index) => (
+  <Text size="lg" fw={600} component="a" key={index}>
     {item.title}
   </Text>
 ));
@@ -25,46 +37,73 @@ function page() {
       return { __html: noticeDetails?.content };
     }
   }
+
+  const [previewOpened, { open: previewOpen, close: previewClose }] =
+    useDisclosure(false);
+
+  const router = useRouter();
+
+  const back = () => router.push(`/notice`);
+
   return (
-    <Container fluid p={"lg"} style={{ scrollPaddingBottom: "52px", overflowY: "auto", scrollSnapType: "y mandatory" }}>
-      <Breadcrumbs mb={"md"}>{items}</Breadcrumbs>
+    <Container
+      fluid
+      p={"lg"}
+      style={{
+        scrollPaddingBottom: "52px",
+        overflowY: "auto",
+        scrollSnapType: "y mandatory",
+      }}
+    >
+      <Group align="center" mb={"md"}>
+        <ActionIcon variant="subtle" color="gray" onClick={back}>
+          <IconLeft style={{ width: "70%", height: "70%" }} />
+        </ActionIcon>
+        <Breadcrumbs>{items}</Breadcrumbs>
+      </Group>
 
       <Paper bg={"white"} px="md" py="lg" radius={"lg"} h={"100%"}>
-        <Stack gap={"sm"}>
-          <Title order={3}>{noticeDetails?.title}</Title>
-
-          <Group>
+        <Stack gap={"md"}>
+          <Stack gap={2}>
+            <Title order={4}>{noticeDetails?.title}</Title>
             <Group>
+              <Group>
+                <Text fz={"sm"} c={"dimmed"}>
+                  작성일
+                </Text>
+                <Text fz={"sm"} c={"dimmed"}>
+                  {dayjs(noticeDetails?.createdAt).format("YYYY-MM-DD")}
+                </Text>{" "}
+              </Group>
               <Text fz={"sm"} c={"dimmed"}>
-                작성일
+                ·
               </Text>
-              <Text fz={"sm"} c={"dimmed"}>
-                {dayjs(noticeDetails?.createdAt).format("YYYY-MM-DD")}
-              </Text>{" "}
+              <Group>
+                <Text fz={"sm"} c={"dimmed"}>
+                  작성자
+                </Text>
+                <Text fz={"sm"} c={"dimmed"}>
+                  {noticeDetails?.creatorName}
+                </Text>
+              </Group>
             </Group>
-            <Text fz={"sm"} c={"dimmed"}>
-              ·
-            </Text>
-            <Group>
-              <Text fz={"sm"} c={"dimmed"}>
-                작성자
-              </Text>
-              <Text fz={"sm"} c={"dimmed"}>
-                {noticeDetails?.creatorName}
-              </Text>
-            </Group>
-          </Group>
-
+          </Stack>
           <Divider />
-
           <Stack>
-            <Box dangerouslySetInnerHTML={createMarkup()} mih={200} />
+            <Box dangerouslySetInnerHTML={createMarkup()} mih={200} fz={"sm"} />
             <Divider />
 
             <Text fz={"sm"}>첨부파일</Text>
             {noticeDetails?.imageUrl ? (
-              <Button fz={"sm"} variant="subtle" w={"max-content"}>
-                {`${noticeDetails?.imageName}, [${convertFileUnit(noticeDetails?.imageSize)}]`}
+              <Button
+                fz={"sm"}
+                variant="subtle"
+                w={"max-content"}
+                onClick={previewOpen}
+              >
+                {`${noticeDetails?.imageName}, [${convertFileUnit(
+                  noticeDetails?.imageSize
+                )}]`}
               </Button>
             ) : (
               <Text fz={"sm"} c={"dimmed"}>
@@ -74,6 +113,13 @@ function page() {
           </Stack>
         </Stack>
       </Paper>
+      <Modal
+        opened={previewOpened}
+        onClose={previewClose}
+        title="첨부 이미지 미리보기"
+      >
+        <img src={noticeDetails?.imageUrl || ""} alt="preview" />
+      </Modal>
     </Container>
   );
 }

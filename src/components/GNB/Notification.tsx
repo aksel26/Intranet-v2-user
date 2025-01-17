@@ -2,7 +2,7 @@ import { notifications } from "@mantine/notifications";
 
 type TNotification = {
   title: string;
-  message: string;
+  message: string | null;
   color: string;
 };
 

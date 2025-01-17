@@ -2,10 +2,10 @@
 
 import { mealStore } from "@/lib/store/mealStore";
 import { ChartSummary } from "@/template/ChartSummary";
-import { Box, Flex, Group, NumberFormatter, Paper, Stack, Text } from "@mantine/core";
-import { useEffect, useState } from "react";
+import { Box, Flex, Text } from "@mantine/core";
 import NumberFlow from "@number-flow/react";
 import dayjs from "dayjs";
+import { useEffect, useState } from "react";
 export const MealBalance = () => {
   const [statsInfo, setStatsInfo] = useState<any>({
     balance: 0,
@@ -15,7 +15,12 @@ export const MealBalance = () => {
   const stats = mealStore((state) => state.mealInfo.mealStats);
 
   useEffect(() => {
-    setStatsInfo((prev: any) => ({ ...prev, balance: stats.mealBalance, budget: stats.mealBudget, expenses: stats.mealExpense }));
+    setStatsInfo((prev: any) => ({
+      ...prev,
+      balance: stats.mealBalance,
+      budget: stats.mealBudget,
+      expenses: stats.mealExpense,
+    }));
   }, [stats]);
 
   return (
@@ -30,7 +35,7 @@ export const MealBalance = () => {
       </Box>
       <Box>
         <Flex direction={"column"}>
-          <Text fw={700} c={"blue.9"}>
+          <Text fw={600} c={"blue.9"}>
             {stats.userName}{" "}
             <Text c={"gray.9"} component="span" mr={0}>
               님의 잔여 식대는
@@ -38,7 +43,7 @@ export const MealBalance = () => {
           </Text>
 
           <Flex align={"center"}>
-            <Text mx={5} component="span" c={"blue.9"} fw={700} size="xl">
+            <Text mx={5} component="span" c={"blue.9"} fw={600} size="xl">
               <NumberFlow
                 value={Number(stats.mealBalance) || 0}
                 // value={Number(welfareStats.welfareBalance) || 0}

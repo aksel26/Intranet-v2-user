@@ -47,8 +47,12 @@ const LotteryComponent: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const papersRef = useRef<Paper[]>([]);
   const [isAnimating, setIsAnimating] = useState(false);
-  const [selectedPaper, setSelectedPaper] = useState<HTMLDivElement | null>(null);
-  const [message, setMessage] = useState<string>("화면을 클릭하여 추첨을 시작하세요!");
+  const [selectedPaper, setSelectedPaper] = useState<HTMLDivElement | null>(
+    null
+  );
+  const [message, setMessage] = useState<string>(
+    "화면을 클릭하여 추첨을 시작하세요!"
+  );
   const [isDone, setIsDone] = useState(false);
   const [messageStyle, setMessageStyle] = useState({
     bgColor: "bg-blue-100",
@@ -167,7 +171,9 @@ const LotteryComponent: React.FC = () => {
     const newSelectedPaper = papersRef.current[randomGroup];
     setSelectedPaper(newSelectedPaper);
 
-    const backElement = newSelectedPaper.querySelector(".back") as HTMLDivElement;
+    const backElement = newSelectedPaper.querySelector(
+      ".back"
+    ) as HTMLDivElement;
     const selectedNumber = backElement?.textContent || "";
 
     await selectPaper(newSelectedPaper);
@@ -221,12 +227,29 @@ const LotteryComponent: React.FC = () => {
         </Text>
       </Group>
 
-      <Box ref={containerRef} onClick={startLottery} h={"calc(100svh - 280px)"} />
-      <Text size="xl" ta={"center"} mt={"md"} fw={700} variant="gradient" gradient={{ from: "blue", to: "lime", deg: 90 }}>
+      <Box
+        ref={containerRef}
+        onClick={startLottery}
+        h={"calc(100svh - 280px)"}
+      />
+      <Text
+        size="xl"
+        ta={"center"}
+        mt={"md"}
+        fw={600}
+        variant="gradient"
+        gradient={{ from: "blue", to: "lime", deg: 90 }}
+      >
         {message}
       </Text>
       {isDone && (
-        <Button onClick={goLunchGroup} variant="subtle" rightSection={<ArrowRight color="#2f9e44" />} size="sm" mt={"sm"}>
+        <Button
+          onClick={goLunchGroup}
+          variant="subtle"
+          rightSection={<ArrowRight color="#2f9e44" />}
+          size="sm"
+          mt={"sm"}
+        >
           점심조 현황 보기
         </Button>
       )}

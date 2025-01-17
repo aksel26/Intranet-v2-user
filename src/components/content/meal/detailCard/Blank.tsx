@@ -15,7 +15,13 @@ export const Blank = ({ toggle }: any) => {
       rightSection={<ArrowRight color="#2f9e44" />}
       leftSection={<span />}
     >
-      <Text size="sm" c={"blue.8"} fw={700} ta={"center"} style={{ alignSelf: "center" }}>
+      <Text
+        size="sm"
+        c={"blue.8"}
+        fw={600}
+        ta={"center"}
+        style={{ alignSelf: "center" }}
+      >
         식대 작성하기
       </Text>
     </Button>

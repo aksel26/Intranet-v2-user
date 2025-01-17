@@ -2,7 +2,23 @@
 import dayGridPlugin from "@fullcalendar/daygrid";
 import FullCalendar from "@fullcalendar/react";
 import { CompositeChart } from "@mantine/charts";
-import { ActionIcon, Badge, Breadcrumbs, Container, Divider, Grid, GridCol, Group, List, Paper, rem, Stack, Text, ThemeIcon, Title } from "@mantine/core";
+import {
+  ActionIcon,
+  Badge,
+  Breadcrumbs,
+  Container,
+  Divider,
+  Grid,
+  GridCol,
+  Group,
+  List,
+  Paper,
+  rem,
+  Stack,
+  Text,
+  ThemeIcon,
+  Title,
+} from "@mantine/core";
 import { usePathname, useRouter } from "next/navigation";
 import "../../../styles/calendar.css";
 import IconCircleCheck from "/public/icons/circle-check.svg";
@@ -39,7 +55,7 @@ const items = [
   { title: "근태관리", href: "#" },
   { title: "Dashboard", href: "#" },
 ].map((item, index) => (
-  <Text size="lg" fw={700} component="a" key={index}>
+  <Text size="lg" fw={600} component="a" key={index}>
     {/* <Anchor href={item.href} key={index}> */}
     {item.title}
     {/* </Anchor> */}
@@ -52,9 +68,17 @@ function page() {
   const goVacation = () => router.push(`${pathName}/vacation`);
   const goWork = () => router.push(`${pathName}/work`);
   return (
-    <Container fluid p={"lg"} style={{ scrollPaddingBottom: "52px", overflowY: "auto", scrollSnapType: "y mandatory" }}>
+    <Container
+      fluid
+      p={"lg"}
+      style={{
+        scrollPaddingBottom: "52px",
+        overflowY: "auto",
+        scrollSnapType: "y mandatory",
+      }}
+    >
       <Breadcrumbs mb={"md"}>{items}</Breadcrumbs>
-      {/* <Text size="lg" fw={700} mb={"md"}>
+      {/* <Text size="lg" fw={600}mb={"md"}>
         근태 · 휴가
       </Text> */}
 
@@ -77,7 +101,11 @@ function page() {
               <Divider orientation="vertical" />
               <Stack gap={4}>
                 <Text>오늘 출근 시간</Text>
-                <Text ta={"center"} fz={"md"} styles={{ root: { letterSpacing: 1.1 } }}>
+                <Text
+                  ta={"center"}
+                  fz={"md"}
+                  styles={{ root: { letterSpacing: 1.1 } }}
+                >
                   08:01:23
                 </Text>
               </Stack>
@@ -152,7 +180,11 @@ function page() {
                 maxBarWidth={30}
                 referenceLines={[{ y: 40, label: "주 40시간", color: "red.6" }]}
                 series={[
-                  { name: "근무시간", color: "rgba(18, 120, 255, 0.2)", type: "bar" },
+                  {
+                    name: "근무시간",
+                    color: "rgba(18, 120, 255, 0.2)",
+                    type: "bar",
+                  },
                   // { name: "limitTime", color: "red.8", type: "line", strokeDasharray: "5 5" },
                 ]}
                 curveType="linear"
@@ -166,7 +198,9 @@ function page() {
                 spacing="xs"
                 icon={
                   <ThemeIcon color="teal" size={24} variant="light" radius="md">
-                    <IconCircleCheck style={{ width: rem(16), height: rem(16) }} />
+                    <IconCircleCheck
+                      style={{ width: rem(16), height: rem(16) }}
+                    />
                   </ThemeIcon>
                 }
               >

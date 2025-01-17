@@ -9,7 +9,7 @@ export const Greeting = () => {
     <Paper py="xl" px={"sm"}>
       <Text fw={700}>
         안녕하세요,{" "}
-        <Text component="span" fw={700} c={"blue.9"} mr={5}>
+        <Text component="span" fw={600} c={"blue.9"} mr={5}>
           {userName}
         </Text>
         님

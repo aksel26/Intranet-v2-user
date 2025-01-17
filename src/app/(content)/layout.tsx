@@ -1,5 +1,19 @@
 "use client";
-import { AppShell, Box, Burger, Button, Flex, Group, Image, Modal, NavLink, rem, Skeleton, Stack, Text } from "@mantine/core";
+import {
+  AppShell,
+  Box,
+  Burger,
+  Button,
+  Flex,
+  Group,
+  Image,
+  Modal,
+  NavLink,
+  rem,
+  Skeleton,
+  Stack,
+  Text,
+} from "@mantine/core";
 // import Image from "next/image";
 import useGetMe from "@/hooks/useGetMe";
 import useLogout from "@/hooks/useLogout";
@@ -13,18 +27,35 @@ import myImage from "/public/images/ACG_LOGO_GRAY.png";
 
 import dayjs from "dayjs";
 import "dayjs/locale/ko";
+import CheckOutWrapper from "@/components/Attendance/CheckOutWrapper";
+import AttendanceButtonWrapper from "@/components/Navbar/AttendanceButtonWrapper";
+
+const CheckIn = React.lazy(() => import("@/components/Attendance/CheckIn"));
+
 dayjs.locale("ko");
 
-export default function ContentLayout({ children }: { children: React.ReactNode }) {
+export default function ContentLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const pinned = useHeadroom({ fixedAt: 60 });
   const [mobileOpened, { toggle: toggleMobile }] = useDisclosure();
   const [desktopOpened, { toggle: toggleDesktop }] = useDisclosure(true);
 
   const { myInfo, isLoading, isError } = useGetMe();
 
-  const { mutate: logout, isError: isError_logout, isSuccess: isSuccess_logout } = useLogout();
-  const [onWorkTimeOpened, { open: onWorkModalOpen, close: onWorkModalClose }] = useDisclosure(false);
-  const [offWorkTimeOpened, { open: offWorkModalOpen, close: offWorkModalClose }] = useDisclosure(false);
+  const {
+    mutate: logout,
+    isError: isError_logout,
+    isSuccess: isSuccess_logout,
+  } = useLogout();
+  const [onWorkTimeOpened, { open: onWorkModalOpen, close: onWorkModalClose }] =
+    useDisclosure(false);
+  const [
+    offWorkTimeOpened,
+    { open: offWorkModalOpen, close: offWorkModalClose },
+  ] = useDisclosure(false);
 
   const router = useRouter();
   const handleLogout = async () => {
@@ -58,25 +89,56 @@ export default function ContentLayout({ children }: { children: React.ReactNode 
         collapsed: !pinned,
         offset: false,
       }}
-      navbar={{ width: 300, breakpoint: "sm", collapsed: { mobile: !mobileOpened, desktop: !desktopOpened } }}
+      navbar={{
+        width: 300,
+        breakpoint: "sm",
+        collapsed: { mobile: !mobileOpened, desktop: !desktopOpened },
+      }}
       layout="alt"
       // pr={!desktopOpened ? 0 : 300}
     >
       <AppShell.Header withBorder={false}>
         {/* <Header opened={opened} toggle={toggle} /> */}
         <Group h={"100%"} px={"sm"}>
-          <Burger opened={mobileOpened} onClick={toggleMobile} hiddenFrom="sm" size="sm" />
-          <Burger opened={desktopOpened} onClick={toggleDesktop} visibleFrom="sm" size="sm" />
+          <Burger
+            opened={mobileOpened}
+            onClick={toggleMobile}
+            hiddenFrom="sm"
+            size="sm"
+          />
+          <Burger
+            opened={desktopOpened}
+            onClick={toggleDesktop}
+            visibleFrom="sm"
+            size="sm"
+          />
         </Group>
       </AppShell.Header>
-      <AppShell.Main styles={{ main: { background: "#f2f2f2" } }} pt={`calc(${rem(50)}`}>
+      <AppShell.Main
+        styles={{ main: { background: "#f2f2f2" } }}
+        pt={`calc(${rem(50)}`}
+      >
         {children}
       </AppShell.Main>
       <AppShell.Navbar p="md" withBorder={false}>
         <Group justify="space-between" mb={"lg"}>
           <Group>
-            <Burger opened={mobileOpened} onClick={toggleMobile} hiddenFrom="sm" size="sm" />
-            <Image onClick={clickLogo} component={NextImage} src={myImage} alt="My image" fit="contain" h={20} w={80} style={{ cursor: "pointer" }} />
+            <Burger
+              opened={mobileOpened}
+              onClick={toggleMobile}
+              hiddenFrom="sm"
+              size="sm"
+            />
+            <Image
+              onClick={clickLogo}
+              component={NextImage}
+              src={myImage}
+              alt="My image"
+              fit="contain"
+              h={20}
+              w={80}
+              style={{ cursor: "pointer" }}
+            />
           </Group>
 
           <Button size="xs" variant="light" onClick={handleLogout}>
@@ -84,10 +146,18 @@ export default function ContentLayout({ children }: { children: React.ReactNode 
           </Button>
         </Group>
         <Skeleton visible={isLoading}>
-          <Flex w={"100%"} bg={"blue.0"} align={"center"} mih={100} columnGap={"xl"} p={"md"} style={{ position: "relative", borderRadius: 7 }}>
+          <Flex
+            w={"100%"}
+            bg={"blue.0"}
+            align={"center"}
+            mih={100}
+            columnGap={"xl"}
+            p={"md"}
+            style={{ position: "relative", borderRadius: 7 }}
+          >
             <Flex direction={"column"} rowGap={"md"} w={"100%"}>
               <Box>
-                <Text fz={"lg"} fw={700} c={"blue.9"}>
+                <Text fz={"lg"} fw={600} c={"blue.9"}>
                   {myInfo?.userName}
                 </Text>
                 <Text c={"blue.9"} fz={"sm"}>
@@ -116,23 +186,39 @@ export default function ContentLayout({ children }: { children: React.ReactNode 
           </Flex>
         </Skeleton>
 
-        <Group wrap="nowrap" my="sm">
+        {/* <Group wrap="nowrap" my="sm">
           <Button fullWidth variant="filled" onClick={onWorkModalOpen}>
             출근하기
           </Button>
           <Button fullWidth variant="filled" onClick={offWorkModalOpen}>
             퇴근하기
           </Button>
-        </Group>
+        </Group> */}
+        <AttendanceButtonWrapper
+          onWorkModalOpen={onWorkModalOpen}
+          offWorkModalOpen={offWorkModalOpen}
+        />
         <NavLink label="근태 · 휴가 관리" childrenOffset={28}>
           <NavLink component={Link} href={"/attendance"} label="Dashboard" />
-          <NavLink component={Link} href={"/attendance/vacation"} label="휴가 관리" />
-          <NavLink component={Link} href={"/attendance/work"} label="근태 관리" />
+          <NavLink
+            component={Link}
+            href={"/attendance/vacation"}
+            label="휴가 관리"
+          />
+          <NavLink
+            component={Link}
+            href={"/attendance/work"}
+            label="근태 관리"
+          />
         </NavLink>
         <NavLink label="검사현황" />
         <NavLink label="복지" childrenOffset={28}>
           <NavLink component={Link} href={"/welfare/meal"} label="식대" />
-          <NavLink component={Link} href={"/welfare/welfarePoint"} label="복지포인트" />
+          <NavLink
+            component={Link}
+            href={"/welfare/welfarePoint"}
+            label="복지포인트"
+          />
           <NavLink component={Link} href={"/welfare/activity"} label="활동비" />
         </NavLink>
         <NavLink component={Link} href={"/notice"} label="공지사항" />
@@ -142,30 +228,28 @@ export default function ContentLayout({ children }: { children: React.ReactNode 
           <NavLink component={Link} href={"/myInfo"} label="내 정보 수정" />
         </NavLink>
       </AppShell.Navbar>
-      {/* <AppShellFooter withBorder={false}>
-        <Container size="xs" style={{ margin: "0 auto", borderTop: "1px solid #e9e9e9" }} h={"100%"}>
 
-          <Center>ACG</Center>
-        </Container>
-      </AppShellFooter> */}
-      <Modal opened={onWorkTimeOpened} onClose={onWorkModalClose} title="출근하기" centered size={"xs"}>
+      <CheckIn
+        myInfo={myInfo}
+        onWorkModalClose={onWorkModalClose}
+        onWorkTimeOpened={onWorkTimeOpened}
+      />
+      <CheckOutWrapper
+        myInfo={myInfo}
+        offWorkModalClose={offWorkModalClose}
+        offWorkTimeOpened={offWorkTimeOpened}
+      />
+
+      {/* <Modal
+        opened={offWorkTimeOpened}
+        onClose={offWorkModalClose}
+        title="퇴근하기"
+        centered
+        size={"xs"}
+      >
         <Text>
-          {myInfo?.userName} <Text component="span">{myInfo?.gradeName}</Text>님,
-        </Text>
-        <Text>반갑습니다. 👋 </Text>
-        <Text c={"dimmed"} fz={"sm"} mt={"md"}>
-          아래 버튼을 눌러 출근을 완료해 주세요.
-        </Text>
-        <Group wrap="nowrap" mt={"md"}>
-          <Button fullWidth>출근하기</Button>
-          <Button fullWidth variant="light" color="gray.8" onClick={onWorkModalClose}>
-            닫기
-          </Button>
-        </Group>
-      </Modal>
-      <Modal opened={offWorkTimeOpened} onClose={offWorkModalClose} title="퇴근하기" centered size={"xs"}>
-        <Text>
-          {myInfo?.userName} <Text component="span">{myInfo?.gradeName}</Text>님,
+          {myInfo?.userName} <Text component="span">{myInfo?.gradeName}</Text>
+          님,
         </Text>
         <Text>오늘도 수고하셨습니다. 🎉 </Text>
         <Text c={"dimmed"} fz={"sm"} mt={"md"}>
@@ -173,11 +257,16 @@ export default function ContentLayout({ children }: { children: React.ReactNode 
         </Text>
         <Group wrap="nowrap" mt={"md"}>
           <Button fullWidth>퇴근하기</Button>
-          <Button fullWidth variant="light" color="gray.8" onClick={offWorkModalClose}>
+          <Button
+            fullWidth
+            variant="light"
+            color="gray.8"
+            onClick={offWorkModalClose}
+          >
             닫기
           </Button>
         </Group>
-      </Modal>
+      </Modal> */}
     </AppShell>
   );
 }

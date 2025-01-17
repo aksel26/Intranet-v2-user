@@ -11,7 +11,9 @@ export type TActivityStats = {
   activityBudget: string | number | undefined;
   activityExpense: string | number | undefined;
   activityBalance: string | number | undefined;
-  hqName: string;
+  // hqName: string;
+  month: string;
+  userName: string;
 };
 
 export type TActivityInfo = {

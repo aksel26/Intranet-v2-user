@@ -11,4 +11,5 @@ export type TMyInfo = {
   teamName: string | null;
   gradeName: string | null;
   adminRole: string | null;
+  checkInTime: string | null;
 };

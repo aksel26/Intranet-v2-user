@@ -50,12 +50,20 @@ export const UsedList = ({ setCalendarYearMonth }: any) => {
     setDateGroup(groupByDate(welfareInfo.welfares));
   }, [welfareInfo]);
 
-  const [selectMonth, setSelectMonth] = useState<[Date | null, Date | null]>([new Date(), new Date()]);
+  const [selectMonth, setSelectMonth] = useState<[Date | null, Date | null]>([
+    new Date(),
+    new Date(),
+  ]);
 
   const [opened, { toggle, close }] = useDisclosure(false);
-  const [openedUpdateForm, { toggle: toggleUpdateForm, close: closeUpdateForm }] = useDisclosure(false);
+  const [
+    openedUpdateForm,
+    { toggle: toggleUpdateForm, close: closeUpdateForm },
+  ] = useDisclosure(false);
 
-  const icon = <IconChevronDown style={{ width: rem(18), height: rem(18) }} stroke={1.5} />;
+  const icon = (
+    <IconChevronDown style={{ width: rem(18), height: rem(18) }} stroke={1.5} />
+  );
 
   const [monthDisplay, setMonthDisplay] = useState([]);
 
@@ -64,7 +72,11 @@ export const UsedList = ({ setCalendarYearMonth }: any) => {
     const year = dayjs(sDate).year();
     const monthRange = compareMonth(e);
 
-    setCalendarYearMonth((prev: any) => ({ ...prev, year: year, month: monthRange }));
+    setCalendarYearMonth((prev: any) => ({
+      ...prev,
+      year: year,
+      month: monthRange,
+    }));
     setSelectMonth(e);
   };
 
@@ -132,8 +144,12 @@ export const UsedList = ({ setCalendarYearMonth }: any) => {
                         )}
 
                         <Stack gap={3}>
-                          <Text fw={700} ta={"left"} fz={"sm"}>
-                            <NumberFormatter thousandSeparator value={listContent.amount || 0} suffix=" 원" />
+                          <Text fw={600} ta={"left"} fz={"sm"}>
+                            <NumberFormatter
+                              thousandSeparator
+                              value={listContent.amount || 0}
+                              suffix=" 원"
+                            />
                           </Text>
 
                           <Group gap={"xs"}>
@@ -143,10 +159,18 @@ export const UsedList = ({ setCalendarYearMonth }: any) => {
                             <Divider orientation="vertical" />
                             {listContent.payeeList.length === 0 ? (
                               <Badge size="sm" radius={"xs"} key={index}>
-                                {listContent.selfWrittenYN === "Y" ? "직접결제" : `${listContent.payerName} 결제`}
+                                {listContent.selfWrittenYN === "Y"
+                                  ? "직접결제"
+                                  : `${listContent.payerName} 결제`}
                               </Badge>
                             ) : (
-                              <Popover position="bottom-start" withArrow shadow="xl" arrowSize={10} radius={"lg"}>
+                              <Popover
+                                position="bottom-start"
+                                withArrow
+                                shadow="xl"
+                                arrowSize={10}
+                                radius={"lg"}
+                              >
                                 <Popover.Target>
                                   <Indicator
                                     inline
@@ -160,7 +184,9 @@ export const UsedList = ({ setCalendarYearMonth }: any) => {
                                     zIndex={100}
                                   >
                                     <Badge radius={"sm"} variant="light">
-                                      {listContent.selfWrittenYN === "Y" ? "직접결제" : `${listContent.payerName} 결제`}
+                                      {listContent.selfWrittenYN === "Y"
+                                        ? "직접결제"
+                                        : `${listContent.payerName} 결제`}
                                     </Badge>
                                   </Indicator>
                                 </Popover.Target>
@@ -171,11 +197,17 @@ export const UsedList = ({ setCalendarYearMonth }: any) => {
                                     </Text>
                                     <Group gap={5}>
                                       {listContent.payeeList &&
-                                        listContent.payeeList.map((payee: any, index: number) => (
-                                          <Pill size="sm" c={"gray.8"} key={index}>
-                                            {payee.userName}
-                                          </Pill>
-                                        ))}
+                                        listContent.payeeList.map(
+                                          (payee: any, index: number) => (
+                                            <Pill
+                                              size="sm"
+                                              c={"gray.8"}
+                                              key={index}
+                                            >
+                                              {payee.userName}
+                                            </Pill>
+                                          )
+                                        )}
                                     </Group>
                                   </Stack>
                                 </Popover.Dropdown>
@@ -184,7 +216,11 @@ export const UsedList = ({ setCalendarYearMonth }: any) => {
                           </Group>
                         </Stack>
                       </Flex>
-                      <ActionIcon size={"xl"} variant="subtle" onClick={(e) => handleUpdateWelfare(e, listContent)}>
+                      <ActionIcon
+                        size={"xl"}
+                        variant="subtle"
+                        onClick={(e) => handleUpdateWelfare(e, listContent)}
+                      >
                         <ArrowRight color="gray" width={18} />
                       </ActionIcon>
                     </Group>
@@ -195,15 +231,27 @@ export const UsedList = ({ setCalendarYearMonth }: any) => {
           )}
         </ListWrapper>
       </ScrollArea>
-      <BottomModal opened={openedUpdateForm} onClose={handleClose} title={"복지포인트 수정"}>
-        <WelfareUpdateForm onClose={handleClose} updateWelfareDetail={updateWelfareDetail} />
+      <BottomModal
+        opened={openedUpdateForm}
+        onClose={handleClose}
+        title={"복지포인트 수정"}
+      >
+        <WelfareUpdateForm
+          onClose={handleClose}
+          updateWelfareDetail={updateWelfareDetail}
+        />
       </BottomModal>
       <BottomModal opened={opened} onClose={close} title={"복지포인트 입력"}>
         <WelfareInputForm onClose={close} opened={opened} />
       </BottomModal>
 
       <Affix position={{ bottom: 80, right: 20 }} zIndex={1000} hiddenFrom="md">
-        <Button radius={"lg"} onClick={toggle} color="blue.9" leftSection={<IconPlus style={{ width: rem(16), height: rem(16) }} />}>
+        <Button
+          radius={"lg"}
+          onClick={toggle}
+          color="blue.9"
+          leftSection={<IconPlus style={{ width: rem(16), height: rem(16) }} />}
+        >
           내역추가
         </Button>
       </Affix>
