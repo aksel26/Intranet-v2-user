@@ -75,3 +75,15 @@ export const useAssignLunchGroup = () => {
     mutationFn: (values: any) => api.assignLunchGroup(values),
   });
 };
+
+export const useCheckIn = () => {
+  return useMutation({
+    mutationFn: (values: any) => api.checkIn(values),
+  });
+};
+
+export const useCheckOut = () => {
+  return useMutation({
+    mutationFn: (values: any) => api.checkOut(values),
+  });
+};
