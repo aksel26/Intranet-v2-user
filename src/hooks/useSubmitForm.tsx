@@ -87,3 +87,9 @@ export const useCheckOut = () => {
     mutationFn: (values: any) => api.checkOut(values),
   });
 };
+
+export const useLeave = () => {
+  return useMutation({
+    mutationFn: (values: any) => api.leave(values),
+  });
+};
