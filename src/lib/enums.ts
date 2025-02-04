@@ -1,4 +1,21 @@
-export const ATTENDANCE_OPTIONS = ["근무", "재택 근무", "연차/휴무", "오전 반차", "오후 반차"];
+// export const ATTENDANCE_OPTIONS = ["근무", "재택 근무", "연차/휴무", "오전 반차", "오후 반차"];
+
+export enum ATTENDANCE_OPTIONS_NORMAL {
+  NORMAL = "정상 출근",
+  AM_HALF = "오전 반차",
+  PM_HALF = "오후 반차",
+  AM_QUARTER = "오전 반반차",
+  PM_QUARTER = "오후 반반차",
+  ANNUAL_LEAVE = "연차",
+}
+export enum ATTENDANCE_OPTIONS_REMARK {
+  SICK_LEAVE = "병가",
+  TRAINING = "훈련",
+  HEALTH_LEAVE = "보건휴가",
+  SPECIAL_LEAVE = "특별 휴무",
+  ALTERNATIVE_LEAVE = "대체 휴무",
+  FAMILY_EVENT_LEAVE = "경조 휴무",
+}
 
 export const LOTTERY_EMOJI = [
   "🍇",
