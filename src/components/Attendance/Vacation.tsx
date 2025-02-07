@@ -6,6 +6,7 @@ import { Button, Divider, Drawer, FileButton, Group, Indicator, Input, Select, S
 import { DatePicker } from "@mantine/dates";
 import dayjs from "dayjs";
 import React, { useState } from "react";
+import notification from "../GNB/Notification";
 
 type TLeaveInfo = {
   commuteDate: Date | null;
@@ -37,24 +38,22 @@ function Vacation({ opened, close }: any) {
 
     const temp = value;
 
-    console.log("🚀 ~ submit ~ temp:", temp);
     temp.forEach((item: any) => {
-      console.log("🚀 ~ temp.forEach ~ item:", item);
       item.commuteDate = dayjs(item.commuteDate).format("YYYY-MM-DD");
     });
 
     submitData.leaveInfo = temp;
-    submitData.confirmPerson = 23;
-    console.log("🚀 ~ submit ~ submitData:", submitData);
+    submitData.confirmPersonIdx = confirmPerson;
 
     leave(
       { dto: submitData },
       {
         onError: (error: any) => {
-          console.log(error);
+          notification({ color: "red", title: "휴가 신청", message: "휴가 신청 중 오류가 발생하였습니다." });
         },
         onSuccess: (data: any) => {
-          console.log("🚀 ~ submit ~ data:", data);
+          notification({ color: "green", title: "휴가 신청 완료", message: "결재자의 승인을 기다려주세요." });
+          close();
         },
       }
     );
@@ -114,8 +113,8 @@ function Vacation({ opened, close }: any) {
               </Text>
             </Group>
             <Stack gap={"xs"}>
-              {value.map((item: any) => (
-                <Group wrap="nowrap">
+              {value.map((item: any, index: number) => (
+                <Group wrap="nowrap" key={index}>
                   <Input value={dayjs(item.commuteDate).format("YYYY-MM-DD")} readOnly variant="unstyled" size="md" />
 
                   <Select
