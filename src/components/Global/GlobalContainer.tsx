@@ -23,6 +23,15 @@ export const GlobalContainer = ({ children }: { children: React.ReactNode }) => 
     //   lg: rem(16),
     //   xl: rem(20),
     // },
+    components: {
+      Button: {
+        styles: {
+          label: {
+            fontWeight: 500,
+          },
+        },
+      },
+    },
   });
   return (
     <MantineProvider theme={theme}>
