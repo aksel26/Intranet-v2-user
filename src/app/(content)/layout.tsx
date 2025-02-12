@@ -127,7 +127,7 @@ export default function ContentLayout({ children }: { children: React.ReactNode 
           </Stack>
         </Skeleton>
 
-        {myInfo?.attendance === "연차" ? <Vacation myInfo={myInfo} /> : <Work myInfo={myInfo} />}
+        {myInfo?.attendance === "연차" ? <Vacation /> : <Work myInfo={myInfo} />}
         <AttendanceButtonWrapper onWorkModalOpen={onWorkModalOpen} offWorkModalOpen={offWorkModalOpen} />
         <NavLink label="근태 · 휴가 관리" childrenOffset={28}>
           <NavLink component={Link} href={"/attendance"} label="Dashboard" />
