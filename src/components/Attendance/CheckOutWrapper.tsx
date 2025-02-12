@@ -9,6 +9,7 @@ import { useEffect, useMemo, useRef } from "react";
 import notification from "../GNB/Notification";
 import EarlyCheckOut from "./EarlyCheckOut";
 import InTimeCheckOut from "./InTimeCheckOut";
+import { useQueryClient } from "@tanstack/react-query";
 
 function CheckOutWrapper({ offWorkModalClose, offWorkTimeOpened }: any) {
   const { myInfo, isLoading, isError } = useGetMe();
@@ -16,7 +17,7 @@ function CheckOutWrapper({ offWorkModalClose, offWorkTimeOpened }: any) {
   //   const { hours } = checkOutTimeValidation(myInfo.checkInTime);
 
   const reasonRef = useRef<any>();
-
+  const queryClient = useQueryClient();
   const { setCheckInTime } = attendanceStore();
 
   const { hours } = useMemo(() => {
@@ -24,8 +25,7 @@ function CheckOutWrapper({ offWorkModalClose, offWorkTimeOpened }: any) {
   }, [myInfo]);
 
   useEffect(() => {
-    console.log("myInfo: ", myInfo);
-    setCheckInTime(myInfo.checkInTime);
+    setCheckInTime(myInfo);
   }, [myInfo]);
 
   const handleCheckOut = () => {
@@ -37,7 +37,7 @@ function CheckOutWrapper({ offWorkModalClose, offWorkTimeOpened }: any) {
         earlyLeaveReason: reasonRef.current.value,
       },
       {
-        onSuccess: (data) => {
+        onSuccess: async (data) => {
           console.log("data: ", data);
           const { checkInTime } = data.data;
           const checkInTimeFormat = dayjs(checkInTime).format("HH:mm:ss");
@@ -46,6 +46,7 @@ function CheckOutWrapper({ offWorkModalClose, offWorkTimeOpened }: any) {
             message: `${checkInTimeFormat}에 퇴근완료 되었습니다.`,
             title: "퇴근",
           });
+          await queryClient.invalidateQueries({ queryKey: ["me"] });
           offWorkModalClose();
         },
         onError: (error: any) => {
@@ -61,13 +62,7 @@ function CheckOutWrapper({ offWorkModalClose, offWorkTimeOpened }: any) {
     );
   };
   return (
-    <Modal
-      opened={offWorkTimeOpened}
-      onClose={offWorkModalClose}
-      title="퇴근하기"
-      centered
-      size={"xs"}
-    >
+    <Modal opened={offWorkTimeOpened} onClose={offWorkModalClose} title="퇴근하기" centered size={"xs"}>
       <Text>
         {myInfo?.userName} <Text component="span">{myInfo?.gradeName}</Text>
         님,
@@ -77,12 +72,7 @@ function CheckOutWrapper({ offWorkModalClose, offWorkTimeOpened }: any) {
         <Button fullWidth onClick={handleCheckOut}>
           퇴근하기
         </Button>
-        <Button
-          fullWidth
-          variant="light"
-          color="gray.8"
-          onClick={offWorkModalClose}
-        >
+        <Button fullWidth variant="light" color="gray.8" onClick={offWorkModalClose}>
           닫기
         </Button>
       </Group>
