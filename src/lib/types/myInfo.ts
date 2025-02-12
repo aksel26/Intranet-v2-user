@@ -12,4 +12,5 @@ export type TMyInfo = {
   gradeName: string | null;
   adminRole: string | null;
   checkInTime: string | null;
+  attendance: string | null;
 };

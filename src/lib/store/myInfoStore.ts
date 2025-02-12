@@ -21,6 +21,7 @@ export const myInfoStore = create<IMyInfoState>((set) => ({
     gradeName: null,
     adminRole: null,
     checkInTime: null,
+    attendance: null,
   },
   setMyInfo: (myInfo: TMyInfo) => set({ myInfo }),
 }));
