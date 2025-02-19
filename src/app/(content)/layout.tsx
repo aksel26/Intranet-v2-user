@@ -129,10 +129,9 @@ export default function ContentLayout({ children }: { children: React.ReactNode 
 
         {myInfo?.attendance === "연차" ? <Vacation /> : <Work myInfo={myInfo} />}
         <AttendanceButtonWrapper onWorkModalOpen={onWorkModalOpen} offWorkModalOpen={offWorkModalOpen} />
-        <NavLink label="근태 · 휴가 관리" childrenOffset={28}>
-          <NavLink component={Link} href={"/attendance"} label="Dashboard" />
-          <NavLink component={Link} href={"/attendance/vacation"} label="휴가 관리" />
-          <NavLink component={Link} href={"/attendance/work"} label="근태 관리" />
+        <NavLink label="근태" childrenOffset={28}>
+          <NavLink component={Link} href={"/attendance/work"} label="출퇴근 관리" />
+          <NavLink component={Link} href={"/attendance/vacation"} label="휴가/연차 관리" />
         </NavLink>
         <NavLink label="검사현황" />
         <NavLink label="복지" childrenOffset={28}>
