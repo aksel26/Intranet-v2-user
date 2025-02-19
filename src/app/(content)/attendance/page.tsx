@@ -2,28 +2,12 @@
 import dayGridPlugin from "@fullcalendar/daygrid";
 import FullCalendar from "@fullcalendar/react";
 import { CompositeChart } from "@mantine/charts";
-import {
-  ActionIcon,
-  Badge,
-  Breadcrumbs,
-  Container,
-  Divider,
-  Grid,
-  GridCol,
-  Group,
-  List,
-  Paper,
-  rem,
-  Stack,
-  Text,
-  ThemeIcon,
-  Title,
-} from "@mantine/core";
+import { ActionIcon, Badge, Breadcrumbs, Container, Divider, Grid, GridCol, Group, List, Paper, rem, Stack, Text, ThemeIcon, Title } from "@mantine/core";
 import { usePathname, useRouter } from "next/navigation";
 import "../../../styles/calendar.css";
 import IconCircleCheck from "/public/icons/circle-check.svg";
 import IconDots from "/public/icons/dots.svg";
-export const data = [
+const data = [
   {
     date: "1주차",
     근무시간: 34.3,
@@ -101,11 +85,7 @@ function page() {
               <Divider orientation="vertical" />
               <Stack gap={4}>
                 <Text>오늘 출근 시간</Text>
-                <Text
-                  ta={"center"}
-                  fz={"md"}
-                  styles={{ root: { letterSpacing: 1.1 } }}
-                >
+                <Text ta={"center"} fz={"md"} styles={{ root: { letterSpacing: 1.1 } }}>
                   08:01:23
                 </Text>
               </Stack>
@@ -198,9 +178,7 @@ function page() {
                 spacing="xs"
                 icon={
                   <ThemeIcon color="teal" size={24} variant="light" radius="md">
-                    <IconCircleCheck
-                      style={{ width: rem(16), height: rem(16) }}
-                    />
+                    <IconCircleCheck style={{ width: rem(16), height: rem(16) }} />
                   </ThemeIcon>
                 }
               >

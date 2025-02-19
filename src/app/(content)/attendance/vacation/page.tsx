@@ -29,14 +29,14 @@ import { useDisclosure } from "@mantine/hooks";
 import { useState } from "react";
 import IconInfoCircle from "/public/icons/info-circle.svg";
 
+import ArrowRight from "/public/icons/arrow-right.svg";
+
 import dayjs from "dayjs";
 import "dayjs/locale/ko";
 import Vacation from "@/components/Attendance/Vacation";
+import { useRouter } from "next/navigation";
 dayjs.locale("ko");
-const items = [
-  { title: "근태관리", href: "#" },
-  { title: "휴가관리", href: "#" },
-].map((item, index) => (
+const items = [{ title: "휴가/연차 관리", href: "#" }].map((item, index) => (
   <Text size="lg" fw={600} component="a" key={index}>
     {/* <Anchor href={item.href} key={index}> */}
     {item.title}
@@ -49,6 +49,11 @@ const CountText = ({ children }: any) => {
 };
 function page() {
   const [opened, { open, close }] = useDisclosure(false);
+
+  const router = useRouter();
+  const goList = () => {
+    router.push("/attendance/vacation/list");
+  };
 
   return (
     <Container
@@ -65,9 +70,17 @@ function page() {
       <Grid>
         <GridCol span={{ base: 12, md: 8 }}>
           <Paper bg={"white"} px="md" py="lg" radius={"lg"} h={"100%"}>
-            <Title order={5} mb={"xs"}>
-              휴가 요약
-            </Title>
+            <Group justify="space-between" align="center" mb={"xs"}>
+              <Title order={5}>
+                휴가 요약{" "}
+                <Text component="span" c={"dimmed"} fz={"sm"} ml={"xs"}>
+                  2025년 기준
+                </Text>
+              </Title>
+              <Button variant="light" size="xs" rightSection={<ArrowRight />} onClick={goList}>
+                자세히 보기
+              </Button>
+            </Group>
             <Group gap={"xs"} justify="space-evenly">
               <Stack gap={4}>
                 <Popover width={"auto"} position="top-start" withArrow shadow="md">
@@ -244,42 +257,6 @@ function page() {
                 <List.Item>
                   <Group>
                     <Badge color="yellow">미승인</Badge>
-                    <Text size="xs">2024-12-01</Text>
-                    <Text size="xs">오전반반차</Text>
-                    <Text size="xs">승인자 : 김현근</Text>
-                  </Group>
-                </List.Item>
-              </List>
-            </Paper>
-            <Paper bg={"white"} px="md" py="lg" radius={"lg"}>
-              <Title order={5} mb={"xs"}>
-                사용내역 조회
-              </Title>
-              <List spacing="xs" size="sm" center>
-                <List.Item w={"100%"}>
-                  <Group>
-                    <Text size="xs">2024-12-01</Text>
-                    <Text size="xs">연차</Text>
-
-                    <Text size="xs">승인자 : 김현근</Text>
-                  </Group>
-                </List.Item>
-                <List.Item>
-                  <Group>
-                    <Text size="xs">2024-12-01</Text>
-                    <Text size="xs">오전반반차</Text>
-                    <Text size="xs">승인자 : 김현근</Text>
-                  </Group>
-                </List.Item>
-                <List.Item>
-                  <Group>
-                    <Text size="xs">2024-12-01</Text>
-                    <Text size="xs">오전반반차</Text>
-                    <Text size="xs">승인자 : 김현근</Text>
-                  </Group>
-                </List.Item>
-                <List.Item>
-                  <Group>
                     <Text size="xs">2024-12-01</Text>
                     <Text size="xs">오전반반차</Text>
                     <Text size="xs">승인자 : 김현근</Text>
