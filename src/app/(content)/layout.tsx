@@ -8,7 +8,7 @@ import { notifications } from "@mantine/notifications";
 import NextImage from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React from "react";
+import React, { useCallback, useState } from "react";
 import myImage from "/public/images/ACG_LOGO_GRAY.png";
 
 import CheckOutWrapper from "@/components/Attendance/CheckOutWrapper";
@@ -33,6 +33,17 @@ export default function ContentLayout({ children }: { children: React.ReactNode 
   const { mutate: logout, isError: isError_logout, isSuccess: isSuccess_logout } = useLogout();
   const [onWorkTimeOpened, { open: onWorkModalOpen, close: onWorkModalClose }] = useDisclosure(false);
   const [offWorkTimeOpened, { open: offWorkModalOpen, close: offWorkModalClose }] = useDisclosure(false);
+
+  const [dday, setDday] = useState<any>();
+  console.log("🚀 ~ ContentLayout ~ dday:", dday);
+
+  const getDDayCount = useCallback((baseDate: string | null) => {
+    const today = dayjs();
+    const target = dayjs(baseDate);
+    const diff = today.diff(target, "day");
+
+    return diff >= 0 ? `ACG Day + ${diff}` : `-`;
+  }, []);
 
   const router = useRouter();
   const handleLogout = async () => {
@@ -119,7 +130,7 @@ export default function ContentLayout({ children }: { children: React.ReactNode 
                     {myInfo?.userEmail}
                   </Text>
                   <Text c={"blue.9"} size={"xs"}>
-                    D + 1234
+                    {getDDayCount(myInfo?.joinDate)}
                   </Text>
                 </Group>
               </Flex>
