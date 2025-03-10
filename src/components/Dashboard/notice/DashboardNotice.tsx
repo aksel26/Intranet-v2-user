@@ -1,14 +1,6 @@
 import useGetNotices from "@/hooks/useGetNotices";
 import { TNotice } from "@/lib/types/notice";
-import {
-  Divider,
-  Group,
-  List,
-  ListItem,
-  Loader,
-  Stack,
-  Text,
-} from "@mantine/core";
+import { Divider, Group, List, ListItem, Loader, Stack, Text } from "@mantine/core";
 import React, { useState } from "react";
 import styles from "../../../styles/list.module.css";
 import { formatYYYYMMDD } from "@/utils/dateFomat";
@@ -21,7 +13,7 @@ function DashboardNotice() {
 
   const { notices, isLoading, isError } = useGetNotices({ params });
 
-  const LIST_LIMIT = 3;
+  const LIST_LIMIT = 4;
   const router = useRouter();
   const goDetail = (id: number) => {
     router.push(`/notice/${id}`);
@@ -43,14 +35,7 @@ function DashboardNotice() {
           <React.Fragment key={notice.noticeIdx}>
             {
               index + 1 > LIST_LIMIT ? null : (
-                <ListItem
-                  w={"100%"}
-                  onClick={() => goDetail(notice.noticeIdx)}
-                  key={notice.noticeIdx}
-                  className={styles.element}
-                  px={"sm"}
-                  py={"xs"}
-                >
+                <ListItem w={"100%"} onClick={() => goDetail(notice.noticeIdx)} key={notice.noticeIdx} className={styles.element} px={"sm"} py={"xs"}>
                   <Group justify="space-between">
                     <Text fz={"xs"}>{notice.title}</Text>
                     <Group>
