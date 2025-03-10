@@ -32,6 +32,7 @@ export const getUsers = () => getApi.get(`/users/ids`);
 export const getQnA = () => getApi.get(`/users/qna`);
 export const getNotices = ({ pageNo, perPage }: { pageNo: number; perPage: number }) => getApi.get(`/users/notices`, { params: { pageNo, perPage } });
 export const getNoticeDetail = ({ noticeIdx }: { noticeIdx: number }) => getApi.get(`/users/notices/${noticeIdx}`, { params: { noticeIdx: noticeIdx } });
+export const getAllAttendance = ({ date }: { date: string }) => getApi.get(`/users/intranet/leave/all`, { params: { date: date } });
 
 // 사용자 점심조 조회 API
 export const getLunchGroup = () => getApi.get(`/users/playground/lunch-group`);

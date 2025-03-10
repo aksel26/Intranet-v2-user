@@ -11,6 +11,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import ArrowRight from "/public/icons/arrow-right.svg";
 import IconDots from "/public/icons/dots.svg";
+import AttendanceAll from "@/components/Dashboard/attendance";
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Tooltip, Legend);
 
@@ -84,27 +85,7 @@ function page() {
                 }}
               />
             </Paper>
-            <Paper p={"lg"} radius={"lg"}>
-              <Title order={5} mb={"md"}>
-                오늘 일정
-              </Title>
-              <Stack gap={"xs"}>
-                <Group>
-                  <Badge size="md">검사운영</Badge>
-                  <Text fz={"sm"}>LG전자</Text>
-                </Group>
-                <Group>
-                  <Badge size="md">검사운영</Badge>
-                  <Text fz={"sm"}>LG전자</Text>
-                </Group>
-                <Group>
-                  <Badge size="md" color={"green"}>
-                    외근
-                  </Badge>
-                  <Text fz={"sm"}>LG 유플러스 미팅</Text>
-                </Group>
-              </Stack>
-            </Paper>
+            <AttendanceAll />
           </Stack>
         </GridCol>
         <GridCol span={{ base: 12, md: 6 }}>
@@ -195,69 +176,6 @@ function page() {
                   </Text>
                 </Stack>
               </Group>
-            </Paper>
-            <Paper p={"lg"} radius={"lg"}>
-              <Group justify="space-between" align="flex-start">
-                <Title order={5}>직원 근태 현황 +10</Title>
-                <Button size="xs" variant="subtle" onClick={goNotice} rightSection={<ArrowRight />}>
-                  나의 근태 현황 보기
-                </Button>
-              </Group>
-
-              <Stack gap={"sm"} mt={"md"}>
-                <Group>
-                  <Badge size="sm">연차</Badge>
-                  <Group gap={7}>
-                    <Text fz={"sm"}>김정순</Text>
-                    <Divider orientation="vertical" />
-                    <Text fz={"sm"}>김정순</Text>
-                    <Divider orientation="vertical" />
-                    <Text fz={"sm"}>김정순</Text>
-                  </Group>
-                </Group>
-                <Group>
-                  <Badge size="sm">오전반반차</Badge>
-                  <Group gap={7}>
-                    <Text fz={"sm"}>김정순</Text>
-                    <Divider orientation="vertical" />
-                    <Text fz={"sm"}>김정순</Text>
-                    <Divider orientation="vertical" />
-                    <Text fz={"sm"}>김정순</Text>
-                  </Group>
-                </Group>
-                <Group>
-                  <Badge size="sm">오전반차</Badge>
-                  <Group gap={7}>
-                    <Text fz={"sm"}>김정순</Text>
-                    <Divider orientation="vertical" />
-                    <Text fz={"sm"}>김정순</Text>
-                    <Divider orientation="vertical" />
-                    <Text fz={"sm"}>김정순</Text>
-                  </Group>
-                </Group>
-                <Group>
-                  <Badge size="sm">오후반차</Badge>
-                  <Group gap={7}>
-                    <Text fz={"sm"}>김정순</Text>
-                    <Divider orientation="vertical" />
-                    <Text fz={"sm"}>김정순</Text>
-                    <Divider orientation="vertical" />
-                    <Text fz={"sm"}>김정순</Text>
-                  </Group>
-                </Group>
-                <Group>
-                  <Badge color="gray" size="sm">
-                    보건휴가
-                  </Badge>
-                  <Group gap={7}>
-                    <Text fz={"sm"}>김정순</Text>
-                    <Divider orientation="vertical" />
-                    <Text fz={"sm"}>김정순</Text>
-                    <Divider orientation="vertical" />
-                    <Text fz={"sm"}>김정순</Text>
-                  </Group>
-                </Group>
-              </Stack>
             </Paper>
           </Stack>
         </GridCol>
