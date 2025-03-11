@@ -2,19 +2,7 @@
 import useGetNotices from "@/hooks/useGetNotices";
 import { TNotice } from "@/lib/types/notice";
 import { formatYYYYMMDD } from "@/utils/dateFomat";
-import {
-  Box,
-  Breadcrumbs,
-  Container,
-  Divider,
-  Group,
-  List,
-  ListItem,
-  Loader,
-  Paper,
-  Stack,
-  Text,
-} from "@mantine/core";
+import { Box, Breadcrumbs, Container, Divider, Group, List, ListItem, Loader, Paper, Stack, Text } from "@mantine/core";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import styles from "../../../styles/list.module.css";
@@ -70,14 +58,7 @@ const Notice = () => {
           ) : (
             notices?.map((notice: TNotice, index: number, arr: any) => (
               <>
-                <ListItem
-                  w={"100%"}
-                  onClick={() => goDetail(notice.noticeIdx)}
-                  key={notice.noticeIdx}
-                  className={styles.element}
-                  px={"sm"}
-                  py={"md"}
-                >
+                <ListItem w={"100%"} onClick={() => goDetail(notice.noticeIdx)} key={notice.noticeIdx} className={styles.element} px={"sm"} py={"md"}>
                   <Stack gap={4}>
                     <Text fz={"xs"}>{notice.title}</Text>
                     <Group>
