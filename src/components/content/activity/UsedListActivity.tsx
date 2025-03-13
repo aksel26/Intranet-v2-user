@@ -34,7 +34,6 @@ export const UsedListActivity = ({ setCalendarYearMonth }: any) => {
 
   const changeMonth = (e: any) => {
     const [sDate, eDate] = e;
-    console.log("🚀 ~ changeMonth ~ e:", e);
     const year = dayjs(sDate).year();
     const monthRange = compareMonth(e);
 

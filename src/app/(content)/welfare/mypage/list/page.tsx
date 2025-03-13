@@ -25,7 +25,6 @@ function page() {
   const { mutate } = useDeleteQna();
 
   const [deleteList, setDeleteList] = useState([]);
-  console.log("🚀 ~ page ~ deleteList:", deleteList);
 
   const goBack = () => router.back();
   const writeQna = () => router.push(`${currentPath}/contact-us`);
@@ -47,7 +46,6 @@ function page() {
 
   const handleCheckboxChange = (e: any) => {
     const list = Number(e.target.value);
-    console.log("🚀 ~ handleCheckboxChange ~ value:", list);
     setDeleteList((prev: any) => {
       // 이미 배열에 있는 경우 제거
       if (prev.includes(list)) {

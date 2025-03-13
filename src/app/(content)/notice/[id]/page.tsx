@@ -2,20 +2,7 @@
 
 import useGetNoticeDetail from "@/hooks/useGetNoticeDetail";
 import { convertFileUnit } from "@/utils/convertFileUnit";
-import {
-  ActionIcon,
-  Box,
-  Breadcrumbs,
-  Button,
-  Container,
-  Divider,
-  Group,
-  Modal,
-  Paper,
-  Stack,
-  Text,
-  Title,
-} from "@mantine/core";
+import { ActionIcon, Box, Breadcrumbs, Button, Container, Divider, Group, Modal, Paper, Stack, Text, Title } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import dayjs from "dayjs";
 import { useParams, useRouter } from "next/navigation";
@@ -31,15 +18,13 @@ function page() {
   const { id } = useParams();
 
   const { noticeDetails, isLoading, isError } = useGetNoticeDetail({ id });
-  console.log("🚀 ~ page ~ noticeDetails:", noticeDetails);
   function createMarkup() {
     if (noticeDetails) {
       return { __html: noticeDetails?.content };
     }
   }
 
-  const [previewOpened, { open: previewOpen, close: previewClose }] =
-    useDisclosure(false);
+  const [previewOpened, { open: previewOpen, close: previewClose }] = useDisclosure(false);
 
   const router = useRouter();
 
@@ -95,15 +80,8 @@ function page() {
 
             <Text fz={"sm"}>첨부파일</Text>
             {noticeDetails?.imageUrl ? (
-              <Button
-                fz={"sm"}
-                variant="subtle"
-                w={"max-content"}
-                onClick={previewOpen}
-              >
-                {`${noticeDetails?.imageName}, [${convertFileUnit(
-                  noticeDetails?.imageSize
-                )}]`}
+              <Button fz={"sm"} variant="subtle" w={"max-content"} onClick={previewOpen}>
+                {`${noticeDetails?.imageName}, [${convertFileUnit(noticeDetails?.imageSize)}]`}
               </Button>
             ) : (
               <Text fz={"sm"} c={"dimmed"}>
@@ -113,11 +91,7 @@ function page() {
           </Stack>
         </Stack>
       </Paper>
-      <Modal
-        opened={previewOpened}
-        onClose={previewClose}
-        title="첨부 이미지 미리보기"
-      >
+      <Modal opened={previewOpened} onClose={previewClose} title="첨부 이미지 미리보기">
         <img src={noticeDetails?.imageUrl || ""} alt="preview" />
       </Modal>
     </Container>

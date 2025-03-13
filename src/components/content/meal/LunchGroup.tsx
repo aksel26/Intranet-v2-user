@@ -24,7 +24,6 @@ function LunchGroup() {
   const [opened, { open, close }] = useDisclosure(false);
   const [lotteryOpened, { open: lotteryOpen, close: lotteryClose }] = useDisclosure(false);
 
-  console.log("🚀 ~ matches ~ matches:", matches);
   return (
     <Paper bg={"white"} px="lg" py="lg" radius={"lg"}>
       <Group align="flex-start" mb={"md"} justify="space-between">

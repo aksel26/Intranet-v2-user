@@ -28,14 +28,12 @@ export default function ContentLayout({ children }: { children: React.ReactNode 
   const [desktopOpened, { toggle: toggleDesktop }] = useDisclosure(true);
 
   const { myInfo, isLoading, isError } = useGetMe();
-  console.log("🚀 ~ ContentLayout ~ myInfo:", myInfo);
 
   const { mutate: logout, isError: isError_logout, isSuccess: isSuccess_logout } = useLogout();
   const [onWorkTimeOpened, { open: onWorkModalOpen, close: onWorkModalClose }] = useDisclosure(false);
   const [offWorkTimeOpened, { open: offWorkModalOpen, close: offWorkModalClose }] = useDisclosure(false);
 
   const [dday, setDday] = useState<any>();
-  console.log("🚀 ~ ContentLayout ~ dday:", dday);
 
   const getDDayCount = useCallback((baseDate: string | null) => {
     const today = dayjs();

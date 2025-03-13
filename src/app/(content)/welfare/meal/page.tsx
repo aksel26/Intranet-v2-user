@@ -23,7 +23,6 @@ const Main = () => {
   });
 
   const { data, isLoading, isError } = useQuery({ queryKey: ["meals", calendarYearMonth], queryFn: () => api.getMeals(calendarYearMonth) });
-  console.log("🚀 ~ Main ~ data:", data);
 
   const { mealStore } = useCombinedStore() as { mealStore: mealStateStore };
   const pathName = usePathname();

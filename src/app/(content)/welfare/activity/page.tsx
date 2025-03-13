@@ -19,7 +19,6 @@ const ActivityMain = () => {
   });
 
   const { data, isLoading, isError } = useQuery({ queryKey: ["activity", calendarYearMonth], queryFn: () => api.getActivities(calendarYearMonth) });
-  console.log("🚀 ~ ActivityMain ~ data:", data);
 
   // const { welfareStore } = useCombinedStore() as { welfareStore: welfareStateStore };
 

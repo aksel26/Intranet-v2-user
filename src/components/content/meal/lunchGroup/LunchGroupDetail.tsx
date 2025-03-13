@@ -12,7 +12,6 @@ const GroupNumber = ({ groupNumber }: { groupNumber: number }) => {
 };
 function LunchGroupDetail() {
   const { data, isLoading, isError } = useQuery({ queryKey: ["lunchGroup"], queryFn: () => getLunchGroup() });
-  console.log("🚀 ~ LunchGroupDetail ~ data:", data);
 
   if (!data?.data.data.groups)
     return (
@@ -48,7 +47,7 @@ function LunchGroupDetail() {
                   item[1].map((name: string, index: number, arr: any) => {
                     return (
                       <React.Fragment key={index}>
-                        <Text  size="sm">{name}</Text>
+                        <Text size="sm">{name}</Text>
                         {arr.length === index + 1 ? null : <Divider orientation="vertical" size={"xs"} />}
                       </React.Fragment>
                     );

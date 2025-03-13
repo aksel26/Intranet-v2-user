@@ -1,12 +1,5 @@
 "use client";
-import {
-  Button,
-  Divider,
-  Flex,
-  Group,
-  NumberFormatter,
-  Text,
-} from "@mantine/core";
+import { Button, Divider, Flex, Group, NumberFormatter, Text } from "@mantine/core";
 import React, { useCallback } from "react";
 import ArrowRight from "../../../../../public/icons/arrow-right.svg";
 import { BreakfastIcon } from "../icon/BreakfastIcon";
@@ -23,11 +16,9 @@ const isBlank = (data: any) => {
 };
 
 export const Attend = ({ toggle, values }: any) => {
-  console.log("🚀 ~ Attend ~ values:", values);
   const { data, type } = values;
 
   const renderIcon = useCallback((type: any) => {
-    console.log("🚀 ~ renderIcon ~ type:", type);
     if (type === "breakfast") {
       return <BreakfastIcon />;
     } else if (type === "lunch") {

@@ -20,7 +20,6 @@ interface FormValues {
 }
 
 export default function ActivityInputForm({ onClose, opened }: any) {
-  console.log("🚀 ~ ActivityInputForm ~ opened:", opened);
   const queryClient = useQueryClient();
 
   const { mutate } = useSubmitFormActivity();
