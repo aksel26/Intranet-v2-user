@@ -1,37 +1,45 @@
+"use client";
+import { useElapsedTime } from "@/hooks/useElapsedTime";
 import { Badge, Card, Divider, Group, Progress, Stack, Text } from "@mantine/core";
 import dayjs from "dayjs";
-import React from "react";
 import IconWork from "/public/icons/briefcase.svg";
 import IconTimer from "/public/icons/clock-hour-10.svg";
 function Work({ myInfo }: any) {
+  const { elapsedTime, percentage } = useElapsedTime(myInfo.checkInTime);
+
   if (!myInfo.checkInTime) return null;
+
   return (
     <Card w={"100%"} mih={100} mt={"xs"} p={"xs"}>
       <Stack gap={3}>
         <Group justify="space-between">
           <Group gap={"xs"}>
-            <IconWork />
-            <Text fz={"sm"}>출근시간</Text>
+            <IconWork color="#858e96" />
+            <Text fz={"sm"} c={"dimmed"}>
+              출근시간
+            </Text>
           </Group>
-          <Badge variant="light" radius={"sm"} size="md" fw={500}>
-            정상출근
+          <Badge variant="light" radius={"sm"} size="md" fw={500} color={myInfo.attendance.includes("지각") ? "yellow" : "blue"}>
+            {myInfo.attendance}
           </Badge>
         </Group>
-        <Text pl={25} fz={"xs"}>
+        <Text pl={25} fz={"xs"} styles={{ root: { letterSpacing: "0.5px" } }}>
           {dayjs(myInfo.checkInTime).format("HH시 mm분 ss초")}
         </Text>
       </Stack>
       <Divider my={"xs"} />
       <Stack gap={3}>
         <Group gap={"xs"}>
-          <IconTimer />
-          <Text fz={"sm"}>경과시간</Text>
+          <IconTimer color="#858e96" />
+          <Text fz={"sm"} c={"dimmed"}>
+            경과시간
+          </Text>
         </Group>
 
-        <Text pl={25} fz={"xs"} mb={5}>
-          {dayjs(myInfo.checkInTime).format("HH시 mm분 ss초")}
+        <Text pl={25} fz={"xs"} mb={5} styles={{ root: { letterSpacing: "0.5px" } }}>
+          {elapsedTime}
         </Text>
-        <Progress value={50} />
+        <Progress value={percentage} />
       </Stack>
     </Card>
   );
