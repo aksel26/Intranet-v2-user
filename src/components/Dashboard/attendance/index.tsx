@@ -4,6 +4,8 @@ import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { useRouter } from "next/navigation";
 import ArrowRight from "/public/icons/arrow-right.svg";
+import { isEmpty } from "lodash";
+import { useEffect, useState } from "react";
 
 const AttendanceAll = () => {
   const router = useRouter();
@@ -12,7 +14,18 @@ const AttendanceAll = () => {
 
   const { data, isLoading, isError } = useQuery({ queryKey: ["attendanceAll", { date: date }], queryFn: () => api.getAllAttendance({ date: date }) });
 
-  console.log("🚀 ~ AttendanceAll ~ data:", data);
+  const [leaveList, setLeaveList] = useState(false);
+
+  useEffect(() => {
+    if (data) {
+      if (isEmpty(data?.data.data.leaveList)) {
+        setLeaveList(false);
+      } else {
+        isEmpty(data?.data.data.leaveList);
+      }
+    }
+  }, [data]);
+
   return (
     <Paper p={"lg"} radius={"lg"}>
       <Group justify="space-between" align="flex-start">
@@ -30,6 +43,7 @@ const AttendanceAll = () => {
       <Text c={"dimmed"} fz={"sm"} ta={"center"} my={"md"}>
         근태 내역이 없습니다.
       </Text>
+
       {/* {data?.data.data.leaveList.length < 1 ? (
       ) : (
         <Stack gap={"sm"} mt={"md"}>
