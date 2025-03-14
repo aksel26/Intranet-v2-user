@@ -4,14 +4,16 @@ import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { isEmpty } from "lodash";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import ArrowRight from "/public/icons/arrow-right.svg";
-const AttendanceAll = () => {
+const AttendanceAll = ({ date }: { date: Date | string | null }) => {
   const router = useRouter();
-  const goNotice = () => router.push("/notice");
-  const date = dayjs().format("YYYY-MM-DD");
+  const goWorkDetails = () => router.push("/attendance/work");
 
-  const { data, isLoading, isError } = useQuery({ queryKey: ["attendanceAll", { date: date }], queryFn: () => api.getAllAttendance({ date: date }) });
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ["attendanceAll", { date: dayjs(date).format("YYYY-MM-DD") }],
+    queryFn: () => api.getAllAttendance({ date: dayjs(date).format("YYYY-MM-DD") }),
+  });
 
   const [leaveList, setLeaveList] = useState(false);
 
@@ -31,10 +33,10 @@ const AttendanceAll = () => {
         <Group>
           <Title order={5}>직원 근태 현황 </Title>
           <Text c={"dimmed"} fz={"sm"}>
-            {dayjs().format("YYYY-MM-DD")}
+            {dayjs(date).format("YYYY-MM-DD")}
           </Text>
         </Group>
-        <Button size="xs" variant="subtle" onClick={goNotice} rightSection={<ArrowRight />}>
+        <Button size="xs" variant="subtle" onClick={goWorkDetails} rightSection={<ArrowRight />}>
           나의 근태 현황 보기
         </Button>
       </Group>
@@ -44,17 +46,17 @@ const AttendanceAll = () => {
         </Text>
       ) : (
         <Stack gap={"sm"} mt={"md"}>
-          {Object.entries(leaveList).map((list: any) => {
+          {Object.entries(leaveList).map((list: any, idx: number) => {
             return (
-              <Group>
+              <Group key={idx}>
                 <Badge size="sm">{list[0]}</Badge>
 
                 <Group gap={7}>
                   {list[1].map((name: string, index: number, arr: any) => (
-                    <>
+                    <Fragment key={index}>
                       <Text fz={"sm"}>{name}</Text>
                       {arr.length === index + 1 ? null : <Divider orientation="vertical" />}
-                    </>
+                    </Fragment>
                   ))}
                 </Group>
               </Group>

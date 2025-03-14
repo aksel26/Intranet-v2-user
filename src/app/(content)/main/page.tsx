@@ -1,19 +1,19 @@
 "use client";
 import Vacation from "@/components/Attendance/Vacation";
+import AttendanceAll from "@/components/Dashboard/attendance";
+import AttendanceSummary from "@/components/Dashboard/attendance/summary";
 import GreetingMessage from "@/components/Dashboard/greeting/GreetingMessage";
 import DashboardNotice from "@/components/Dashboard/notice/DashboardNotice";
-import { ActionIcon, Badge, Button, Container, Divider, Grid, GridCol, Group, Paper, Stack, Tabs, Text, Title } from "@mantine/core";
-import { Calendar } from "@mantine/dates";
+import { CompositeChart } from "@mantine/charts";
+import { ActionIcon, Button, Container, Grid, GridCol, Group, Paper, Stack, Tabs, Text, Title } from "@mantine/core";
+import { DatePicker } from "@mantine/dates";
 import { useDisclosure } from "@mantine/hooks";
-import { CategoryScale, ChartData, Chart as ChartJS, ChartOptions, Legend, LinearScale, LineElement, PointElement, Tooltip } from "chart.js";
+import { CategoryScale, Chart as ChartJS, Legend, LinearScale, LineElement, PointElement, Tooltip } from "chart.js";
 import dynamic from "next/dynamic";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import ArrowRight from "/public/icons/arrow-right.svg";
 import IconDots from "/public/icons/dots.svg";
-import AttendanceAll from "@/components/Dashboard/attendance";
-import AttendanceSummary from "@/components/Dashboard/attendance/summary";
-import { CompositeChart } from "@mantine/charts";
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Tooltip, Legend);
 const data = [
   {
@@ -54,44 +54,11 @@ function page() {
   const [workTimeTab, setWorkTimeTab] = useState<string | null>("week");
   const pathname = usePathname();
 
-  // const options: ChartOptions<"line"> = {
-  //   responsive: true,
-  //   maintainAspectRatio: false,
-  //   plugins: {
-  //     legend: {
-  //       display: false,
-  //     },
-  //   },
-  //   scales: {
-  //     y: {
-  //       min: 0,
-  //       max: 12,
-  //       ticks: {
-  //         stepSize: 1,
-  //       },
-  //     },
-  //     x: {
-  //       grid: {
-  //         display: false, // 세로 선 제거
-  //       },
-  //     },
-  //   },
-  // };
-  // const labels = ["일", "월", "화", "수", "목", "금", "토"];
-  // const data: ChartData<"line"> = {
-  //   labels,
-  //   datasets: [
-  //     {
-  //       data: [0, 12, 4, 3.4, 5, 0, 4], // 샘플 데이터
-  //       borderColor: "rgb(75, 192, 192)",
-  //       backgroundColor: "rgba(75, 192, 192, 0.5)",
-  //       tension: 0.4,
-  //     },
-  //   ],
-  // };
-
   const router = useRouter();
   const goNotice = () => router.push("/notice");
+
+  const [dateValue, setDateValue] = useState<Date | null>(null);
+
   return (
     <Container fluid p={"lg"}>
       <GreetingMessage />
@@ -102,9 +69,11 @@ function page() {
               <Title order={5} mb={"md"}>
                 캘린더
               </Title>
-              <Calendar
+              <DatePicker
                 highlightToday
                 locale="ko"
+                value={dateValue}
+                onChange={setDateValue}
                 firstDayOfWeek={0}
                 styles={{
                   month: { width: "100%" },
@@ -113,7 +82,7 @@ function page() {
                 }}
               />
             </Paper>
-            <AttendanceAll />
+            <AttendanceAll date={dateValue} />
           </Stack>
         </GridCol>
         <GridCol span={{ base: 12, md: 6 }}>
