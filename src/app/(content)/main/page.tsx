@@ -14,6 +14,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import ArrowRight from "/public/icons/arrow-right.svg";
 import IconDots from "/public/icons/dots.svg";
+import dayjs from "dayjs";
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Tooltip, Legend);
 const data = [
   {
@@ -57,7 +58,7 @@ function page() {
   const router = useRouter();
   const goNotice = () => router.push("/notice");
 
-  const [dateValue, setDateValue] = useState<Date | null>(null);
+  const [dateValue, setDateValue] = useState<Date | null>(new Date());
 
   return (
     <Container fluid p={"lg"}>
