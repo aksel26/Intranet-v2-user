@@ -11,7 +11,7 @@ function Work({ myInfo }: any) {
 
   return (
     <Card w={"100%"} mih={100} mt={"xs"} p={"xs"}>
-      <Stack gap={3}>
+      <Stack gap={3} mb={"xs"}>
         <Group justify="space-between">
           <Group gap={"xs"}>
             <IconWork color="#858e96" />
@@ -27,7 +27,6 @@ function Work({ myInfo }: any) {
           {dayjs(myInfo.checkInTime).format("HH시 mm분 ss초")}
         </Text>
       </Stack>
-      <Divider my={"xs"} />
       <Stack gap={3}>
         <Group gap={"xs"}>
           <IconTimer color="#858e96" />
