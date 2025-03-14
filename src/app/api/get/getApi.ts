@@ -1,4 +1,5 @@
 import { TMealsParams, TWelfaresParams } from "@/lib/types/meal";
+import { TMyAttendance } from "@/types/apiTypes";
 import axios from "axios";
 
 const getApi = axios.create({
@@ -33,6 +34,12 @@ export const getQnA = () => getApi.get(`/users/qna`);
 export const getNotices = ({ pageNo, perPage }: { pageNo: number; perPage: number }) => getApi.get(`/users/notices`, { params: { pageNo, perPage } });
 export const getNoticeDetail = ({ noticeIdx }: { noticeIdx: number }) => getApi.get(`/users/notices/${noticeIdx}`, { params: { noticeIdx: noticeIdx } });
 export const getAllAttendance = ({ date }: { date: string }) => getApi.get(`/users/intranet/leave/all`, { params: { date: date } });
+// 사용자 개인 휴가관리 요약정보 조회 API 개발
+export const getAttendanceSummary = ({ year }: { year: number }) => getApi.get(`/users/intranet/leave/stats`, { params: { year: year } });
 
 // 사용자 점심조 조회 API
 export const getLunchGroup = () => getApi.get(`/users/playground/lunch-group`);
+
+// 개인 출퇴근 내역 조회 API
+
+export const getMyAttendance = (params: TMyAttendance) => getApi.get(`/users/intranet/commute`, { params: params });
