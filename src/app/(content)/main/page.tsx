@@ -12,8 +12,36 @@ import { useState } from "react";
 import ArrowRight from "/public/icons/arrow-right.svg";
 import IconDots from "/public/icons/dots.svg";
 import AttendanceAll from "@/components/Dashboard/attendance";
-
+import AttendanceSummary from "@/components/Dashboard/attendance/summary";
+import { CompositeChart } from "@mantine/charts";
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Tooltip, Legend);
+const data = [
+  {
+    date: "1주차",
+    근무시간: 34.3,
+    limitTime: 40,
+  },
+  {
+    date: "2주차",
+    근무시간: 34.3,
+    limitTime: 40,
+  },
+  {
+    date: "3주차",
+    근무시간: 24.3,
+    limitTime: 40,
+  },
+  {
+    date: "4주차",
+    근무시간: 54.3,
+    limitTime: 40,
+  },
+  {
+    date: "5주차",
+    근무시간: 14.3,
+    limitTime: 40,
+  },
+];
 
 const LineChart = dynamic(() => import("react-chartjs-2").then((mod) => mod.Line), {
   ssr: false, // 서버사이드 렌더링 비활성화
@@ -26,41 +54,41 @@ function page() {
   const [workTimeTab, setWorkTimeTab] = useState<string | null>("week");
   const pathname = usePathname();
 
-  const options: ChartOptions<"line"> = {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-      legend: {
-        display: false,
-      },
-    },
-    scales: {
-      y: {
-        min: 0,
-        max: 12,
-        ticks: {
-          stepSize: 1,
-        },
-      },
-      x: {
-        grid: {
-          display: false, // 세로 선 제거
-        },
-      },
-    },
-  };
-  const labels = ["일", "월", "화", "수", "목", "금", "토"];
-  const data: ChartData<"line"> = {
-    labels,
-    datasets: [
-      {
-        data: [0, 12, 4, 3.4, 5, 0, 4], // 샘플 데이터
-        borderColor: "rgb(75, 192, 192)",
-        backgroundColor: "rgba(75, 192, 192, 0.5)",
-        tension: 0.4,
-      },
-    ],
-  };
+  // const options: ChartOptions<"line"> = {
+  //   responsive: true,
+  //   maintainAspectRatio: false,
+  //   plugins: {
+  //     legend: {
+  //       display: false,
+  //     },
+  //   },
+  //   scales: {
+  //     y: {
+  //       min: 0,
+  //       max: 12,
+  //       ticks: {
+  //         stepSize: 1,
+  //       },
+  //     },
+  //     x: {
+  //       grid: {
+  //         display: false, // 세로 선 제거
+  //       },
+  //     },
+  //   },
+  // };
+  // const labels = ["일", "월", "화", "수", "목", "금", "토"];
+  // const data: ChartData<"line"> = {
+  //   labels,
+  //   datasets: [
+  //     {
+  //       data: [0, 12, 4, 3.4, 5, 0, 4], // 샘플 데이터
+  //       borderColor: "rgb(75, 192, 192)",
+  //       backgroundColor: "rgba(75, 192, 192, 0.5)",
+  //       tension: 0.4,
+  //     },
+  //   ],
+  // };
 
   const router = useRouter();
   const goNotice = () => router.push("/notice");
@@ -135,188 +163,34 @@ function page() {
                   </ActionIcon>
                 </Group>
               </Group>
-              <Group gap={"sm"} justify="space-evenly">
-                <Stack gap={4}>
-                  <Text fz={"sm"}>총 연차 수</Text>
-                  <Text fz={"sm"} ta={"center"}>
-                    <Text fw={900} component="span" fz={"xl"}>
-                      20
-                    </Text>
-                    일
-                  </Text>
-                </Stack>
-                <Divider orientation="vertical" />
-                <Stack gap={4}>
-                  <Text fz={"sm"}>사용 연차 수</Text>
-                  <Text fz={"sm"} ta={"center"}>
-                    <Text fw={900} component="span" fz={"xl"}>
-                      20
-                    </Text>
-                    일
-                  </Text>
-                </Stack>
-                <Divider orientation="vertical" />
-                <Stack gap={4}>
-                  <Text fz={"sm"}>잔여 연차 수</Text>
-                  <Text fz={"sm"} ta={"center"}>
-                    <Text fw={900} component="span" fz={"xl"}>
-                      20
-                    </Text>
-                    일
-                  </Text>
-                </Stack>
-                <Divider orientation="vertical" />
-                <Stack gap={4}>
-                  <Text fz={"sm"}>미승인 요청건</Text>
-                  <Text fz={"sm"} ta={"center"}>
-                    <Text fw={900} component="span" fz={"xl"}>
-                      2
-                    </Text>
-                    건
-                  </Text>
-                </Stack>
-              </Group>
+
+              <AttendanceSummary />
+            </Paper>
+            <Paper bg={"white"} px="md" py="lg" radius={"lg"}>
+              <Title order={5} mb={"xs"}>
+                이번달 나의 업무 시간
+              </Title>
+
+              <CompositeChart
+                h={230}
+                data={data}
+                withLegend
+                legendProps={{ verticalAlign: "top", height: 50 }}
+                dataKey="date"
+                maxBarWidth={30}
+                referenceLines={[{ y: 40, label: "주 40시간", color: "red.6" }]}
+                series={[
+                  {
+                    name: "근무시간",
+                    color: "rgba(18, 120, 255, 0.2)",
+                    type: "bar",
+                  },
+                ]}
+                curveType="linear"
+              />
             </Paper>
           </Stack>
         </GridCol>
-        {/* <GridCol span={{ base: 12, md: 4 }}>
-          <Paper p={"lg"} radius={"lg"}>
-            <Group>
-              <Title order={5}>나의 근태 현황</Title>
-              <Badge size="md" color="blue" radius="md">
-                정상출근
-              </Badge>
-            </Group>
-            <Stack>
-              <Stack gap={3} mt={"xl"}>
-                <Group>
-                  <Text size="sm">업무 경과시간</Text>
-                  <Text size="sm" styles={{ root: { letterSpacing: 1.2 } }}>
-                    12:22:00
-                  </Text>
-                </Group>
-
-                <Progress value={50} />
-              </Stack>
-              <Divider label="휴가" labelPosition="center" mt={"lg"} />
-              <Group align="center">
-                <Text size="sm">나의 전체 휴가일 수</Text>
-                <Text size="sm" styles={{ root: { letterSpacing: 1.1 } }}>
-                  <Text fw={900} size="xl" component="span">
-                    15
-                  </Text>
-                  일
-                </Text>
-              </Group>
-              <Group align="center">
-                <Text size="sm">나의 잔여 휴가일 수</Text>
-                <Text size="sm" styles={{ root: { letterSpacing: 1.1 } }}>
-                  <Text fw={900} size="xl" component="span">
-                    2.5
-                  </Text>
-                  일
-                </Text>
-              </Group>
-            </Stack>
-          </Paper>
-        </GridCol>
-        <GridCol span={{ base: 12, md: 4 }}>
-          <Paper p={"lg"} radius={"lg"}>
-            <Title order={5}>근무시간</Title>
-
-            <Tabs value={workTimeTab} onChange={setWorkTimeTab}>
-              <Tabs.List>
-                <Tabs.Tab value="week">주간 근무시간</Tabs.Tab>
-                <Tabs.Tab value="month">월간 근무시간</Tabs.Tab>
-              </Tabs.List>
-
-              <Tabs.Panel value="week" pt={"md"}>
-                <Group justify="flex-end">
-                  <Text fz={"sm"}>
-                    12월 3주
-                    <Text ml={"sm"} fz={20} fw={900} component="span">
-                      48h
-                    </Text>
-                  </Text>
-                </Group>
-                <Box h={245}>
-                  <LineChart key={pathname} options={options} data={data} />
-                </Box>
-              </Tabs.Panel>
-              <Tabs.Panel value="month" pt={"md"}>
-                <Stack gap={"sm"}>
-                  <Text fz={"sm"}>정정규 위원 생일</Text>
-                </Stack>
-              </Tabs.Panel>
-            </Tabs>
-          </Paper>
-        </GridCol>
-        <GridCol span={{ base: 12, md: 4 }}>
-          <Paper p={"lg"} radius={"lg"}>
-            <Group justify="space-between" align="flex-start">
-              <Title order={5}>근태 현황 +10</Title>
-              <ActionIcon size={"sm"} variant="transparent" onClick={toggle} color="gray">
-                <ArrowDown />
-              </ActionIcon>
-            </Group>
-            <Collapse in={opened}>
-              <Stack gap={"sm"} mt={"md"}>
-                <Group>
-                  <Badge size="sm">연차</Badge>
-                  <Group gap={7}>
-                    <Text fz={"sm"}>김정순</Text>
-                    <Divider orientation="vertical" />
-                    <Text fz={"sm"}>김정순</Text>
-                    <Divider orientation="vertical" />
-                    <Text fz={"sm"}>김정순</Text>
-                  </Group>
-                </Group>
-                <Group>
-                  <Badge size="sm">오전반반차</Badge>
-                  <Group gap={7}>
-                    <Text fz={"sm"}>김정순</Text>
-                    <Divider orientation="vertical" />
-                    <Text fz={"sm"}>김정순</Text>
-                    <Divider orientation="vertical" />
-                    <Text fz={"sm"}>김정순</Text>
-                  </Group>
-                </Group>
-                <Group>
-                  <Badge size="sm">오전반차</Badge>
-                  <Group gap={7}>
-                    <Text fz={"sm"}>김정순</Text>
-                    <Divider orientation="vertical" />
-                    <Text fz={"sm"}>김정순</Text>
-                    <Divider orientation="vertical" />
-                    <Text fz={"sm"}>김정순</Text>
-                  </Group>
-                </Group>
-                <Group>
-                  <Badge size="sm">오후반차</Badge>
-                  <Group gap={7}>
-                    <Text fz={"sm"}>김정순</Text>
-                    <Divider orientation="vertical" />
-                    <Text fz={"sm"}>김정순</Text>
-                    <Divider orientation="vertical" />
-                    <Text fz={"sm"}>김정순</Text>
-                  </Group>
-                </Group>
-                <Group>
-                  <Badge color="gray" size="sm">
-                    보건휴가
-                  </Badge>
-                  <Group gap={7}>
-                    <Text fz={"sm"}>김정순</Text>
-                    <Divider orientation="vertical" />
-                    <Text fz={"sm"}>김정순</Text>
-                    <Divider orientation="vertical" />
-                    <Text fz={"sm"}>김정순</Text>
-                  </Group>
-                </Group>
-              </Stack>
-            </Collapse>
-          </Paper>
-        </GridCol> */}
       </Grid>
       <Vacation opened={opened} close={close} />
     </Container>
