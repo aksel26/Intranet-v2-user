@@ -38,7 +38,7 @@ export default function ContentLayout({ children }: { children: React.ReactNode 
   const getDDayCount = useCallback((baseDate: string | null) => {
     const today = dayjs();
     const target = dayjs(baseDate);
-    const diff = today.diff(target, "day");
+    const diff = today.diff(target, "day") + 1;
 
     return diff >= 0 ? `ACG Day + ${diff}` : `-`;
   }, []);
