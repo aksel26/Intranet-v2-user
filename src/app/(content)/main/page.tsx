@@ -60,6 +60,7 @@ function page() {
 
   const [dateValue, setDateValue] = useState<Date | null>(new Date());
 
+  const goVacation = () => router.push("/attendance/vacation");
   return (
     <Container fluid p={"lg"}>
       <GreetingMessage />
@@ -125,10 +126,7 @@ function page() {
                   <Button variant="gradient" gradient={{ from: "blue", to: "cyan", deg: 90 }} size="xs" onClick={open}>
                     휴가 신청
                   </Button>
-                  <ActionIcon
-                    // onClick={goVacation}
-                    variant="default"
-                  >
+                  <ActionIcon onClick={goVacation} variant="default">
                     <IconDots />
                   </ActionIcon>
                 </Group>
