@@ -29,7 +29,9 @@ function DashboardNotice() {
       }}
     >
       {isLoading ? (
-        <Loader color="blue" />
+        <Group justify="center" py={"xl"}>
+          <Loader color="blue" type="dots" />
+        </Group>
       ) : (
         notices?.map((notice: TNotice, index: number, arr: any) => (
           <React.Fragment key={notice.noticeIdx}>
