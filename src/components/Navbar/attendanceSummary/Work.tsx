@@ -4,6 +4,7 @@ import { Badge, Card, Divider, Group, Progress, Stack, Text } from "@mantine/cor
 import dayjs from "dayjs";
 import IconWork from "/public/icons/briefcase.svg";
 import IconTimer from "/public/icons/clock-hour-10.svg";
+import { calculateNumberToTime } from "@/utils/dateFomat";
 function Work({ myInfo }: any) {
   const { elapsedTime, percentage } = useElapsedTime(myInfo.checkInTime);
 
@@ -11,7 +12,7 @@ function Work({ myInfo }: any) {
 
   return (
     <Card w={"100%"} mih={100} mt={"xs"} p={"xs"}>
-      <Stack gap={3} mb={"xs"}>
+      <Stack gap={3} mb={"lg"}>
         <Group justify="space-between">
           <Group gap={"xs"}>
             <IconWork color="#858e96" />
@@ -27,19 +28,34 @@ function Work({ myInfo }: any) {
           {dayjs(myInfo.checkInTime).format("HH시 mm분 ss초")}
         </Text>
       </Stack>
-      <Stack gap={3}>
-        <Group gap={"xs"}>
-          <IconTimer color="#858e96" />
-          <Text fz={"sm"} c={"dimmed"}>
-            경과시간
-          </Text>
-        </Group>
+      {myInfo.attendance.includes("퇴근") ? (
+        <Stack gap={3}>
+          <Group gap={"xs"}>
+            <IconTimer color="#858e96" />
+            <Text fz={"sm"} c={"dimmed"}>
+              총 근무시간
+            </Text>
+          </Group>
 
-        <Text pl={25} fz={"xs"} mb={5} styles={{ root: { letterSpacing: "0.5px" } }}>
-          {elapsedTime}
-        </Text>
-        <Progress value={percentage} />
-      </Stack>
+          <Text pl={25} fz={"xs"} mb={5} styles={{ root: { letterSpacing: "0.5px" } }}>
+            {calculateNumberToTime(myInfo.workingMinutes).hours}시간 {calculateNumberToTime(myInfo.workingMinutes).minutes}분
+          </Text>
+        </Stack>
+      ) : (
+        <Stack gap={3}>
+          <Group gap={"xs"}>
+            <IconTimer color="#858e96" />
+            <Text fz={"sm"} c={"dimmed"}>
+              경과시간
+            </Text>
+          </Group>
+
+          <Text pl={25} fz={"xs"} mb={5} styles={{ root: { letterSpacing: "0.5px" } }}>
+            {elapsedTime}
+          </Text>
+          <Progress value={percentage} />
+        </Stack>
+      )}
     </Card>
   );
 }
