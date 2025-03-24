@@ -151,7 +151,7 @@ function page() {
                         <Text fz={"xs"} c={"dimmed"}>
                           첨부파일
                         </Text>
-                        <Text fz={"xs"}>근무시간</Text>
+                        <Text fz={"xs"}>-</Text>
                       </Stack>
                       <Stack gap={1}>
                         <Text fz={"xs"} c={"dimmed"}>
