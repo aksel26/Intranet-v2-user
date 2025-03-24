@@ -1,5 +1,5 @@
 import { TMealsParams, TWelfaresParams } from "@/lib/types/meal";
-import { TMyAttendance } from "@/types/apiTypes";
+import { TMyAttendance, TWorkHourStats } from "@/types/apiTypes";
 import axios from "axios";
 
 const getApi = axios.create({
@@ -43,3 +43,7 @@ export const getLunchGroup = () => getApi.get(`/users/playground/lunch-group`);
 // 개인 출퇴근 내역 조회 API
 
 export const getMyAttendance = (params: TMyAttendance) => getApi.get(`/users/intranet/commute`, { params: params });
+
+// 사용자 이번달 업무시간 조회(차트)
+
+export const getWorkHourStats = (params: TWorkHourStats) => getApi.get(`/users/intranet/commute/work-hours`, { params: params });

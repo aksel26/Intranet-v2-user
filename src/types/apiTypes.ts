@@ -4,3 +4,8 @@ export interface TMyAttendance {
   sDate: string | Date | null;
   eDate: string | Date | null;
 }
+
+export interface TWorkHourStats {
+  month: string;
+  year: string;
+}

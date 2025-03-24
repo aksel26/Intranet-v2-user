@@ -4,49 +4,15 @@ import AttendanceAll from "@/components/Dashboard/attendance";
 import AttendanceSummary from "@/components/Dashboard/attendance/summary";
 import GreetingMessage from "@/components/Dashboard/greeting/GreetingMessage";
 import DashboardNotice from "@/components/Dashboard/notice/DashboardNotice";
-import { CompositeChart } from "@mantine/charts";
 import { ActionIcon, Button, Container, Grid, GridCol, Group, Paper, Stack, Tabs, Text, Title } from "@mantine/core";
 import { DatePicker } from "@mantine/dates";
 import { useDisclosure } from "@mantine/hooks";
-import { CategoryScale, Chart as ChartJS, Legend, LinearScale, LineElement, PointElement, Tooltip } from "chart.js";
-import dynamic from "next/dynamic";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import ArrowRight from "/public/icons/arrow-right.svg";
 import IconDots from "/public/icons/dots.svg";
 import dayjs from "dayjs";
-ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Tooltip, Legend);
-const data = [
-  {
-    date: "1주차",
-    근무시간: 34.3,
-    limitTime: 40,
-  },
-  {
-    date: "2주차",
-    근무시간: 34.3,
-    limitTime: 40,
-  },
-  {
-    date: "3주차",
-    근무시간: 24.3,
-    limitTime: 40,
-  },
-  {
-    date: "4주차",
-    근무시간: 54.3,
-    limitTime: 40,
-  },
-  {
-    date: "5주차",
-    근무시간: 14.3,
-    limitTime: 40,
-  },
-];
-
-const LineChart = dynamic(() => import("react-chartjs-2").then((mod) => mod.Line), {
-  ssr: false, // 서버사이드 렌더링 비활성화
-});
+import WorkHourStats from "@/components/Dashboard/workHourStats";
 
 function page() {
   const [opened, { open, close }] = useDisclosure(false);
@@ -134,29 +100,7 @@ function page() {
 
               <AttendanceSummary />
             </Paper>
-            <Paper bg={"white"} px="md" py="lg" radius={"lg"}>
-              <Title order={5} mb={"xs"}>
-                이번달 나의 업무 시간
-              </Title>
-
-              <CompositeChart
-                h={230}
-                data={data}
-                withLegend
-                legendProps={{ verticalAlign: "top", height: 50 }}
-                dataKey="date"
-                maxBarWidth={30}
-                referenceLines={[{ y: 40, label: "주 40시간", color: "red.6" }]}
-                series={[
-                  {
-                    name: "근무시간",
-                    color: "rgba(18, 120, 255, 0.2)",
-                    type: "bar",
-                  },
-                ]}
-                curveType="linear"
-              />
-            </Paper>
+            <WorkHourStats dateValue={dateValue} />
           </Stack>
         </GridCol>
       </Grid>
