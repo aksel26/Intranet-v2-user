@@ -56,6 +56,8 @@ function page() {
     const [sDate, eDate] = val;
     if (sDate && eDate) {
       setParams((prev) => ({ ...prev, sDate: dayjs(sDate).format("YYYY-MM-DD"), eDate: dayjs(eDate).format("YYYY-MM-DD") }));
+    } else if (!sDate && !eDate) {
+      setParams((prev) => ({ ...prev, sDate: dayjs().startOf("month").format("YYYY-MM-DD"), eDate: dayjs().endOf("month").format("YYYY-MM-DD") }));
     }
     setDateValue(val);
   };
@@ -103,8 +105,8 @@ function page() {
             {records?.map((record: any) => {
               const isOpen = openedId === record.commuteIdx;
               return (
-                <Stack key={record.commuteIdx} onClick={() => setOpenedId(isOpen ? null : record.commuteIdx)} styles={{ root: { cursor: "pointer" } }}>
-                  <Group gap={2} align="center" justify="space-between" wrap="nowrap">
+                <Stack key={record.commuteIdx} styles={{ root: { cursor: "pointer" } }}>
+                  <Group gap={2} align="center" justify="space-between" wrap="nowrap" onClick={() => setOpenedId(isOpen ? null : record.commuteIdx)}>
                     <div className="flex flex-col">
                       <Text c={"dimmed"} fz={"xs"}>
                         {record.commuteDate}
@@ -147,11 +149,19 @@ function page() {
                         </Text>
                         <Text fz={"xs"}>{detectDevice(record.checkOutLogAgent, record.checkOutIpAddr)}</Text>
                       </Stack>
-                      <Stack gap={1}>
+                      <Stack gap={1} align="center">
                         <Text fz={"xs"} c={"dimmed"}>
                           첨부파일
                         </Text>
-                        <Text fz={"xs"}>-</Text>
+                        {record.checkOutLogAgent ? (
+                          <Text fz={"xs"} td="underline" c={"blue"} onClick={() => window.alert("변수필요")}>
+                            내려받기
+                          </Text>
+                        ) : (
+                          <Text fz={"xs"} c={"dimmed"}>
+                            첨부파일이 없습니다.
+                          </Text>
+                        )}
                       </Stack>
                       <Stack gap={1}>
                         <Text fz={"xs"} c={"dimmed"}>
