@@ -13,6 +13,7 @@ import ArrowRight from "/public/icons/arrow-right.svg";
 import IconDots from "/public/icons/dots.svg";
 import dayjs from "dayjs";
 import WorkHourStats from "@/components/Dashboard/workHourStats";
+import MainCalendar from "@/components/Dashboard/calendar";
 
 function page() {
   const [opened, { open, close }] = useDisclosure(false);
@@ -33,23 +34,7 @@ function page() {
       <Grid>
         <GridCol span={{ base: 12, md: 6 }}>
           <Stack>
-            <Paper p={"lg"} radius={"lg"}>
-              <Title order={5} mb={"md"}>
-                캘린더
-              </Title>
-              <DatePicker
-                highlightToday
-                locale="ko"
-                value={dateValue}
-                onChange={setDateValue}
-                firstDayOfWeek={0}
-                styles={{
-                  month: { width: "100%" },
-                  calendarHeader: { maxWidth: "unset" },
-                  day: { width: "100%", height: 60 },
-                }}
-              />
-            </Paper>
+            <MainCalendar dateValue={dateValue} setDateValue={setDateValue} />
             <AttendanceAll date={dateValue} />
           </Stack>
         </GridCol>
