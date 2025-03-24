@@ -29,10 +29,10 @@ function CheckOutWrapper({ offWorkModalClose, offWorkTimeOpened }: any) {
   }, [myInfo]);
 
   const handleCheckOut = () => {
-    const device = getDeviceType();
+    // const device = getDeviceType();
     checkOut(
       {
-        checkOutDeviceType: device,
+        // checkOutDeviceType: device,
         checkOutTime: dayjs().toISOString(),
         earlyLeaveReason: reasonRef.current.value,
       },
