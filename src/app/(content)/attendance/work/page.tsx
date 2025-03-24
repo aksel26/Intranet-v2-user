@@ -10,6 +10,7 @@ import { useCallback, useState } from "react";
 import ArrowDown from "/public/icons/arrow-down.svg";
 import ArrowRight from "/public/icons/arrow-right.svg";
 import IconCalendar from "/public/icons/calendar.svg";
+import { detectDevice } from "@/utils/userAgent";
 
 const items = [{ title: "출퇴근 관리", href: "#" }].map((item, index) => (
   <Text size="lg" fw={600} component="a" key={index}>
@@ -29,6 +30,7 @@ function page() {
 
   const { data, isLoading, isError } = useQuery({ queryKey: ["attendanceAll", params], queryFn: () => api.getMyAttendance(params) });
   const records = data?.data?.data?.records;
+
   const [openedId, setOpenedId] = useState<number | null>(null);
 
   const workTimeByLeaveType = useCallback((record: any) => {
@@ -137,7 +139,13 @@ function page() {
                         <Text fz={"xs"} c={"dimmed"}>
                           출근기기
                         </Text>
-                        <Text fz={"xs"}>{record.checkInDeviceType}</Text>
+                        <Text fz={"xs"}>{detectDevice(record.checkInLogAgent)}</Text>
+                      </Stack>
+                      <Stack gap={1}>
+                        <Text fz={"xs"} c={"dimmed"}>
+                          퇴근기기
+                        </Text>
+                        <Text fz={"xs"}>{detectDevice(record.checkOutLogAgent)}</Text>
                       </Stack>
                       <Stack gap={1}>
                         <Text fz={"xs"} c={"dimmed"}>
