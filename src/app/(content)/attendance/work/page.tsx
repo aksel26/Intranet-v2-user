@@ -139,13 +139,13 @@ function page() {
                         <Text fz={"xs"} c={"dimmed"}>
                           출근기기
                         </Text>
-                        <Text fz={"xs"}>{detectDevice(record.checkInLogAgent)}</Text>
+                        <Text fz={"xs"}>{detectDevice(record.checkInLogAgent, record.checkInIpAddr)}</Text>
                       </Stack>
                       <Stack gap={1}>
                         <Text fz={"xs"} c={"dimmed"}>
                           퇴근기기
                         </Text>
-                        <Text fz={"xs"}>{detectDevice(record.checkOutLogAgent)}</Text>
+                        <Text fz={"xs"}>{detectDevice(record.checkOutLogAgent, record.checkOutIpAddr)}</Text>
                       </Stack>
                       <Stack gap={1}>
                         <Text fz={"xs"} c={"dimmed"}>

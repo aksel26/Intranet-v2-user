@@ -7,8 +7,9 @@ export function getDeviceType() {
   return isMobile ? "MOBILE" : "PC";
 }
 
-export const detectDevice = (userAgent: string) => {
-  if (!userAgent) return "-";
+export const detectDevice = (userAgent: string, ip: string) => {
+  if (!userAgent || !ip) return "-";
+  let isLocal = ip.split(".")[0] === "58" ? "ACG" : "외부";
   // 소문자로 변환하여 비교
   const ua = userAgent.toLowerCase();
 
@@ -18,8 +19,8 @@ export const detectDevice = (userAgent: string) => {
   // 키워드가 하나라도 포함되면 모바일로 판단
   for (const keyword of mobileKeywords) {
     if (ua.includes(keyword)) {
-      return "모바일";
+      return isLocal + " 모바일";
     }
   }
-  return "PC";
+  return isLocal + " PC";
 };
