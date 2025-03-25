@@ -8,11 +8,11 @@ export default function LeaveTypeBox({ attendance, setAttendance }: any) {
   const [rootRef, setRootRef] = useState<HTMLDivElement | null>(null);
   const [controlsRefs, setControlsRefs] = useState<Record<string, HTMLButtonElement | null>>({});
 
-  const vacationType = (type: string) => {
+  const vacationType = (type: string | number) => {
     setAttendance(type);
   };
 
-  const setControlRef = (name: string) => (node: HTMLButtonElement) => {
+  const setControlRef = (name: string | number) => (node: HTMLButtonElement) => {
     controlsRefs[name] = node;
     setControlsRefs(controlsRefs);
   };
@@ -31,9 +31,9 @@ export default function LeaveTypeBox({ attendance, setAttendance }: any) {
             variant="subtle"
             size="sm"
             className={classes.control}
-            onClick={() => vacationType(LEAVE_TYPE.ANNUAL_LEAVE)}
-            ref={setControlRef(LEAVE_TYPE.ANNUAL_LEAVE)}
-            mod={{ active: attendance === LEAVE_TYPE.ANNUAL_LEAVE }}
+            onClick={() => vacationType(LEAVE_TYPE.연차)}
+            ref={setControlRef(LEAVE_TYPE.연차)}
+            mod={{ active: attendance === LEAVE_TYPE.연차 }}
           >
             연차
           </Button>
@@ -41,9 +41,9 @@ export default function LeaveTypeBox({ attendance, setAttendance }: any) {
             variant="subtle"
             size="sm"
             className={classes.control}
-            onClick={() => vacationType(LEAVE_TYPE.AM_QUARTER)}
-            ref={setControlRef(LEAVE_TYPE.AM_QUARTER)}
-            mod={{ active: attendance === LEAVE_TYPE.AM_QUARTER }}
+            onClick={() => vacationType(LEAVE_TYPE["오전 반반차"])}
+            ref={setControlRef(LEAVE_TYPE["오전 반반차"])}
+            mod={{ active: attendance === LEAVE_TYPE["오전 반반차"] }}
           >
             반반차
           </Button>
@@ -51,9 +51,9 @@ export default function LeaveTypeBox({ attendance, setAttendance }: any) {
             variant="subtle"
             size="sm"
             className={classes.control}
-            onClick={() => vacationType(LEAVE_TYPE.PM_QUARTER)}
-            ref={setControlRef(LEAVE_TYPE.PM_QUARTER)}
-            mod={{ active: attendance === LEAVE_TYPE.PM_QUARTER }}
+            onClick={() => vacationType(LEAVE_TYPE["오후 반반차"])}
+            ref={setControlRef(LEAVE_TYPE["오후 반반차"])}
+            mod={{ active: attendance === LEAVE_TYPE["오후 반반차"] }}
           >
             반반차
           </Button>
@@ -63,9 +63,9 @@ export default function LeaveTypeBox({ attendance, setAttendance }: any) {
             variant="subtle"
             size="sm"
             className={classes.control}
-            onClick={() => vacationType(LEAVE_TYPE.HEALTH_LEAVE)}
-            ref={setControlRef(LEAVE_TYPE.HEALTH_LEAVE)}
-            mod={{ active: attendance === LEAVE_TYPE.HEALTH_LEAVE }}
+            onClick={() => vacationType(LEAVE_TYPE.보건휴가)}
+            ref={setControlRef(LEAVE_TYPE.보건휴가)}
+            mod={{ active: attendance === LEAVE_TYPE.보건휴가 }}
           >
             보건휴가
           </Button>
@@ -73,9 +73,9 @@ export default function LeaveTypeBox({ attendance, setAttendance }: any) {
             variant="subtle"
             size="sm"
             className={classes.control}
-            onClick={() => vacationType(LEAVE_TYPE.AM_HALF)}
-            ref={setControlRef(LEAVE_TYPE.AM_HALF)}
-            mod={{ active: attendance === LEAVE_TYPE.AM_HALF }}
+            onClick={() => vacationType(LEAVE_TYPE["오전 반차"])}
+            ref={setControlRef(LEAVE_TYPE["오전 반차"])}
+            mod={{ active: attendance === LEAVE_TYPE["오전 반차"] }}
           >
             반차
           </Button>
@@ -83,9 +83,9 @@ export default function LeaveTypeBox({ attendance, setAttendance }: any) {
             variant="subtle"
             size="sm"
             className={classes.control}
-            onClick={() => vacationType(LEAVE_TYPE.PM_HALF)}
-            ref={setControlRef(LEAVE_TYPE.PM_HALF)}
-            mod={{ active: attendance === LEAVE_TYPE.PM_HALF }}
+            onClick={() => vacationType(LEAVE_TYPE["오후 반차"])}
+            ref={setControlRef(LEAVE_TYPE["오후 반차"])}
+            mod={{ active: attendance === LEAVE_TYPE["오후 반차"] }}
           >
             반차
           </Button>
@@ -95,9 +95,9 @@ export default function LeaveTypeBox({ attendance, setAttendance }: any) {
             variant="subtle"
             size="sm"
             className={classes.control}
-            onClick={() => vacationType(LEAVE_TYPE.SICK_LEAVE)}
-            ref={setControlRef(LEAVE_TYPE.SICK_LEAVE)}
-            mod={{ active: attendance === LEAVE_TYPE.SICK_LEAVE }}
+            onClick={() => vacationType(LEAVE_TYPE.병가)}
+            ref={setControlRef(LEAVE_TYPE.병가)}
+            mod={{ active: attendance === LEAVE_TYPE.병가 }}
           >
             병가
           </Button>
@@ -105,9 +105,9 @@ export default function LeaveTypeBox({ attendance, setAttendance }: any) {
             variant="subtle"
             size="sm"
             className={classes.control}
-            onClick={() => vacationType(LEAVE_TYPE.AM_ALTERNATIVE_LEAVE)}
-            ref={setControlRef(LEAVE_TYPE.AM_ALTERNATIVE_LEAVE)}
-            mod={{ active: attendance === LEAVE_TYPE.AM_ALTERNATIVE_LEAVE }}
+            onClick={() => vacationType(LEAVE_TYPE["대체 휴무(오전)"])}
+            ref={setControlRef(LEAVE_TYPE["대체 휴무(오전)"])}
+            mod={{ active: attendance === LEAVE_TYPE["대체 휴무(오전)"] }}
           >
             대체휴무
           </Button>
@@ -115,9 +115,9 @@ export default function LeaveTypeBox({ attendance, setAttendance }: any) {
             variant="subtle"
             size="sm"
             className={classes.control}
-            onClick={() => vacationType(LEAVE_TYPE.PM_ALTERNATIVE_LEAVE)}
-            ref={setControlRef(LEAVE_TYPE.PM_ALTERNATIVE_LEAVE)}
-            mod={{ active: attendance === LEAVE_TYPE.PM_ALTERNATIVE_LEAVE }}
+            onClick={() => vacationType(LEAVE_TYPE["대체 휴무(오후)"])}
+            ref={setControlRef(LEAVE_TYPE["대체 휴무(오후)"])}
+            mod={{ active: attendance === LEAVE_TYPE["대체 휴무(오후)"] }}
           >
             대체휴무
           </Button>
@@ -127,9 +127,9 @@ export default function LeaveTypeBox({ attendance, setAttendance }: any) {
             variant="subtle"
             size="sm"
             className={classes.control}
-            onClick={() => vacationType(LEAVE_TYPE.FAMILY_EVENT_LEAVE)}
-            ref={setControlRef(LEAVE_TYPE.FAMILY_EVENT_LEAVE)}
-            mod={{ active: attendance === LEAVE_TYPE.FAMILY_EVENT_LEAVE }}
+            onClick={() => vacationType(LEAVE_TYPE["경조 휴무"])}
+            ref={setControlRef(LEAVE_TYPE["경조 휴무"])}
+            mod={{ active: attendance === LEAVE_TYPE["경조 휴무"] }}
           >
             경조휴무
           </Button>
@@ -137,9 +137,9 @@ export default function LeaveTypeBox({ attendance, setAttendance }: any) {
             variant="subtle"
             size="sm"
             className={classes.control}
-            onClick={() => vacationType(LEAVE_TYPE.AM_TRAINING)}
-            ref={setControlRef(LEAVE_TYPE.AM_TRAINING)}
-            mod={{ active: attendance === LEAVE_TYPE.AM_TRAINING }}
+            onClick={() => vacationType(LEAVE_TYPE["훈련(오전)"])}
+            ref={setControlRef(LEAVE_TYPE["훈련(오전)"])}
+            mod={{ active: attendance === LEAVE_TYPE["훈련(오전)"] }}
           >
             훈련
           </Button>
@@ -147,9 +147,9 @@ export default function LeaveTypeBox({ attendance, setAttendance }: any) {
             variant="subtle"
             size="sm"
             className={classes.control}
-            onClick={() => vacationType(LEAVE_TYPE.PM_TRAINING)}
-            ref={setControlRef(LEAVE_TYPE.PM_TRAINING)}
-            mod={{ active: attendance === LEAVE_TYPE.PM_TRAINING }}
+            onClick={() => vacationType(LEAVE_TYPE["훈련(오후)"])}
+            ref={setControlRef(LEAVE_TYPE["훈련(오후)"])}
+            mod={{ active: attendance === LEAVE_TYPE["훈련(오후)"] }}
           >
             훈련
           </Button>
@@ -159,9 +159,9 @@ export default function LeaveTypeBox({ attendance, setAttendance }: any) {
             variant="subtle"
             size="sm"
             className={classes.control}
-            onClick={() => vacationType(LEAVE_TYPE.SPECIAL_LEAVE)}
-            ref={setControlRef(LEAVE_TYPE.SPECIAL_LEAVE)}
-            mod={{ active: attendance === LEAVE_TYPE.SPECIAL_LEAVE }}
+            onClick={() => vacationType(LEAVE_TYPE["특별 휴무"])}
+            ref={setControlRef(LEAVE_TYPE["특별 휴무"])}
+            mod={{ active: attendance === LEAVE_TYPE["특별 휴무"] }}
           >
             특별휴무
           </Button>
@@ -169,9 +169,9 @@ export default function LeaveTypeBox({ attendance, setAttendance }: any) {
             variant="subtle"
             size="sm"
             className={classes.control}
-            onClick={() => vacationType(LEAVE_TYPE.AM_QUARTER_SPECIAL_LEAVE)}
-            ref={setControlRef(LEAVE_TYPE.AM_QUARTER_SPECIAL_LEAVE)}
-            mod={{ active: attendance === LEAVE_TYPE.AM_QUARTER_SPECIAL_LEAVE }}
+            onClick={() => vacationType(LEAVE_TYPE["특별 휴무(오전 반반)"])}
+            ref={setControlRef(LEAVE_TYPE["특별 휴무(오전 반반)"])}
+            mod={{ active: attendance === LEAVE_TYPE["특별 휴무(오전 반반)"] }}
           >
             특별휴무 반반차
           </Button>
@@ -179,9 +179,9 @@ export default function LeaveTypeBox({ attendance, setAttendance }: any) {
             variant="subtle"
             size="sm"
             className={classes.control}
-            onClick={() => vacationType(LEAVE_TYPE.PM_QUARTER_SPECIAL_LEAVE)}
-            ref={setControlRef(LEAVE_TYPE.PM_QUARTER_SPECIAL_LEAVE)}
-            mod={{ active: attendance === LEAVE_TYPE.PM_QUARTER_SPECIAL_LEAVE }}
+            onClick={() => vacationType(LEAVE_TYPE["특별 휴무(오후 반반)"])}
+            ref={setControlRef(LEAVE_TYPE["특별 휴무(오후 반반)"])}
+            mod={{ active: attendance === LEAVE_TYPE["특별 휴무(오후 반반)"] }}
           >
             특별휴무 반반차
           </Button>
@@ -192,9 +192,9 @@ export default function LeaveTypeBox({ attendance, setAttendance }: any) {
             variant="subtle"
             size="sm"
             className={classes.control}
-            onClick={() => vacationType(LEAVE_TYPE.AM_SPECIAL_LEAVE)}
-            ref={setControlRef(LEAVE_TYPE.AM_SPECIAL_LEAVE)}
-            mod={{ active: attendance === LEAVE_TYPE.AM_SPECIAL_LEAVE }}
+            onClick={() => vacationType(LEAVE_TYPE["특별 휴무(오전)"])}
+            ref={setControlRef(LEAVE_TYPE["특별 휴무(오전)"])}
+            mod={{ active: attendance === LEAVE_TYPE["특별 휴무(오전)"] }}
           >
             특별휴무 반차
           </Button>
@@ -202,9 +202,9 @@ export default function LeaveTypeBox({ attendance, setAttendance }: any) {
             variant="subtle"
             size="sm"
             className={classes.control}
-            onClick={() => vacationType(LEAVE_TYPE.PM_SPECIAL_LEAVE)}
-            ref={setControlRef(LEAVE_TYPE.PM_SPECIAL_LEAVE)}
-            mod={{ active: attendance === LEAVE_TYPE.PM_SPECIAL_LEAVE }}
+            onClick={() => vacationType(LEAVE_TYPE["특별 휴무(오후)"])}
+            ref={setControlRef(LEAVE_TYPE["특별 휴무(오후)"])}
+            mod={{ active: attendance === LEAVE_TYPE["특별 휴무(오후)"] }}
           >
             특별휴무 반차
           </Button>
