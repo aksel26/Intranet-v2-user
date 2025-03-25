@@ -153,8 +153,8 @@ function page() {
                         <Text fz={"xs"} c={"dimmed"}>
                           첨부파일
                         </Text>
-                        {record.checkOutLogAgent ? (
-                          <Text fz={"xs"} td="underline" c={"blue"} onClick={() => window.alert("변수필요")}>
+                        {record.imageUrl ? (
+                          <Text fz={"xs"} td="underline" c={"blue"} onClick={() => window.open(record.imageUrl, "_blank")}>
                             내려받기
                           </Text>
                         ) : (
