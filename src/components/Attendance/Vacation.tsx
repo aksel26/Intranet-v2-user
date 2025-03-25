@@ -3,7 +3,7 @@
 import * as api from "@/app/api/get/getApi";
 import { LEAVE_TYPE } from "@/lib/enums";
 import { getWeekdaysBetweenDates } from "@/utils/vacationDate";
-import { Button, Drawer, FileButton, Indicator, Select, Text } from "@mantine/core";
+import { Button, Drawer, FileButton, Indicator, MultiSelect, Select, Text } from "@mantine/core";
 import { DatePicker } from "@mantine/dates";
 import { useDisclosure } from "@mantine/hooks";
 import { useQuery } from "@tanstack/react-query";
@@ -25,9 +25,9 @@ function Vacation({ opened, close }: any) {
 
   const [dateValue, setDateValue] = useState<TDateRange>([null, null]);
 
-  const [confirmPerson, setConfirmPerson] = useState<TSelect>();
+  const [confirmPerson, setConfirmPerson] = useState<string[]>();
 
-  const [attendance, setAttendance] = useState<string>(LEAVE_TYPE.ANNUAL_LEAVE);
+  const [attendance, setAttendance] = useState<string | number>(LEAVE_TYPE.연차);
 
   const [file, setFile] = useState<File | null>(null);
 
@@ -35,12 +35,14 @@ function Vacation({ opened, close }: any) {
 
   const selectDate = (date: TDateRange) => setDateValue(date);
 
-  const selectConfirm = (_: any, data: any) => setConfirmPerson(data);
+  const [refs, setRefs] = useState<string[]>([]);
+  const selectConfirm = (data: any) => setConfirmPerson(data);
+  const selectRefs = (data: any) => setRefs(data);
 
   const resetState = () => {
     setDateValue([null, null]);
     setConfirmPerson(undefined);
-    setAttendance(LEAVE_TYPE.ANNUAL_LEAVE);
+    setAttendance(LEAVE_TYPE.연차);
     setFile(null);
   };
 
@@ -65,6 +67,7 @@ function Vacation({ opened, close }: any) {
     const leaveInfo = getWeekdaysBetweenDates(dateValue, attendance);
     submitData.leaveInfo = leaveInfo;
     submitData.confirmPerson = confirmPerson;
+    submitData.ccUserIdxs = refs.map((ref) => Number(ref));
 
     setSubmitInfo(submitData);
 
@@ -123,7 +126,7 @@ function Vacation({ opened, close }: any) {
 
       <LeaveTypeBox attendance={attendance} setAttendance={setAttendance} />
 
-      <Select
+      <MultiSelect
         mb={"sm"}
         styles={{ label: { fontSize: "var(--mantine-font-size-xs" } }}
         size="sm"
@@ -133,7 +136,21 @@ function Vacation({ opened, close }: any) {
         clearable
         checkIconPosition="right"
         onChange={selectConfirm}
-        value={confirmPerson?.value + ""}
+        // value={confirmPerson?.value + ""}
+        searchable
+      />
+      <MultiSelect
+        mb={"sm"}
+        styles={{ label: { fontSize: "var(--mantine-font-size-xs" } }}
+        size="sm"
+        label="참조자 선택"
+        placeholder="참조인원을 선택해 주세요."
+        data={data?.data.data?.map((user: any) => ({ value: user.userIdx + "", label: user.userName }))}
+        clearable
+        checkIconPosition="right"
+        onChange={selectRefs}
+        searchable
+        // value={confirmPerson?.value + ""}
       />
       {file && (
         <Text size="xs" ta="center" mt="sm">

@@ -8,7 +8,7 @@ function VacationConfirmModal({ opened, close, submitInfo, closeDrawer }: any) {
 
   const submit = () => {
     const temp = { ...submitInfo };
-    temp.confirmPersonIdx = Number(submitInfo?.confirmPerson.value);
+    temp.approverIdxs = Number(submitInfo?.confirmPerson.value);
     delete temp.confirmPerson;
     leave(
       { dto: temp },
