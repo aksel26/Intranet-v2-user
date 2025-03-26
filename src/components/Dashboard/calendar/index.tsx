@@ -42,11 +42,12 @@ const MainCalendar = ({ dateValue, setDateValue }: any) => {
         firstDayOfWeek={0}
         onLevelChange={() => {}} // 레벨 변경 이벤트를 무시
         level="month"
-        styles={{
-          month: { width: "100%" },
-          calendarHeader: { maxWidth: "unset" },
-          day: { width: "100%", height: 60 },
-        }}
+
+        // styles={{
+        //   month: { width: "100%" },
+        //   calendarHeader: { maxWidth: "unset" },
+        //   day: { width: "100%", height: 60 },
+        // }}
         // renderDay={(date) => {
         //   const day = date.getDate();
         //   const isToday = dayjs(date).isSame(dayjs(dateValue), "day");

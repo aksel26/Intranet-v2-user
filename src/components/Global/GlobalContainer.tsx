@@ -23,18 +23,22 @@ export const GlobalContainer = ({ children }: { children: React.ReactNode }) => 
     primaryColor: "primary",
 
     fontFamily: "NanumSquareNeoVariable, sans-serif",
-    // fontSizes: {
-    //   xs: rem(10),
-    //   sm: rem(11),
-    //   md: rem(14),
-    //   lg: rem(16),
-    //   xl: rem(20),
-    // },
     components: {
       Button: {
         styles: {
           label: {
             fontWeight: 500,
+          },
+        },
+      },
+      DatePicker: {
+        styles: {
+          month: { width: "100%" },
+          calendarHeader: { maxWidth: "unset" },
+          day: {
+            width: "100%",
+            height: 50,
+            fontWeight: 600,
           },
         },
       },
