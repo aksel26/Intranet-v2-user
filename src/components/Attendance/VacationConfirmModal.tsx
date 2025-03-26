@@ -4,11 +4,13 @@ import dayjs from "dayjs";
 import notification from "../GNB/Notification";
 import IconInfoCircle from "/public/icons/info-circle.svg";
 function VacationConfirmModal({ opened, close, submitInfo, closeDrawer }: any) {
+  console.log("🚀 ~ VacationConfirmModal ~ submitInfo:", submitInfo);
   const { mutate: leave } = useLeave();
 
   const submit = () => {
     const temp = { ...submitInfo };
-    temp.approverIdxs = Number(submitInfo?.confirmPerson.value);
+    temp.approverIdxs = submitInfo.confirmPerson.map((item: any) => Number(item));
+    console.log("🚀 ~ submit ~ temp:", temp);
     delete temp.confirmPerson;
     leave(
       { dto: temp },
