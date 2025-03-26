@@ -83,6 +83,7 @@ function page() {
       <Select
         mt={"md"}
         mb={2}
+        w={130}
         comboboxProps={{
           withinPortal: false, // 포털 비활성화로 외부 클릭 감지 개선
           // onDropdownClose: () => console.log("Dropdown closed"), // 닫힘 시 로깅
@@ -359,6 +360,7 @@ function page() {
       <Select
         mt={"lg"}
         mb={2}
+        w={100}
         comboboxProps={{
           withinPortal: false, // 포털 비활성화로 외부 클릭 감지 개선
           // onDropdownClose: () => console.log("Dropdown closed"), // 닫힘 시 로깅
