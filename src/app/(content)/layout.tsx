@@ -103,31 +103,31 @@ export default function ContentLayout({ children }: { children: React.ReactNode 
           </Button>
         </Group>
         <Skeleton visible={isLoading}>
-          <Stack w={"100%"} bg={"blue.0"} align={"center"} mih={100} p={"md"}>
+          <Stack w={"100%"} bg={"primary.0"} align={"center"} mih={100} p={"md"}>
             <Flex direction={"column"} w={"100%"} columnGap={"xl"} style={{ position: "relative", borderRadius: 7 }}>
               <Flex direction={"column"} rowGap={"md"} w={"100%"}>
                 <Box>
-                  <Text fz={"lg"} fw={600} c={"blue.9"}>
+                  <Text fz={"lg"} fw={600} c={"primary.9"}>
                     {myInfo?.userName}
-                    <Text fz={"sm"} c={"blue.9"} component="span" ml={5}>
+                    <Text fz={"sm"} c={"primary.9"} component="span" ml={5}>
                       {myInfo?.gradeName}
                     </Text>
                   </Text>
                   <Group gap={"xs"} mt={3}>
-                    <Text fz={"sm"} c={"blue.9"} component="span">
+                    <Text fz={"sm"} c={"primary.9"} component="span">
                       {myInfo?.hqName}
                     </Text>
-                    <Text fz={"sm"} c={"blue.9"} component="span">
+                    <Text fz={"sm"} c={"primary.9"} component="span">
                       {myInfo?.teamName || ""}
                     </Text>
                   </Group>
                 </Box>
 
                 <Group justify="space-between" align="end">
-                  <Text c={"blue.9"} size={"xs"}>
+                  <Text c={"primary.9"} size={"xs"}>
                     {myInfo?.userEmail}
                   </Text>
-                  <Text c={"blue.9"} size={"xs"}>
+                  <Text c={"primary.9"} size={"xs"}>
                     {getDDayCount(myInfo?.joinDate)}
                   </Text>
                 </Group>

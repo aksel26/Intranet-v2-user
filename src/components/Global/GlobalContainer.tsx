@@ -15,6 +15,13 @@ export const GlobalContainer = ({ children }: { children: React.ReactNode }) => 
 
   const theme = createTheme({
     defaultRadius: "md",
+    // primaryColor: "indigo",
+    colors: {
+      primary: ["#e0fbff", "#cff1fd", "#a4dff4", "#76ccec", "#4fbce5", "#36b2e1", "#21aee1", "#0498c8", "#0087b4", "#0075a0"],
+    },
+
+    primaryColor: "primary",
+
     fontFamily: "NanumSquareNeoVariable, sans-serif",
     // fontSizes: {
     //   xs: rem(10),
