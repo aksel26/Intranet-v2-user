@@ -67,7 +67,7 @@ function CheckOutWrapper({ offWorkModalClose, offWorkTimeOpened }: any) {
         {myInfo?.userName} <Text component="span">{myInfo?.gradeName}</Text>
         님,
       </Text>
-      {hours < 7 ? <EarlyCheckOut reasonRef={reasonRef} /> : <InTimeCheckOut />}
+      {hours < 9 ? <EarlyCheckOut reasonRef={reasonRef} /> : <InTimeCheckOut />}
       <Group wrap="nowrap" mt={"md"}>
         <Button fullWidth onClick={handleCheckOut}>
           퇴근하기
