@@ -101,7 +101,7 @@ function page() {
             <Loader color="blue" type="dots" />
           </Group>
         ) : (
-          <Stack py={"md"} gap={"lg"}>
+          <Stack py={"md"} gap={"xl"}>
             {records?.map((record: any) => {
               const isOpen = openedId === record.commuteIdx;
               return (
