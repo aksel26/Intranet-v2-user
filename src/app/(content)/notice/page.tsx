@@ -37,12 +37,14 @@ const Notice = () => {
       }}
     >
       {/* <Flex direction={"column"} pt={"lg"} p={"sm"}> */}
-      <Breadcrumbs mb={"md"}>{items}</Breadcrumbs>
-
-      <Paper bg={"white"} px="md" py="lg" radius={"lg"}>
-        <Text c={"dimmed"} fz={"xs"} ta={"right"}>
+      <Group justify="space-between" align="center" mb={"md"}>
+        <Breadcrumbs>{items}</Breadcrumbs>
+        <Text c={"gray.8"} fz={"xs"} ta={"right"}>
           공지사항 등록은 P&C팀에게 문의해 주시기 바랍니다.
         </Text>
+      </Group>
+
+      <Paper bg={"white"} px="md" py="lg" radius={"lg"}>
         <List
           w={"100%"}
           spacing={0}
@@ -57,22 +59,19 @@ const Notice = () => {
             <Loader color="blue" />
           ) : (
             notices?.map((notice: TNotice, index: number, arr: any) => (
-              <>
-                <ListItem w={"100%"} onClick={() => goDetail(notice.noticeIdx)} key={notice.noticeIdx} className={styles.element} px={"sm"} py={"md"}>
-                  <Stack gap={4}>
-                    <Text fz={"xs"}>{notice.title}</Text>
-                    <Group>
-                      <Text c={"dimmed"} fz={"xs"}>
-                        {notice.creatorName}
-                      </Text>
-                      <Text c={"dimmed"} fz={"xs"}>
-                        {formatYYYYMMDD(notice.createdAt)}
-                      </Text>
-                    </Group>
-                  </Stack>
-                </ListItem>
-                {arr.length === index + 1 ? null : <Divider />}
-              </>
+              <ListItem w={"100%"} onClick={() => goDetail(notice.noticeIdx)} key={notice.noticeIdx} className={styles.element} px={"sm"} py={"md"}>
+                <Stack gap={4}>
+                  <Text fz={"xs"}>{notice.title}</Text>
+                  <Group>
+                    <Text c={"dimmed"} fz={"xs"}>
+                      {notice.creatorName}
+                    </Text>
+                    <Text c={"dimmed"} fz={"xs"}>
+                      {formatYYYYMMDD(notice.createdAt)}
+                    </Text>
+                  </Group>
+                </Stack>
+              </ListItem>
             ))
           )}
         </List>

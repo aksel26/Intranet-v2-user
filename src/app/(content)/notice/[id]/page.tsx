@@ -48,48 +48,41 @@ function page() {
       </Group>
 
       <Paper bg={"white"} px="md" py="lg" radius={"lg"} h={"100%"}>
-        <Stack gap={"md"}>
-          <Stack gap={2}>
-            <Title order={4}>{noticeDetails?.title}</Title>
+        <Stack gap={2}>
+          <Title order={4}>{noticeDetails?.title}</Title>
+          <Group>
             <Group>
-              <Group>
-                <Text fz={"sm"} c={"dimmed"}>
-                  작성일
-                </Text>
-                <Text fz={"sm"} c={"dimmed"}>
-                  {dayjs(noticeDetails?.createdAt).format("YYYY-MM-DD")}
-                </Text>{" "}
-              </Group>
               <Text fz={"sm"} c={"dimmed"}>
-                ·
+                작성일
               </Text>
-              <Group>
-                <Text fz={"sm"} c={"dimmed"}>
-                  작성자
-                </Text>
-                <Text fz={"sm"} c={"dimmed"}>
-                  {noticeDetails?.creatorName}
-                </Text>
-              </Group>
+              <Text fz={"sm"} c={"dimmed"}>
+                {dayjs(noticeDetails?.createdAt).format("YYYY-MM-DD")}
+              </Text>{" "}
             </Group>
-          </Stack>
-          <Divider />
-          <Stack>
-            <Box dangerouslySetInnerHTML={createMarkup()} mih={200} fz={"sm"} />
-            <Divider />
-
-            <Text fz={"sm"}>첨부파일</Text>
-            {noticeDetails?.imageUrl ? (
-              <Button fz={"sm"} variant="subtle" w={"max-content"} onClick={previewOpen}>
-                {`${noticeDetails?.imageName}, [${convertFileUnit(noticeDetails?.imageSize)}]`}
-              </Button>
-            ) : (
+            <Text fz={"sm"} c={"dimmed"}>
+              ·
+            </Text>
+            <Group>
               <Text fz={"sm"} c={"dimmed"}>
-                첨부파일이 존재하지 않습니다.
+                작성자
               </Text>
-            )}
-          </Stack>
+              <Text fz={"sm"} c={"dimmed"}>
+                {noticeDetails?.creatorName}
+              </Text>
+            </Group>
+          </Group>
         </Stack>
+        <Box py={"md"} dangerouslySetInnerHTML={createMarkup()} mih={200} fz={"sm"} />
+        <Text fz={"sm"}>첨부파일</Text>
+        {noticeDetails?.imageUrl ? (
+          <Button fz={"sm"} variant="subtle" w={"max-content"} onClick={previewOpen}>
+            {`${noticeDetails?.imageName}, [${convertFileUnit(noticeDetails?.imageSize)}]`}
+          </Button>
+        ) : (
+          <Text fz={"sm"} c={"dimmed"}>
+            첨부파일이 존재하지 않습니다.
+          </Text>
+        )}
       </Paper>
       <Modal opened={previewOpened} onClose={previewClose} title="첨부 이미지 미리보기">
         <img src={noticeDetails?.imageUrl || ""} alt="preview" />
