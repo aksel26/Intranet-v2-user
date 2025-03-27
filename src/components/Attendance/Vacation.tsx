@@ -3,7 +3,7 @@
 import * as api from "@/app/api/get/getApi";
 import { LEAVE_TYPE } from "@/lib/enums";
 import { getWeekdaysBetweenDates } from "@/utils/vacationDate";
-import { Button, Drawer, FileButton, Indicator, MultiSelect, Select, Text } from "@mantine/core";
+import { Button, Drawer, FileButton, Group, Indicator, MultiSelect, Select, Text } from "@mantine/core";
 import { DatePicker } from "@mantine/dates";
 import { useDisclosure } from "@mantine/hooks";
 import { useQuery } from "@tanstack/react-query";
@@ -12,6 +12,7 @@ import { useEffect, useState } from "react";
 import notification from "../GNB/Notification";
 import LeaveTypeBox from "./LeaveTypeBox";
 import VacationConfirmModal from "./VacationConfirmModal";
+import { getLeaveTypeKey } from "@/utils/leaveTypeKey";
 
 type TDateRange = [Date | null, Date | null];
 type TSelect = { value: string | undefined; label: string | undefined };
@@ -77,7 +78,6 @@ function Vacation({ opened, close }: any) {
   useEffect(() => {
     setConfirmList(data?.data.data.filter((item: any) => item.gradeIdx <= 4));
   }, [data]);
-
   const [submitConfirm, { open: openSubmitConfirm, close: closeSubmitConfirm }] = useDisclosure(false);
 
   return (
@@ -122,7 +122,13 @@ function Vacation({ opened, close }: any) {
           );
         }}
       />
-      <Text my={"sm"}>휴가 선택</Text>
+
+      <Group my={"sm"} align="end">
+        <Text>휴가 선택</Text>
+        <Text fz={"sm"} c={"dimmed"}>
+          {getLeaveTypeKey(attendance)}
+        </Text>
+      </Group>
 
       <LeaveTypeBox attendance={attendance} setAttendance={setAttendance} />
 
