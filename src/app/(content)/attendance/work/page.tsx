@@ -105,7 +105,7 @@ function page() {
             {records?.map((record: any) => {
               const isOpen = openedId === record.commuteIdx;
               return (
-                <Stack key={record.commuteIdx} styles={{ root: { cursor: "pointer" } }}>
+                <Stack key={record.commuteIdx} gap={2} styles={{ root: { cursor: "pointer" } }}>
                   <Group gap={2} align="center" justify="space-between" wrap="nowrap" onClick={() => setOpenedId(isOpen ? null : record.commuteIdx)}>
                     <div className="flex flex-col">
                       <Text c={"dimmed"} fz={"xs"}>
