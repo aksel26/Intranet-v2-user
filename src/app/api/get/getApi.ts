@@ -50,3 +50,6 @@ export const getMyVacations = (params: TMyVacations) => getApi.get(`/users/intra
 // 사용자 이번달 업무시간 조회(차트)
 
 export const getWorkHourStats = (params: TWorkHourStats) => getApi.get(`/users/intranet/commute/work-hours`, { params: params });
+
+// 사용자 개인 휴가관리 요약정보 조회 API 개발
+export const getVacationSummary = ({ year }: { year: string }) => getApi.get(`/users/intranet/leave/stats`, { params: { year: year } });
