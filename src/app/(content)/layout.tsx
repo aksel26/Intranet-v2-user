@@ -88,7 +88,7 @@ export default function ContentLayout({ children }: { children: React.ReactNode 
           <Burger opened={desktopOpened} onClick={toggleDesktop} visibleFrom="sm" size="sm" />
         </Group>
       </AppShell.Header>
-      <AppShell.Main styles={{ main: { background: "#f2f2f2" } }} pt={`calc(${rem(50)}`}>
+      <AppShell.Main styles={{ main: { background: "oklch(0.985 0.002 247.839)" } }} pt={`calc(${rem(50)}`}>
         {children}
       </AppShell.Main>
       <AppShell.Navbar p="md" withBorder={false}>
@@ -148,11 +148,11 @@ export default function ContentLayout({ children }: { children: React.ReactNode 
           <NavLink component={Link} href={"/welfare/welfarePoint"} label="복지포인트" />
           <NavLink component={Link} href={"/welfare/activity"} label="활동비" />
         </NavLink>
-        <NavLink component={Link} href={"#"} label="결재/승인" />
-        <NavLink component={Link} href={"/notice"} label="공지사항" />
-        <NavLink label="기타 메뉴">
-          <NavLink component={Link} href={"/survey"} label="설문/리뷰" />
+
+        <NavLink label="기타">
           <NavLink component={Link} href={"/myInfo"} label="내 정보 수정" />
+          <NavLink component={Link} href={"/approval"} label="결재/승인" />
+          <NavLink component={Link} href={"/notice"} label="공지사항" />
         </NavLink>
       </AppShell.Navbar>
 
