@@ -2,9 +2,13 @@ export type TMealsParams = {
   year: number;
   month: number;
 };
+export type TActivityParams = {
+  year: string;
+  halfYear: string;
+};
 export type TWelfaresParams = {
-  year: number;
-  month: number;
+  year: string;
+  halfYear: string;
 };
 
 export type TMeal = {
