@@ -7,6 +7,7 @@ import { DateInput, DatePickerInput } from "@mantine/dates";
 import { useForm } from "@mantine/form";
 import { IconCalendar } from "@tabler/icons-react";
 import { useQueryClient } from "@tanstack/react-query";
+import { AxiosError } from "axios";
 import dayjs from "dayjs";
 import "dayjs/locale/ko";
 import { useEffect, useState } from "react";
@@ -59,14 +60,10 @@ export default function ActivityInputForm({ onClose, opened }: any) {
         form.reset();
         opened && onClose();
       },
-      onError: (error: any) => {
-        if (error.status === 403) {
-          notification({
-            title: "활동비",
-            color: "red",
-            message: "작성 권한이 없습니다.",
-          });
-        }
+      onError: (error: Error) => {
+        const axiosError = error as AxiosError<{ message: string }>;
+        const errorMessage = axiosError.response?.data?.message || "오류가 발생했습니다.";
+        notification({ title: "활동비 입력", color: "red", message: errorMessage });
       },
     });
   };
