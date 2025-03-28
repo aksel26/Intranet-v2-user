@@ -41,13 +41,7 @@ function CheckIn({ myInfo, onWorkModalClose, onWorkTimeOpened }: any) {
   };
 
   return (
-    <Modal
-      opened={onWorkTimeOpened}
-      onClose={onWorkModalClose}
-      title="출근하기"
-      centered
-      size={"xs"}
-    >
+    <Modal opened={onWorkTimeOpened} onClose={onWorkModalClose} title="출근하기" centered size={"xs"}>
       <Text>
         {myInfo?.userName} <Text component="span">{myInfo?.gradeName}</Text>
         님,
@@ -57,15 +51,10 @@ function CheckIn({ myInfo, onWorkModalClose, onWorkTimeOpened }: any) {
         아래 버튼을 눌러 출근을 완료해 주세요.
       </Text>
       <Group wrap="nowrap" mt={"md"}>
-        <Button fullWidth onClick={handleCheckIn}>
+        <Button fullWidth onClick={handleCheckIn} data-autofocus>
           출근하기
         </Button>
-        <Button
-          fullWidth
-          variant="light"
-          color="gray.8"
-          onClick={onWorkModalClose}
-        >
+        <Button fullWidth variant="light" color="gray.8" onClick={onWorkModalClose}>
           닫기
         </Button>
       </Group>
