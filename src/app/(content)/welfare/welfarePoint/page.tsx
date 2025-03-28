@@ -9,7 +9,7 @@ import { useState } from "react";
 import * as api from "../../../api/get/getApi";
 import { yearsList } from "@/utils/dateFomat";
 import { UsedListWelfare } from "@/components/content/welfare/UsedListWelfare";
-import { TopTitleWelfare } from "@/components/content/welfare/TopTitle";
+import { TopTitleWelfare } from "@/components/content/welfare/TopTitleWelfare";
 const WelfareMain = () => {
   const [params, setParams] = useState({
     year: dayjs().year().toString(),
