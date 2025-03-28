@@ -2,12 +2,15 @@
 
 import { ActionIcon, Avatar, Box, Button, Divider, Group, List, Modal, Paper, Stack, Text, Title } from "@mantine/core";
 import { useDisclosure, useMediaQuery } from "@mantine/hooks";
-import React from "react";
+import React, { useState } from "react";
 import IconList from "/public/icons/list.svg";
 import IconLottery from "/public/icons/clover.svg";
 import IconRefresh from "/public/icons/refresh.svg";
 import LunchGroupDetail from "./lunchGroup/LunchGroupDetail";
 import LotteryComponent from "./Lottery";
+import { useQuery } from "@tanstack/react-query";
+import * as api from "@/app/api/get/getApi";
+import dayjs from "dayjs";
 const GroupNumber = ({ groupNumber }: { groupNumber: number }) => {
   return (
     <Avatar color="blue" radius="md">
@@ -20,6 +23,10 @@ function LunchGroup() {
   const matches = useMediaQuery("(max-width: 40em)", true, {
     getInitialValueInEffect: false,
   });
+
+  const [now] = useState(dayjs().toDate());
+
+  const { data, isLoading, isError } = useQuery({ queryKey: ["lunchGroup", { current: now }], queryFn: () => api.getLunchGroup() });
 
   const [opened, { open, close }] = useDisclosure(false);
   const [lotteryOpened, { open: lotteryOpen, close: lotteryClose }] = useDisclosure(false);
