@@ -1,7 +1,5 @@
 "use client";
 
-import { TopTitle } from "@/components/content/welfare/TopTitle";
-
 import WelfareInputForm from "@/components/content/welfare/WelfareInputForm";
 import { groupByDate } from "@/utils/welfare/groupByDate";
 import { Container, Grid, GridCol, Group, Paper, Select, Stack, Title } from "@mantine/core";
@@ -11,6 +9,7 @@ import { useState } from "react";
 import * as api from "../../../api/get/getApi";
 import { yearsList } from "@/utils/dateFomat";
 import { UsedListWelfare } from "@/components/content/welfare/UsedListWelfare";
+import { TopTitleWelfare } from "@/components/content/welfare/TopTitle";
 const WelfareMain = () => {
   const [params, setParams] = useState({
     year: dayjs().year().toString(),
@@ -43,7 +42,7 @@ const WelfareMain = () => {
     <Container fluid p={"lg"} style={{ scrollPaddingBottom: "52px", overflowY: "auto", scrollSnapType: "y mandatory" }}>
       <Grid>
         <GridCol span={{ base: 12, md: 8 }}>
-          <TopTitle stats={welfareStats} isLoading={isLoading} />
+          <TopTitleWelfare stats={welfareStats} isLoading={isLoading} />
           <Group mt={"lg"} mb={"xs"}>
             <Select
               w={130}
