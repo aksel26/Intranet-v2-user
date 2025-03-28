@@ -1,4 +1,4 @@
-import { TMealsParams, TWelfaresParams } from "@/lib/types/meal";
+import { TActivityParams, TMealsParams, TWelfaresParams } from "@/lib/types/meal";
 import { TApproval, TMyAttendance, TMyVacations, TWorkHourStats } from "@/types/apiTypes";
 import axios from "axios";
 
@@ -26,8 +26,8 @@ getApi.interceptors.request.use(
 // export const getMeals = () => jsonPlaceholderApi.get('/posts');
 
 export const getMeals = ({ year, month }: TMealsParams) => getApi.get(`/users/meals`, { params: { year, month } });
-export const getWelfares = ({ year, month }: TWelfaresParams) => getApi.get(`/users/welfares`, { params: { year, month } });
-export const getActivities = ({ year, month }: TWelfaresParams) => getApi.get(`/users/activities`, { params: { year, month } });
+export const getWelfares = ({ year, halfYear }: TWelfaresParams) => getApi.get(`/users/welfares`, { params: { year, halfYear } });
+export const getActivities = ({ year, halfYear }: TActivityParams) => getApi.get(`/users/activities`, { params: { year, halfYear } });
 export const getMe = () => getApi.get(`/users/me`);
 export const getUsers = () => getApi.get(`/users/ids`);
 export const getQnA = () => getApi.get(`/users/qna`);
