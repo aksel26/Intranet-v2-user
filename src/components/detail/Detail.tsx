@@ -15,19 +15,20 @@ import ModalInputForm from "../content/meal/MealInputForm";
 import notification from "../GNB/Notification";
 dayjs.locale("ko");
 
-export const Detail = () => {
+export const Detail = ({ date, meals }: any) => {
   const modalRef = useRef<HTMLDivElement>(null);
   const [opened, { toggle, close }] = useDisclosure(false);
-  const { meals } = mealStore((state) => state.mealInfo);
+  // const { meals } = mealStore((state) => state.mealInfo);
 
-  const { calendarDate } = calendarDateStore((state) => state);
+  // const { calendarDate } = calendarDateStore((state) => state);
 
   const [targetList, setTargetList] = useState<any>();
 
   const { mutate: deleteMeal } = useDeleteMeals();
   const queryClient = useQueryClient();
+
   const deleteAll = () => {
-    deleteMeal(dayjs(calendarDate).format("YYYY-MM-DD"), {
+    deleteMeal(dayjs(date).format("YYYY-MM-DD"), {
       onSuccess: async () => {
         await queryClient.invalidateQueries({ queryKey: ["meals"] });
         notification({
@@ -40,21 +41,21 @@ export const Detail = () => {
   };
 
   useEffect(() => {
-    setTargetList(meals.filter((item: any) => item.start === dayjs(calendarDate).format("YYYY-MM-DD")));
-  }, [meals, calendarDate]);
+    setTargetList(meals?.filter((item: any) => item.start === dayjs(date).format("YYYY-MM-DD")));
+  }, [meals, date]);
 
   return (
     <Flex direction="column" px="sm" pb="lg" rowGap={"sm"}>
       <Flex justify="space-between" align={"center"}>
         <Text size="xs" c={"gray.6"}>
-          {dayjs(calendarDate).format("MM월 DD일 dddd")}
+          {dayjs(date).format("MM월 DD일 dddd")}
         </Text>
         <Button size="xs" color="red" variant="outline" onClick={deleteAll}>
           모두 삭제
         </Button>
       </Flex>
       <DetailCard toggle={toggle} targetList={targetList} />
-      <ModalInputForm ref={modalRef} opened={opened} close={close} />
+      <ModalInputForm ref={modalRef} date={date} opened={opened} close={close} />
     </Flex>
   );
 };
