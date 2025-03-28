@@ -10,7 +10,7 @@ export interface TMyVacations {
   year: string;
 }
 export interface TApproval extends TMyVacations {
-  user: string;
+  userIdx?: number | null;
 }
 
 export interface TWorkHourStats {

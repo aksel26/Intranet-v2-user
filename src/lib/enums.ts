@@ -23,6 +23,11 @@ export enum LEAVE_TYPE {
   "연차" = 20,
 }
 
+export enum RELATION_TYPE {
+  "APPROVER" = "승인요청",
+  "CC" = "참조",
+}
+
 export const LOTTERY_EMOJI = [
   "🍇",
   "🍈",

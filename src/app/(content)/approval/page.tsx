@@ -1,53 +1,80 @@
 "use client";
 import * as api from "@/app/api/get/getApi";
+import FetchWrapper from "@/components/fetchWrapper";
+import { RELATION_TYPE } from "@/lib/enums";
 import { TApproval } from "@/types/apiTypes";
 import { monthList, yearsList } from "@/utils/dateFomat";
 import { Badge, Button, Container, Group, Paper, Select, Stack, Text } from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
-const vacations = [
-  {
-    commuteIdx: 1,
-    commuteDate: "2021-09-01",
-    leaveType: "연차",
-    attendance: "휴가",
-    annualLeaveReduceUnit: 1,
-    remainingAnnualLeaveQuota: 10,
-    confirmPersonName: "홍길동",
-    note: "비상업무로 인한 휴가",
-    confirmYN: "Y",
-  },
-  {
-    commuteIdx: 2,
-    commuteDate: "2021-09-01",
-    leaveType: "연차",
-    attendance: "휴가",
-    annualLeaveReduceUnit: 1,
-    remainingAnnualLeaveQuota: 10,
-    confirmPersonName: "홍길동",
-    note: "비상업무로 인한 휴가",
-    confirmYN: "Y",
-  },
-  {
-    commuteIdx: 3,
-    commuteDate: "2021-09-01",
-    leaveType: "연차",
-    attendance: "휴가",
-    annualLeaveReduceUnit: 1,
-    remainingAnnualLeaveQuota: 10,
-    confirmPersonName: "홍길동",
-    note: "비상업무로 인한 휴가",
-    confirmYN: "Y",
-  },
-];
 
-const ApprovalStatus = ({ status }: any) => {
+const ApprovalType = ({ children }: { children: keyof typeof RELATION_TYPE }) => {
   return (
-    <Badge color={status === "승인요청" ? "blue.5" : "lime.5"} radius="sm" size="sm">
-      {status}
+    <Badge miw={70} color={children === "APPROVER" ? "blue.5" : "lime.5"} radius="sm" size="sm">
+      {RELATION_TYPE[children]}
     </Badge>
   );
+};
+const ApprovalStatus = ({ record }: { record: any }) => {
+  const { confirmYN, confirmDate, rejectDate } = record;
+  if (confirmYN === "Y") {
+    return (
+      <Text fz={"xs"} c={"green.5"} miw={140}>
+        승인완료
+        <Text component="span" fz={"xs"} c={"dimmed"} ml={5}>
+          ({confirmDate})
+        </Text>
+      </Text>
+    );
+  } else if (confirmYN === "N") {
+    if (!rejectDate) {
+      return (
+        <Text fz={"xs"} c={"yellow.5"} miw={140}>
+          승인 대기
+        </Text>
+      );
+    } else {
+      return (
+        <Text fz={"xs"} c={"red.4"} miw={140}>
+          반려
+          <Text component="span" fz={"xs"} c={"dimmed"} ml={5}>
+            ({rejectDate})
+          </Text>
+        </Text>
+      );
+    }
+  }
+};
+
+const ButtonByApprovalStatus = ({ record }: { record: any }) => {
+  const { confirmYN, rejectDate } = record;
+  if (confirmYN === "Y") {
+    return (
+      <Button variant="light" size="compact-xs" color="gray">
+        삭제
+      </Button>
+    );
+  } else if (confirmYN === "N") {
+    if (!rejectDate) {
+      return (
+        <Group gap={"xs"}>
+          <Button variant="light" size="compact-xs" color="green.4">
+            승인
+          </Button>
+          <Button variant="light" size="compact-xs" color="red.4">
+            반려
+          </Button>
+        </Group>
+      );
+    } else {
+      return (
+        <Button variant="light" size="compact-xs" color="gray">
+          삭제
+        </Button>
+      );
+    }
+  }
 };
 
 const page = () => {
@@ -68,8 +95,19 @@ const page = () => {
   const [params, setParams] = useState<TApproval>({
     year: dayjs().year().toString(),
     month: (dayjs().month() + 1).toString(),
-    user: "",
+    userIdx: Number(userValue) || null,
   });
+  const {
+    data: approvals,
+    isLoading: approvals_isLoading,
+    isError: approvals_isError,
+  } = useQuery({
+    queryKey: ["approvals", params],
+    queryFn: () => api.getApprovals(params),
+  });
+  const approvalsList = approvals?.data.data;
+  console.log("🚀 ~ page ~ approvalsList:", approvalsList);
+  console.log("🚀 ~ page ~ approvals:", approvals);
   const selectMonth = (e: any) => {
     setParams((params) => ({ ...params, month: e }));
     setMonthValue(e);
@@ -81,7 +119,8 @@ const page = () => {
     setIsActive((prev) => ({ ...prev, yearSelect: false }));
   };
   const selectUser = (e: any) => {
-    setParams((params) => ({ ...params, user: e }));
+    console.log("🚀 ~ selectUser ~ e:", e);
+    setParams((params) => ({ ...params, userIdx: Number(e) }));
     setUserValue(e);
     setIsActive((prev) => ({ ...prev, userSelect: false }));
   };
@@ -104,7 +143,10 @@ const page = () => {
     >
       <Stack gap={1}>
         <Text size="lg" fw={600} component="a">
-          결재 및 승인
+          결재 및 승인{" "}
+          <Text component="span" fz={"sm"} c={"dimmed"} ml={"sm"}>
+            {approvalsList?.length}건
+          </Text>
         </Text>
         <Text component="span" c={"gray.6"} fz={"sm"}>
           결재 및 승인 요청 내역이 보여지며, 참조 내역도 확인할 수 있습니다.
@@ -181,14 +223,8 @@ const page = () => {
       </Group>
       <Paper bg={"white"} px="md" py="md" radius={"lg"}>
         <Stack gap={"xl"}>
-          {vacations.length === 0 ? (
-            <Group justify="center" py={"xl"}>
-              <Text fz={"sm"} c={"gray.6"}>
-                조회된 내역이 없습니다.
-              </Text>
-            </Group>
-          ) : (
-            vacations?.map((record: any) => {
+          <FetchWrapper data={approvalsList} isLoading={approvals_isLoading}>
+            {approvalsList?.map((record: any) => {
               return (
                 <Stack key={record.commuteIdx} gap={5} styles={{ root: { cursor: "pointer" } }}>
                   <Group gap={2} align="center" justify="space-between" wrap="nowrap">
@@ -197,40 +233,27 @@ const page = () => {
                         {record.commuteDate}(토)
                       </Text>
                       <Group gap={"xl"}>
-                        <ApprovalStatus status={"승인요청"} />
-                        <Text fz={"xs"}>김단아</Text>
-                        <Text fz={"xs"}>특별휴무 반반차(오전)</Text>
-                        <Text fz={"xs"}>워크샵 경품워크샵 경품워크샵 경품워크샵 경품</Text>
-                        <Text fz={"xs"} c={"green.5"}>
-                          승인완료
-                          <Text component="span" fz={"xs"} c={"dimmed"} ml={5}>
-                            (2023-12-11)
-                          </Text>
+                        <ApprovalType>{record.relationType}</ApprovalType>
+                        <Text w={40} fz={"xs"}>
+                          {record.userName}
                         </Text>
-                        <Text fz={"xs"} c={"red.4"}>
-                          반려
-                          <Text component="span" fz={"xs"} c={"dimmed"} ml={5}>
-                            (2023-12-11)
-                          </Text>
+                        <Text miw={60} fz={"xs"}>
+                          {record.leaveType}
                         </Text>
-                        <Group gap={"xs"}>
-                          <Button variant="light" size="compact-xs" color="green.4">
-                            승인
-                          </Button>
-                          <Button variant="light" size="compact-xs" color="red.4">
-                            반려
-                          </Button>
-                        </Group>
-                        <Button variant="light" size="compact-xs" color="gray">
-                          삭제
-                        </Button>
+
+                        <ApprovalStatus record={record} />
+
+                        <Text c={record.note ? "black" : "dimmed"} fz={"xs"}>
+                          {record.note || "작성 내용이 없습니다."}
+                        </Text>
+                        <ButtonByApprovalStatus record={record} />
                       </Group>
                     </Stack>
                   </Group>
                 </Stack>
               );
-            })
-          )}
+            })}
+          </FetchWrapper>
         </Stack>
       </Paper>
     </Container>

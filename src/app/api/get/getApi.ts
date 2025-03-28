@@ -1,5 +1,5 @@
 import { TMealsParams, TWelfaresParams } from "@/lib/types/meal";
-import { TMyAttendance, TMyVacations, TWorkHourStats } from "@/types/apiTypes";
+import { TApproval, TMyAttendance, TMyVacations, TWorkHourStats } from "@/types/apiTypes";
 import axios from "axios";
 
 const getApi = axios.create({
@@ -53,3 +53,7 @@ export const getWorkHourStats = (params: TWorkHourStats) => getApi.get(`/users/i
 
 // 사용자 개인 휴가관리 요약정보 조회 API 개발
 export const getVacationSummary = ({ year }: { year: string }) => getApi.get(`/users/intranet/leave/stats`, { params: { year: year } });
+// 사용자 개인 휴가관리 요약정보 조회 API 개발
+
+// 결재 승인 내역 조회하기 API
+export const getApprovals = (params: TApproval) => getApi.get(`/users/intranet/approval`, { params: params });
