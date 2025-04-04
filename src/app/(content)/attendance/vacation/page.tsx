@@ -39,7 +39,6 @@ function page() {
     isLoading: isLoading_summary,
     isError: isError_summary,
   } = useQuery({ queryKey: ["vacationSummary", { year: params.year }], queryFn: () => api.getVacationSummary({ year: params.year }) });
-  console.log("🚀 ~ page ~ summary:", summary);
 
   const vacations = data?.data.data;
   const leaveSummary = summary?.data.data.leaveSummary;
@@ -272,9 +271,16 @@ function page() {
                           <Text fz={"xs"}>{record.annualLeaveReduceUnit}</Text>
                         </Stack>
                         <Stack gap={1}>
-                          <Text fz={"xs"} c={"dimmed"}>
-                            누적잔여
-                          </Text>
+                          {record.confirmYN === "Y" ? (
+                            <Text fz={"xs"} c={"dimmed"}>
+                              잔여 개수
+                            </Text>
+                          ) : (
+                            <Text fz={"xs"} c={"dimmed"}>
+                              (예상) 잔여 개수
+                            </Text>
+                          )}
+
                           <Text fz={"xs"}>{record.remainingAnnualLeaveQuota}</Text>
                         </Stack>
                         <Stack gap={1}>
@@ -291,7 +297,20 @@ function page() {
                             {record.confirmPersonName || "결재 승인 전 입니다."}
                           </Text>
                         </Stack>
-
+                        <Stack gap={1}>
+                          <Text fz={"xs"} c={"dimmed"}>
+                            첨부파일
+                          </Text>
+                          {record.imageUrl ? (
+                            <Text fz={"xs"} td="underline" c={"blue"} onClick={() => window.open(record.imageUrl, "_blank")}>
+                              내려받기
+                            </Text>
+                          ) : (
+                            <Text fz={"xs"} c={"dimmed"}>
+                              첨부파일이 없습니다.
+                            </Text>
+                          )}
+                        </Stack>
                         <Stack gap={1}>
                           <Text fz={"xs"} c={"dimmed"}>
                             내용
