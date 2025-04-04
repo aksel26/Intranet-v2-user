@@ -149,20 +149,7 @@ function page() {
                         </Text>
                         <Text fz={"xs"}>{detectDevice(record.checkOutLogAgent, record.checkOutIpAddr)}</Text>
                       </Stack>
-                      <Stack gap={1} align="center">
-                        <Text fz={"xs"} c={"dimmed"}>
-                          첨부파일
-                        </Text>
-                        {record.imageUrl ? (
-                          <Text fz={"xs"} td="underline" c={"blue"} onClick={() => window.open(record.imageUrl, "_blank")}>
-                            내려받기
-                          </Text>
-                        ) : (
-                          <Text fz={"xs"} c={"dimmed"}>
-                            첨부파일이 없습니다.
-                          </Text>
-                        )}
-                      </Stack>
+
                       <Stack gap={1}>
                         <Text fz={"xs"} c={"dimmed"}>
                           내용
