@@ -22,7 +22,7 @@ const AttendanceSummary = () => {
       <Stack gap={4}>
         <Text fz={"sm"}>총 연차 수</Text>
         <Text fz={"sm"} ta={"center"}>
-          <Text fw={900} component="span" fz={"xl"}>
+          <Text fw={700} component="span" fz={"xl"}>
             {summary.totalReceivedAnnualLeave}
           </Text>
           일
@@ -32,7 +32,7 @@ const AttendanceSummary = () => {
       <Stack gap={4}>
         <Text fz={"sm"}>사용 연차 수</Text>
         <Text fz={"sm"} ta={"center"}>
-          <Text fw={900} component="span" fz={"xl"}>
+          <Text fw={700} component="span" fz={"xl"}>
             {summary.totalAnnualLeaveUsage}
           </Text>
           일
@@ -42,7 +42,7 @@ const AttendanceSummary = () => {
       <Stack gap={4}>
         <Text fz={"sm"}>잔여 연차 수</Text>
         <Text fz={"sm"} ta={"center"}>
-          <Text fw={900} component="span" fz={"xl"}>
+          <Text fw={700} component="span" fz={"xl"}>
             {summary.totalAnnualLeaveBalance}
           </Text>
           일
@@ -52,8 +52,8 @@ const AttendanceSummary = () => {
       <Stack gap={4}>
         <Text fz={"sm"}>미승인 요청건</Text>
         <Text fz={"sm"} ta={"center"}>
-          <Text fw={900} component="span" fz={"xl"}>
-            2
+          <Text fw={700} component="span" fz={"xl"}>
+            {summary.notConfirmLeaveCount}
           </Text>
           건
         </Text>
