@@ -5,15 +5,16 @@ import FetchWrapper from "@/components/fetchWrapper";
 import { RELATION_TYPE } from "@/lib/enums";
 import { TApproval } from "@/types/apiTypes";
 import { monthList, yearsList } from "@/utils/dateFomat";
-import { Badge, Button, Container, Group, Paper, Select, Stack, Text } from "@mantine/core";
+import { ActionIcon, Badge, Button, Container, Group, List, ListItem, Paper, Select, Stack, Text } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
+import { IconChevronRight } from "@tabler/icons-react";
 import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
-
+import styles from "../../../styles/list.module.css";
 const ApprovalType = ({ children }: { children: keyof typeof RELATION_TYPE }) => {
   return (
-    <Badge miw={70} color={children === "APPROVER" ? "blue.5" : "lime.5"} radius="sm" size="sm">
+    <Badge miw={70} color={children === "APPROVER" ? "blue.5" : "lime.5"} radius="sm" size="md">
       {RELATION_TYPE[children]}
     </Badge>
   );
@@ -22,7 +23,7 @@ const ApprovalStatus = ({ record }: { record: any }) => {
   const { confirmYN, confirmDate, rejectDate } = record;
   if (confirmYN === "Y") {
     return (
-      <Text fz={"xs"} c={"green.5"} miw={140}>
+      <Text fz={"xs"} c={"green.5"} miw={60}>
         승인완료
         <Text component="span" fz={"xs"} c={"dimmed"} ml={5}>
           ({confirmDate})
@@ -32,56 +33,18 @@ const ApprovalStatus = ({ record }: { record: any }) => {
   } else if (confirmYN === "N") {
     if (!rejectDate) {
       return (
-        <Text fz={"xs"} c={"yellow.5"} miw={140}>
+        <Text fz={"xs"} c={"yellow.5"} miw={60}>
           승인 대기
         </Text>
       );
     } else {
       return (
-        <Text fz={"xs"} c={"red.4"} miw={140}>
+        <Text fz={"xs"} c={"red.4"} miw={60}>
           반려
           <Text component="span" fz={"xs"} c={"dimmed"} ml={5}>
             ({rejectDate})
           </Text>
         </Text>
-      );
-    }
-  }
-};
-
-const ButtonByApprovalStatus = ({ record, setTargetInfo, open }: { record: any; open: () => void; setTargetInfo: any }) => {
-  const { confirmYN, rejectDate } = record;
-  if (confirmYN === "Y") {
-    return (
-      <Button variant="light" size="compact-xs" color="gray">
-        삭제
-      </Button>
-    );
-  } else if (confirmYN === "N") {
-    if (!rejectDate) {
-      return (
-        <Group gap={"xs"}>
-          <Button
-            variant="light"
-            size="compact-xs"
-            color="green.4"
-            onClick={() => {
-              setTargetInfo(record);
-              open();
-            }}
-          >
-            승인
-          </Button>
-          <Button variant="light" size="compact-xs" color="red.4">
-            반려
-          </Button>
-        </Group>
-      );
-    } else {
-      return (
-        <Button variant="light" size="compact-xs" color="gray">
-          삭제
-        </Button>
       );
     }
   }
@@ -144,6 +107,11 @@ const page = () => {
   const [targetInfo, setTargetInfo] = useState();
 
   const [confirmModal, { open: openConfirmModal, close: closeConfirmModal }] = useDisclosure(false);
+
+  const modalOpen = (record: any) => {
+    setTargetInfo(record);
+    openConfirmModal();
+  };
 
   return (
     <Container
@@ -238,35 +206,40 @@ const page = () => {
       <Paper bg={"white"} px="md" py="md" radius={"lg"}>
         <Stack gap={"xl"}>
           <FetchWrapper data={approvalsList} isLoading={approvals_isLoading}>
-            {approvalsList?.map((record: any) => {
-              return (
-                <Stack key={record.commuteIdx} gap={5} styles={{ root: { cursor: "pointer" } }}>
-                  <Group gap={2} align="center" justify="space-between" wrap="nowrap">
-                    <Stack gap={5}>
-                      <Text c={"dimmed"} fz={"xs"}>
-                        {`${dayjs(record.commuteDate).format("YYYY-MM-DD (dd)")}`}
-                      </Text>
-                      <Group gap={"xl"}>
-                        <ApprovalType>{record.relationType}</ApprovalType>
-                        <Text w={40} fz={"xs"}>
-                          {record.userName}
+            <List spacing={0} size="sm" center>
+              {approvalsList?.map((record: any) => {
+                return (
+                  <ListItem w={"100%"} onClick={() => modalOpen(record)} key={record.commuteIdx} className={styles.element} px={"sm"} py={"xs"}>
+                    <Group gap={2} align="center" justify="space-between" wrap="nowrap">
+                      <Stack gap={5}>
+                        <Text c={"dimmed"} fz={"xs"}>
+                          {`${dayjs(record.commuteDate).format("YYYY-MM-DD (dd)")}`}
                         </Text>
-                        <Text miw={60} fz={"xs"}>
-                          {record.leaveType}
-                        </Text>
+                        <Group gap={"xl"}>
+                          <ApprovalType>{record.relationType}</ApprovalType>
+                          <Text w={40} fz={"xs"}>
+                            {record.userName}
+                          </Text>
+                          <Text miw={120} fz={"xs"}>
+                            {record.leaveType}
+                          </Text>
 
-                        <ApprovalStatus record={record} />
+                          <ApprovalStatus record={record} />
 
-                        <Text c={record.note ? "black" : "dimmed"} fz={"xs"}>
-                          {record.note || "작성 내용이 없습니다."}
-                        </Text>
-                        <ButtonByApprovalStatus setTargetInfo={setTargetInfo} record={record} open={openConfirmModal} />
-                      </Group>
-                    </Stack>
-                  </Group>
-                </Stack>
-              );
-            })}
+                          <Text c={record.note ? "black" : "dimmed"} fz={"xs"}>
+                            {record.note || "작성 내용이 없습니다."}
+                          </Text>
+                          <ActionIcon variant="subtle" color="gray.4" size={"sm"}>
+                            <IconChevronRight />
+                          </ActionIcon>
+                          {/* <ButtonByApprovalStatus setTargetInfo={setTargetInfo} record={record} open={openConfirmModal} /> */}
+                        </Group>
+                      </Stack>
+                    </Group>
+                  </ListItem>
+                );
+              })}
+            </List>
           </FetchWrapper>
         </Stack>
       </Paper>
