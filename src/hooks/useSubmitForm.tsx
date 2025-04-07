@@ -105,3 +105,9 @@ export const useDeleteVacation = () => {
     mutationFn: (values: any) => api.deleteVacation(values),
   });
 };
+
+export const useApproveVacation = () => {
+  return useMutation({
+    mutationFn: (values: any) => api.approveVacation(values),
+  });
+};

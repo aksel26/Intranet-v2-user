@@ -66,3 +66,6 @@ export const leaveAttachment = (values: any) =>
 // 사용자 개인 휴가 삭제 API
 
 export const deleteVacation = (values: any) => postApi.delete(`/users/intranet/leave/${values.commuteIdx}`, { data: values });
+
+// 휴가 승인/반려하기 API
+export const approveVacation = (values: any) => postApi.patch(`/users/intranet/approval/${values.commuteIdx}`, { confirmYN: values.confirmYN });

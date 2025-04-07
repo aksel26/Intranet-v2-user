@@ -1,10 +1,12 @@
 "use client";
 import * as api from "@/app/api/get/getApi";
+import ApprovalConfirm from "@/components/Approval/confirm";
 import FetchWrapper from "@/components/fetchWrapper";
 import { RELATION_TYPE } from "@/lib/enums";
 import { TApproval } from "@/types/apiTypes";
 import { monthList, yearsList } from "@/utils/dateFomat";
 import { Badge, Button, Container, Group, Paper, Select, Stack, Text } from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
 import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
@@ -47,7 +49,7 @@ const ApprovalStatus = ({ record }: { record: any }) => {
   }
 };
 
-const ButtonByApprovalStatus = ({ record }: { record: any }) => {
+const ButtonByApprovalStatus = ({ record, setTargetInfo, open }: { record: any; open: () => void; setTargetInfo: any }) => {
   const { confirmYN, rejectDate } = record;
   if (confirmYN === "Y") {
     return (
@@ -59,7 +61,15 @@ const ButtonByApprovalStatus = ({ record }: { record: any }) => {
     if (!rejectDate) {
       return (
         <Group gap={"xs"}>
-          <Button variant="light" size="compact-xs" color="green.4">
+          <Button
+            variant="light"
+            size="compact-xs"
+            color="green.4"
+            onClick={() => {
+              setTargetInfo(record);
+              open();
+            }}
+          >
             승인
           </Button>
           <Button variant="light" size="compact-xs" color="red.4">
@@ -130,6 +140,10 @@ const page = () => {
   useEffect(() => {
     setConfirmList(data?.data.data.filter((item: any) => item.gradeIdx <= 4));
   }, [data]);
+
+  const [targetInfo, setTargetInfo] = useState();
+
+  const [confirmModal, { open: openConfirmModal, close: closeConfirmModal }] = useDisclosure(false);
 
   return (
     <Container
@@ -230,7 +244,7 @@ const page = () => {
                   <Group gap={2} align="center" justify="space-between" wrap="nowrap">
                     <Stack gap={5}>
                       <Text c={"dimmed"} fz={"xs"}>
-                        {record.commuteDate}(토)
+                        {`${dayjs(record.commuteDate).format("YYYY-MM-DD (dd)")}`}
                       </Text>
                       <Group gap={"xl"}>
                         <ApprovalType>{record.relationType}</ApprovalType>
@@ -246,7 +260,7 @@ const page = () => {
                         <Text c={record.note ? "black" : "dimmed"} fz={"xs"}>
                           {record.note || "작성 내용이 없습니다."}
                         </Text>
-                        <ButtonByApprovalStatus record={record} />
+                        <ButtonByApprovalStatus setTargetInfo={setTargetInfo} record={record} open={openConfirmModal} />
                       </Group>
                     </Stack>
                   </Group>
@@ -256,6 +270,8 @@ const page = () => {
           </FetchWrapper>
         </Stack>
       </Paper>
+
+      <ApprovalConfirm opened={confirmModal} close={closeConfirmModal} details={targetInfo} />
     </Container>
   );
 };
