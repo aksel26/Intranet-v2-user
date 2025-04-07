@@ -15,7 +15,37 @@ const StackLabelText = ({ label, value, ...props }: any) => {
     </Stack>
   );
 };
+
+const ConfirmStatusButton = ({ details, close, confirm }: any) => {
+  if (details.relationType === "CC") {
+    return (
+      <Button size="xs" variant="light" color="gray" fullWidth onClick={close}>
+        닫기
+      </Button>
+    );
+  } else {
+    if (details.confirmYN === "Y") {
+      return (
+        <Button size="xs" variant="light" color="red" fullWidth onClick={() => confirm("N")}>
+          취소하기
+        </Button>
+      );
+    } else {
+      return (
+        <Group wrap="nowrap">
+          <Button size="xs" fullWidth variant="light" color="green" onClick={() => confirm("Y")}>
+            승인하기
+          </Button>
+          <Button size="xs" variant="light" color="red" fullWidth onClick={() => confirm("N")}>
+            반려하기
+          </Button>
+        </Group>
+      );
+    }
+  }
+};
 const ApprovalConfirm = ({ opened, close, details }: any) => {
+  console.log("🚀 ~ ApprovalConfirm ~ details:", details);
   const queryClient = useQueryClient();
   const { mutate } = useApproveVacation();
 
@@ -58,14 +88,7 @@ const ApprovalConfirm = ({ opened, close, details }: any) => {
         <StackLabelText value={dayjs(details?.createdAt).format("YYYY-MM-DD")} label={"기안일"} />
         <StackLabelText value={details?.commuteDate} label={"대상일"} />
       </Group>
-      <Group wrap="nowrap">
-        <Button size="xs" fullWidth variant="light" color="green" onClick={() => confirm("Y")}>
-          승인하기
-        </Button>
-        <Button size="xs" variant="light" color="red" fullWidth onClick={() => confirm("N")}>
-          반려하기
-        </Button>
-      </Group>
+      <ConfirmStatusButton details={details} close={close} confirm={confirm} />
     </Modal>
   );
 };
