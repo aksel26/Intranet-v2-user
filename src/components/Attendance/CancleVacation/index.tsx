@@ -1,4 +1,7 @@
+import notification from "@/components/GNB/Notification";
+import { useDeleteVacation } from "@/hooks/useSubmitForm";
 import { Button, Group, Modal, Stack, Text } from "@mantine/core";
+import { useQueryClient } from "@tanstack/react-query";
 import React from "react";
 
 const LabelText = ({ children }: any) => {
@@ -10,6 +13,42 @@ const LabelText = ({ children }: any) => {
 };
 
 const CancleVacation = ({ opened, close, details }: any) => {
+  const { mutate } = useDeleteVacation();
+
+  const queryClient = useQueryClient();
+
+  const confirm = () => {
+    mutate(
+      { commuteIdx: details.commuteIdx },
+      {
+        onSuccess: async () => {
+          close();
+          notification({
+            title: "휴가신청 취소하기",
+            color: "green",
+            message: "휴가신청 내역이 삭제되었습니다.",
+          });
+
+          queryClient.invalidateQueries({
+            predicate: (query) => {
+              const queryKey = query.queryKey;
+              const targetKeys = ["vacationAll", "attendanceSummary", "vacationAll", "vacationSummary"];
+              return Array.isArray(queryKey) && targetKeys.includes(queryKey[0]);
+            },
+          });
+        },
+        onError: (error: any) => {
+          const errorMessage = error.response?.data?.message || "오류가 발생했습니다.";
+          notification({
+            title: "휴가신청 취소하기",
+            color: "red",
+            message: errorMessage,
+          });
+        },
+      }
+    );
+  };
+
   return (
     <Modal opened={opened} onClose={close} title="휴가신청 취소하기" centered size={"sm"}>
       {!details ? null : (
@@ -39,7 +78,7 @@ const CancleVacation = ({ opened, close, details }: any) => {
             </Stack>
           </Group>
           <Group wrap="nowrap">
-            <Button size="xs" fullWidth variant="light" color="red" onClick={close}>
+            <Button size="xs" fullWidth variant="light" color="red" onClick={confirm}>
               취소하기
             </Button>
             <Button size="xs" variant="light" color="gray" fullWidth onClick={close}>
