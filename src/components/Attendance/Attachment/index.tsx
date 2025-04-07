@@ -2,9 +2,10 @@ import React, { useEffect, useState } from "react";
 import { Button, FileButton, Group, Image, Modal, Stack, Text } from "@mantine/core";
 import NextImage from "next/image";
 import { useUpdateAttachment } from "@/hooks/useSubmitForm";
-import { IconUpload } from "@tabler/icons-react";
+// import { IconUpload } from "@tabler/icons-react";
 import { useQueryClient } from "@tanstack/react-query";
 import notification from "@/components/GNB/Notification";
+import { IconPhotoScan } from "@tabler/icons-react";
 
 const Attachment = ({ opened, close, details }: any) => {
   const { mutate } = useUpdateAttachment();
@@ -40,6 +41,7 @@ const Attachment = ({ opened, close, details }: any) => {
             title: "첨부파일",
             message: "첨부파일이 저장되었습니다.",
           });
+          setFile(null);
         },
         onError: (error: any) => {
           const { message: err } = error.response.data || "";
@@ -48,6 +50,7 @@ const Attachment = ({ opened, close, details }: any) => {
             title: "첨부파일",
             message: err,
           });
+          setFile(null);
         },
       }
     );
@@ -65,7 +68,7 @@ const Attachment = ({ opened, close, details }: any) => {
             <div className="min-h-48 h-full relative flex items-center justify-center group  hover:bg-slate-300 transition-all duration-200 ease-in-out rounded-lg overflow-hidden cursor-pointer">
               <NextImage {...props} src={imagePreview} alt="Uploaded image" fill className="group-hover:brightness-50 transition-all duration-200" />
               <div className="opacity-0 group-hover:opacity-100 transition-all duration-200 z-10 justify-center items-center flex flex-col">
-                <IconUpload color="white" />
+                <IconPhotoScan color="white" size={30} />
                 <Text fz={"sm"} mt={"sm"} c={"white"}>
                   이미지 업로드
                 </Text>
@@ -79,23 +82,33 @@ const Attachment = ({ opened, close, details }: any) => {
             <div
               {...props}
               style={{
-                width: 300,
                 height: 300,
-                border: "2px dashed #ccc",
+                border: "1px dashed #ccc",
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
                 cursor: "pointer",
               }}
             >
-              이미지를 클릭하여 업로드
+              <Stack gap={4} align="center">
+                <IconPhotoScan color="gray" size={30} />
+                <Text fz={"xs"} c={"dimmed"}>
+                  파일 선택 버튼을 눌러 파일을 선택해 주세요.
+                </Text>
+                <Text fz={"xs"} c={"dimmed"}>
+                  파일 1개당 크기는 10MB를 초과할 수 없습니다.
+                </Text>
+                <Text fz={"xs"} c={"dimmed"}>
+                  가능한 파일 형식 : png, jpg, jpeg
+                </Text>
+              </Stack>
             </div>
           )}
         </FileButton>
       )}
 
       <Group wrap="nowrap" mt={"md"}>
-        <Button variant="light" size="sm" fullWidth onClick={handleSave}>
+        <Button variant="light" size="sm" fullWidth onClick={handleSave} disabled={!file ? true : false}>
           저장하기
         </Button>
         <Button variant="light" color="gray" fullWidth onClick={close}>

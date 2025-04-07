@@ -312,8 +312,8 @@ function page() {
                               확인하기
                             </Text>
                           ) : (
-                            <Text fz={"xs"} c={"dimmed"}>
-                              첨부파일이 없습니다.
+                            <Text fz={"xs"} td="underline" c={"dimmed"} onClick={() => openAttachmentModal(record)}>
+                              업로드하기
                             </Text>
                           )}
                         </Stack>
