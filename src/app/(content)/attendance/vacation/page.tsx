@@ -16,6 +16,7 @@ import { monthList, yearsList } from "@/utils/dateFomat";
 import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import "dayjs/locale/ko";
+import Attachment from "@/components/Attendance/Attachment";
 dayjs.locale("ko");
 
 const items = [{ title: "휴가/연차 상세조회", href: "#" }].map((item, index) => (
@@ -28,6 +29,7 @@ const items = [{ title: "휴가/연차 상세조회", href: "#" }].map((item, in
 
 function page() {
   const [cancelVacationOpened, { open: cancelOpenVacationModal, close: cancelVacationModalClose }] = useDisclosure(false);
+  const [attachmentModalOpened, { open: attachmentModalOpen, close: attachmentModalClose }] = useDisclosure(false);
 
   const [params, setParams] = useState<TMyVacations>({
     year: dayjs().year().toString(),
@@ -66,6 +68,10 @@ function page() {
   const openVacationModal = (record: any) => {
     setCurrentVacationInfo(record);
     cancelOpenVacationModal();
+  };
+  const openAttachmentModal = (record: any) => {
+    setCurrentVacationInfo(record);
+    attachmentModalOpen();
   };
 
   return (
@@ -302,8 +308,8 @@ function page() {
                             첨부파일
                           </Text>
                           {record.imageUrl ? (
-                            <Text fz={"xs"} td="underline" c={"blue"} onClick={() => window.open(record.imageUrl, "_blank")}>
-                              내려받기
+                            <Text fz={"xs"} td="underline" c={"blue"} onClick={() => openAttachmentModal(record)}>
+                              확인하기
                             </Text>
                           ) : (
                             <Text fz={"xs"} c={"dimmed"}>
@@ -328,7 +334,7 @@ function page() {
                             신청취소
                           </Button>
                         ) : (
-                          <Button variant="outline" color="gray" size="xs">
+                          <Button variant="outline" color="gray" size="xs" onClick={() => openVacationModal(record)}>
                             삭제
                           </Button>
                         )}
@@ -342,6 +348,7 @@ function page() {
         )}
       </Paper>
       <CancleVacation opened={cancelVacationOpened} close={cancelVacationModalClose} details={currentVacationInfo} />
+      <Attachment opened={attachmentModalOpened} close={attachmentModalClose} details={currentVacationInfo} />
       {/* <Vacation opened={opened} close={close} /> */}
     </Container>
   );

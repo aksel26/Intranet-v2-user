@@ -58,3 +58,11 @@ export const leave = (values: any) => postApi.post(`/users/intranet/leave`, valu
 // export const getActivities = ({ year, month }: TWelfaresParams) => getApi.get(`/users/activities`, { params: { year, month } });
 // export const getMe = () => getApi.get(`/users/me`);
 // export const getUsers = () => getApi.get(`/users/ids`);
+
+// 사용자 개인 휴가 이미지 수정 API
+export const leaveAttachment = (values: any) =>
+  postApi.patch(`/users/intranet/leave/${values.commuteIdx}/image`, { leaveImage: values.leaveImage }, { headers: { "Content-Type": "multipart/form-data" } });
+
+// 사용자 개인 휴가 삭제 API
+
+export const deleteVacation = (values: any) => postApi.delete(`/users/intranet/leave/${values.commuteIdx}`, { data: values });

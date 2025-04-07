@@ -93,3 +93,15 @@ export const useLeave = () => {
     mutationFn: (values: any) => api.leave(values),
   });
 };
+
+export const useUpdateAttachment = () => {
+  return useMutation({
+    mutationFn: (values: any) => api.leaveAttachment(values),
+  });
+};
+
+export const useDeleteVacation = () => {
+  return useMutation({
+    mutationFn: (values: any) => api.deleteVacation(values),
+  });
+};
