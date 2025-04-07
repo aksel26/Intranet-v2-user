@@ -14,6 +14,7 @@ import IconDots from "/public/icons/dots.svg";
 import dayjs from "dayjs";
 import WorkHourStats from "@/components/Dashboard/workHourStats";
 import MainCalendar from "@/components/Dashboard/calendar";
+import Birth from "@/components/Dashboard/birth";
 
 function page() {
   const [opened, { open, close }] = useDisclosure(false);
@@ -57,15 +58,7 @@ function page() {
                   <DashboardNotice />
                 </Tabs.Panel>
                 <Tabs.Panel value="second" pt={"md"}>
-                  <Stack gap={"md"}>
-                    <Text fz={"sm"}> 🎉 정정규 위원</Text>
-
-                    <Text fz={"sm"}> 🎉 정정규 위원</Text>
-
-                    <Text fz={"sm"}> 🎉 정정규 위원</Text>
-
-                    <Text fz={"sm"}> 🎉 정정규 위원</Text>
-                  </Stack>
+                  <Birth month={(dayjs(dateValue).month() + 1).toString()} />
                 </Tabs.Panel>
               </Tabs>
             </Paper>

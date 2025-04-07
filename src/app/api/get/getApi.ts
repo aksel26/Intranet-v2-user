@@ -57,3 +57,6 @@ export const getVacationSummary = ({ year }: { year: string }) => getApi.get(`/u
 
 // 결재 승인 내역 조회하기 API
 export const getApprovals = (params: TApproval) => getApi.get(`/users/intranet/approval`, { params: params });
+
+// 결재 승인 내역 조회하기 API
+export const getBirth = ({ month }: { month: string }) => getApi.get(`/users/birth`, { params: { month: month } });

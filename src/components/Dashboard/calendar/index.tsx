@@ -39,31 +39,12 @@ const MainCalendar = ({ dateValue, setDateValue }: any) => {
         locale="ko"
         value={dateValue}
         onChange={setDateValue}
+        onMonthSelect={() => console.log("🙏")}
+        onNextMonth={setDateValue}
+        onPreviousMonth={setDateValue}
         firstDayOfWeek={0}
         onLevelChange={() => {}} // 레벨 변경 이벤트를 무시
         level="month"
-
-        // styles={{
-        //   month: { width: "100%" },
-        //   calendarHeader: { maxWidth: "unset" },
-        //   day: { width: "100%", height: 60 },
-        // }}
-        // renderDay={(date) => {
-        //   const day = date.getDate();
-        //   const isToday = dayjs(date).isSame(dayjs(dateValue), "day");
-        //   console.log("🚀 ~ MainCalendar ~ isToday:", day, isToday);
-        //   return (
-        //     <Indicator label="+3" size={16} offset={-8} inline color="green.5">
-        //       <div>{day}</div>
-        //     </Indicator>
-        //   );
-
-        //   //   return (
-        //   //     <Indicator color="yellow" position="top-end" size={12} processing offset={-5} disabled={!isToday}>
-        //   //       <div>{day}</div>
-        //   //     </Indicator>
-        //   //   );
-        // }}
       />
     </Paper>
   );
