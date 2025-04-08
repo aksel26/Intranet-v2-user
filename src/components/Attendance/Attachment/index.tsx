@@ -92,8 +92,18 @@ const Attachment = ({ opened, close, details }: any) => {
         <Stack>
           <FileButton onChange={handleFileChange} accept="image/png,image/jpeg">
             {(props) => (
-              <div className="min-h-48 h-full relative flex items-center justify-center group  hover:bg-slate-300 transition-all duration-200 ease-in-out rounded-lg overflow-hidden cursor-pointer">
-                <NextImage {...props} src={imagePreview} alt="Uploaded image" fill className="group-hover:brightness-50 transition-all duration-200" />
+              <div className="relative w-full h-[300px] flex items-center justify-center group  transition-all duration-200 ease-in-out rounded-lg overflow-hidden cursor-pointer">
+                <div>
+                  <NextImage
+                    {...props}
+                    src={imagePreview}
+                    alt="Uploaded image"
+                    fill
+                    style={{ objectFit: "contain" }}
+                    className="group-hover:brightness-50 transition-all duration-200"
+                  />
+                </div>
+
                 <div className="opacity-0 group-hover:opacity-100 transition-all duration-200 z-10 justify-center items-center flex flex-col">
                   <IconPhotoScan color="white" size={30} />
                   <Text fz={"sm"} mt={"sm"} c={"white"}>

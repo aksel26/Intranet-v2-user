@@ -3,17 +3,18 @@
 import * as api from "@/app/api/get/getApi";
 import { LEAVE_TYPE } from "@/lib/enums";
 import { getWeekdaysBetweenDates } from "@/utils/vacationDate";
-import { Button, Drawer, FileButton, Group, Indicator, MultiSelect, Select, Text, TextInput } from "@mantine/core";
+import { Box, Button, Drawer, FileButton, Group, Indicator, MultiSelect, Select, Text, TextInput } from "@mantine/core";
 import { DatePicker } from "@mantine/dates";
 import { useDisclosure } from "@mantine/hooks";
 import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
-import notification from "../GNB/Notification";
-import LeaveTypeBox from "./LeaveTypeBox";
-import VacationConfirmModal from "./VacationConfirmModal";
+import notification from "../../GNB/Notification";
+import LeaveTypeBox from "../LeaveTypeBox";
+import VacationConfirmModal from "../VacationConfirmModal";
 import { getLeaveTypeKey } from "@/utils/leaveTypeKey";
-import { TMyVacations } from "@/types/apiTypes";
+import { TYearMonth } from "@/types/apiTypes";
+import AttachmentPreview from "./attachment";
 
 type TDateRange = [Date | null, Date | null];
 type TSelect = { value: string | undefined; label: string | undefined };
@@ -22,7 +23,7 @@ function Vacation({ opened, close }: any) {
     queryKey: ["users"],
     queryFn: () => api.getUsers(),
   });
-  const [params, setParams] = useState<TMyVacations>({
+  const [params, setParams] = useState<TYearMonth>({
     year: dayjs().year().toString(),
     month: (dayjs().month() + 1).toString(),
   });
@@ -109,6 +110,7 @@ function Vacation({ opened, close }: any) {
     setConfirmList(data?.data.data.filter((item: any) => item.gradeIdx <= 4));
   }, [data]);
   const [submitConfirm, { open: openSubmitConfirm, close: closeSubmitConfirm }] = useDisclosure(false);
+  const [preview, { open: openPreview, close: closePreview }] = useDisclosure(false);
 
   const renderDay = (date: any) => {
     const day = date.getDate();
@@ -156,6 +158,17 @@ function Vacation({ opened, close }: any) {
         renderDay={renderDay}
       />
 
+      <Group justify="end">
+        <Group gap={5}>
+          <Box w={10} h={10} style={{ borderRadius: "50%" }} bg={"yellow"} />
+          <Text fz={"xs"}>미승인</Text>
+        </Group>
+        <Group gap={5}>
+          <Box w={10} h={10} style={{ borderRadius: "50%" }} bg={"blue"} />
+          <Text fz={"xs"}>승인</Text>
+        </Group>
+      </Group>
+
       <Group my={"sm"} align="end">
         <Text>휴가 선택</Text>
         <Text fz={"sm"} c={"dimmed"}>
@@ -191,19 +204,23 @@ function Vacation({ opened, close }: any) {
         searchable
         // value={confirmPerson?.value + ""}
       />
-      {file && (
-        <Text size="xs" ta="center" mt="sm">
-          파일명: {file.name}
-        </Text>
-      )}
 
       <TextInput
+        mb={"sm"}
         styles={{ label: { fontSize: "var(--mantine-font-size-xs" } }}
         label="특이사항 입력"
         placeholder="특이사항을 입력해 주세요."
         onChange={handleNote}
         value={note}
       />
+
+      <Group mb={"sm"}>
+        {file && (
+          <Button fullWidth variant="subtle" onClick={openPreview}>
+            파일명: {file.name}
+          </Button>
+        )}
+      </Group>
       <FileButton onChange={setFile} accept="image/png,image/jpeg">
         {(props) => (
           <Button variant="light" {...props} size="sm" fullWidth mb={"sm"}>
@@ -224,6 +241,7 @@ function Vacation({ opened, close }: any) {
         submitInfo={submitInfo}
         file={file}
       />
+      <AttachmentPreview opened={preview} close={closePreview} file={file} />
     </Drawer>
   );
 }
