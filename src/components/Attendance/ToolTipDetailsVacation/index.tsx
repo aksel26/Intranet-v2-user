@@ -22,6 +22,8 @@ const ToolTipDetailsVacation = ({ details }: any) => {
     sickLeaveUsage,
     specialLeaveUsage,
     trainingLeaveUsage,
+    totalReceivedSpecialLeave,
+    totalReceivedAlternativeLeave,
   } = details;
 
   return (
@@ -56,7 +58,7 @@ const ToolTipDetailsVacation = ({ details }: any) => {
             </Group>
             <Group align="center" justify="space-around">
               <LabelText>특별 휴무</LabelText>
-              <CountText>{specialLeaveUsage}</CountText>
+              <CountText>{`${specialLeaveUsage} / ${totalReceivedSpecialLeave}`}</CountText>
             </Group>
             <Group align="center" justify="space-around">
               <LabelText>경조 휴무</LabelText>
@@ -68,7 +70,7 @@ const ToolTipDetailsVacation = ({ details }: any) => {
             </Group>
             <Group align="center" justify="space-around">
               <LabelText>대체 휴무</LabelText>
-              <CountText>{alternativeLeaveUsage}</CountText>
+              <CountText>{`${alternativeLeaveUsage} / ${totalReceivedAlternativeLeave}`}</CountText>
             </Group>
             <Group align="center" justify="space-around">
               <LabelText>훈련</LabelText>
