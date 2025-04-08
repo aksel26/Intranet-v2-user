@@ -5,11 +5,11 @@ export interface TMyAttendance {
   eDate: string | Date | null;
 }
 
-export interface TMyVacations {
+export interface TYearMonth {
   month: string;
   year: string;
 }
-export interface TApproval extends TMyVacations {
+export interface TApproval extends TYearMonth {
   userIdx?: number | null;
 }
 
