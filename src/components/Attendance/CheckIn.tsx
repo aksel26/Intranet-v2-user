@@ -12,9 +12,8 @@ function CheckIn({ myInfo, onWorkModalClose, onWorkTimeOpened }: any) {
   const { mutate: checkIn } = useCheckIn();
   const queryClient = useQueryClient();
   const handleCheckIn = () => {
-    const device = getDeviceType();
     checkIn(
-      { checkInDeviceType: device, checkInTime: dayjs().toISOString() },
+      { checkInTime: dayjs().toISOString() },
       {
         onSuccess: async (data) => {
           const { checkInTime } = data.data;
