@@ -14,7 +14,7 @@ import dayjs from "dayjs";
 import FetchWrapper from "@/components/fetchWrapper";
 const GroupNumber = ({ groupNumber }: { groupNumber: number }) => {
   return (
-    <Avatar color="blue" radius="md">
+    <Avatar color="blue" radius="md" size={"md"}>
       <Text fz={"sm"} fw={600}>{`${groupNumber}조`}</Text>
     </Avatar>
   );
@@ -39,11 +39,7 @@ const GroupDisplay = ({ data, matches }: any) => {
 
               {/* Map through the members in this group */}
               {members.map((member: any, index: number) => (
-                <React.Fragment key={`member-${groupNumber}-${index}`}>
-                  <Text fz={matches ? "xs" : "sm"}>{member}</Text>
-                  {/* Add divider after each member except the last one */}
-                  {index < members.length - 1 && <Divider orientation="vertical" size={"sm"} />}
-                </React.Fragment>
+                <Text fz={matches ? "xs" : "sm"}>{member}</Text>
               ))}
             </Group>
           </Group>
@@ -83,28 +79,11 @@ function LunchGroup() {
             <ActionIcon variant="default" onClick={open}>
               <IconRefresh />
             </ActionIcon>
-            {/* <ActionIcon variant="default" onClick={open}>
-              <IconList />
-            </ActionIcon> */}
           </Group>
         </Group>
-        {/* <Group wrap="nowrap">
-          <Group gap={matches ? 7 : "md"} w={"100%"}>
-
-<GroupNumber groupNumber={1} />;
-            <Text fz={matches ? "xs" : "sm"}>김현근</Text>
-          <Divider orientation="vertical" size={"sm"} /> <Text fz={matches ? "xs" : "sm"}>김현자</Text>
-          <Divider orientation="vertical" size={"sm"} /> <Text fz={matches ? "xs" : "sm"}>정진옥</Text>
-          <Divider orientation="vertical" size={"sm"} /> <Text fz={matches ? "xs" : "sm"}>박민수</Text>
-          <Divider orientation="vertical" size={"sm"} /> <Text fz={matches ? "xs" : "sm"}>박민숙</Text> 
-          </Group>
-        </Group> */}
 
         <GroupDisplay data={lunchGroup?.groups} matches={matches ? "xs" : "sm"} />
 
-        {/* <Modal opened={opened} onClose={close} title="전체 점심조" centered>
-          <LunchGroupDetail />
-        </Modal> */}
         <Modal opened={lotteryOpened} onClose={lotteryClose} title="점심조 뽑기" centered>
           <LotteryComponent lotteryClose={lotteryClose} openGroupList={open} />
         </Modal>

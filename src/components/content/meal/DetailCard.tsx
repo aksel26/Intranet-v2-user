@@ -31,8 +31,6 @@ export const DetailCard = ({ toggle, targetList }: any) => {
       return processedData.map((item: any, index: any) => {
         return <Attend key={index} toggle={toggle} values={item} />;
       });
-    } else {
-      return <Holiday toggle={toggle} />;
     }
   }
 };
