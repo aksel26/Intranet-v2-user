@@ -13,10 +13,12 @@ import { useEffect, useRef, useState } from "react";
 import { DetailCard } from "../content/meal/DetailCard";
 import ModalInputForm from "../content/meal/MealInputForm";
 import notification from "../GNB/Notification";
+import { Holiday } from "../content/meal/detailCard/Holiday";
 dayjs.locale("ko");
 
-export const Detail = ({ date, meals }: any) => {
-  const modalRef = useRef<HTMLDivElement>(null);
+export const Detail = ({ date, vacationData }: any) => {
+  const mealList = mealStore((state) => state.mealInfo);
+  const [isVacation, setIsVacation] = useState(false);
   const [opened, { toggle, close }] = useDisclosure(false);
   // const { meals } = mealStore((state) => state.mealInfo);
 
@@ -41,8 +43,12 @@ export const Detail = ({ date, meals }: any) => {
   };
 
   useEffect(() => {
-    setTargetList(meals?.filter((item: any) => item.start === dayjs(date).format("YYYY-MM-DD")));
-  }, [meals, date]);
+    setTargetList(mealList?.filter((item: any) => item.start === dayjs(date).format("YYYY-MM-DD")));
+  }, [mealList, date]);
+
+  useEffect(() => {
+    setIsVacation(vacationData?.find((item: any) => item.commuteDate === dayjs(date).format("YYYY-MM-DD")));
+  }, [vacationData, date]);
 
   return (
     <Flex direction="column" px="sm" pb="lg" rowGap={"sm"}>
@@ -54,8 +60,9 @@ export const Detail = ({ date, meals }: any) => {
           모두 삭제
         </Button>
       </Flex>
-      <DetailCard toggle={toggle} targetList={targetList} />
-      <ModalInputForm ref={modalRef} date={date} opened={opened} close={close} />
+
+      {isVacation ? <Holiday /> : <DetailCard toggle={toggle} targetList={targetList} />}
+      <ModalInputForm date={date} opened={opened} close={close} targetList={targetList} />
     </Flex>
   );
 };

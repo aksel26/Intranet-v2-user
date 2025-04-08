@@ -1,5 +1,5 @@
 "use client";
-
+import * as api from "@/app/api/get/getApi";
 import { Detail } from "@/components/detail/Detail";
 import { useCombinedStore } from "@/lib/store/CombinedStore";
 import { CalendarDate } from "@/lib/store/calendarDateStore";
@@ -9,17 +9,28 @@ import { DatePicker } from "@mantine/dates";
 import dayjs from "dayjs";
 import { useCallback, useMemo, useRef, useState } from "react";
 import "../../../styles/calendar.css";
+import { TYearMonth } from "@/types/apiTypes";
+import { useQuery } from "@tanstack/react-query";
+import { mealStore } from "@/lib/store/mealStore";
 
-export default function Calendar({ meals }: any) {
-  console.log("🚀 ~ Calendar ~ meals:", meals);
-  // const { meals } = mealStore((state) => state.mealInfo);
+export default function Calendar() {
+  const mealList = mealStore((state) => state.mealInfo);
+  console.log("🚀 ~ Calendar ~ mealList:", mealList);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const { calendarDateStore } = useCombinedStore() as { calendarDateStore: CalendarDate };
+  const [params, setParams] = useState<TYearMonth>({
+    year: dayjs().year().toString(),
+    month: (dayjs().month() + 1).toString(),
+  });
+  const {
+    data: vacations,
+    isLoading: isLoading_vacations,
+    isError: isError_vacations,
+  } = useQuery({ queryKey: ["vacationAll", params], queryFn: () => api.getMyVacations(params) });
 
-  const handleDateSelect = (arg: any) => {
-    calendarDateStore.setCurrentCalendarDate(arg.start);
-  };
+  console.log("🚀 ~ Calendar ~ vacations:", vacations);
+
+  const vacationData = vacations?.data.data;
 
   const datePickerStyles = useMemo(
     () => ({
@@ -29,24 +40,36 @@ export default function Calendar({ meals }: any) {
     }),
     []
   );
-  const memoizedDetails = useMemo(() => {
-    return meals || [];
-  }, [meals]);
+
   const [dateValue, setDateValue] = useState<any>(dayjs().toDate());
 
-  const RenderDate = useCallback(
+  const renderDate = useCallback(
     (date: Date) => {
       const dayFormat = dayjs(date).format("YYYY-MM-DD");
       const day = date.getDate();
 
-      const result = memoizedDetails.find((item: any) => {
+      const vacationResult = vacationData?.find((item: any) => {
         if (item.holiday) {
-          return item.holiday.start === dayFormat;
+          return item.commuteDate === dayFormat;
+        }
+        return item.commuteDate === dayFormat;
+      });
+
+      const mealsResult = mealList?.find((item: any) => {
+        if (item) {
+          return item.start === dayFormat;
         }
         return item.start === dayFormat;
       });
-
-      if (result?.holiday) {
+      console.log("🚀 ~ result ~ mealsResult:", mealsResult);
+      if (mealsResult) {
+        return (
+          <Indicator offset={-10} key={day} position="bottom-center" inline label={"🍙"} size={20} color="transparent">
+            <div>{day}</div>
+          </Indicator>
+        );
+      }
+      if (vacationResult) {
         return (
           <Indicator
             offset={-10}
@@ -55,7 +78,7 @@ export default function Calendar({ meals }: any) {
             inline
             label={
               <Text fz={8} c="red">
-                {result.holiday.name}
+                {calendarIcon(vacationResult.leaveType)}
               </Text>
             }
             size={20}
@@ -67,12 +90,12 @@ export default function Calendar({ meals }: any) {
       }
 
       return (
-        <Indicator offset={-10} key={day} position="bottom-center" inline label={calendarIcon(result?.lunch.attendance)} size={20} color="transparent">
-          <div>{day}</div>
-        </Indicator>
+        // <Indicator offset={-10} key={day} position="bottom-center" inline label={calendarIcon(result?.lunch.attendance)} size={20} color="transparent">
+        <div>{day}</div>
+        // </Indicator>
       );
     },
-    [memoizedDetails]
+    [vacationData, mealList]
   );
   return (
     <Paper bg={"white"} px="md" py="lg" radius={"lg"} ref={containerRef}>
@@ -91,10 +114,10 @@ export default function Calendar({ meals }: any) {
         onLevelChange={() => {}} // 레벨 변경 이벤트를 무시
         level="month"
         firstDayOfWeek={0}
-        renderDay={RenderDate}
+        renderDay={renderDate}
       />
       <Divider my={"lg"} />
-      <Detail date={dateValue} meals={meals} />
+      <Detail date={dateValue} vacationData={vacationData} />
     </Paper>
   );
 }
