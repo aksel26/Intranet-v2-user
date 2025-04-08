@@ -1,33 +1,37 @@
-import * as api from "@/app/api/get/getApi";
-import { Badge, Button, Divider, Group, Indicator, Paper, Stack, Text, Title } from "@mantine/core";
-import { useQuery } from "@tanstack/react-query";
-import dayjs from "dayjs";
-import { isEmpty } from "lodash";
-import { useRouter } from "next/navigation";
-import { Fragment, useEffect, useState } from "react";
-import ArrowRight from "/public/icons/arrow-right.svg";
+import { Badge, Paper, Title } from "@mantine/core";
 import { DatePicker } from "@mantine/dates";
-const MainCalendar = ({ dateValue, setDateValue }: any) => {
-  //   const router = useRouter();
-  //   const goWorkDetails = () => router.push("/attendance/work");
+import dayjs from "dayjs";
+const MainCalendar = ({ dateValue, setDateValue, allAttendance }: any) => {
+  const renderDay = (date: any, allAttendance: any) => {
+    const dateStr = dayjs(date).format("YYYY-MM-DD");
+    const events = allAttendance[dateStr] || [];
+    const count = events.length;
 
-  //   const { data, isLoading, isError } = useQuery({
-  //     queryKey: ["attendanceAll", { date: dayjs(dateValue).format("YYYY-MM-DD") }],
-  //     queryFn: () => api.getAllAttendance({ date: dayjs(dateValue).format("YYYY-MM-DD") }),
-  //   });
-  //   console.log("🚀 ~ MainCalendar ~ data:", data);
-
-  //   const [leaveList, setLeaveList] = useState(false);
-
-  //   useEffect(() => {
-  //     if (data) {
-  //       if (isEmpty(data?.data.data.leaveByType)) {
-  //         setLeaveList(false);
-  //       } else {
-  //         setLeaveList(data?.data.data.leaveByType);
-  //       }
-  //     }
-  //   }, [data]);
+    return (
+      <div style={{ position: "relative" }}>
+        <div>{date.getDate()}</div>
+        {count > 0 && (
+          <Badge
+            size="sm"
+            radius="sm"
+            variant="light"
+            color="lime"
+            style={{
+              position: "absolute",
+              top: -14,
+              right: -14,
+              fontSize: "0.6rem",
+              padding: "0 4px",
+              minWidth: "15px",
+              height: "15px",
+            }}
+          >
+            {count}
+          </Badge>
+        )}
+      </div>
+    );
+  };
 
   return (
     <Paper p={"lg"} radius={"lg"}>
@@ -45,6 +49,7 @@ const MainCalendar = ({ dateValue, setDateValue }: any) => {
         firstDayOfWeek={0}
         onLevelChange={() => {}} // 레벨 변경 이벤트를 무시
         level="month"
+        renderDay={(date) => renderDay(date, allAttendance)} // 여기에 커스텀 renderDay 함수를 전달
       />
     </Paper>
   );

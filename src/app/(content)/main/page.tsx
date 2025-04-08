@@ -1,32 +1,37 @@
 "use client";
+import * as api from "@/app/api/get/getApi";
 import Vacation from "@/components/Attendance/Vacation";
 import AttendanceAll from "@/components/Dashboard/attendance";
 import AttendanceSummary from "@/components/Dashboard/attendance/summary";
+import Birth from "@/components/Dashboard/birth";
+import MainCalendar from "@/components/Dashboard/calendar";
 import GreetingMessage from "@/components/Dashboard/greeting/GreetingMessage";
 import DashboardNotice from "@/components/Dashboard/notice/DashboardNotice";
-import { ActionIcon, Button, Container, Grid, GridCol, Group, Paper, Stack, Tabs, Text, Title } from "@mantine/core";
-import { DatePicker } from "@mantine/dates";
+import WorkHourStats from "@/components/Dashboard/workHourStats";
+import { ActionIcon, Button, Container, Grid, GridCol, Group, Loader, Paper, Stack, Tabs, Title } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { usePathname, useRouter } from "next/navigation";
+import { useQuery } from "@tanstack/react-query";
+import dayjs from "dayjs";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import ArrowRight from "/public/icons/arrow-right.svg";
 import IconDots from "/public/icons/dots.svg";
-import dayjs from "dayjs";
-import WorkHourStats from "@/components/Dashboard/workHourStats";
-import MainCalendar from "@/components/Dashboard/calendar";
-import Birth from "@/components/Dashboard/birth";
 
 function page() {
   const [opened, { open, close }] = useDisclosure(false);
-  // const [opened, { toggle }] = useDisclosure(false);
   const [activeTab, setActiveTab] = useState<string | null>("first");
-  const [workTimeTab, setWorkTimeTab] = useState<string | null>("week");
-  const pathname = usePathname();
 
   const router = useRouter();
   const goNotice = () => router.push("/notice");
 
   const [dateValue, setDateValue] = useState<Date | null>(new Date());
+
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ["attendanceAllStaff", { year: dayjs(dateValue).year(), month: dayjs(dateValue).month() + 1 }],
+    queryFn: () => api.getAllAttendanceStaff({ month: (dayjs(dateValue).month() + 1).toString(), year: dayjs(dateValue).year().toString() }),
+  });
+
+  const allAttendance = data?.data?.data;
 
   const goVacation = () => router.push("/attendance/vacation");
   return (
@@ -34,10 +39,14 @@ function page() {
       <GreetingMessage />
       <Grid>
         <GridCol span={{ base: 12, md: 6 }}>
-          <Stack>
-            <MainCalendar dateValue={dateValue} setDateValue={setDateValue} />
-            <AttendanceAll date={dateValue} />
-          </Stack>
+          {isLoading ? (
+            <Loader size="lg" variant="dots" />
+          ) : (
+            <Stack>
+              <MainCalendar dateValue={dateValue} setDateValue={setDateValue} allAttendance={allAttendance} />
+              <AttendanceAll date={dateValue} allAttendance={allAttendance} />
+            </Stack>
+          )}
         </GridCol>
         <GridCol span={{ base: 12, md: 6 }}>
           <Stack>
