@@ -63,7 +63,7 @@ export type TMealStats = {
 
 export type TMealInfo = {
   mealStats: TMealStats;
-  meals: TMeal[];
+  mealList: TMeal[];
 };
 
 // export type TCurrentMealData = {
