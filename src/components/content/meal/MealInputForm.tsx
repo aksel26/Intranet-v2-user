@@ -1,12 +1,12 @@
 "use client";
-
+import * as api from "@/app/api/get/getApi";
 import notification from "@/components/GNB/Notification";
 import { useSubmitFormMeal } from "@/hooks/useSubmitForm";
 import { ATTENDANCE_OPTIONS } from "@/lib/enums";
 import { Button, Drawer, Flex, NumberInput, Select, Tabs, Text, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { useMediaQuery } from "@mantine/hooks";
-import { useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import dayjs from "dayjs";
 import "dayjs/locale/ko";
@@ -26,7 +26,6 @@ interface MealData {
 
 interface FormValues {
   targetDay: string | Date;
-  attendance: string;
   breakfast: MealData;
   dinner: MealData;
   lunch: MealData;
@@ -36,11 +35,11 @@ interface ModalInputFormProps {
   opened: boolean;
   date: string;
   close: () => void;
+  targetList: any;
 }
 
 // Constants
 
-const PAYER_OPTIONS = ["김정현", "이혜빈", "이혜빈2", "이혜빈3", "이혜빈4", "이혜빈5", "윤용설", "신효은", "이승현", "김현민"];
 const DEFAULT_MEAL_DATA: MealData = {
   payerName: "",
   place: "",
@@ -48,20 +47,24 @@ const DEFAULT_MEAL_DATA: MealData = {
 };
 
 // Component
-const ModalInputForm = forwardRef<HTMLDivElement, ModalInputFormProps>(({ opened, close, date }, ref) => {
-  const [openedModal, setOpenedModal] = useState(false);
-  const [searchValue, setSearchValue] = useState("");
-  const [isActive, setIsActive] = useState(false);
+const ModalInputForm = ({ opened, close, date, targetList }: any) => {
   const [currentTab, setCurrentTab] = useState<MealType>("lunch");
 
-  const innerRef = useRef<HTMLDivElement>(null);
+  console.log(targetList);
   const queryClient = useQueryClient();
   const { mutate } = useSubmitFormMeal();
 
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ["users"],
+    queryFn: () => api.getUsers(),
+  });
+
+  const users = data?.data?.data;
+
+  console.log("🫠", data);
   const form = useForm<FormValues>({
     initialValues: {
       targetDay: date,
-      attendance: "근무",
       breakfast: DEFAULT_MEAL_DATA,
       lunch: DEFAULT_MEAL_DATA,
       dinner: DEFAULT_MEAL_DATA,
@@ -70,9 +73,15 @@ const ModalInputForm = forwardRef<HTMLDivElement, ModalInputFormProps>(({ opened
 
   useEffect(() => {
     form.setFieldValue("targetDay", dayjs(date).format("YYYY-MM-DD"));
-  }, [date]);
+    if (targetList && targetList.length >= 1) {
+      form.setFieldValue("breakfast", targetList[0].breakfast || DEFAULT_MEAL_DATA);
+      form.setFieldValue("lunch", targetList[0].lunch || DEFAULT_MEAL_DATA);
+      form.setFieldValue("dinner", targetList[0].dinner || DEFAULT_MEAL_DATA);
+    }
+  }, [targetList, date]);
 
   const handleSubmit = (values: FormValues) => {
+    console.log("🚀 ~ handleSubmit ~ values:", values);
     mutate(values, {
       onSuccess: async () => {
         await queryClient.invalidateQueries({ queryKey: ["meals"] });
@@ -92,85 +101,46 @@ const ModalInputForm = forwardRef<HTMLDivElement, ModalInputFormProps>(({ opened
     });
   };
 
-  const handlePayerSelect = (value: string) => {
-    form.setFieldValue(`${currentTab}.payerName`, value);
-    setOpenedModal(false);
-    setSearchValue("");
-    setIsActive(false);
-  };
   const matches = useMediaQuery("(max-width: 40em)", true, {
     getInitialValueInEffect: false,
   });
-  const renderAttendanceSelect = () => {
-    if (currentTab !== "lunch") return null;
 
+  const RenderMealForm = () => {
+    console.log(currentTab);
     return (
-      <Select
-        label="근태"
-        placeholder="근태 유형을 선택해 주세요."
-        data={ATTENDANCE_OPTIONS}
-        searchable
-        comboboxProps={{ withinPortal: false }}
-        styles={{ dropdown: { zIndex: 1001 } }}
-        {...form.getInputProps("attendance")}
-      />
+      <Flex direction="column" rowGap={10} py="md">
+        <Select
+          label="결제자"
+          placeholder="결제자를 선택해 주세요."
+          data={users?.map((user: any) => user.userName)}
+          searchable
+          styles={{
+            dropdown: { position: "absolute", zIndex: 1000 },
+            input: { cursor: "pointer" },
+          }}
+          comboboxProps={{ withinPortal: false }}
+          // value={form.values[currentTab].payerName}
+          {...form.getInputProps(`${currentTab}.payerName`)}
+        />
+
+        <TextInput
+          // value={form.values[currentTab].place}
+          label="식당명"
+          placeholder="식당 상호명을 입력해 주세요."
+          {...form.getInputProps(`${currentTab}.place`)}
+        />
+        <NumberInput
+          label="금액"
+          placeholder="금액을 입력해 주세요."
+          thousandSeparator=","
+          hideControls
+          suffix=" 원"
+          // value={form.values[currentTab].amount}
+          {...form.getInputProps(`${currentTab}.amount`)}
+        />
+      </Flex>
     );
   };
-
-  useEffect(() => {
-    if (!ref) return;
-    if (typeof ref === "function") {
-      ref(innerRef.current);
-    } else {
-      ref.current = innerRef.current;
-    }
-  }, [ref]);
-
-  const renderMealForm = () => (
-    <Flex direction="column" rowGap={10} py="md">
-      {renderAttendanceSelect()}
-      <Select
-        label="결제자"
-        placeholder="결제자를 선택해 주세요."
-        data={PAYER_OPTIONS}
-        searchable
-        value={form.values[currentTab].payerName}
-        onChange={(value: string | null) => handlePayerSelect(value!)}
-        searchValue={searchValue}
-        onSearchChange={(newValue: string) => {
-          setSearchValue(newValue);
-          if (isActive) setOpenedModal(true);
-        }}
-        comboboxProps={{ withinPortal: false }}
-        maxDropdownHeight={180}
-        styles={{
-          dropdown: { position: "absolute", zIndex: 1000 },
-          input: { cursor: "pointer" },
-        }}
-        dropdownOpened={openedModal && isActive}
-        onDropdownClose={() => {
-          setOpenedModal(false);
-          setSearchValue("");
-        }}
-        onClick={() => {
-          setIsActive(true);
-          setOpenedModal(true);
-        }}
-        onBlur={() => {
-          if (!form.values[currentTab].payerName) setIsActive(false);
-        }}
-      />
-      <TextInput label="식당명" placeholder="식당 상호명을 입력해 주세요." {...form.getInputProps(`${currentTab}.place`)} />
-      <NumberInput
-        label="금액"
-        placeholder="금액을 입력해 주세요."
-        thousandSeparator=","
-        hideControls
-        suffix=" 원"
-        {...form.getInputProps(`${currentTab}.amount`)}
-      />
-    </Flex>
-  );
 
   return (
     <Drawer
@@ -210,7 +180,40 @@ const ModalInputForm = forwardRef<HTMLDivElement, ModalInputFormProps>(({ opened
               <Tabs.Tab value="lunch">중식</Tabs.Tab>
               <Tabs.Tab value="dinner">석식</Tabs.Tab>
             </Tabs.List>
-            <Tabs.Panel value={currentTab}>{renderMealForm()}</Tabs.Panel>
+            <Tabs.Panel value={currentTab}>
+              {/* <RenderMealForm /> */}
+
+              <Flex direction="column" rowGap={10} py="md">
+                <Select
+                  label="결제자"
+                  placeholder="결제자를 선택해 주세요."
+                  data={users?.map((user: any) => user.userName)}
+                  searchable
+                  styles={{
+                    dropdown: { position: "absolute", zIndex: 1000 },
+                    input: { cursor: "pointer" },
+                  }}
+                  comboboxProps={{ withinPortal: false }}
+                  // value={form.values[currentTab].payerName}
+                  {...form.getInputProps(`${currentTab}.payerName`)}
+                />
+                <TextInput
+                  // value={form.values[currentTab].place}
+                  label="식당명"
+                  placeholder="식당 상호명을 입력해 주세요."
+                  {...form.getInputProps(`${currentTab}.place`)}
+                />
+                <NumberInput
+                  label="금액"
+                  placeholder="금액을 입력해 주세요."
+                  thousandSeparator=","
+                  hideControls
+                  suffix=" 원"
+                  // value={form.values[currentTab].amount}
+                  {...form.getInputProps(`${currentTab}.amount`)}
+                />
+              </Flex>
+            </Tabs.Panel>
             <Button fullWidth type="submit">
               저장하기
             </Button>
@@ -219,7 +222,7 @@ const ModalInputForm = forwardRef<HTMLDivElement, ModalInputFormProps>(({ opened
       </Flex>
     </Drawer>
   );
-});
+};
 
 ModalInputForm.displayName = "ModalInputForm";
 
