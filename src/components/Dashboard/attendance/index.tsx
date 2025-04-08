@@ -30,8 +30,13 @@ const AttendanceAll = ({ date, allAttendance }: { date: Date | string | null; al
           {filteredEvents.map((list: any, idx: number, arr: any) => {
             return (
               <Group key={idx}>
-                <Badge size="md">{list.leaveType}</Badge>
-                <Text fz={"sm"}>{list.userName}</Text>
+                <Badge variant="dot" size="md" color={list.confirmYN === "N" ? "yellow" : "lime"} radius={"md"}>
+                  {list.leaveType}
+                </Badge>
+                <Text fz={"xs"}>{list.userName}</Text>
+                <Text c={"dimmed"} fz={"xs"}>
+                  {list.confirmYN === "N" ? "미승인" : "승인"}
+                </Text>
               </Group>
             );
           })}
