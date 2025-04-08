@@ -1,5 +1,5 @@
 import { TActivityParams, TMealsParams, TWelfaresParams } from "@/lib/types/meal";
-import { TApproval, TMyAttendance, TMyVacations, TWorkHourStats } from "@/types/apiTypes";
+import { TApproval, TMyAttendance, TWorkHourStats, TYearMonth } from "@/types/apiTypes";
 import axios from "axios";
 
 const getApi = axios.create({
@@ -45,7 +45,7 @@ export const getLunchGroup = () => getApi.get(`/users/playground/lunch-group`);
 export const getMyAttendance = (params: TMyAttendance) => getApi.get(`/users/intranet/commute`, { params: params });
 
 // 사용자 개인 휴가관리 상세정보 조회 API
-export const getMyVacations = (params: TMyVacations) => getApi.get(`/users/intranet/leave/detail`, { params: params });
+export const getMyVacations = (params: TYearMonth) => getApi.get(`/users/intranet/leave/detail`, { params: params });
 
 // 사용자 이번달 업무시간 조회(차트)
 
@@ -60,3 +60,6 @@ export const getApprovals = (params: TApproval) => getApi.get(`/users/intranet/a
 
 // 결재 승인 내역 조회하기 API
 export const getBirth = ({ month }: { month: string }) => getApi.get(`/users/birth`, { params: { month: month } });
+
+// 월별 전직원 휴가현황 조회 API
+export const getAllAttendanceStaff = (params: TYearMonth) => getApi.get(`/users/intranet/leave/all/calender`, { params: params });
