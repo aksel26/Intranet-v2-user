@@ -33,7 +33,6 @@ export const getUsers = () => getApi.get(`/users/ids`);
 export const getQnA = () => getApi.get(`/users/qna`);
 export const getNotices = ({ pageNo, perPage }: { pageNo: number; perPage: number }) => getApi.get(`/users/notices`, { params: { pageNo, perPage } });
 export const getNoticeDetail = ({ noticeIdx }: { noticeIdx: number }) => getApi.get(`/users/notices/${noticeIdx}`, { params: { noticeIdx: noticeIdx } });
-export const getAllAttendance = ({ date }: { date: string }) => getApi.get(`/users/intranet/leave/all`, { params: { date: date } });
 // 사용자 개인 휴가관리 요약정보 조회 API 개발
 export const getAttendanceSummary = ({ year }: { year: number }) => getApi.get(`/users/intranet/leave/stats`, { params: { year: year } });
 

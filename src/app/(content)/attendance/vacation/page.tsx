@@ -11,7 +11,7 @@ import ArrowRight from "/public/icons/arrow-right.svg";
 import CancleVacation from "@/components/Attendance/CancleVacation";
 import ConfirnStatus from "@/components/Attendance/ConfirmStatus";
 import ToolTipDetailsVacation from "@/components/Attendance/ToolTipDetailsVacation";
-import { TMyVacations } from "@/types/apiTypes";
+import { TYearMonth } from "@/types/apiTypes";
 import { monthList, yearsList } from "@/utils/dateFomat";
 import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
@@ -31,7 +31,7 @@ function page() {
   const [cancelVacationOpened, { open: cancelOpenVacationModal, close: cancelVacationModalClose }] = useDisclosure(false);
   const [attachmentModalOpened, { open: attachmentModalOpen, close: attachmentModalClose }] = useDisclosure(false);
 
-  const [params, setParams] = useState<TMyVacations>({
+  const [params, setParams] = useState<TYearMonth>({
     year: dayjs().year().toString(),
     month: (dayjs().month() + 1).toString(),
   });
