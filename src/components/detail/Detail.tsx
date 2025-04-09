@@ -1,67 +1,32 @@
 "use client";
 
-import { Button, Flex, Text } from "@mantine/core";
+import { Flex, Text } from "@mantine/core";
 
-import { useDeleteMeals } from "@/hooks/useSubmitForm";
-import { calendarDateStore } from "@/lib/store/calendarDateStore";
 import { mealStore } from "@/lib/store/mealStore";
 import { useDisclosure } from "@mantine/hooks";
-import { useQueryClient } from "@tanstack/react-query";
 import dayjs from "dayjs";
-import "dayjs/locale/ko";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { DetailCard } from "../content/meal/DetailCard";
-import ModalInputForm from "../content/meal/MealInputForm";
-import notification from "../GNB/Notification";
 import { Holiday } from "../content/meal/detailCard/Holiday";
-dayjs.locale("ko");
+import ModalInputForm from "../content/meal/MealInputForm";
 
 export const Detail = ({ date, vacationData }: any) => {
   const mealList = mealStore((state) => state.mealInfo);
   const [isVacation, setIsVacation] = useState(false);
   const [opened, { toggle, close }] = useDisclosure(false);
-  // const { meals } = mealStore((state) => state.mealInfo);
-
-  // const { calendarDate } = calendarDateStore((state) => state);
-
   const [targetList, setTargetList] = useState<any>();
 
-  const { mutate: deleteMeal } = useDeleteMeals();
-  const queryClient = useQueryClient();
-
-  const deleteAll = () => {
-    deleteMeal(dayjs(date).format("YYYY-MM-DD"), {
-      onSuccess: async () => {
-        await queryClient.invalidateQueries({ queryKey: ["meals"] });
-        notification({
-          title: "식대 내역 삭제",
-          message: "정상적으로 삭제되었습니다.",
-          color: "green",
-        });
-      },
-    });
-  };
-
   useEffect(() => {
-    setTargetList(mealList?.filter((item: any) => item.start === dayjs(date).format("YYYY-MM-DD")));
-  }, [mealList, date]);
-
-  useEffect(() => {
+    setTargetList(mealList?.filter((item: any) => item.start === dayjs(date).format("YYYY-MM-DD"))[0]);
     setIsVacation(vacationData?.find((item: any) => item.commuteDate === dayjs(date).format("YYYY-MM-DD")));
-  }, [vacationData, date]);
+  }, [mealList, vacationData, date]);
 
   return (
     <Flex direction="column" px="sm" pb="lg" rowGap={"sm"}>
-      <Flex justify="space-between" align={"center"}>
-        <Text size="xs" c={"gray.6"}>
-          {dayjs(date).format("MM월 DD일 dddd")}
-        </Text>
-        <Button size="xs" color="red" variant="outline" onClick={deleteAll}>
-          모두 삭제
-        </Button>
-      </Flex>
-
-      {isVacation ? <Holiday /> : <DetailCard toggle={toggle} targetList={targetList} />}
+      <Text size="xs" c={"gray.6"}>
+        {dayjs(date).format("MM월 DD일 dddd")}
+      </Text>
+      {isVacation ? <Holiday toggle={toggle} /> : <DetailCard toggle={toggle} targetList={targetList} />}
       <ModalInputForm date={date} opened={opened} close={close} targetList={targetList} />
     </Flex>
   );
