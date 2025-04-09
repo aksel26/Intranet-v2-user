@@ -1,34 +1,30 @@
 "use client";
 import * as api from "@/app/api/get/getApi";
 import { Detail } from "@/components/detail/Detail";
-import { useCombinedStore } from "@/lib/store/CombinedStore";
-import { CalendarDate } from "@/lib/store/calendarDateStore";
+import { mealStore } from "@/lib/store/mealStore";
+import { TMyVacations } from "@/types/apiTypes";
 import { calendarIcon } from "@/utils/meal/calendarIcon";
 import { Divider, Indicator, Paper, Text, Title } from "@mantine/core";
 import { DatePicker } from "@mantine/dates";
+import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { useCallback, useMemo, useRef, useState } from "react";
 import "../../../styles/calendar.css";
-import { TYearMonth } from "@/types/apiTypes";
-import { useQuery } from "@tanstack/react-query";
-import { mealStore } from "@/lib/store/mealStore";
 
 export default function Calendar() {
   const mealList = mealStore((state) => state.mealInfo);
-  console.log("🚀 ~ Calendar ~ mealList:", mealList);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const [params, setParams] = useState<TYearMonth>({
+  const [params, setParams] = useState<TMyVacations>({
     year: dayjs().year().toString(),
     month: (dayjs().month() + 1).toString(),
+    confirmYN: "Y",
   });
   const {
     data: vacations,
     isLoading: isLoading_vacations,
     isError: isError_vacations,
   } = useQuery({ queryKey: ["vacationAll", params], queryFn: () => api.getMyVacations(params) });
-
-  console.log("🚀 ~ Calendar ~ vacations:", vacations);
 
   const vacationData = vacations?.data.data;
 
@@ -61,7 +57,6 @@ export default function Calendar() {
         }
         return item.start === dayFormat;
       });
-      console.log("🚀 ~ result ~ mealsResult:", mealsResult);
       if (mealsResult) {
         return (
           <Indicator offset={-10} key={day} position="bottom-center" inline label={"🍙"} size={20} color="transparent">
