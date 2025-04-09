@@ -1,21 +1,20 @@
 "use client";
-import * as api from "@/app/api/get/getApi";
 import notification from "@/components/GNB/Notification";
-import { useSubmitFormMeal } from "@/hooks/useSubmitForm";
-import { ATTENDANCE_OPTIONS } from "@/lib/enums";
-import { Button, Drawer, Flex, NumberInput, Select, Tabs, Text, TextInput } from "@mantine/core";
+import SearchableSelect from "@/components/SearchableSelect";
+import { useDeleteMeals, useSubmitFormMeal } from "@/hooks/useSubmitForm";
+import { Button, Drawer, Flex, Group, NumberInput, Stack, Tabs, Text, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { useMediaQuery } from "@mantine/hooks";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import dayjs from "dayjs";
 import "dayjs/locale/ko";
-import { forwardRef, useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
 dayjs.locale("ko");
 
 // Types
-type MealType = "breakfast" | "lunch" | "dinner";
+type MealType = string | null;
 
 interface MealData {
   payerName: string;
@@ -31,13 +30,6 @@ interface FormValues {
   lunch: MealData;
 }
 
-interface ModalInputFormProps {
-  opened: boolean;
-  date: string;
-  close: () => void;
-  targetList: any;
-}
-
 // Constants
 
 const DEFAULT_MEAL_DATA: MealData = {
@@ -50,35 +42,38 @@ const DEFAULT_MEAL_DATA: MealData = {
 const ModalInputForm = ({ opened, close, date, targetList }: any) => {
   const [currentTab, setCurrentTab] = useState<MealType>("lunch");
 
-  console.log(targetList);
   const queryClient = useQueryClient();
   const { mutate } = useSubmitFormMeal();
-
-  const { data, isLoading, isError } = useQuery({
-    queryKey: ["users"],
-    queryFn: () => api.getUsers(),
-  });
-
-  const users = data?.data?.data;
-
-  console.log("🫠", data);
+  const { mutate: deleteMeal } = useDeleteMeals();
+  // console.log("🫠", data);
   const form = useForm<FormValues>({
     initialValues: {
-      targetDay: date,
+      targetDay: dayjs(date).format("YYYY-MM-DD"),
       breakfast: DEFAULT_MEAL_DATA,
       lunch: DEFAULT_MEAL_DATA,
       dinner: DEFAULT_MEAL_DATA,
     },
   });
 
+  // initialData가 변경될 때 form 값을 업데이트
   useEffect(() => {
-    form.setFieldValue("targetDay", dayjs(date).format("YYYY-MM-DD"));
-    if (targetList && targetList.length >= 1) {
-      form.setFieldValue("breakfast", targetList[0].breakfast || DEFAULT_MEAL_DATA);
-      form.setFieldValue("lunch", targetList[0].lunch || DEFAULT_MEAL_DATA);
-      form.setFieldValue("dinner", targetList[0].dinner || DEFAULT_MEAL_DATA);
+    if (targetList) {
+      form.setValues({
+        targetDay: targetList.start,
+        breakfast: targetList.breakfast,
+        lunch: targetList.lunch,
+        dinner: targetList.dinner,
+      });
+    } else {
+      setCurrentTab("lunch");
+      form.setValues({
+        targetDay: dayjs(date).format("YYYY-MM-DD"),
+        breakfast: DEFAULT_MEAL_DATA,
+        lunch: DEFAULT_MEAL_DATA,
+        dinner: DEFAULT_MEAL_DATA,
+      });
     }
-  }, [targetList, date]);
+  }, [date, targetList]);
 
   const handleSubmit = (values: FormValues) => {
     console.log("🚀 ~ handleSubmit ~ values:", values);
@@ -90,7 +85,8 @@ const ModalInputForm = ({ opened, close, date, targetList }: any) => {
           color: "green",
           message: "식대 내역이 저장되었습니다.",
         });
-
+        form.reset();
+        setCurrentTab("lunch");
         close();
       },
       onError: (error: Error) => {
@@ -101,46 +97,23 @@ const ModalInputForm = ({ opened, close, date, targetList }: any) => {
     });
   };
 
+  const reset = () => {
+    deleteMeal(dayjs(date).format("YYYY-MM-DD"), {
+      onSuccess: async () => {
+        await queryClient.invalidateQueries({ queryKey: ["meals"] });
+        notification({
+          title: "식대 내역 삭제",
+          message: "정상적으로 삭제되었습니다.",
+          color: "green",
+        });
+        close();
+      },
+    });
+  };
+
   const matches = useMediaQuery("(max-width: 40em)", true, {
     getInitialValueInEffect: false,
   });
-
-  const RenderMealForm = () => {
-    console.log(currentTab);
-    return (
-      <Flex direction="column" rowGap={10} py="md">
-        <Select
-          label="결제자"
-          placeholder="결제자를 선택해 주세요."
-          data={users?.map((user: any) => user.userName)}
-          searchable
-          styles={{
-            dropdown: { position: "absolute", zIndex: 1000 },
-            input: { cursor: "pointer" },
-          }}
-          comboboxProps={{ withinPortal: false }}
-          // value={form.values[currentTab].payerName}
-          {...form.getInputProps(`${currentTab}.payerName`)}
-        />
-
-        <TextInput
-          // value={form.values[currentTab].place}
-          label="식당명"
-          placeholder="식당 상호명을 입력해 주세요."
-          {...form.getInputProps(`${currentTab}.place`)}
-        />
-        <NumberInput
-          label="금액"
-          placeholder="금액을 입력해 주세요."
-          thousandSeparator=","
-          hideControls
-          suffix=" 원"
-          // value={form.values[currentTab].amount}
-          {...form.getInputProps(`${currentTab}.amount`)}
-        />
-      </Flex>
-    );
-  };
 
   return (
     <Drawer
@@ -170,54 +143,96 @@ const ModalInputForm = ({ opened, close, date, targetList }: any) => {
     >
       <Flex direction="column" rowGap={10} className="modal-parent-portal">
         <form onSubmit={form.onSubmit(handleSubmit)}>
-          <Tabs
-            defaultValue={currentTab}
-            onChange={(value: string | null) => setCurrentTab(value as MealType)}
-            styles={{ tabLabel: { fontSize: "var(--mantine-font-size-xs)" } }}
-          >
+          <Tabs defaultValue={currentTab || "lunch"} onChange={setCurrentTab}>
             <Tabs.List grow>
-              <Tabs.Tab value="breakfast">조식</Tabs.Tab>
-              <Tabs.Tab value="lunch">중식</Tabs.Tab>
-              <Tabs.Tab value="dinner">석식</Tabs.Tab>
+              <Tabs.Tab value="breakfast" styles={{ tabLabel: { fontSize: "var(--mantine-font-size-xs)" } }}>
+                조식
+              </Tabs.Tab>
+              <Tabs.Tab value="lunch" styles={{ tabLabel: { fontSize: "var(--mantine-font-size-xs)" } }}>
+                중식
+              </Tabs.Tab>
+              <Tabs.Tab value="dinner" styles={{ tabLabel: { fontSize: "var(--mantine-font-size-xs)" } }}>
+                석식
+              </Tabs.Tab>
             </Tabs.List>
-            <Tabs.Panel value={currentTab}>
-              {/* <RenderMealForm /> */}
 
-              <Flex direction="column" rowGap={10} py="md">
-                <Select
-                  label="결제자"
-                  placeholder="결제자를 선택해 주세요."
-                  data={users?.map((user: any) => user.userName)}
-                  searchable
-                  styles={{
-                    dropdown: { position: "absolute", zIndex: 1000 },
-                    input: { cursor: "pointer" },
-                  }}
-                  comboboxProps={{ withinPortal: false }}
-                  // value={form.values[currentTab].payerName}
-                  {...form.getInputProps(`${currentTab}.payerName`)}
-                />
+            <Tabs.Panel value="breakfast">
+              <Stack gap={"xs"} py={"md"}>
+                <SearchableSelect form={form} formKey={"breakfast.payerName"} type={currentTab} />
                 <TextInput
-                  // value={form.values[currentTab].place}
                   label="식당명"
-                  placeholder="식당 상호명을 입력해 주세요."
-                  {...form.getInputProps(`${currentTab}.place`)}
+                  placeholder="식당명을 입력해 주세요."
+                  styles={{ label: { fontSize: "var(--mantine-font-size-xs)" } }}
+                  key={form.key("breakfast.place")}
+                  {...form.getInputProps("breakfast.place")}
                 />
                 <NumberInput
                   label="금액"
                   placeholder="금액을 입력해 주세요."
-                  thousandSeparator=","
                   hideControls
-                  suffix=" 원"
-                  // value={form.values[currentTab].amount}
-                  {...form.getInputProps(`${currentTab}.amount`)}
+                  thousandSeparator
+                  styles={{ label: { fontSize: "var(--mantine-font-size-xs)" } }}
+                  key={form.key("breakfast.amount")}
+                  {...form.getInputProps("breakfast.amount")}
                 />
-              </Flex>
+              </Stack>
             </Tabs.Panel>
+
+            <Tabs.Panel value="lunch">
+              <Stack gap={"xs"} py={"md"}>
+                <SearchableSelect form={form} formKey={"lunch.payerName"} type={currentTab} />
+                <TextInput
+                  label="식당명"
+                  placeholder="식당명을 입력해 주세요."
+                  styles={{ label: { fontSize: "var(--mantine-font-size-xs)" } }}
+                  key={form.key("lunch.place")}
+                  {...form.getInputProps("lunch.place")}
+                />
+                <NumberInput
+                  label="금액"
+                  placeholder="금액을 입력해 주세요."
+                  thousandSeparator
+                  hideControls
+                  styles={{ label: { fontSize: "var(--mantine-font-size-xs)" } }}
+                  key={form.key("lunch.amount")}
+                  {...form.getInputProps("lunch.amount")}
+                />
+              </Stack>
+            </Tabs.Panel>
+
+            <Tabs.Panel value="dinner">
+              <Stack gap={"xs"} py={"md"}>
+                <SearchableSelect form={form} formKey={"dinner.payerName"} type={currentTab} />
+                <TextInput
+                  label="식당명"
+                  placeholder="식당명을 입력해 주세요."
+                  styles={{ label: { fontSize: "var(--mantine-font-size-xs)" } }}
+                  key={form.key("dinner.place")}
+                  {...form.getInputProps("dinner.place")}
+                />
+                <NumberInput
+                  label="금액"
+                  placeholder="금액을 입력해 주세요."
+                  thousandSeparator
+                  hideControls
+                  styles={{ label: { fontSize: "var(--mantine-font-size-xs)" } }}
+                  key={form.key("dinner.amount")}
+                  {...form.getInputProps("dinner.amount")}
+                />
+              </Stack>
+            </Tabs.Panel>
+          </Tabs>
+
+          <Group wrap="nowrap">
             <Button fullWidth type="submit">
               저장하기
             </Button>
-          </Tabs>
+            {targetList && (
+              <Button fullWidth color="red" variant="light" onClick={reset}>
+                내역 지우기
+              </Button>
+            )}
+          </Group>
         </form>
       </Flex>
     </Drawer>
