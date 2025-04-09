@@ -1,36 +1,25 @@
 "use client";
 
+import { useCallback } from "react";
 import { Blank } from "./detailCard/Blank";
-import { Holiday } from "./detailCard/Holiday";
 import { Attend } from "./detailCard/Working";
 
 const mealType = ["breakfast", "lunch", "dinner"];
-export const DetailCard = ({ toggle, targetList }: any) => {
-  const makeArray = () => {
-    return mealType.map((meal) => ({
-      [meal]: targetList[0][meal],
-    }));
-  };
 
-  const processMealData = (data: any) => {
-    return data.map((mealItem: any) => {
-      const [mealType, mealInfo] = Object.entries(mealItem)[0];
-      return {
-        type: mealType,
-        data: mealInfo,
-      };
-    });
-  };
+export const DetailCard = ({ toggle, targetList }: any) => {
+  const isAllEmpty = useCallback(
+    (targetList: any, mealType: string) => {
+      return !targetList[mealType]?.place && !targetList[mealType]?.amount && !targetList[mealType]?.payerName;
+    },
+    [targetList]
+  );
 
   if (targetList) {
-    if (targetList?.length < 1) {
-      return <Blank toggle={toggle} />;
-    } else if (targetList[0].lunch.attendance === "근무") {
-      const foramtted = makeArray();
-      const processedData = processMealData(foramtted);
-      return processedData.map((item: any, index: any) => {
-        return <Attend key={index} toggle={toggle} values={item} />;
-      });
-    }
+    return mealType.map((item: string, index: number) => {
+      if (isAllEmpty(targetList, item)) return null;
+      else return <Attend type={item} key={index} toggle={toggle} values={targetList[item]} />;
+    });
+  } else {
+    return <Blank toggle={toggle} />;
   }
 };
