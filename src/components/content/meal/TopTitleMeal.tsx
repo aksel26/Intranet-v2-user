@@ -2,11 +2,10 @@ import { myInfoStore } from "@/lib/store/myInfoStore";
 import { Box, Flex, Group, Loader, Paper, Stack, Text } from "@mantine/core";
 import NumberFlow from "@number-flow/react";
 import dayjs from "dayjs";
-import { usePathname } from "next/navigation";
+import Rule from "./rule";
 
 export const TopTitleMeal = ({ stats, isLoading }: any) => {
   const { myInfo } = myInfoStore();
-  // const { typeTitle, statsInfo } = useTopTitle({ pathName });
   if (isLoading)
     return (
       <Group justify="center" py={"xl"}>
@@ -24,7 +23,7 @@ export const TopTitleMeal = ({ stats, isLoading }: any) => {
             {dayjs().format("MM월 DD일 dddd")}
           </Text>
         </Box>
-        <Box>
+        <Group justify="space-between" align={"end"}>
           <Flex direction={"column"} rowGap={5}>
             <Text fw={600} c={"blue.9"} fz={"lg"}>
               {myInfo.userName || ""}
@@ -43,7 +42,8 @@ export const TopTitleMeal = ({ stats, isLoading }: any) => {
               <Text fz={"sm"}>원 입니다</Text>
             </Flex>
           </Flex>
-        </Box>
+          <Rule />
+        </Group>
         {/* <ChartSummary statsInfo={statsInfo} /> */}
       </Stack>
     </Paper>

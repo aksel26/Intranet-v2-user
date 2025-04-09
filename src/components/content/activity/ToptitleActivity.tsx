@@ -1,5 +1,3 @@
-import useTopTitle from "@/hooks/useTopTitle";
-
 import { Box, Flex, Group, Loader, Paper, Stack, Text } from "@mantine/core";
 import NumberFlow from "@number-flow/react";
 import dayjs from "dayjs";
@@ -7,7 +5,6 @@ import { usePathname } from "next/navigation";
 
 export const ToptitleActivity = ({ stats, isLoading }: any) => {
   const pathName = usePathname();
-  const { typeTitle, statsInfo } = useTopTitle({ pathName });
   if (isLoading)
     return (
       <Group justify="center" py={"xl"}>

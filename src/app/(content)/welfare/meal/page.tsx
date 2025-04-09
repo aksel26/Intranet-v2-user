@@ -7,15 +7,12 @@ import { useCombinedStore } from "@/lib/store/CombinedStore";
 import * as api from "@/app/api/get/getApi";
 import LunchGroup from "@/components/content/meal/LunchGroup";
 // import { TopTitleMeal } from "@/components/content/welfare/TopTitleWelfare";
-import useTopTitle from "@/hooks/useTopTitle";
-import { mealStateStore, mealStore } from "@/lib/store/mealStore";
-import { ChartSummary } from "@/template/ChartSummary";
+import { TopTitleMeal } from "@/components/content/meal/TopTitleMeal";
+import { mealStateStore } from "@/lib/store/mealStore";
 import { Container, Grid, GridCol, Stack } from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
-import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { TopTitleMeal } from "@/components/content/meal/TopTitleMeal";
 
 const Main = () => {
   const nowMonthYear = dayjs();

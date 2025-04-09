@@ -6,7 +6,6 @@ import { usePathname } from "next/navigation";
 
 export const TopTitleWelfare = ({ stats, isLoading }: any) => {
   const { myInfo } = myInfoStore();
-  // const { typeTitle, statsInfo } = useTopTitle({ pathName });
   if (isLoading)
     return (
       <Group justify="center" py={"xl"}>
