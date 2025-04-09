@@ -12,6 +12,9 @@ export interface TYearMonth {
 export interface TApproval extends TYearMonth {
   userIdx?: number | null;
 }
+export interface TMyVacations extends TYearMonth {
+  confirmYN?: string;
+}
 
 export interface TWorkHourStats {
   month: string;
