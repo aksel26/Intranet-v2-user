@@ -6,18 +6,7 @@ import { BreakfastIcon } from "../icon/BreakfastIcon";
 import { LunchIcon } from "../icon/LunchIcon";
 import { DinnerIcon } from "../icon/DinnerIcon";
 
-const isBlank = (data: any) => {
-  const { payerName, place, amount } = data;
-  if (payerName.length === 0 && place.length === 0 && amount === null) {
-    return true;
-  } else {
-    return false;
-  }
-};
-
-export const Attend = ({ toggle, values }: any) => {
-  const { data, type } = values;
-
+export const Attend = ({ toggle, values, type }: any) => {
   const renderIcon = useCallback((type: any) => {
     if (type === "breakfast") {
       return <BreakfastIcon />;
@@ -27,8 +16,6 @@ export const Attend = ({ toggle, values }: any) => {
       return <DinnerIcon />;
     }
   }, []);
-
-  if (isBlank(data)) return null;
 
   return (
     <Button
@@ -40,24 +27,23 @@ export const Attend = ({ toggle, values }: any) => {
       radius="lg"
       rightSection={<ArrowRight color="gray" width={18} />}
       pl={"md"}
-      // style={{ border: "1px solid green" }}
     >
       <Group>
         {renderIcon(type)}
         <Flex direction={"column"} align={"flex-start"}>
           <Text size="sm" fw={600} c={"blue.8"}>
-            <NumberFormatter thousandSeparator value={data?.amount || 0} />
+            <NumberFormatter thousandSeparator value={values?.amount || 0} />
             <Text component="span" size="sm" ml={2}>
               원
             </Text>
           </Text>
           <Group>
             <Text c={"gray.6"} size="xs">
-              {data?.place || ""}
+              {values?.place || ""}
             </Text>
             <Divider size={"xs"} orientation="vertical" />
             <Text c={"gray.6"} size="xs">
-              {data?.payerName || ""}
+              {values?.payerName || ""}
             </Text>
           </Group>
         </Flex>
