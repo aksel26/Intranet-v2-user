@@ -39,7 +39,9 @@ const GroupDisplay = ({ data, matches }: any) => {
 
               {/* Map through the members in this group */}
               {members.map((member: any, index: number) => (
-                <Text fz={matches ? "xs" : "sm"}>{member}</Text>
+                <Text key={index} fz={matches ? "xs" : "sm"}>
+                  {member}
+                </Text>
               ))}
             </Group>
           </Group>
