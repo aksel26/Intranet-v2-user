@@ -2,7 +2,8 @@ import { myInfoStore } from "@/lib/store/myInfoStore";
 import { Box, Flex, Group, Loader, Paper, Stack, Text } from "@mantine/core";
 import NumberFlow from "@number-flow/react";
 import dayjs from "dayjs";
-import Rule from "./rule";
+import Rule from "./Rule";
+// import Rule from "./rule";
 
 export const TopTitleMeal = ({ stats, isLoading }: any) => {
   const { myInfo } = myInfoStore();
