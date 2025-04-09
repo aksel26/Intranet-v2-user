@@ -19,7 +19,9 @@ import localFont from "next/font/local";
 //   viewport: "width=device-width, initial-scale=1",
 //   icons: [{ rel: "apple-touch-icon", url: "/icon-192x192.png" }],
 // };
-
+import dayjs from "dayjs";
+import "dayjs/locale/ko";
+dayjs.locale("ko");
 const myFont = localFont({
   src: "./static/font/NanumSquareNeo-Variable.ttf",
   display: "swap",
