@@ -1,12 +1,14 @@
 "use client";
 import { useElapsedTime } from "@/hooks/useElapsedTime";
-import { Badge, Card, Divider, Group, Progress, Stack, Text } from "@mantine/core";
+import useTimeByLeaveType from "@/hooks/useTimeByLeaveType";
+import { calculateNumberToTime } from "@/utils/dateFomat";
+import { Badge, Card, Group, Progress, Stack, Text } from "@mantine/core";
 import dayjs from "dayjs";
 import IconWork from "/public/icons/briefcase.svg";
 import IconTimer from "/public/icons/clock-hour-10.svg";
-import { calculateNumberToTime } from "@/utils/dateFomat";
 function Work({ myInfo }: any) {
-  const { elapsedTime, percentage } = useElapsedTime(myInfo.checkInTime);
+  const totalTime = useTimeByLeaveType(myInfo.leaveTypeIdx);
+  const { elapsedTime, percentage } = useElapsedTime(myInfo.checkInTime, totalTime);
 
   if (!myInfo.checkInTime) return null;
 

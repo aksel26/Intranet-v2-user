@@ -1,10 +1,10 @@
 // hooks/useElapsedTime.js
 "use client";
 
-import { useState, useEffect } from "react";
 import dayjs from "dayjs";
+import { useEffect, useState } from "react";
 
-export function useElapsedTime(initialTime: string) {
+export function useElapsedTime(initialTime: string, totalTime: number) {
   const [elapsedTime, setElapsedTime] = useState<string>("");
   const [percentage, setPercentage] = useState<number>(0);
 
@@ -19,7 +19,7 @@ export function useElapsedTime(initialTime: string) {
     const formattedTime = `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
     setElapsedTime(formattedTime);
 
-    const totalSecondsIn9Hours = 9 * 3600;
+    const totalSecondsIn9Hours = totalTime * 3600;
     const percent = Math.min((diffInSeconds / totalSecondsIn9Hours) * 100, 100);
     setPercentage(Number(percent.toFixed(2)));
   };
