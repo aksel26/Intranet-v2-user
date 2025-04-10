@@ -13,4 +13,5 @@ export type TMyInfo = {
   adminRole: string | null;
   checkInTime: string | null;
   attendance: string | null;
+  leaveTypeIdx: number | null;
 };

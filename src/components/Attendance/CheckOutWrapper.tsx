@@ -2,7 +2,6 @@ import useGetMe from "@/hooks/useGetMe";
 import { useCheckOut } from "@/hooks/useSubmitForm";
 import { attendanceStore } from "@/lib/store/ui/attendanceStore";
 import { checkOutTimeValidation } from "@/utils/checkOutTimeValidation";
-import { getDeviceType } from "@/utils/userAgent";
 import { Button, Group, Modal, Text } from "@mantine/core";
 import dayjs from "dayjs";
 import { useEffect, useMemo, useRef } from "react";
@@ -10,6 +9,7 @@ import notification from "../GNB/Notification";
 import EarlyCheckOut from "./EarlyCheckOut";
 import InTimeCheckOut from "./InTimeCheckOut";
 import { useQueryClient } from "@tanstack/react-query";
+import useTimeByLeaveType from "@/hooks/useTimeByLeaveType";
 
 function CheckOutWrapper({ offWorkModalClose, offWorkTimeOpened }: any) {
   const { myInfo, isLoading, isError } = useGetMe();
@@ -19,7 +19,7 @@ function CheckOutWrapper({ offWorkModalClose, offWorkTimeOpened }: any) {
   const reasonRef = useRef<any>();
   const queryClient = useQueryClient();
   const { setCheckInTime } = attendanceStore();
-
+  const totalTime = useTimeByLeaveType(myInfo.leaveTypeIdx);
   const { hours } = useMemo(() => {
     return checkOutTimeValidation(myInfo.checkInTime);
   }, [myInfo]);
@@ -29,12 +29,12 @@ function CheckOutWrapper({ offWorkModalClose, offWorkTimeOpened }: any) {
   }, [myInfo]);
 
   const handleCheckOut = () => {
-    // const device = getDeviceType();
+    const reason = reasonRef?.current?.value || null;
     checkOut(
       {
         // checkOutDeviceType: device,
         checkOutTime: dayjs().toISOString(),
-        earlyLeaveReason: reasonRef.current.value,
+        earlyLeaveReason: reason,
       },
       {
         onSuccess: async (data) => {
@@ -67,7 +67,7 @@ function CheckOutWrapper({ offWorkModalClose, offWorkTimeOpened }: any) {
         {myInfo?.userName} <Text component="span">{myInfo?.gradeName}</Text>
         님,
       </Text>
-      {hours < 9 ? <EarlyCheckOut reasonRef={reasonRef} /> : <InTimeCheckOut />}
+      {hours < totalTime ? <EarlyCheckOut reasonRef={reasonRef} /> : <InTimeCheckOut />}
       <Group wrap="nowrap" mt={"md"}>
         <Button fullWidth onClick={handleCheckOut}>
           퇴근하기

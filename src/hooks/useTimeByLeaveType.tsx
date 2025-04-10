@@ -2,7 +2,7 @@ import { getLeaveTypeKey } from "@/utils/leaveTypeKey";
 import { useMemo } from "react";
 
 // 커스텀 훅 정의
-function useTimeByLeaveType(leaveTypeIdx: number) {
+function useTimeByLeaveType(leaveTypeIdx: number | null) {
   // useMemo를 사용하여 불필요한 재계산 방지
   const totalTime = useMemo(() => {
     const result = getLeaveTypeKey(leaveTypeIdx);
