@@ -15,6 +15,7 @@ import { DateSubText } from "@/template/DateSubText";
 import { ListWrapper } from "../welfare/ListWrapper";
 import ActivityInputForm from "./ActivityInputForm";
 import ActivityUpdateForm from "./ActivityUpdateForm";
+import { TActivityDetail } from "@/lib/types/activity";
 dayjs.locale("ko");
 
 export const UsedListActivity = ({ activities, isLoading }: any) => {
@@ -23,10 +24,11 @@ export const UsedListActivity = ({ activities, isLoading }: any) => {
 
   const [updateActivityDetail, setUpdateAcitivytDetail] = useState<any>();
 
-  const handleUpdateActivity = (e: any, detail: any) => {
+  const handleUpdateActivity = (e: any, detail: any, idx: number) => {
+    const target = detail.list.filter((item: TActivityDetail) => item.activityIdx === idx)[0];
     toggleUpdateForm();
     // openModal();
-    setUpdateAcitivytDetail(detail);
+    setUpdateAcitivytDetail(target);
   };
 
   const [isAuthorized, setIsAuthorized] = useState(false);
@@ -69,7 +71,7 @@ export const UsedListActivity = ({ activities, isLoading }: any) => {
                         </Group>
                       </Stack>
                     </Flex>
-                    <ActionIcon variant="subtle" size="xl" onClick={(e) => handleUpdateActivity(e, item)}>
+                    <ActionIcon variant="subtle" size="xl" onClick={(e) => handleUpdateActivity(e, item, t.activityIdx)}>
                       <ArrowRight color="gray" width={18} />
                     </ActionIcon>
                   </Group>

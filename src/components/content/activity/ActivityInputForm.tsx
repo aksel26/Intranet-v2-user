@@ -23,6 +23,7 @@ interface FormValues {
 export default function ActivityInputForm({ onClose, opened }: any) {
   const queryClient = useQueryClient();
 
+  const { myInfo } = myInfoStore();
   const { mutate } = useSubmitFormActivity();
 
   const form = useForm({
@@ -36,13 +37,9 @@ export default function ActivityInputForm({ onClose, opened }: any) {
   });
 
   useEffect(() => {
-    const value = sessionStorage.getItem("user");
-    if (value) {
-      const { userName } = JSON.parse(value);
-
-      form.setFieldValue("payerName", userName); // form의 name 필드값을 업데이트
-    }
-  }, []);
+    const userName = myInfo.userName || "";
+    form.setFieldValue("payerName", userName); // form의 name 필드값을 업데이트
+  }, [myInfo]);
 
   const handleSubmit = (values: FormValues) => {
     const temp = { ...values };
@@ -57,7 +54,10 @@ export default function ActivityInputForm({ onClose, opened }: any) {
           color: "green",
           message: "활동비 내역이 저장되었습니다.",
         });
-        form.reset();
+
+        form.setFieldValue("targetDay", ""); // form의 name 필드값을 업데이트
+        form.setFieldValue("content", ""); // form의 name 필드값을 업데이트
+        form.setFieldValue("amount", null); // form의 name 필드값을 업데이트
         opened && onClose();
       },
       onError: (error: Error) => {
@@ -67,8 +67,6 @@ export default function ActivityInputForm({ onClose, opened }: any) {
       },
     });
   };
-
-  const { myInfo } = myInfoStore();
 
   if (myInfo.gradeName === "인턴" || myInfo.gradeName === "위원" || myInfo.gradeName === "선임" || myInfo.gradeName === "책임") {
     return (

@@ -1,8 +1,7 @@
-"use client";
 import notification from "@/components/GNB/Notification";
-import { useGetUsers } from "@/hooks/useGetUsers";
-import { useDeleteActivity, useDeleteWelfares, useUpdateFormActivity, useUpdateFormWelfare } from "@/hooks/useSubmitForm";
+import { useDeleteActivity, useUpdateFormActivity } from "@/hooks/useSubmitForm";
 import { toggleStore } from "@/lib/store/toggleStore";
+import { TActivityDetail } from "@/lib/types/activity";
 import { Button, Flex, Group, NumberInput, Popover, rem, Text, TextInput } from "@mantine/core";
 import { DatePickerInput } from "@mantine/dates";
 import { useForm } from "@mantine/form";
@@ -10,47 +9,58 @@ import { IconCalendar } from "@tabler/icons-react";
 import { useQueryClient } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import "dayjs/locale/ko";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 dayjs.locale("ko");
 
-interface FormValues {
+interface TFormValues {
   amount: number | null;
   content: string | null;
   payerName: string | null;
+  targetDay: string | Date;
 }
 
-export default function ActivityUpdateForm({ onClose, updateActivityDetail }: any) {
-  const queryClient = useQueryClient();
-  const { activityIdx, content, amount, payerName } = updateActivityDetail;
-  const [targetDate, setTargetDate] = useState<Date | null>(null);
+type TUpdateForm = {
+  onClose: () => void;
+  updateActivityDetail: TActivityDetail;
+};
 
+export default function ActivityUpdateForm({ onClose, updateActivityDetail }: TUpdateForm) {
+  const queryClient = useQueryClient();
   const { toggleInfo } = toggleStore((state) => state);
 
   const { mutate } = useUpdateFormActivity();
   const { mutate: deleteActivity } = useDeleteActivity();
 
-  const form = useForm({
+  const form = useForm<TFormValues>({
     mode: "uncontrolled",
     initialValues: {
-      content: content,
-      amount: amount,
-      payerName: payerName, // Added payerName
+      targetDay: dayjs().toDate(),
+      content: null,
+      amount: null,
+      payerName: null,
     },
   });
 
   useEffect(() => {
-    setTargetDate(dayjs(updateActivityDetail.targetDay).toDate());
-  }, [updateActivityDetail]);
-
-  const handleSubmit = (values: FormValues) => {
-    const temp = {
-      queryParams: activityIdx,
-      body: {
-        targetDay: dayjs(targetDate).format("YYYY-MM-DD"),
-        ...values,
-      },
+    const initialValues: TFormValues = {
+      targetDay: dayjs(updateActivityDetail.targetDay).toDate(),
+      content: updateActivityDetail.content,
+      amount: updateActivityDetail.amount,
+      payerName: updateActivityDetail.payerName,
     };
 
+    form.setInitialValues(initialValues);
+    form.setValues(initialValues);
+  }, [updateActivityDetail]);
+
+  const handleSubmit = (values: TFormValues) => {
+    const inputValues = { ...values };
+    inputValues.targetDay = dayjs(values.targetDay).format("YYYY-MM-DD");
+
+    const temp = {
+      queryParams: updateActivityDetail.activityIdx,
+      body: inputValues,
+    };
     mutate(temp, {
       onSuccess: async () => {
         await queryClient.invalidateQueries({ queryKey: ["activity"] });
@@ -65,7 +75,7 @@ export default function ActivityUpdateForm({ onClose, updateActivityDetail }: an
   };
 
   const handleDeleteWelfare = () => {
-    deleteActivity(activityIdx, {
+    deleteActivity(updateActivityDetail.activityIdx, {
       onSuccess: async () => {
         await queryClient.invalidateQueries({ queryKey: ["activity"] });
         notification({
@@ -87,8 +97,8 @@ export default function ActivityUpdateForm({ onClose, updateActivityDetail }: an
           locale="ko"
           leftSection={<IconCalendar style={{ width: rem(18), height: rem(18) }} stroke={1.5} />}
           placeholder="사용일자를 선택해 주세요."
-          value={targetDate}
-          onChange={setTargetDate}
+          key={form.key("targetDay")}
+          {...form.getInputProps("targetDay")}
           valueFormat="MM월 D일 dddd"
           firstDayOfWeek={0}
           popoverProps={{ withinPortal: false, zIndex: 1001 }}
