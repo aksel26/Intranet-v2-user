@@ -10,13 +10,7 @@ interface BottomModalProps {
   children: React.ReactNode;
   date?: Date;
 }
-const BottomModal: React.FC<BottomModalProps> = ({
-  title,
-  date,
-  opened,
-  onClose,
-  children,
-}) => {
+const BottomModal: React.FC<BottomModalProps> = ({ title, date, opened, onClose, children }) => {
   const matches = useMediaQuery("(max-width: 40em)", true, {
     getInitialValueInEffect: false,
   });
@@ -27,12 +21,12 @@ const BottomModal: React.FC<BottomModalProps> = ({
       opened={opened}
       onClose={onClose}
       position="bottom"
-      maw={350}
+      maw={380}
       styles={{
         content: {
           height: "auto",
-          maxWidth: 350,
-          minWidth: 350,
+          maxWidth: 380,
+          minWidth: 380,
           flex: matches ? 1 : "none",
         },
         inner: { justifyContent: "center" },
@@ -48,9 +42,7 @@ const BottomModal: React.FC<BottomModalProps> = ({
         </Flex>
       }
     >
-      <Box p="xs" pt={0}>
-        {children}
-      </Box>
+      <Box pt={0}>{children}</Box>
     </Drawer>
   );
 };
