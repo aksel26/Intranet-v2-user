@@ -6,6 +6,17 @@ export type TActivity = {
   userName: string;
 };
 
+export interface TActivityDetail {
+  activityIdx: number;
+  userIdx: number;
+  userName: string;
+  targetDay: string;
+  content: string;
+  amount: number;
+  payerName: string;
+  confirmYN: string;
+}
+
 export type TActivityStats = {
   year: string;
   activityBudget: string | number | undefined;
