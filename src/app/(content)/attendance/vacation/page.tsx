@@ -231,7 +231,7 @@ function page() {
         }}
       />
 
-      <Paper bg={"white"} p="md" py={"lg"} radius={"lg"}>
+      <Paper bg={"white"} p="lg" py={"lg"} radius={"lg"}>
         {isLoading ? (
           <Group justify="center" py={"xl"}>
             <Loader color="blue" type="dots" />
@@ -248,7 +248,7 @@ function page() {
               vacations?.map((record: any, index: number, arr: any) => {
                 return (
                   <Stack key={record.commuteIdx} gap={"xs"}>
-                    <Text fz={"sm"} fw={600}>
+                    <Text fz={"sm"} fw={600} c={"dimmed"}>
                       {dayjs(record.commuteDate).format("YYYY-MM-DD (dd)")}
                     </Text>
 

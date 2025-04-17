@@ -132,10 +132,10 @@ function page() {
             <Loader color="blue" type="dots" />
           </Group>
         ) : (
-          <Stack py={"md"} gap={0}>
+          <Stack p={"md"} gap={0}>
             {records?.map((record: any, index: number, arr: any) => {
               return (
-                <Stack key={record.commuteIdx} gap={2}>
+                <Stack key={record.commuteIdx} gap={8}>
                   <Group gap={2} align="center" justify="space-between" wrap="nowrap">
                     <Stack gap={4}>
                       <Text fz={"sm"} fw={600}>
