@@ -2,12 +2,11 @@
 
 import * as api from "@/app/api/get/getApi";
 import "@/styles/calendar.css";
-import { Breadcrumbs, Button, Collapse, Container, Flex, Group, Loader, Paper, Select, Stack, Text } from "@mantine/core";
+import { Breadcrumbs, Button, Container, Divider, Flex, Group, Loader, Paper, Select, Stack, Text } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { useState } from "react";
-import ArrowDown from "/public/icons/arrow-down.svg";
-import ArrowRight from "/public/icons/arrow-right.svg";
 
+import Attachment from "@/components/Attendance/Attachment";
 import CancleVacation from "@/components/Attendance/CancleVacation";
 import ConfirnStatus from "@/components/Attendance/ConfirmStatus";
 import ToolTipDetailsVacation from "@/components/Attendance/ToolTipDetailsVacation";
@@ -16,7 +15,6 @@ import { monthList, yearsList } from "@/utils/dateFomat";
 import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import "dayjs/locale/ko";
-import Attachment from "@/components/Attendance/Attachment";
 dayjs.locale("ko");
 
 const items = [{ title: "휴가/연차 상세조회", href: "#" }].map((item, index) => (
@@ -45,8 +43,6 @@ function page() {
   const vacations = data?.data.data;
   const leaveSummary = summary?.data.data.leaveSummary;
   const leaveUsageStats = summary?.data.data.leaveUsageStats;
-
-  const [openedId, setOpenedId] = useState<number | null>(null);
 
   const [monthValue, setMonthValue] = useState<string | null>((dayjs().month() + 1).toString());
   const [yearValue, setYearValue] = useState<string | null>(dayjs().year().toString());
@@ -235,13 +231,13 @@ function page() {
         }}
       />
 
-      <Paper bg={"white"} px="md" py="lg" radius={"lg"}>
+      <Paper bg={"white"} p="md" py={"lg"} radius={"lg"}>
         {isLoading ? (
           <Group justify="center" py={"xl"}>
             <Loader color="blue" type="dots" />
           </Group>
         ) : (
-          <Stack py={"md"} gap={"lg"}>
+          <Stack gap={"lg"}>
             {vacations.length === 0 ? (
               <Group justify="center" py={"xl"}>
                 <Text fz={"sm"} c={"gray.6"}>
@@ -249,97 +245,87 @@ function page() {
                 </Text>
               </Group>
             ) : (
-              vacations?.map((record: any) => {
-                const isOpen = openedId === record.commuteIdx;
+              vacations?.map((record: any, index: number, arr: any) => {
                 return (
-                  <Stack key={record.commuteIdx} gap={2} styles={{ root: { cursor: "pointer" } }}>
-                    <Group gap={2} align="center" justify="space-between" wrap="nowrap" onClick={() => setOpenedId(isOpen ? null : record.commuteIdx)}>
-                      <div className="flex flex-col">
-                        <Text c={"dimmed"} fz={"xs"}>
-                          {record.commuteDate}
-                        </Text>
-                        <Group py={4}>
-                          <Text fz={"sm"}>{record.leaveType}</Text>
-                          <Text fz={"sm"} component="span">
-                            {record.attendance}
-                          </Text>
-                        </Group>
-                        {/* {workTimeByLeaveType(record)} */}
-                      </div>
-                      {isOpen ? <ArrowDown /> : <ArrowRight />}
-                    </Group>
-                    <Collapse in={isOpen}>
-                      <div className="flex gap-y-4 gap-x-8 flex-wrap items-end">
-                        <Stack gap={1}>
-                          <Text fz={"xs"} c={"dimmed"}>
-                            차감갯수
-                          </Text>
-                          <Text fz={"xs"}>{record.annualLeaveReduceUnit}</Text>
-                        </Stack>
-                        <Stack gap={1}>
-                          {record.confirmYN === "Y" ? (
-                            <Text fz={"xs"} c={"dimmed"}>
-                              잔여 개수
-                            </Text>
-                          ) : (
-                            <Text fz={"xs"} c={"dimmed"}>
-                              (예상) 잔여 개수
-                            </Text>
-                          )}
+                  <Stack key={record.commuteIdx} gap={"xs"}>
+                    <Text fz={"sm"} fw={600}>
+                      {dayjs(record.commuteDate).format("YYYY-MM-DD (dd)")}
+                    </Text>
 
-                          <Text fz={"xs"}>{record.remainingAnnualLeaveQuota}</Text>
-                        </Stack>
-                        <Stack gap={1}>
+                    <Text fz={"sm"} fw={600}>
+                      {record.leaveType}
+                    </Text>
+                    <Group gap={"xl"} align="end">
+                      <Stack gap={1}>
+                        <Text fz={"xs"} c={"dimmed"}>
+                          차감갯수
+                        </Text>
+                        <Text fz={"xs"}>{record.annualLeaveReduceUnit}</Text>
+                      </Stack>
+                      <Stack gap={1}>
+                        {record.confirmYN === "Y" ? (
                           <Text fz={"xs"} c={"dimmed"}>
-                            결재일자
+                            잔여 개수
                           </Text>
-                          <ConfirnStatus record={record} />
-                        </Stack>
-                        <Stack gap={1}>
-                          <Text fz={"xs"} c={"dimmed"}>
-                            결재자
-                          </Text>
-                          <Text c={!record.confirmPersonName ? "dimmed" : "black"} fz={"xs"}>
-                            {record.confirmPersonName || "결재 승인 전 입니다."}
-                          </Text>
-                        </Stack>
-                        <Stack gap={1}>
-                          <Text fz={"xs"} c={"dimmed"}>
-                            첨부파일
-                          </Text>
-                          {record.imageUrl ? (
-                            <Text fz={"xs"} td="underline" c={"blue"} onClick={() => openAttachmentModal(record)}>
-                              확인하기
-                            </Text>
-                          ) : (
-                            <Text fz={"xs"} td="underline" c={"dimmed"} onClick={() => openAttachmentModal(record)}>
-                              업로드하기
-                            </Text>
-                          )}
-                        </Stack>
-                        <Stack gap={1}>
-                          <Text fz={"xs"} c={"dimmed"}>
-                            내용
-                          </Text>
-                          {record.note ? (
-                            <Text fz={"xs"}>{record.note}</Text>
-                          ) : (
-                            <Text fz={"xs"} c={"dimmed"}>
-                              특이사항이 없습니다.
-                            </Text>
-                          )}
-                        </Stack>
-                        {record.confirmYN === "N" ? (
-                          <Button variant="outline" color="red" size="xs" onClick={() => openVacationModal(record)}>
-                            신청취소
-                          </Button>
                         ) : (
-                          <Button variant="outline" color="gray" size="xs" onClick={() => openVacationModal(record)}>
-                            삭제
-                          </Button>
+                          <Text fz={"xs"} c={"dimmed"}>
+                            (예상) 잔여 개수
+                          </Text>
                         )}
-                      </div>
-                    </Collapse>
+
+                        <Text fz={"xs"}>{record.remainingAnnualLeaveQuota}</Text>
+                      </Stack>
+                      <Stack gap={1}>
+                        <Text fz={"xs"} c={"dimmed"}>
+                          결재일자
+                        </Text>
+                        <ConfirnStatus record={record} />
+                      </Stack>
+                      <Stack gap={1}>
+                        <Text fz={"xs"} c={"dimmed"}>
+                          결재자
+                        </Text>
+                        <Text c={!record.confirmPersonName ? "dimmed" : "black"} fz={"xs"}>
+                          {record.confirmPersonName || "결재 승인 전 입니다."}
+                        </Text>
+                      </Stack>
+                      <Stack gap={1}>
+                        <Text fz={"xs"} c={"dimmed"}>
+                          첨부파일
+                        </Text>
+                        {record.imageUrl ? (
+                          <Text fz={"xs"} td="underline" c={"blue"} onClick={() => openAttachmentModal(record)} styles={{ root: { cursor: "pointer" } }}>
+                            조회
+                          </Text>
+                        ) : (
+                          <Text fz={"xs"} td="underline" c={"dimmed"} onClick={() => openAttachmentModal(record)} styles={{ root: { cursor: "pointer" } }}>
+                            업로드하기
+                          </Text>
+                        )}
+                      </Stack>
+                      <Stack gap={1}>
+                        <Text fz={"xs"} c={"dimmed"}>
+                          내용
+                        </Text>
+                        {record.note ? (
+                          <Text fz={"xs"}>{record.note}</Text>
+                        ) : (
+                          <Text fz={"xs"} c={"dimmed"}>
+                            특이사항이 없습니다.
+                          </Text>
+                        )}
+                      </Stack>
+                      <Button variant="light" color="red" size="compact-xs" onClick={() => openVacationModal(record)}>
+                        취소
+                      </Button>
+                      {/* {record.confirmYN === "N" ? (
+                      ) : (
+                        <Button variant="outline" color="gray" size="xs" onClick={() => openVacationModal(record)}>
+                          삭제
+                        </Button>
+                      )} */}
+                    </Group>
+                    {arr.length === index + 1 ? null : <Divider my={"md"} color="gray.1" />}
                   </Stack>
                 );
               })

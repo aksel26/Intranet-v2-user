@@ -2,15 +2,13 @@
 import * as api from "@/app/api/get/getApi";
 import { TMyAttendance } from "@/types/apiTypes";
 import { calculateNumberToTime, formatTime } from "@/utils/dateFomat";
-import { Breadcrumbs, Collapse, Container, Group, Loader, Paper, Stack, Text } from "@mantine/core";
+import { detectDevice } from "@/utils/userAgent";
+import { Badge, Breadcrumbs, Container, Divider, Group, Loader, Paper, Stack, Text } from "@mantine/core";
 import { DatePickerInput } from "@mantine/dates";
 import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { useCallback, useState } from "react";
-import ArrowDown from "/public/icons/arrow-down.svg";
-import ArrowRight from "/public/icons/arrow-right.svg";
 import IconCalendar from "/public/icons/calendar.svg";
-import { detectDevice } from "@/utils/userAgent";
 
 const items = [{ title: "출퇴근 관리", href: "#" }].map((item, index) => (
   <Text size="lg" fw={600} component="a" key={index}>
@@ -19,6 +17,41 @@ const items = [{ title: "출퇴근 관리", href: "#" }].map((item, index) => (
     {/* </Anchor> */}
   </Text>
 ));
+
+const AttendanceBadge = ({ attendance }: { attendance: string | null }) => {
+  if (!attendance) return null;
+  if (attendance?.includes("지각")) {
+    return (
+      <Badge color="yellow" radius="sm" variant="light">
+        {attendance}
+      </Badge>
+    );
+  }
+
+  return (
+    <Badge color="lime" radius="sm" variant="light">
+      {attendance}
+    </Badge>
+  );
+};
+
+const LeavTypeBadge = ({ leaveType }: { leaveType: string | null }) => {
+  console.log("🚀 ~ LeavTypeBadge ~ leaveType:", leaveType);
+  if (!leaveType) return null;
+  if (leaveType === "근무") {
+    return (
+      <Badge color="blue" radius="sm" variant="light">
+        {leaveType}
+      </Badge>
+    );
+  } else
+    return (
+      <Badge color="lime" radius="sm" variant="light">
+        {leaveType}
+      </Badge>
+    );
+};
+
 function page() {
   const [params, setParams] = useState<TMyAttendance>({
     pageNo: 1,
@@ -31,10 +64,8 @@ function page() {
   const { data, isLoading, isError } = useQuery({ queryKey: ["attendanceAll", params], queryFn: () => api.getMyAttendance(params) });
   const records = data?.data?.data?.records;
 
-  const [openedId, setOpenedId] = useState<number | null>(null);
-
   const workTimeByLeaveType = useCallback((record: any) => {
-    if (record.leaveType === "연차") {
+    if (record.leaveType === "연차" || record.leaveType.includes("휴무")) {
       return null;
     } else {
       const isIncomplete = !record.checkInTime || !record.checkOutTime;
@@ -101,69 +132,67 @@ function page() {
             <Loader color="blue" type="dots" />
           </Group>
         ) : (
-          <Stack py={"md"} gap={"xl"}>
-            {records?.map((record: any) => {
-              const isOpen = openedId === record.commuteIdx;
+          <Stack py={"md"} gap={0}>
+            {records?.map((record: any, index: number, arr: any) => {
               return (
-                <Stack key={record.commuteIdx} gap={2} styles={{ root: { cursor: "pointer" } }}>
-                  <Group gap={2} align="center" justify="space-between" wrap="nowrap" onClick={() => setOpenedId(isOpen ? null : record.commuteIdx)}>
-                    <div className="flex flex-col">
-                      <Text c={"dimmed"} fz={"xs"}>
-                        {record.commuteDate}
+                <Stack key={record.commuteIdx} gap={2}>
+                  <Group gap={2} align="center" justify="space-between" wrap="nowrap">
+                    <Stack gap={4}>
+                      <Text fz={"sm"} fw={600}>
+                        {dayjs(record.commuteDate).format("YYYY-MM-DD (dd)")}
                       </Text>
                       <Group py={4}>
-                        <Text fz={"sm"}>{record.leaveType}</Text>
-                        <Text fz={"sm"} component="span">
-                          {record.attendance}
-                        </Text>
-                      </Group>
-                      {workTimeByLeaveType(record)}
-                    </div>
-                    {isOpen ? <ArrowDown /> : <ArrowRight />}
-                  </Group>
-                  <Collapse in={isOpen}>
-                    <div className="flex gap-y-4 gap-x-8 flex-wrap">
-                      <Stack gap={1}>
-                        <Text fz={"xs"} c={"dimmed"}>
-                          근무시간
-                        </Text>
-                        <Text fz={"xs"}>{`${calculateNumberToTime(record.workingMinutes).hours}시간 ${
-                          calculateNumberToTime(record.workingMinutes).minutes
-                        }분`}</Text>
-                      </Stack>
-                      <Stack gap={1}>
-                        <Text fz={"xs"} c={"dimmed"}>
-                          초과시간
-                        </Text>
-                        <Text fz={"xs"}>{`${calculateNumberToTime(record.overtimeWorkingMinutes).minutes}분`}</Text>
-                      </Stack>
-                      <Stack gap={1}>
-                        <Text fz={"xs"} c={"dimmed"}>
-                          출근기기
-                        </Text>
-                        <Text fz={"xs"}>{detectDevice(record.checkInLogAgent, record.checkInIpAddr)}</Text>
-                      </Stack>
-                      <Stack gap={1}>
-                        <Text fz={"xs"} c={"dimmed"}>
-                          퇴근기기
-                        </Text>
-                        <Text fz={"xs"}>{detectDevice(record.checkOutLogAgent, record.checkOutIpAddr)}</Text>
-                      </Stack>
+                        <LeavTypeBadge leaveType={record.leaveType} />
 
-                      <Stack gap={1}>
+                        <AttendanceBadge attendance={record.attendance} />
+
+                        {workTimeByLeaveType(record)}
+                      </Group>
+                    </Stack>
+                  </Group>
+
+                  <div className="flex gap-y-4 gap-x-8 flex-wrap">
+                    <Stack gap={1}>
+                      <Text fz={"xs"} c={"dimmed"}>
+                        근무시간
+                      </Text>
+                      <Text fz={"xs"}>{`${calculateNumberToTime(record.workingMinutes).hours}시간 ${
+                        calculateNumberToTime(record.workingMinutes).minutes
+                      }분`}</Text>
+                    </Stack>
+                    <Stack gap={1}>
+                      <Text fz={"xs"} c={"dimmed"}>
+                        초과시간
+                      </Text>
+                      <Text fz={"xs"}>{`${calculateNumberToTime(record.overtimeWorkingMinutes).minutes}분`}</Text>
+                    </Stack>
+                    <Stack gap={1}>
+                      <Text fz={"xs"} c={"dimmed"}>
+                        출근기기
+                      </Text>
+                      <Text fz={"xs"}>{detectDevice(record.checkInLogAgent, record.checkInIpAddr)}</Text>
+                    </Stack>
+                    <Stack gap={1}>
+                      <Text fz={"xs"} c={"dimmed"}>
+                        퇴근기기
+                      </Text>
+                      <Text fz={"xs"}>{detectDevice(record.checkOutLogAgent, record.checkOutIpAddr)}</Text>
+                    </Stack>
+
+                    <Stack gap={1}>
+                      <Text fz={"xs"} c={"dimmed"}>
+                        내용
+                      </Text>
+                      {record.note ? (
+                        <Text fz={"xs"}>{record.note}</Text>
+                      ) : (
                         <Text fz={"xs"} c={"dimmed"}>
-                          내용
+                          특이사항이 없습니다.
                         </Text>
-                        {record.note ? (
-                          <Text fz={"xs"}>{record.note}</Text>
-                        ) : (
-                          <Text fz={"xs"} c={"dimmed"}>
-                            특이사항이 없습니다.
-                          </Text>
-                        )}
-                      </Stack>
-                    </div>
-                  </Collapse>
+                      )}
+                    </Stack>
+                  </div>
+                  {arr.length === index + 1 ? null : <Divider my={"xl"} color="gray.1" />}
                 </Stack>
               );
             })}
