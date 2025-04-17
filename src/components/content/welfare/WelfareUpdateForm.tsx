@@ -1,102 +1,107 @@
-"use client";
+// "use client";
 import notification from "@/components/GNB/Notification";
 import { useGetUsers } from "@/hooks/useGetUsers";
 import { useDeleteWelfares, useUpdateFormWelfare } from "@/hooks/useSubmitForm";
 import { toggleStore } from "@/lib/store/toggleStore";
+import { TUsers } from "@/lib/types/users";
+import { TPayeeList, TWelfare } from "@/lib/types/welfare";
 import { Button, Flex, Group, LoadingOverlay, MultiSelect, NumberInput, Popover, rem, Text, TextInput } from "@mantine/core";
 import { DatePickerInput } from "@mantine/dates";
 import { useForm } from "@mantine/form";
 import { IconCalendar } from "@tabler/icons-react";
 import { useQueryClient } from "@tanstack/react-query";
+import { AxiosError } from "axios";
 import dayjs from "dayjs";
 import "dayjs/locale/ko";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 dayjs.locale("ko");
 
-interface FormValues {
-  targetDay: string;
+interface TFormValues {
+  selfWrittenYN: string;
+  targetDay: Date | string | null;
   amount: number | null;
   content: string | null;
-  payerName: string | null;
-  payeeIdxs: number[] | null;
-  selfWrittenYN: string;
+  payerName: string;
+  payeeList: string[];
 }
 
-export default function WelfareUpdateForm({ onClose, updateWelfareDetail }: any) {
-  const { welfareIdx, content, amount, payerName, selfWrittenYN } = updateWelfareDetail;
+type TUpdateForm = {
+  onClose: () => void;
+  updateWelfareDetail: TWelfare;
+};
 
-  const { data: userList, isLoading, isError } = useGetUsers();
-  const [users, setUsers] = useState<any>([]);
-  const [targetDate, setTargetDate] = useState<Date | null>(null);
-
-  const [selectedPayee, setSelectedPayee] = useState<any>([]);
-
-  const [isSelfWritten, setIsSelfWritten] = useState(selfWrittenYN === "N" ? false : true);
+export default function WelfareUpdateForm({ onClose, updateWelfareDetail }: TUpdateForm) {
+  const queryClient = useQueryClient();
+  const { data, isLoading, isError } = useGetUsers();
 
   const { toggleInfo } = toggleStore((state) => state);
 
-  const selectPayee = (e: any) => {
-    setSelectedPayee(e);
-  };
+  const users = data?.data.data;
 
   const { mutate } = useUpdateFormWelfare();
   const { mutate: deleteWelfare } = useDeleteWelfares();
 
-  const form = useForm({
+  const form = useForm<TFormValues>({
     mode: "uncontrolled",
     initialValues: {
-      selfWrittenYN: selfWrittenYN,
-      content: content,
-      amount: amount,
-      payerName: payerName, // Added payerName
+      selfWrittenYN: "",
+      targetDay: null,
+      content: "",
+      amount: null as number | null,
+      payerName: "",
+      payeeList: [],
     },
   });
 
   useEffect(() => {
-    setTargetDate(dayjs(updateWelfareDetail.targetDay).toDate());
-    setSelectedPayee(
-      updateWelfareDetail.payeeList.map((item: any) => ({
-        userIdx: item.userIdx,
-        userName: item.userName,
-      }))
-    );
-  }, [updateWelfareDetail]);
-
-  useEffect(() => {
-    setUsers(userList?.data.data);
-  }, [userList]);
-
-  const queryClient = useQueryClient();
-
-  const handleSubmit = (values: any) => {
-    const payeeIdxs = selectedPayee.map((item: any) => item.userIdx);
-    console.log(values, payeeIdxs);
-
-    const temp = {
-      queryParams: welfareIdx,
-      body: {
-        payeeIdxs: payeeIdxs,
-        targetDay: dayjs(targetDate).format("YYYY-MM-DD"),
-        ...values,
-      },
+    const initialValues: TFormValues = {
+      selfWrittenYN: updateWelfareDetail.selfWrittenYN || "",
+      targetDay: dayjs(updateWelfareDetail.targetDay).toDate() || dayjs().toDate(),
+      content: updateWelfareDetail.content || "",
+      amount: updateWelfareDetail.amount as number | null,
+      payerName: updateWelfareDetail.payerName as string,
+      payeeList: updateWelfareDetail.payeeList.map((list: TPayeeList) => list.userIdx.toString()) || [],
     };
 
-    console.log("👀", temp);
-    mutate(temp, {
-      onSuccess: async () => {
-        await queryClient.invalidateQueries({ queryKey: ["welfares"] });
-        notification({
-          title: "복지포인트",
-          color: "green",
-          message: "복지포인트 내역이 수정되었습니다.",
-        });
-        onClose();
-      },
-    });
+    form.setInitialValues(initialValues);
+    form.setValues(initialValues);
+  }, [updateWelfareDetail]);
+
+  const handleSubmit = (values: TFormValues) => {
+    type TSubmitValues = Omit<TFormValues, "payeeList"> & { payeeIdxs: number[] };
+
+    const submit: TSubmitValues = {
+      selfWrittenYN: values.selfWrittenYN,
+      targetDay: dayjs(values.targetDay).format("YYYY-MM-DD"),
+      amount: values.amount,
+      content: values.content,
+      payerName: values.payerName,
+      payeeIdxs: values.payeeList.map((payee: string) => Number(payee)),
+    };
+
+    mutate(
+      { body: submit, queryParams: updateWelfareDetail.welfareIdx },
+      {
+        onSuccess: async () => {
+          await queryClient.invalidateQueries({ queryKey: ["welfares"] });
+          notification({
+            title: "복지포인트",
+            color: "green",
+            message: "복지포인트 내역이 수정되었습니다.",
+          });
+          onClose();
+        },
+        onError: (error: Error) => {
+          const axiosError = error as AxiosError<{ message: string }>;
+          const errorMessage = axiosError.response?.data?.message || "오류가 발생했습니다.";
+          notification({ title: "복지포인트 입력", color: "red", message: errorMessage });
+        },
+      }
+    );
   };
 
   const handleDeleteWelfare = () => {
-    deleteWelfare(welfareIdx, {
+    deleteWelfare(updateWelfareDetail.welfareIdx, {
       onSuccess: async () => {
         await queryClient.invalidateQueries({ queryKey: ["welfares"] });
         notification({
@@ -106,11 +111,12 @@ export default function WelfareUpdateForm({ onClose, updateWelfareDetail }: any)
         });
         onClose();
       },
+      onError: (error: Error) => {
+        const axiosError = error as AxiosError<{ message: string }>;
+        const errorMessage = axiosError.response?.data?.message || "오류가 발생했습니다.";
+        notification({ title: "복지포인트 입력", color: "red", message: errorMessage });
+      },
     });
-  };
-
-  const handleClose = () => {
-    onClose();
   };
 
   return (
@@ -122,12 +128,11 @@ export default function WelfareUpdateForm({ onClose, updateWelfareDetail }: any)
           locale="ko"
           leftSection={<IconCalendar style={{ width: rem(18), height: rem(18) }} stroke={1.5} />}
           placeholder="사용일자를 선택해 주세요."
-          value={targetDate}
-          onChange={setTargetDate}
-          valueFormat="MM월 D일 dddd"
+          key={form.key("targetDay")}
+          {...form.getInputProps("targetDay")}
+          valueFormat="MM월 DD일 dddd"
           firstDayOfWeek={0}
           popoverProps={{ withinPortal: false, zIndex: 1001 }}
-          disabled={!isSelfWritten}
         />
         {isLoading ? (
           <LoadingOverlay visible={isLoading} zIndex={1000} overlayProps={{ radius: "sm", blur: 2 }} />
@@ -139,28 +144,17 @@ export default function WelfareUpdateForm({ onClose, updateWelfareDetail }: any)
               },
             }}
             label="동반결제자"
-            placeholder={updateWelfareDetail.payeeList.length < 1 ? "결제한 인원을 선택해 주세요." : undefined}
-            data={users?.map((user: any) => ({
+            data={users?.map((user: TUsers) => ({
               value: user.userIdx.toString(),
               label: user.userName,
               searchValue: user.userName,
             }))}
-            onChange={(values) => {
-              const selectedUsers = users?.filter((user: any) => values.includes(user.userIdx.toString()));
-              selectPayee(selectedUsers);
-            }}
+            key={form.key("payeeList")}
+            {...form.getInputProps("payeeList")}
             searchable
-            defaultValue={updateWelfareDetail.payeeList?.map((item: any) => item.userIdx.toString()) || []}
-            disabled={!isSelfWritten}
           />
         )}
-        <TextInput
-          label="사용처"
-          placeholder="결제하신 곳의 상호명을 입력해 주세요."
-          key={form.key("content")}
-          {...form.getInputProps("content")}
-          disabled={!isSelfWritten}
-        />
+        <TextInput label="사용처" placeholder="결제하신 곳의 상호명을 입력해 주세요." key={form.key("content")} {...form.getInputProps("content")} />
 
         <Popover
           shadow="lg"
@@ -199,7 +193,7 @@ export default function WelfareUpdateForm({ onClose, updateWelfareDetail }: any)
           <Button fullWidth type="submit" mt={20}>
             수정하기
           </Button>
-          <Button disabled={!isSelfWritten} fullWidth type="button" mt={20} color="red" variant="light" onClick={handleDeleteWelfare}>
+          <Button fullWidth type="button" mt={20} color="red" variant="light" onClick={handleDeleteWelfare}>
             삭제하기
           </Button>
         </Group>

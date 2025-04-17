@@ -13,6 +13,7 @@ import { ListWrapper } from "./ListWrapper";
 import WelfareInputForm from "./WelfareInputForm";
 import WelfareUpdateForm from "./WelfareUpdateForm";
 import ArrowRight from "/public/icons/arrow-right.svg";
+import { TWelfare } from "@/lib/types/welfare";
 dayjs.locale("ko");
 
 export const UsedListWelfare = ({ welfares, isLoading }: any) => {
@@ -22,10 +23,11 @@ export const UsedListWelfare = ({ welfares, isLoading }: any) => {
 
   const [updateWelfareDetail, setUpdateWelfaretDetail] = useState<any>();
 
-  const handleUpdateWelfare = (e: any, detail: any) => {
+  const handleUpdateWelfare = (e: any, detail: any, idx: number) => {
+    const target = detail.list.filter((item: TWelfare) => item.welfareIdx === idx)[0];
+    setUpdateWelfaretDetail(target);
+
     toggleUpdateForm();
-    // openModal();
-    setUpdateWelfaretDetail(detail);
   };
   return (
     <Paper bg={"white"} px="lg" py="lg" radius={"lg"}>
@@ -54,7 +56,7 @@ export const UsedListWelfare = ({ welfares, isLoading }: any) => {
                         </Group>
                       </Stack>
                     </Flex>
-                    <ActionIcon variant="subtle" size="xl" onClick={(e) => handleUpdateWelfare(e, item)}>
+                    <ActionIcon variant="subtle" size="xl" onClick={(e) => handleUpdateWelfare(e, item, t.welfareIdx)}>
                       <ArrowRight color="gray" width={18} />
                     </ActionIcon>
                   </Group>
