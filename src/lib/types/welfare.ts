@@ -1,3 +1,7 @@
+export type TWelfares = {
+  date: string;
+  list: TWelfare[];
+};
 export type TWelfare = {
   welfareIdx: number;
   userIdx: number;
@@ -12,6 +16,8 @@ export type TWelfare = {
 export type TPayeeList = {
   userIdx: number;
   userName: string;
+  amount: any;
+  payerWelfareIdx: number;
 };
 
 export type TWelfareStats = {
