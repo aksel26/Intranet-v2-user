@@ -70,10 +70,13 @@ export default function WelfareInputForm({ onClose, opened }: any) {
     if (value) {
       const { userName } = JSON.parse(value);
       setCurrentUser(userName);
-
-      form.setFieldValue("payerName", userName); // form의 name 필드값을 업데이트
     }
   }, []);
+
+  useEffect(() => {
+    form.setFieldValue("payerName", currentUser); // form의 name 필드값을 업데이트
+  }, [currentUser]);
+
   const queryClient = useQueryClient();
 
   // payload 변환 함수
@@ -102,9 +105,12 @@ export default function WelfareInputForm({ onClose, opened }: any) {
           message: "복지포인트 내역이 저장되었습니다.",
         });
         opened && onClose();
-        form.reset();
         setSelectedPayee([]);
         setTargetDate(null);
+        form.setFieldValue("targetDay", null); // form의 name 필드값을 업데이트
+        form.setFieldValue("payeeIdxs", []); // form의 name 필드값을 업데이트
+        form.setFieldValue("content", ""); // form의 name 필드값을 업데이트
+        form.setFieldValue("amount", null); // form의 name 필드값을 업데이트
       },
     });
   };
