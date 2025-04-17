@@ -1,25 +1,18 @@
 "use client";
+import notification from "@/components/GNB/Notification";
+import { useGetUsers } from "@/hooks/useGetUsers";
+import { useSubmitFormWelfare } from "@/hooks/useSubmitForm";
+import { myInfoStore } from "@/lib/store/myInfoStore";
 import { Button, Flex, LoadingOverlay, MultiSelect, NumberInput, rem, TextInput } from "@mantine/core";
 import { DatePickerInput } from "@mantine/dates";
+import { useForm } from "@mantine/form";
 import { IconCalendar } from "@tabler/icons-react";
-import React, { useEffect, useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import "dayjs/locale/ko";
-import { useGetUsers } from "@/hooks/useGetUsers";
-import { useForm } from "@mantine/form";
-import { useSubmitFormMeal, useSubmitFormWelfare } from "@/hooks/useSubmitForm";
-import { useQueryClient } from "@tanstack/react-query";
-import notification from "@/components/GNB/Notification";
+import { useEffect, useState } from "react";
 dayjs.locale("ko");
 
-interface FormValues {
-  targetDay: string;
-  amount: number | null;
-  content: string | null;
-  payerName: string | null;
-  payeeIdxs: string[];
-  selfWrittenYN: string;
-}
 interface InputPayload {
   selfWrittenYN: string;
   content: string;
@@ -38,14 +31,10 @@ interface OutputPayload {
 }
 
 export default function WelfareInputForm({ onClose, opened }: any) {
+  const { myInfo } = myInfoStore();
+  const queryClient = useQueryClient();
   const { data: userList, isLoading, isError } = useGetUsers();
   const [users, setUsers] = useState<any>([]);
-  const [targetDate, setTargetDate] = useState<Date | null>(null);
-  const [selectedPayee, setSelectedPayee] = useState([]);
-
-  const selectPayee = (e: any) => {
-    setSelectedPayee(e);
-  };
 
   const { mutate } = useSubmitFormWelfare();
 
@@ -60,24 +49,14 @@ export default function WelfareInputForm({ onClose, opened }: any) {
       payeeIdxs: [], // Added payeeIdxs
     },
   });
-  const [currentUser, setCurrentUser] = useState("");
   useEffect(() => {
-    setUsers(userList?.data.data.filter((user: any) => user.userName !== currentUser));
-  }, [userList]);
+    setUsers(userList?.data.data.filter((user: any) => user.userName !== myInfo.userName));
+  }, [userList, myInfo]);
 
   useEffect(() => {
-    const value = sessionStorage.getItem("user");
-    if (value) {
-      const { userName } = JSON.parse(value);
-      setCurrentUser(userName);
-    }
-  }, []);
-
-  useEffect(() => {
-    form.setFieldValue("payerName", currentUser); // form의 name 필드값을 업데이트
-  }, [currentUser]);
-
-  const queryClient = useQueryClient();
+    const userName = myInfo.userName || "";
+    form.setFieldValue("payerName", userName); // form의 name 필드값을 업데이트
+  }, [myInfo]);
 
   // payload 변환 함수
   const transformPayload = (input: InputPayload): OutputPayload => {
@@ -105,8 +84,6 @@ export default function WelfareInputForm({ onClose, opened }: any) {
           message: "복지포인트 내역이 저장되었습니다.",
         });
         opened && onClose();
-        setSelectedPayee([]);
-        setTargetDate(null);
         form.setFieldValue("targetDay", null); // form의 name 필드값을 업데이트
         form.setFieldValue("payeeIdxs", []); // form의 name 필드값을 업데이트
         form.setFieldValue("content", ""); // form의 name 필드값을 업데이트
