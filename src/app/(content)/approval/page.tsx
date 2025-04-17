@@ -14,7 +14,7 @@ import { useEffect, useState } from "react";
 import styles from "../../../styles/list.module.css";
 const ApprovalType = ({ children }: { children: keyof typeof RELATION_TYPE }) => {
   return (
-    <Badge miw={70} color={children === "APPROVER" ? "blue.5" : "lime.5"} radius="sm" size="md">
+    <Badge miw={70} color={children === "APPROVER" ? "orange.5" : "yellow.5"} radius="sm" size="md" variant="light">
       {RELATION_TYPE[children]}
     </Badge>
   );
@@ -207,35 +207,48 @@ const page = () => {
         <Stack gap={"xl"}>
           <FetchWrapper data={approvalsList} isLoading={approvals_isLoading}>
             <List spacing={0} size="sm" center>
-              {approvalsList?.map((record: any) => {
+              {approvalsList?.map((record: any, index: number, arr: any) => {
                 return (
-                  <ListItem w={"100%"} onClick={() => modalOpen(record)} key={record.commuteIdx} className={styles.element} px={"sm"} py={"xs"}>
-                    <Group gap={2} align="center" justify="space-between" wrap="nowrap">
-                      <Stack gap={5}>
-                        <Text c={"dimmed"} fz={"xs"}>
-                          {`${dayjs(record.commuteDate).format("YYYY-MM-DD (dd)")}`}
-                        </Text>
-                        <Group gap={"xl"}>
+                  <ListItem w={"100%"} onClick={() => modalOpen(record)} key={record.commuteIdx} className={styles.element} px={"sm"} py={"xl"}>
+                    <Stack gap={8}>
+                      <Text fz={"sm"} fw={600}>
+                        {`${dayjs(record.commuteDate).format("YYYY-MM-DD (dd)")}`}
+                      </Text>
+                      <Group gap={"xl"} align="end">
+                        <Stack gap={2}>
+                          <Text fz={"xs"} c={"dimmed"}>
+                            결재유형
+                          </Text>
                           <ApprovalType>{record.relationType}</ApprovalType>
-                          <Text w={40} fz={"xs"}>
-                            {record.userName}
+                        </Stack>
+                        <Stack gap={2}>
+                          <Text fz={"xs"} c={"dimmed"}>
+                            성명
                           </Text>
-                          <Text miw={120} fz={"xs"}>
-                            {record.leaveType}
+                          <Text fz={"xs"}>{record.userName}</Text>
+                        </Stack>
+                        <Stack gap={2}>
+                          <Text fz={"xs"} c={"dimmed"}>
+                            휴가유형
                           </Text>
-
+                          <Text fz={"xs"}>{record.leaveType}</Text>
+                        </Stack>
+                        <Stack gap={2}>
+                          <Text fz={"xs"} c={"dimmed"}>
+                            상태
+                          </Text>
                           <ApprovalStatus record={record} />
+                        </Stack>
 
-                          <Text c={record.note ? "black" : "dimmed"} fz={"xs"}>
-                            {record.note || "작성 내용이 없습니다."}
-                          </Text>
-                          <ActionIcon variant="subtle" color="gray.4" size={"sm"}>
-                            <IconChevronRight />
-                          </ActionIcon>
-                          {/* <ButtonByApprovalStatus setTargetInfo={setTargetInfo} record={record} open={openConfirmModal} /> */}
-                        </Group>
-                      </Stack>
-                    </Group>
+                        <Text c={record.note ? "black" : "dimmed"} fz={"xs"}>
+                          {record.note || "작성 내용이 없습니다."}
+                        </Text>
+                        <ActionIcon variant="subtle" color="gray.4" size={"sm"}>
+                          <IconChevronRight />
+                        </ActionIcon>
+                        {/* <ButtonByApprovalStatus setTargetInfo={setTargetInfo} record={record} open={openConfirmModal} /> */}
+                      </Group>
+                    </Stack>
                   </ListItem>
                 );
               })}
