@@ -13,7 +13,7 @@ import { ListWrapper } from "./ListWrapper";
 import WelfareInputForm from "./WelfareInputForm";
 import WelfareUpdateForm from "./WelfareUpdateForm";
 import ArrowRight from "/public/icons/arrow-right.svg";
-import { TWelfare } from "@/lib/types/welfare";
+import { TPayeeList, TWelfare } from "@/lib/types/welfare";
 dayjs.locale("ko");
 
 export const UsedListWelfare = ({ welfares, isLoading }: any) => {
@@ -53,6 +53,13 @@ export const UsedListWelfare = ({ welfares, isLoading }: any) => {
                           <Text fz={"xs"} c={"dimmed"}>
                             {t.content}
                           </Text>
+                        </Group>
+                        <Group>
+                          {t.payeeList.map((p: TPayeeList) => (
+                            <Text fz={"xs"} c={"dimmed"}>
+                              {p.userName}
+                            </Text>
+                          ))}
                         </Group>
                       </Stack>
                     </Flex>
