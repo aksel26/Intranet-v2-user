@@ -1,12 +1,13 @@
-import { CompositeChart } from "@mantine/charts";
-import { ActionIcon, Button, Group, Loader, Paper, Title } from "@mantine/core";
-import { useQuery } from "@tanstack/react-query";
-import React from "react";
 import * as api from "@/app/api/get/getApi";
+import { mainDateStore } from "@/lib/store/mainDateStore";
+import { CompositeChart } from "@mantine/charts";
+import { ActionIcon, Group, Loader, Paper, Title } from "@mantine/core";
+import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { useRouter } from "next/navigation";
 import IconDots from "/public/icons/dots.svg";
-const WorkHourStats = ({ dateValue }: any) => {
+const WorkHourStats = () => {
+  const { dateValue } = mainDateStore();
   const param = { year: dayjs(dateValue).year().toString(), month: (dayjs(dateValue).month() + 1).toString() };
   const { data, isLoading, isError } = useQuery({
     queryKey: ["attendanceSummary", { year: dayjs(dateValue).year(), month: dayjs(dateValue).month() + 1 }],

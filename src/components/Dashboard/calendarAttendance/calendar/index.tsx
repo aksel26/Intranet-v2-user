@@ -1,7 +1,10 @@
+import { mainDateStore } from "@/lib/store/mainDateStore";
 import { Badge, Paper, Title } from "@mantine/core";
 import { DatePicker } from "@mantine/dates";
 import dayjs from "dayjs";
-const MainCalendar = ({ dateValue, setDateValue, allAttendance }: any) => {
+const MainCalendar = ({ allAttendance }: any) => {
+  const { setDateValue, dateValue } = mainDateStore();
+
   const renderDay = (date: any, allAttendance: any) => {
     const dateStr = dayjs(date).format("YYYY-MM-DD");
     const events = allAttendance[dateStr] || [];
@@ -43,7 +46,7 @@ const MainCalendar = ({ dateValue, setDateValue, allAttendance }: any) => {
         locale="ko"
         value={dateValue}
         onChange={setDateValue}
-        onMonthSelect={() => console.log("🙏")}
+        onMonthSelect={() => {}}
         onNextMonth={setDateValue}
         onPreviousMonth={setDateValue}
         firstDayOfWeek={0}

@@ -2,7 +2,7 @@ import * as api from "@/app/api/get/getApi";
 import { Divider, Group, Loader, Stack, Text } from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
-const AttendanceSummary = () => {
+const VacationSummary = () => {
   const currentYear = dayjs().year();
   const { data, isLoading, isError } = useQuery({
     queryKey: ["attendanceSummary", { year: currentYear }],
@@ -62,4 +62,4 @@ const AttendanceSummary = () => {
   );
 };
 
-export default AttendanceSummary;
+export default VacationSummary;
