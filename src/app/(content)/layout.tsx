@@ -1,22 +1,24 @@
 "use client";
-import { AppShell, Box, Burger, Button, Flex, Group, Image, NavLink, rem, Skeleton, Stack, Text } from "@mantine/core";
+import { AppShell, Burger, Button, Group, Image, rem } from "@mantine/core";
 // import Image from "next/image";
 import useGetMe from "@/hooks/useGetMe";
 import useLogout from "@/hooks/useLogout";
 import { useDisclosure, useHeadroom } from "@mantine/hooks";
 import { notifications } from "@mantine/notifications";
 import NextImage from "next/image";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React, { useCallback, useState } from "react";
+import React from "react";
 import myImage from "/public/images/ACG_LOGO_GRAY.png";
 
 import CheckOutWrapper from "@/components/Attendance/CheckOutWrapper";
 import AttendanceButtonWrapper from "@/components/Navbar/AttendanceButtonWrapper";
 import Vacation from "@/components/Navbar/attendanceSummary/Vacation";
 import Work from "@/components/Navbar/attendanceSummary/Work";
+import NavMenu from "@/components/Navbar/menu";
+import UserInfoCard from "@/components/Navbar/userInfoCard";
 import dayjs from "dayjs";
 import "dayjs/locale/ko";
+import { useNavStore } from "@/lib/store/toggleStore";
 
 const CheckIn = React.lazy(() => import("@/components/Attendance/CheckIn"));
 
@@ -24,24 +26,17 @@ dayjs.locale("ko");
 
 export default function ContentLayout({ children }: { children: React.ReactNode }) {
   const pinned = useHeadroom({ fixedAt: 60 });
-  const [mobileOpened, { toggle: toggleMobile }] = useDisclosure();
+  // const [mobileOpened, { toggle: toggleMobile }] = useDisclosure();
   const [desktopOpened, { toggle: toggleDesktop }] = useDisclosure(true);
+
+  const mobileOpened = useNavStore((state) => state.mobileOpened);
+  const toggleMobile = useNavStore((state) => state.toggleMobile);
 
   const { myInfo, isLoading, isError } = useGetMe();
 
   const { mutate: logout, isError: isError_logout, isSuccess: isSuccess_logout } = useLogout();
   const [onWorkTimeOpened, { open: onWorkModalOpen, close: onWorkModalClose }] = useDisclosure(false);
   const [offWorkTimeOpened, { open: offWorkModalOpen, close: offWorkModalClose }] = useDisclosure(false);
-
-  const [dday, setDday] = useState<any>();
-
-  const getDDayCount = useCallback((baseDate: string | null) => {
-    const today = dayjs();
-    const target = dayjs(baseDate);
-    const diff = today.diff(target, "day") + 1;
-
-    return diff >= 0 ? `ACG Day + ${diff}` : `-`;
-  }, []);
 
   const router = useRouter();
   const handleLogout = async () => {
@@ -102,58 +97,12 @@ export default function ContentLayout({ children }: { children: React.ReactNode 
             로그아웃
           </Button>
         </Group>
-        <Skeleton visible={isLoading}>
-          <Stack w={"100%"} bg={"primary.0"} align={"center"} mih={100} p={"md"}>
-            <Flex direction={"column"} w={"100%"} columnGap={"xl"} style={{ position: "relative", borderRadius: 7 }}>
-              <Flex direction={"column"} rowGap={"md"} w={"100%"}>
-                <Box>
-                  <Text fz={"lg"} fw={600} c={"primary.9"}>
-                    {myInfo?.userName}
-                    <Text fz={"sm"} c={"primary.9"} component="span" ml={5}>
-                      {myInfo?.gradeName}
-                    </Text>
-                  </Text>
-                  <Group gap={"xs"} mt={3}>
-                    <Text fz={"sm"} c={"primary.9"} component="span">
-                      {myInfo?.hqName}
-                    </Text>
-                    <Text fz={"sm"} c={"primary.9"} component="span">
-                      {myInfo?.teamName || ""}
-                    </Text>
-                  </Group>
-                </Box>
 
-                <Group justify="space-between" align="end">
-                  <Text c={"primary.9"} size={"xs"}>
-                    {myInfo?.userEmail}
-                  </Text>
-                  <Text c={"primary.9"} size={"xs"}>
-                    {getDDayCount(myInfo?.joinDate)}
-                  </Text>
-                </Group>
-              </Flex>
-            </Flex>
-          </Stack>
-        </Skeleton>
+        <UserInfoCard myInfo={myInfo} isLoading={isLoading} />
 
         {myInfo?.attendance === "연차" ? <Vacation /> : <Work myInfo={myInfo} />}
         <AttendanceButtonWrapper onWorkModalOpen={onWorkModalOpen} offWorkModalOpen={offWorkModalOpen} />
-        <NavLink label="근태" childrenOffset={28}>
-          <NavLink component={Link} href={"/attendance/work"} label="출퇴근 관리" />
-          <NavLink component={Link} href={"/attendance/vacation"} label="휴가/연차 관리" />
-        </NavLink>
-        <NavLink label="검사현황" />
-        <NavLink label="복지" childrenOffset={28}>
-          <NavLink component={Link} href={"/welfare/meal"} label="식대" />
-          <NavLink component={Link} href={"/welfare/welfarePoint"} label="복지포인트" />
-          <NavLink component={Link} href={"/welfare/activity"} label="활동비" />
-        </NavLink>
-
-        <NavLink label="기타">
-          <NavLink component={Link} href={"/myInfo"} label="내 정보 수정" />
-          <NavLink component={Link} href={"/approval"} label="결재/승인" />
-          <NavLink component={Link} href={"/notice"} label="공지사항" />
-        </NavLink>
+        <NavMenu />
       </AppShell.Navbar>
 
       <CheckIn myInfo={myInfo} onWorkModalClose={onWorkModalClose} onWorkTimeOpened={onWorkTimeOpened} />
