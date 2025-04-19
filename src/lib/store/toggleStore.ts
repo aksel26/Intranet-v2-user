@@ -1,20 +1,14 @@
+// store/navStore.ts
 import { create } from "zustand";
 
-interface ToggleStateStore {
-  toggleInfo: {
-    isOpen: boolean;
-  };
-  setToggleInfo: (isOpen: boolean) => void; // boolean 파라미터 추가
+interface NavState {
+  mobileOpened: boolean;
+  toggleMobile: () => void;
+  setDesktopOpened: (value: boolean) => void;
 }
 
-export const toggleStore = create<ToggleStateStore>((set) => ({
-  toggleInfo: {
-    isOpen: false,
-  },
-  setToggleInfo: (isOpen: boolean) =>
-    set({
-      toggleInfo: {
-        isOpen: isOpen,
-      },
-    }),
+export const useNavStore = create<NavState>((set) => ({
+  mobileOpened: true,
+  toggleMobile: () => set((state) => ({ mobileOpened: !state.mobileOpened })),
+  setDesktopOpened: (value: boolean) => set({ mobileOpened: value }),
 }));
