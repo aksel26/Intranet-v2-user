@@ -3,9 +3,10 @@ import CalendarAttendance from "@/components/Dashboard/calendarAttendance";
 import GreetingMessage from "@/components/Dashboard/greeting/GreetingMessage";
 import NoticeBirth from "@/components/Dashboard/noticeBirth";
 import VacationCard from "@/components/Dashboard/vacation";
+import WelfareButtons from "@/components/Dashboard/welfareButtons";
 import WorkHourStats from "@/components/Dashboard/workHourStats";
 import { Button, Container, Grid, GridCol, Group, Stack } from "@mantine/core";
-import { IconMeat } from "@tabler/icons-react";
+import { IconCreditCard, IconMeat, IconSoup, IconUsersGroup } from "@tabler/icons-react";
 
 function page() {
   return (
@@ -17,13 +18,7 @@ function page() {
         </GridCol>
         <GridCol span={{ base: 12, md: 6 }}>
           <Stack>
-            <Group wrap="nowrap">
-              <Button leftSection={<IconMeat size={18} strokeWidth={1.3} />} fullWidth>
-                식대
-              </Button>
-              <Button fullWidth>복지포인트</Button>
-              <Button fullWidth>활동비</Button>
-            </Group>
+            <WelfareButtons />
             <NoticeBirth />
             <VacationCard />
             <WorkHourStats />
