@@ -8,7 +8,7 @@ interface NavState {
 }
 
 export const useNavStore = create<NavState>((set) => ({
-  mobileOpened: true,
+  mobileOpened: false,
   toggleMobile: () => set((state) => ({ mobileOpened: !state.mobileOpened })),
   setDesktopOpened: (value: boolean) => set({ mobileOpened: value }),
 }));
