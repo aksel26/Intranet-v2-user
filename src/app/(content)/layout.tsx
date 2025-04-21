@@ -89,7 +89,7 @@ export default function ContentLayout({ children }: { children: React.ReactNode 
       <AppShell.Main styles={{ main: { background: "oklch(0.985 0.002 247.839)" } }} pt={`calc(${rem(50)}`}>
         {children}
       </AppShell.Main>
-      <AppShell.Navbar p="md" withBorder={false} zIndex={200}>
+      <AppShell.Navbar p="md" withBorder={false}>
         <Group justify="space-between" mb={"lg"}>
           <Group>
             <Burger opened={mobileOpened} onClick={toggleMobile} hiddenFrom="sm" size="sm" />

@@ -59,7 +59,7 @@ export default function Calendar() {
       });
       if (mealsResult) {
         return (
-          <Indicator offset={-10} key={day} position="bottom-center" inline label={"🍙"} size={20} color="transparent">
+          <Indicator offset={-10} key={day} position="bottom-center" inline label={"🍙"} size={20} color="transparent" zIndex={100}>
             <div>{day}</div>
           </Indicator>
         );
@@ -71,6 +71,7 @@ export default function Calendar() {
             key={day}
             position="bottom-center"
             inline
+            zIndex={100}
             label={
               <Text fz={8} c="red">
                 {calendarIcon(vacationResult.leaveType)}
