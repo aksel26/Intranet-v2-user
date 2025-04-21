@@ -99,6 +99,7 @@ export default function WelfareInputForm({ onClose, opened }: any) {
         <DatePickerInput
           label="일자"
           locale="ko"
+          highlightToday
           leftSection={<IconCalendar style={{ width: rem(18), height: rem(18) }} stroke={1.5} />}
           placeholder="사용일자를 선택해 주세요."
           key={form.key("targetDay")}

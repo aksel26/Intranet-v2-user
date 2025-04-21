@@ -84,6 +84,7 @@ export default function ActivityInputForm({ onClose, opened }: any) {
           label="일자"
           locale="ko"
           clearable
+          highlightToday
           leftSection={<IconCalendar style={{ width: rem(18), height: rem(18) }} stroke={1.5} />}
           placeholder="사용일자를 선택해 주세요."
           valueFormat="MM월 D일 dddd"
