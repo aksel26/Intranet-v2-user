@@ -75,7 +75,7 @@ function page() {
           {`${formatTime(record.checkInTime)} ~ ${formatTime(record.checkOutTime)}`}
           {!isIncomplete && (
             <Text fz={"xs"} component="span" ml={4}>
-              {`(${calculateNumberToTime(record.workingMinutes).hours}시간 근무)`}
+              {`${calculateNumberToTime(record.workingMinutes)}`}
             </Text>
           )}
         </Text>
@@ -156,15 +156,13 @@ function page() {
                       <Text fz={"xs"} c={"dimmed"}>
                         근무시간
                       </Text>
-                      <Text fz={"xs"}>{`${calculateNumberToTime(record.workingMinutes).hours}시간 ${
-                        calculateNumberToTime(record.workingMinutes).minutes
-                      }분`}</Text>
+                      <Text fz={"xs"}>{`${calculateNumberToTime(record.workingMinutes)}`}</Text>
                     </Stack>
                     <Stack gap={1}>
                       <Text fz={"xs"} c={"dimmed"}>
                         초과시간
                       </Text>
-                      <Text fz={"xs"}>{`${calculateNumberToTime(record.overtimeWorkingMinutes).minutes}분`}</Text>
+                      <Text fz={"xs"}>{`${calculateNumberToTime(record.overtimeWorkingMinutes)}`}</Text>
                     </Stack>
                     <Stack gap={1}>
                       <Text fz={"xs"} c={"dimmed"}>

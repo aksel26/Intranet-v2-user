@@ -14,13 +14,15 @@ export const formatTime = (date: string | null) => {
 export const calculateNumberToTime = (minutes: number) => {
   const hours = Math.floor(minutes / 60);
   const remainingMinutes = Math.floor(minutes % 60);
-  const seconds = 0; // 초는 없으므로 0으로 설정
 
-  return {
-    hours,
-    minutes: remainingMinutes,
-    seconds,
-  };
+  if (hours === 0 && remainingMinutes === 0) {
+    return "0분";
+  }
+  if (hours === 0) {
+    return `${remainingMinutes}분`;
+  } else {
+    return `${hours}시간 ${remainingMinutes}분`;
+  }
 };
 
 export const monthList = () => {
