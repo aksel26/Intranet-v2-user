@@ -6,6 +6,7 @@ import { Box, Breadcrumbs, Container, Divider, Group, List, ListItem, Loader, Pa
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import styles from "../../../styles/list.module.css";
+import Search from "@/components/notice/search";
 const Notice = () => {
   const router = useRouter();
   const pathName = usePathname();
@@ -45,6 +46,8 @@ const Notice = () => {
       </Group>
 
       <Paper bg={"white"} px="md" py="lg" radius={"lg"}>
+        <Search />
+
         <List
           w={"100%"}
           spacing={0}

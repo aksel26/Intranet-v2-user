@@ -1,5 +1,5 @@
 import { TActivityParams, TMealsParams, TWelfaresParams } from "@/lib/types/meal";
-import { TApproval, TMyAttendance, TWorkHourStats, TYearMonth } from "@/types/apiTypes";
+import { TApproval, TMyAttendance, TSearchNotice, TWorkHourStats, TYearMonth } from "@/types/apiTypes";
 import axios from "axios";
 
 const getApi = axios.create({
@@ -62,3 +62,6 @@ export const getBirth = ({ month }: { month: string }) => getApi.get(`/users/bir
 
 // 월별 전직원 휴가현황 조회 API
 export const getAllAttendanceStaff = (params: TYearMonth) => getApi.get(`/users/intranet/leave/all/calender`, { params: params });
+
+// 사용자 공지사항 목록 조회 API
+export const searchNotice = (params: TSearchNotice) => getApi.get(`/users/notices`, { params: params });

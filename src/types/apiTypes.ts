@@ -9,6 +9,11 @@ export interface TYearMonth {
   month: string;
   year: string;
 }
+export interface TSearchNotice {
+  pageNo?: number;
+  perPage?: number;
+  searchWord: string;
+}
 export interface TApproval extends TYearMonth {
   userIdx?: number | null;
 }
