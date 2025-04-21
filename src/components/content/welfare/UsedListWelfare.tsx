@@ -74,13 +74,13 @@ export const UsedListWelfare = ({ welfares, isLoading }: any) => {
         </ListWrapper>
       </FetchWrapper>
       <BottomModal opened={openedUpdateForm} onClose={closeUpdateForm} title={"복지포인트 수정"}>
-        <WelfareUpdateForm onClose={closeUpdateForm} updateWelfareDetail={updateWelfareDetail} />
+        <WelfareUpdateForm opened={openedUpdateForm} onClose={closeUpdateForm} updateWelfareDetail={updateWelfareDetail} />
       </BottomModal>
       <BottomModal opened={opened} onClose={close} title={"복지포인트 입력"}>
         <WelfareInputForm onClose={close} opened={opened} />
       </BottomModal>
 
-      <Affix position={{ bottom: 80, right: 20 }} zIndex={1000} hiddenFrom="md">
+      <Affix zIndex={199} position={{ bottom: 80, right: 20 }} hiddenFrom="md">
         <Button radius={"lg"} onClick={toggle} color="blue.9" leftSection={<IconPlus style={{ width: rem(16), height: rem(16) }} />}>
           내역추가
         </Button>

@@ -1,6 +1,6 @@
 import notification from "@/components/GNB/Notification";
 import { useDeleteActivity, useUpdateFormActivity } from "@/hooks/useSubmitForm";
-import { toggleStore } from "@/lib/store/toggleStore";
+// import { toggleStore } from "@/lib/store/toggleStore";
 import { TActivityDetail } from "@/lib/types/activity";
 import { Button, Flex, Group, NumberInput, Popover, rem, Text, TextInput } from "@mantine/core";
 import { DatePickerInput } from "@mantine/dates";
@@ -20,13 +20,14 @@ interface TFormValues {
 }
 
 type TUpdateForm = {
+  opened: boolean;
   onClose: () => void;
   updateActivityDetail: TActivityDetail;
 };
 
-export default function ActivityUpdateForm({ onClose, updateActivityDetail }: TUpdateForm) {
+export default function ActivityUpdateForm({ opened, onClose, updateActivityDetail }: TUpdateForm) {
   const queryClient = useQueryClient();
-  const { toggleInfo } = toggleStore((state) => state);
+  // const { toggleInfo } = toggleStore((state) => state);
 
   const { mutate } = useUpdateFormActivity();
   const { mutate: deleteActivity } = useDeleteActivity();
@@ -115,7 +116,7 @@ export default function ActivityUpdateForm({ onClose, updateActivityDetail }: TU
           arrowRadius={1}
           width={170}
           withArrow
-          opened={toggleInfo.isOpen}
+          opened={opened}
           position="top-end"
         >
           <Popover.Target>

@@ -86,9 +86,9 @@ export const UsedListActivity = ({ activities, isLoading }: any) => {
       </BottomModal>
 
       <BottomModal opened={openedUpdateForm} onClose={closeUpdateForm} title={"활동비 수정"}>
-        <ActivityUpdateForm onClose={closeUpdateForm} updateActivityDetail={updateActivityDetail} />
+        <ActivityUpdateForm opened={openedUpdateForm} onClose={closeUpdateForm} updateActivityDetail={updateActivityDetail} />
       </BottomModal>
-      <Affix position={{ bottom: 80, right: 20 }} zIndex={1000} hidden={!isAuthorized} hiddenFrom="md">
+      <Affix position={{ bottom: 80, right: 20 }} zIndex={199} hidden={!isAuthorized} hiddenFrom="md">
         <Button radius={"lg"} onClick={toggle} color="blue.9" leftSection={<IconPlus style={{ width: rem(16), height: rem(16) }} />}>
           내역추가
         </Button>

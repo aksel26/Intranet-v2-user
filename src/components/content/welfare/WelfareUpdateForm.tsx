@@ -2,7 +2,6 @@
 import notification from "@/components/GNB/Notification";
 import { useGetUsers } from "@/hooks/useGetUsers";
 import { useDeleteWelfares, useUpdateFormWelfare } from "@/hooks/useSubmitForm";
-import { toggleStore } from "@/lib/store/toggleStore";
 import { TUsers } from "@/lib/types/users";
 import { TPayeeList, TWelfare } from "@/lib/types/welfare";
 import { Button, Flex, Group, LoadingOverlay, MultiSelect, NumberInput, Popover, rem, Text, TextInput } from "@mantine/core";
@@ -26,15 +25,16 @@ interface TFormValues {
 }
 
 type TUpdateForm = {
+  opened: boolean;
   onClose: () => void;
   updateWelfareDetail: TWelfare;
 };
 
-export default function WelfareUpdateForm({ onClose, updateWelfareDetail }: TUpdateForm) {
+export default function WelfareUpdateForm({ opened, onClose, updateWelfareDetail }: TUpdateForm) {
   const queryClient = useQueryClient();
   const { data, isLoading, isError } = useGetUsers();
 
-  const { toggleInfo } = toggleStore((state) => state);
+  // const { toggleInfo } = toggleStore((state) => state);
 
   const users = data?.data.data;
 
@@ -165,7 +165,7 @@ export default function WelfareUpdateForm({ onClose, updateWelfareDetail }: TUpd
           arrowRadius={1}
           width={170}
           withArrow
-          opened={toggleInfo.isOpen}
+          opened={opened}
           position="top-end"
         >
           <Popover.Target>
