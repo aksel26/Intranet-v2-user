@@ -1,12 +1,15 @@
 "use client";
+import EmptyView from "@/components/Global/view/EmptyView";
+import ErrorView from "@/components/Global/view/ErrorView";
+import LoadingView from "@/components/Global/view/LoadingView";
+import Search from "@/components/notice/search";
 import useGetNotices from "@/hooks/useGetNotices";
 import { TNotice } from "@/lib/types/notice";
 import { formatYYYYMMDD } from "@/utils/dateFomat";
-import { Box, Breadcrumbs, Container, Divider, Group, List, ListItem, Loader, Paper, Stack, Text } from "@mantine/core";
+import { Breadcrumbs, Container, Group, List, ListItem, Paper, Stack, Text } from "@mantine/core";
 import { usePathname, useRouter } from "next/navigation";
-import { useState } from "react";
+import React, { useState } from "react";
 import styles from "../../../styles/list.module.css";
-import Search from "@/components/notice/search";
 const Notice = () => {
   const router = useRouter();
   const pathName = usePathname();
@@ -27,6 +30,43 @@ const Notice = () => {
     router.push(`${pathName}/${id}`);
   };
 
+  const ListWrapper = () => {
+    return (
+      <List spacing={0} size="sm" center>
+        {notices?.map((record: TNotice, index: number, arr: any) => {
+          return (
+            <React.Fragment key={index}>
+              <Items key={record.noticeIdx} record={record} />
+            </React.Fragment>
+          );
+        })}
+      </List>
+    );
+  };
+
+  const Items = ({ record }: { record: TNotice }) => (
+    <ListItem w={"100%"} onClick={() => goDetail(record.noticeIdx)} key={record.noticeIdx} className={styles.element} px={"sm"} py={"md"}>
+      <Stack gap={4}>
+        <Text fz={"xs"}>{record.title}</Text>
+        <Group>
+          <Text c={"dimmed"} fz={"xs"}>
+            {record.creatorName}
+          </Text>
+          <Text c={"dimmed"} fz={"xs"}>
+            {formatYYYYMMDD(record.createdAt)}
+          </Text>
+        </Group>
+      </Stack>
+    </ListItem>
+  );
+
+  const renderContent = () => {
+    if (isLoading) return <LoadingView />;
+    if (isError) return <ErrorView>공지사항 내역을 불러오는 중 문제가 발생했습니다.</ErrorView>;
+    if (notices?.length === 0) return <EmptyView />;
+    return <ListWrapper />;
+  };
+
   return (
     <Container
       fluid
@@ -37,7 +77,6 @@ const Notice = () => {
         scrollSnapType: "y mandatory",
       }}
     >
-      {/* <Flex direction={"column"} pt={"lg"} p={"sm"}> */}
       <Group justify="space-between" align="center" mb={"md"}>
         <Breadcrumbs>{items}</Breadcrumbs>
         <Text c={"gray.8"} fz={"xs"} ta={"right"}>
@@ -46,41 +85,11 @@ const Notice = () => {
       </Group>
 
       <Paper bg={"white"} px="md" py="lg" radius={"lg"}>
-        <Search />
-
-        <List
-          w={"100%"}
-          spacing={0}
-          size="xs"
-          center
-          styles={{
-            itemLabel: { width: "100%" },
-            itemWrapper: { width: "100%" },
-          }}
-        >
-          {isLoading ? (
-            <Loader color="blue" />
-          ) : (
-            notices?.map((notice: TNotice, index: number, arr: any) => (
-              <ListItem w={"100%"} onClick={() => goDetail(notice.noticeIdx)} key={notice.noticeIdx} className={styles.element} px={"sm"} py={"md"}>
-                <Stack gap={4}>
-                  <Text fz={"xs"}>{notice.title}</Text>
-                  <Group>
-                    <Text c={"dimmed"} fz={"xs"}>
-                      {notice.creatorName}
-                    </Text>
-                    <Text c={"dimmed"} fz={"xs"}>
-                      {formatYYYYMMDD(notice.createdAt)}
-                    </Text>
-                  </Group>
-                </Stack>
-              </ListItem>
-            ))
-          )}
-        </List>
+        <Stack gap={"xs"}>
+          <Search />
+          {renderContent()}
+        </Stack>
       </Paper>
-
-      {/* </Flex> */}
     </Container>
   );
 };
