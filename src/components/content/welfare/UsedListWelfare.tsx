@@ -1,23 +1,19 @@
 "use client";
-import FetchWrapper from "@/components/fetchWrapper";
 import BottomModal from "@/components/Global/BottomModal";
-import { DateSubText } from "@/template/DateSubText";
+import EmptyView from "@/components/Global/view/EmptyView";
+import LoadingView from "@/components/Global/view/LoadingView";
+import { TPayeeList, TWelfare } from "@/lib/types/welfare";
 import { ActionIcon, Affix, Button, Checkbox, Flex, Group, NumberFormatter, Paper, rem, Stack, Text, Title } from "@mantine/core";
-import "@mantine/dates/styles.css";
 import { useDisclosure } from "@mantine/hooks";
 import { IconPlus } from "@tabler/icons-react";
 import dayjs from "dayjs";
-import "dayjs/locale/ko"; //한국어
 import React, { useState } from "react";
-import { ListWrapper } from "./ListWrapper";
 import WelfareInputForm from "./WelfareInputForm";
 import WelfareUpdateForm from "./WelfareUpdateForm";
 import ArrowRight from "/public/icons/arrow-right.svg";
-import { TPayeeList, TWelfare } from "@/lib/types/welfare";
-dayjs.locale("ko");
+import ErrorView from "@/components/Global/view/ErrorView";
 
-export const UsedListWelfare = ({ welfares, isLoading }: any) => {
-  console.log("🚀 ~ UsedListWelfare ~ welfares:", welfares);
+export const UsedListWelfare = ({ welfares, isLoading, isError }: any) => {
   const [opened, { toggle, close }] = useDisclosure(false);
   const [openedUpdateForm, { toggle: toggleUpdateForm, close: closeUpdateForm }] = useDisclosure(false);
 
@@ -29,50 +25,72 @@ export const UsedListWelfare = ({ welfares, isLoading }: any) => {
 
     toggleUpdateForm();
   };
+
+  const ListWrapper = () => {
+    return (
+      <>
+        {welfares?.map((record: any, index: number, arr: any) => {
+          return (
+            <React.Fragment key={index}>
+              <Items key={record.commuteIdx} item={record} index={index} arr={arr} />
+            </React.Fragment>
+          );
+        })}
+      </>
+    );
+  };
+
+  const Items = ({ item, key }: any) => (
+    <Stack gap={5} my={"xl"}>
+      <Text c={"dimmed"} size="xs">
+        {dayjs(item.date).format("MM월 D일 dddd")}
+      </Text>
+      {item.list.map((t: any) => (
+        <Paper key={t.welfareIdx}>
+          <Group justify="space-between" w="100%" h={"100%"}>
+            <Flex align={"center"} columnGap={"sm"}>
+              <Checkbox size="xs" checked={t.confirmYN === "Y" ? true : false} radius="sm" readOnly />
+              <Stack gap={3}>
+                <Text fw={600} ta={"left"} fz={"sm"}>
+                  <NumberFormatter thousandSeparator value={t.amount || 0} suffix=" 원" className="text-md font-bold" />
+                </Text>
+
+                <Group gap={"xs"}>
+                  <Text fz={"xs"} c={"dimmed"}>
+                    {t.content}
+                  </Text>
+                </Group>
+                <Group>
+                  {t.payeeList.map((p: TPayeeList) => (
+                    <Text key={p.userIdx} fz={"xs"} c={"dimmed"}>
+                      {p.userName}
+                    </Text>
+                  ))}
+                </Group>
+              </Stack>
+            </Flex>
+            <ActionIcon variant="subtle" size="xl" onClick={(e) => handleUpdateWelfare(e, item, t.welfareIdx)}>
+              <ArrowRight color="gray" width={18} />
+            </ActionIcon>
+          </Group>
+        </Paper>
+      ))}
+    </Stack>
+  );
+
+  const renderContent = () => {
+    if (isLoading) return <LoadingView />;
+    if (isError) return <ErrorView>복지포인트 내역을 불러오는 중 문제가 발생했습니다.</ErrorView>;
+    if (welfares?.length === 0) return <EmptyView />;
+    return <ListWrapper />;
+  };
+
   return (
     <Paper bg={"white"} px="lg" py="lg" radius={"lg"}>
-      <Title order={5} mb={"md"}>
-        사용내역 조회
-      </Title>
-      <FetchWrapper data={welfares} isLoading={isLoading}>
-        <ListWrapper>
-          {welfares?.map((item: any, index: number) => (
-            <React.Fragment key={index}>
-              <DateSubText date={item.date} />
-              {item.list.map((t: any) => (
-                <Paper key={t.welfareIdx}>
-                  <Group justify="space-between" w="100%" h={"100%"}>
-                    <Flex align={"center"} columnGap={"sm"}>
-                      <Checkbox size="xs" checked={t.confirmYN === "Y" ? true : false} onChange={() => {}} defaultChecked radius="xl" />
-                      <Stack gap={3}>
-                        <Text fw={600} ta={"left"} fz={"sm"}>
-                          <NumberFormatter thousandSeparator value={t.amount || 0} suffix=" 원" className="text-md font-bold" />
-                        </Text>
-
-                        <Group gap={"xs"}>
-                          <Text fz={"xs"} c={"dimmed"}>
-                            {t.content}
-                          </Text>
-                        </Group>
-                        <Group>
-                          {t.payeeList.map((p: TPayeeList) => (
-                            <Text fz={"xs"} c={"dimmed"}>
-                              {p.userName}
-                            </Text>
-                          ))}
-                        </Group>
-                      </Stack>
-                    </Flex>
-                    <ActionIcon variant="subtle" size="xl" onClick={(e) => handleUpdateWelfare(e, item, t.welfareIdx)}>
-                      <ArrowRight color="gray" width={18} />
-                    </ActionIcon>
-                  </Group>
-                </Paper>
-              ))}
-            </React.Fragment>
-          ))}
-        </ListWrapper>
-      </FetchWrapper>
+      <Text mb={4} c={"dimmed"} fz={"sm"}>
+        사용내역
+      </Text>
+      {renderContent()}
       <BottomModal opened={openedUpdateForm} onClose={closeUpdateForm} title={"복지포인트 수정"}>
         <WelfareUpdateForm opened={openedUpdateForm} onClose={closeUpdateForm} updateWelfareDetail={updateWelfareDetail} />
       </BottomModal>
