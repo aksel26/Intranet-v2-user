@@ -1,14 +1,18 @@
 "use client";
 import * as api from "@/app/api/get/getApi";
+import { AttendanceBadge, LeavTypeBadge } from "@/components/Attendance/work/badge";
+import DatePicker from "@/components/Attendance/work/datePicker";
+import WorkTimeByLeaveType from "@/components/Attendance/work/workTime";
+import EmptyView from "@/components/Global/view/EmptyView";
+import ErrorView from "@/components/Global/view/ErrorView";
+import LoadingView from "@/components/Global/view/LoadingView";
 import { TMyAttendance } from "@/types/apiTypes";
-import { calculateNumberToTime, formatTime } from "@/utils/dateFomat";
+import { calculateNumberToTime } from "@/utils/dateFomat";
 import { detectDevice } from "@/utils/userAgent";
-import { Badge, Breadcrumbs, Container, Divider, Group, Loader, Paper, Stack, Text } from "@mantine/core";
-import { DatePickerInput } from "@mantine/dates";
+import { Breadcrumbs, Container, Divider, Group, Paper, Space, Stack, Text } from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
-import { useCallback, useState } from "react";
-import IconCalendar from "/public/icons/calendar.svg";
+import React, { useState } from "react";
 
 const items = [{ title: "출퇴근 관리", href: "#" }].map((item, index) => (
   <Text size="lg" fw={600} component="a" key={index}>
@@ -18,40 +22,6 @@ const items = [{ title: "출퇴근 관리", href: "#" }].map((item, index) => (
   </Text>
 ));
 
-const AttendanceBadge = ({ attendance }: { attendance: string | null }) => {
-  if (!attendance) return null;
-  if (attendance?.includes("지각")) {
-    return (
-      <Badge color="yellow" radius="sm" variant="light">
-        {attendance}
-      </Badge>
-    );
-  }
-
-  return (
-    <Badge color="lime" radius="sm" variant="light">
-      {attendance}
-    </Badge>
-  );
-};
-
-const LeavTypeBadge = ({ leaveType }: { leaveType: string | null }) => {
-  console.log("🚀 ~ LeavTypeBadge ~ leaveType:", leaveType);
-  if (!leaveType) return null;
-  if (leaveType === "근무") {
-    return (
-      <Badge color="blue" radius="sm" variant="light">
-        {leaveType}
-      </Badge>
-    );
-  } else
-    return (
-      <Badge color="lime" radius="sm" variant="light">
-        {leaveType}
-      </Badge>
-    );
-};
-
 function page() {
   const [params, setParams] = useState<TMyAttendance>({
     pageNo: 1,
@@ -59,38 +29,88 @@ function page() {
     sDate: dayjs().startOf("month").format("YYYY-MM-DD"),
     eDate: dayjs().endOf("month").format("YYYY-MM-DD"),
   });
-  const [dateValue, setDateValue] = useState<[Date | null, Date | null]>([null, null]);
 
   const { data, isLoading, isError } = useQuery({ queryKey: ["attendanceAll", params], queryFn: () => api.getMyAttendance(params) });
   const records = data?.data?.data?.records;
+  console.log("🚀 ~ page ~ records:", records);
 
-  const workTimeByLeaveType = useCallback((record: any) => {
-    if (record.leaveType === "연차" || record.leaveType.includes("휴무")) {
-      return null;
-    } else {
-      const isIncomplete = !record.checkInTime || !record.checkOutTime;
+  const ListWrapper = () => {
+    return (
+      <>
+        {records?.map((record: any, index: number, arr: any) => {
+          return (
+            <React.Fragment key={index}>
+              <Items key={record.noticeIdx} record={record} arr={arr} index={index} />
+            </React.Fragment>
+          );
+        })}
+      </>
+    );
+  };
 
-      return (
-        <Text fz={"xs"} c={isIncomplete ? "dimmed" : undefined}>
-          {`${formatTime(record.checkInTime)} ~ ${formatTime(record.checkOutTime)}`}
-          {!isIncomplete && (
-            <Text fz={"xs"} component="span" ml={4}>
-              {`${calculateNumberToTime(record.workingMinutes)}`}
+  const Items = ({ record, arr, index }: { record: any; arr: any; index: number }) => (
+    <Stack key={record.commuteIdx} gap={8}>
+      <Group gap={2} align="center" justify="space-between" wrap="nowrap">
+        <Stack gap={4}>
+          <Text fz={"sm"} fw={600}>
+            {dayjs(record.commuteDate).format("YYYY-MM-DD (dd)")}
+          </Text>
+          <Group py={4}>
+            <LeavTypeBadge leaveType={record.leaveType} />
+            <AttendanceBadge attendance={record.attendance} />
+            <WorkTimeByLeaveType record={record} />
+          </Group>
+        </Stack>
+      </Group>
+
+      <div className="flex gap-y-4 gap-x-8 flex-wrap">
+        <Stack gap={1}>
+          <Text fz={"xs"} c={"dimmed"}>
+            근무시간
+          </Text>
+          <Text fz={"xs"}>{`${calculateNumberToTime(record.workingMinutes)}`}</Text>
+        </Stack>
+        <Stack gap={1}>
+          <Text fz={"xs"} c={"dimmed"}>
+            초과시간
+          </Text>
+          <Text fz={"xs"}>{`${calculateNumberToTime(record.overtimeWorkingMinutes)}`}</Text>
+        </Stack>
+        <Stack gap={1}>
+          <Text fz={"xs"} c={"dimmed"}>
+            출근기기
+          </Text>
+          <Text fz={"xs"}>{detectDevice(record.checkInLogAgent, record.checkInIpAddr)}</Text>
+        </Stack>
+        <Stack gap={1}>
+          <Text fz={"xs"} c={"dimmed"}>
+            퇴근기기
+          </Text>
+          <Text fz={"xs"}>{detectDevice(record.checkOutLogAgent, record.checkOutIpAddr)}</Text>
+        </Stack>
+
+        <Stack gap={1}>
+          <Text fz={"xs"} c={"dimmed"}>
+            내용
+          </Text>
+          {record.note ? (
+            <Text fz={"xs"}>{record.note}</Text>
+          ) : (
+            <Text fz={"xs"} c={"dimmed"}>
+              특이사항이 없습니다.
             </Text>
           )}
-        </Text>
-      );
-    }
-  }, []);
+        </Stack>
+      </div>
+      {arr.length === index + 1 ? null : <Divider my={"xl"} color="gray.1" />}
+    </Stack>
+  );
 
-  const dateSelect = (val: [Date | null, Date | null]) => {
-    const [sDate, eDate] = val;
-    if (sDate && eDate) {
-      setParams((prev) => ({ ...prev, sDate: dayjs(sDate).format("YYYY-MM-DD"), eDate: dayjs(eDate).format("YYYY-MM-DD") }));
-    } else if (!sDate && !eDate) {
-      setParams((prev) => ({ ...prev, sDate: dayjs().startOf("month").format("YYYY-MM-DD"), eDate: dayjs().endOf("month").format("YYYY-MM-DD") }));
-    }
-    setDateValue(val);
+  const renderContent = () => {
+    if (isLoading) return <LoadingView />;
+    if (isError) return <ErrorView>출퇴근 내역 불러오는 중 문제가 발생했습니다.</ErrorView>;
+    if (records?.length === 0) return <EmptyView />;
+    return <ListWrapper />;
   };
 
   return (
@@ -110,92 +130,9 @@ function page() {
         </Text>
       </Stack>
       <Paper bg={"white"} px="md" py="lg" radius={"lg"} mt={"md"}>
-        <DatePickerInput
-          // label="조회기간"
-          type="range"
-          locale="ko"
-          highlightToday
-          firstDayOfWeek={0}
-          clearable
-          allowSingleDateInRange
-          placeholder="조회일자를 선택해 주세요."
-          miw={180}
-          w={"max-content"}
-          styles={{ input: { letterSpacing: 1, border: "none", paddingLeft: 25 }, section: { justifyContent: "start" } }}
-          valueFormat="YYYY/MM/DD"
-          leftSection={<IconCalendar />}
-          onChange={dateSelect}
-          value={dateValue}
-        />
-        {isLoading ? (
-          <Group justify="center" py={"xl"}>
-            <Loader color="blue" type="dots" />
-          </Group>
-        ) : (
-          <Stack p={"md"} gap={0}>
-            {records?.map((record: any, index: number, arr: any) => {
-              return (
-                <Stack key={record.commuteIdx} gap={8}>
-                  <Group gap={2} align="center" justify="space-between" wrap="nowrap">
-                    <Stack gap={4}>
-                      <Text fz={"sm"} fw={600}>
-                        {dayjs(record.commuteDate).format("YYYY-MM-DD (dd)")}
-                      </Text>
-                      <Group py={4}>
-                        <LeavTypeBadge leaveType={record.leaveType} />
-
-                        <AttendanceBadge attendance={record.attendance} />
-
-                        {workTimeByLeaveType(record)}
-                      </Group>
-                    </Stack>
-                  </Group>
-
-                  <div className="flex gap-y-4 gap-x-8 flex-wrap">
-                    <Stack gap={1}>
-                      <Text fz={"xs"} c={"dimmed"}>
-                        근무시간
-                      </Text>
-                      <Text fz={"xs"}>{`${calculateNumberToTime(record.workingMinutes)}`}</Text>
-                    </Stack>
-                    <Stack gap={1}>
-                      <Text fz={"xs"} c={"dimmed"}>
-                        초과시간
-                      </Text>
-                      <Text fz={"xs"}>{`${calculateNumberToTime(record.overtimeWorkingMinutes)}`}</Text>
-                    </Stack>
-                    <Stack gap={1}>
-                      <Text fz={"xs"} c={"dimmed"}>
-                        출근기기
-                      </Text>
-                      <Text fz={"xs"}>{detectDevice(record.checkInLogAgent, record.checkInIpAddr)}</Text>
-                    </Stack>
-                    <Stack gap={1}>
-                      <Text fz={"xs"} c={"dimmed"}>
-                        퇴근기기
-                      </Text>
-                      <Text fz={"xs"}>{detectDevice(record.checkOutLogAgent, record.checkOutIpAddr)}</Text>
-                    </Stack>
-
-                    <Stack gap={1}>
-                      <Text fz={"xs"} c={"dimmed"}>
-                        내용
-                      </Text>
-                      {record.note ? (
-                        <Text fz={"xs"}>{record.note}</Text>
-                      ) : (
-                        <Text fz={"xs"} c={"dimmed"}>
-                          특이사항이 없습니다.
-                        </Text>
-                      )}
-                    </Stack>
-                  </div>
-                  {arr.length === index + 1 ? null : <Divider my={"xl"} color="gray.1" />}
-                </Stack>
-              );
-            })}
-          </Stack>
-        )}
+        <DatePicker setParams={setParams} />
+        <Space h={"md"} />
+        {renderContent()}
       </Paper>
     </Container>
   );
