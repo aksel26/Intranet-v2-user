@@ -1,7 +1,7 @@
 "use client";
 import * as api from "@/app/api/get/getApi";
 import { Detail } from "@/components/detail/Detail";
-import { mealStore } from "@/lib/store/mealStore";
+import { mealStore, useCalendarStore } from "@/lib/store/mealStore";
 import { TMyVacations } from "@/types/apiTypes";
 import { calendarIcon } from "@/utils/meal/calendarIcon";
 import { Divider, Indicator, Paper, Text, Title } from "@mantine/core";
@@ -14,6 +14,8 @@ import "../../../styles/calendar.css";
 export default function Calendar() {
   const mealList = mealStore((state) => state.mealInfo);
   const containerRef = useRef<HTMLDivElement>(null);
+
+  const { setMonth } = useCalendarStore();
 
   const [params, setParams] = useState<TMyVacations>({
     year: dayjs().year().toString(),
@@ -38,6 +40,11 @@ export default function Calendar() {
   );
 
   const [dateValue, setDateValue] = useState<any>(dayjs().toDate());
+
+  const handleMonth = (date: Date) => {
+    setDateValue(date);
+    setMonth((dayjs(date).month() + 1).toString());
+  };
 
   const renderDate = useCallback(
     (date: Date) => {
@@ -105,8 +112,8 @@ export default function Calendar() {
         onChange={setDateValue}
         highlightToday
         hideOutsideDates
-        onPreviousMonth={(date: Date) => setDateValue(date)}
-        onNextMonth={(date: Date) => setDateValue(date)}
+        onPreviousMonth={(date: Date) => handleMonth(date)}
+        onNextMonth={(date: Date) => handleMonth(date)}
         onLevelChange={() => {}} // 레벨 변경 이벤트를 무시
         level="month"
         firstDayOfWeek={0}
