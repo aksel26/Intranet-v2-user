@@ -10,7 +10,7 @@ interface Paper extends HTMLDivElement {
   paperRef?: React.RefObject<HTMLDivElement>;
 }
 
-const LotteryComponent = ({ openGroupList, lotteryClose }: any) => {
+const LotteryComponent = ({ lotteryClose }: any) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const papersRef = useRef<Paper[]>([]);
   const [isAnimating, setIsAnimating] = useState(false);
@@ -142,7 +142,7 @@ const LotteryComponent = ({ openGroupList, lotteryClose }: any) => {
       setSelectedPaper(null);
     }
 
-    let randomGroup = undefined || 0;
+    let randomGroup;
 
     mutate(null, {
       onSuccess: async (res: any) => {
@@ -166,19 +166,9 @@ const LotteryComponent = ({ openGroupList, lotteryClose }: any) => {
         setIsDone(true);
       },
       onError: (error: any) => {
-        console.log("🚀 ~ startLottery ~ error:", error);
         setMessage((prev) => ({ ...prev, message: error?.response?.data.message, status: "error" }));
       },
     });
-
-    // const randomGroup = Math.floor(Math.random() * 30);
-
-    // if (errorMessage === "") {
-
-    // } else {
-    //   setMessage(errorMessage);
-    // }
-    // setIsDone(true);
 
     setIsAnimating(false);
   };
@@ -212,11 +202,6 @@ const LotteryComponent = ({ openGroupList, lotteryClose }: any) => {
     };
   }, []); // 의존성 배열을 비워서 한 번만 실행되도록 함
 
-  const goLunchGroup = () => {
-    lotteryClose();
-    openGroupList();
-  };
-
   return (
     <Flex direction={"column"} pt={"lg"} justify={"space-between"}>
       <Box ref={containerRef} onClick={startLottery} h={"calc(100svh - 280px)"} />
@@ -233,11 +218,6 @@ const LotteryComponent = ({ openGroupList, lotteryClose }: any) => {
       >
         {message.message}
       </Text>
-      {(isDone || message.message === "이미 조에 배정되었습니다.") && (
-        <Button onClick={goLunchGroup} variant="subtle" rightSection={<ArrowRight color="#2f9e44" />} size="sm" mt={"sm"}>
-          점심조 현황 보기
-        </Button>
-      )}
     </Flex>
   );
 };
