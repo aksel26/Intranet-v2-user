@@ -6,23 +6,19 @@ import { useCombinedStore } from "@/lib/store/CombinedStore";
 
 import * as api from "@/app/api/get/getApi";
 import LunchGroup from "@/components/content/meal/LunchGroup";
-// import { TopTitleMeal } from "@/components/content/welfare/TopTitleWelfare";
 import { TopTitleMeal } from "@/components/content/meal/TopTitleMeal";
-import { mealStateStore } from "@/lib/store/mealStore";
+import { mealStateStore, useCalendarStore } from "@/lib/store/mealStore";
 import { Container, Grid, GridCol, Stack } from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
-import dayjs from "dayjs";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 const Main = () => {
-  const nowMonthYear = dayjs();
-  const [calendarYearMonth, setCalendarYearMonth] = useState({
-    year: nowMonthYear.year(),
-    month: nowMonthYear.month() + 1,
-  });
+  const { year, month } = useCalendarStore();
 
-  const { data, isLoading, isError } = useQuery({ queryKey: ["meals", calendarYearMonth], queryFn: () => api.getMeals(calendarYearMonth) });
-  const meals = data?.data.data.meals;
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ["meals", { year: year, month: month }],
+    queryFn: () => api.getMeals({ year: year, month: month }),
+  });
   const mealStats = data?.data.data.mealStats;
 
   const { mealStore } = useCombinedStore() as { mealStore: mealStateStore };
@@ -36,11 +32,8 @@ const Main = () => {
       <Grid>
         <GridCol span={{ base: 12, md: 8 }}>
           <Stack>
-            <TopTitleMeal stats={mealStats} isLoading={isLoading} />
-            {/* <ChartSummary statsInfo={statsInfo} /> */}
+            <TopTitleMeal stats={mealStats} isLoading={isLoading} isError={isError} />
             <LunchGroup />
-
-            {/* <CalendarList /> */}
           </Stack>
         </GridCol>
         <GridCol span={{ base: 12, md: 4 }}>
