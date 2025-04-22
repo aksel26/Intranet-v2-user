@@ -45,7 +45,7 @@ export default function WelfareInputForm({ onClose, opened }: any) {
       content: "",
       amount: null,
       targetDay: null, // Added targetDay
-      payerName: "", // Added payerName
+      payerName: "본인", // Added payerName
       payeeIdxs: [], // Added payeeIdxs
     },
   });
@@ -95,7 +95,7 @@ export default function WelfareInputForm({ onClose, opened }: any) {
   return (
     <form onSubmit={form.onSubmit(handleSubmit)}>
       <Flex direction={"column"} rowGap={10}>
-        <TextInput label="결제자" value={"본인"} disabled key={form.key("payerName")} {...form.getInputProps("payerName")} />
+        <TextInput label="결제자" disabled key={form.key("payerName")} {...form.getInputProps("payerName")} />
         <DatePickerInput
           label="일자"
           locale="ko"
@@ -108,27 +108,23 @@ export default function WelfareInputForm({ onClose, opened }: any) {
           firstDayOfWeek={0}
           popoverProps={{ withinPortal: false, zIndex: 1001 }}
         />
-        {isLoading ? (
-          <LoadingOverlay visible={isLoading} zIndex={1000} overlayProps={{ radius: "sm", blur: 2 }} />
-        ) : (
-          <MultiSelect
-            styles={{
-              dropdown: {
-                zIndex: 1001,
-              },
-            }}
-            label="동반결제자"
-            placeholder="결제한 인원을 선택해 주세요."
-            data={users?.map((user: any) => ({
-              value: user.userIdx.toString(),
-              label: user.userName,
-              searchValue: user.userName,
-            }))}
-            key={form.key("payeeIdxs")}
-            {...form.getInputProps("payeeIdxs")}
-            searchable
-          />
-        )}
+        <MultiSelect
+          styles={{
+            dropdown: {
+              zIndex: 1001,
+            },
+          }}
+          label="동반결제자"
+          placeholder="결제한 인원을 선택해 주세요."
+          data={users?.map((user: any) => ({
+            value: user.userIdx.toString(),
+            label: user.userName,
+            searchValue: user.userName,
+          }))}
+          key={form.key("payeeIdxs")}
+          {...form.getInputProps("payeeIdxs")}
+          searchable
+        />
         <TextInput label="사용처" placeholder="결제하신 곳의 상호명을 입력해 주세요." key={form.key("content")} {...form.getInputProps("content")} />
 
         <NumberInput

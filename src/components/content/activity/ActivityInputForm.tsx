@@ -32,7 +32,7 @@ export default function ActivityInputForm({ onClose, opened }: any) {
       content: "",
       amount: null,
       targetDay: "", // Added targetDay
-      payerName: "", // Added payerName
+      payerName: "본인", // Added payerName
     },
   });
 
@@ -79,7 +79,7 @@ export default function ActivityInputForm({ onClose, opened }: any) {
   return (
     <form onSubmit={form.onSubmit(handleSubmit)}>
       <Flex direction={"column"} rowGap={10}>
-        <TextInput label="결제자" value={"본인"} disabled key={form.key("payerName")} {...form.getInputProps("payerName")} />
+        <TextInput label="결제자" disabled key={form.key("payerName")} {...form.getInputProps("payerName")} />
         <DateInput
           label="일자"
           locale="ko"
