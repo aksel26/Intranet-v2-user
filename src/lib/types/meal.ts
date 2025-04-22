@@ -1,6 +1,6 @@
 export type TMealsParams = {
-  year: number;
-  month: number;
+  year: string;
+  month: string;
 };
 export type TActivityParams = {
   year: string;

@@ -9,4 +9,5 @@ export interface TAttendance {
   checkOutTime: any;
   confirmYN: string;
   createdAt: string;
+  workingMinutes?: number;
 }
