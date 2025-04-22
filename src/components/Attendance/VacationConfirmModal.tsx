@@ -20,7 +20,13 @@ function VacationConfirmModal({ opened, close, submitInfo, confirmPerson, closeD
         },
         onSuccess: async (data: any) => {
           notification({ color: "green", title: "휴가 신청 완료", message: "결재자의 승인을 기다려주세요." });
-          await queryClient.invalidateQueries({ queryKey: ["vacationAll"] });
+          queryClient.invalidateQueries({
+            predicate: (query) => {
+              const queryKey = query.queryKey;
+              const targetKeys = ["attendanceAllStaff", "attendanceSummary"];
+              return Array.isArray(queryKey) && targetKeys.includes(queryKey[0]);
+            },
+          });
           close();
           closeDrawer();
         },
