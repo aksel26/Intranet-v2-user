@@ -5,8 +5,7 @@ import NoticeBirth from "@/components/Dashboard/noticeBirth";
 import VacationCard from "@/components/Dashboard/vacation";
 import WelfareButtons from "@/components/Dashboard/welfareButtons";
 import WorkHourStats from "@/components/Dashboard/workHourStats";
-import { Button, Container, Grid, GridCol, Group, Stack } from "@mantine/core";
-import { IconCreditCard, IconMeat, IconSoup, IconUsersGroup } from "@tabler/icons-react";
+import { Container, Grid, GridCol, Stack } from "@mantine/core";
 
 function page() {
   return (
