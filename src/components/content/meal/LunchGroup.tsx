@@ -1,17 +1,17 @@
 "use client";
 
-import { ActionIcon, Avatar, Box, Button, Divider, Group, List, Modal, Paper, Stack, Text, Title } from "@mantine/core";
+import * as api from "@/app/api/get/getApi";
+import EmptyView from "@/components/Global/view/EmptyView";
+import ErrorView from "@/components/Global/view/ErrorView";
+import LoadingView from "@/components/Global/view/LoadingView";
+import { ActionIcon, Avatar, Box, Button, Group, Modal, Paper, Text, Title } from "@mantine/core";
 import { useDisclosure, useMediaQuery } from "@mantine/hooks";
-import React, { useState } from "react";
-import IconList from "/public/icons/list.svg";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import dayjs from "dayjs";
+import { useState } from "react";
+import LotteryComponent from "./Lottery";
 import IconLottery from "/public/icons/clover.svg";
 import IconRefresh from "/public/icons/refresh.svg";
-import LunchGroupDetail from "./lunchGroup/LunchGroupDetail";
-import LotteryComponent from "./Lottery";
-import { useQuery } from "@tanstack/react-query";
-import * as api from "@/app/api/get/getApi";
-import dayjs from "dayjs";
-import FetchWrapper from "@/components/fetchWrapper";
 const GroupNumber = ({ groupNumber }: { groupNumber: number }) => {
   return (
     <Avatar color="blue" radius="md" size={"md"}>
@@ -55,41 +55,48 @@ function LunchGroup() {
   const matches = useMediaQuery("(max-width: 40em)", true, {
     getInitialValueInEffect: false,
   });
+  const queryClient = useQueryClient();
+  const [lotteryOpened, { open: lotteryOpen, close: lotteryClose }] = useDisclosure(false);
 
   const [now] = useState(dayjs().toDate());
 
   const { data, isLoading, isError } = useQuery({ queryKey: ["lunchGroup", { current: now }], queryFn: () => api.getLunchGroup() });
 
   const lunchGroup = data?.data.data;
-  const [opened, { open, close }] = useDisclosure(false);
-  const [lotteryOpened, { open: lotteryOpen, close: lotteryClose }] = useDisclosure(false);
+
+  const refresh = () => queryClient.invalidateQueries({ queryKey: ["lunchGroup"] });
+
+  const renderContent = () => {
+    if (isLoading) return <LoadingView />;
+    if (isError) return <ErrorView>점심조 조회를 불러오는 중 문제가 발생했습니다.</ErrorView>;
+    if (lunchGroup.length === 0) <EmptyView />;
+    return <GroupDisplay data={lunchGroup?.groups} matches={matches ? "xs" : "sm"} />;
+  };
 
   return (
     <Paper bg={"white"} px="lg" py="lg" radius={"lg"}>
-      <FetchWrapper data={lunchGroup} isLoading={isLoading}>
-        <Group align="flex-start" mb={"md"} justify="space-between">
-          <Box>
-            <Title order={5}>나의 점심조</Title>
-            <Text fz={"xs"} c={"dimmed"}>
-              {`${dayjs(lunchGroup?.sDate).format("MM월 DD일")}부터 ${dayjs(lunchGroup?.eDate).format("MM월 DD일")} 까지`}
-            </Text>
-          </Box>
-          <Group>
-            <Button onClick={lotteryOpen} size="xs" variant="gradient" leftSection={<IconLottery />} gradient={{ from: "lime", to: "cyan", deg: 90 }}>
-              점심조 뽑기
-            </Button>
-            <ActionIcon variant="default" onClick={open}>
-              <IconRefresh />
-            </ActionIcon>
-          </Group>
+      <Group align="flex-start" mb={"md"} justify="space-between">
+        <Box>
+          <Title order={5}>나의 점심조</Title>
+          <Text fz={"xs"} c={"dimmed"}>
+            {`${dayjs(lunchGroup?.sDate).format("MM월 DD일")}부터 ${dayjs(lunchGroup?.eDate).format("MM월 DD일")} 까지`}
+          </Text>
+        </Box>
+        <Group>
+          <Button onClick={lotteryOpen} size="xs" variant="gradient" leftSection={<IconLottery />} gradient={{ from: "lime", to: "cyan", deg: 90 }}>
+            점심조 뽑기
+          </Button>
+          <ActionIcon variant="default" onClick={refresh}>
+            <IconRefresh />
+          </ActionIcon>
         </Group>
+      </Group>
 
-        <GroupDisplay data={lunchGroup?.groups} matches={matches ? "xs" : "sm"} />
+      {renderContent()}
 
-        <Modal opened={lotteryOpened} onClose={lotteryClose} title="점심조 뽑기" centered>
-          <LotteryComponent lotteryClose={lotteryClose} openGroupList={open} />
-        </Modal>
-      </FetchWrapper>
+      <Modal opened={lotteryOpened} onClose={lotteryClose} title="점심조 뽑기" centered>
+        <LotteryComponent lotteryClose={lotteryClose} />
+      </Modal>
     </Paper>
   );
 }
