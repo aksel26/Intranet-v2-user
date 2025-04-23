@@ -3,7 +3,8 @@ import ToolTipDetailsVacation from "@/components/Attendance/ToolTipDetailsVacati
 import ErrorView from "@/components/Global/view/ErrorView";
 import LoadingView from "@/components/Global/view/LoadingView";
 import { TYearMonth } from "@/types/apiTypes";
-import { Flex, Group, Loader, Paper, Stack, Text } from "@mantine/core";
+import { ActionIcon, Flex, Group, Loader, Paper, Stack, Text } from "@mantine/core";
+import { IconDots } from "@tabler/icons-react";
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
 
@@ -106,7 +107,11 @@ const VacationSummary = ({ params }: { params: TYearMonth }) => {
               </Text>
             </Stack>
 
-            <ToolTipDetailsVacation details={leaveUsageStats} />
+            <ToolTipDetailsVacation details={leaveUsageStats}>
+              <ActionIcon size="compact-xs" variant="subtle" radius={"xs"}>
+                <IconDots />
+              </ActionIcon>
+            </ToolTipDetailsVacation>
           </Group>
         </Paper>
       </Flex>
