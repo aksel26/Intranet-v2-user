@@ -5,7 +5,7 @@ import dayjs from "dayjs";
 const VacationSummary = () => {
   const currentYear = dayjs().year();
   const { data, isLoading, isError } = useQuery({
-    queryKey: ["attendanceSummary", { year: currentYear }],
+    queryKey: ["vacationSummary", { year: currentYear }],
     queryFn: () => api.getAttendanceSummary({ year: currentYear }),
   });
 
