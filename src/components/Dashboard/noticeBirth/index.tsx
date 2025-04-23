@@ -2,7 +2,7 @@ import { Button, Group, Paper, Tabs } from "@mantine/core";
 import { IconChevronRight } from "@tabler/icons-react";
 import dayjs from "dayjs";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Birth from "./birth";
 import Notice from "./notice";
 import { mainDateStore } from "@/lib/store/mainDateStore";
@@ -13,8 +13,10 @@ const NoticeBirth = () => {
   const router = useRouter();
   const goNotice = () => router.push("/notice");
 
+  const heightRef = useRef<HTMLDivElement>(null);
+
   return (
-    <Paper p={"lg"} radius={"lg"} className={activeTab === "birth" ? "bg-gradient-to-r from-yellow-100 to-red-100" : ""}>
+    <Paper p={"lg"} radius={"lg"} className={activeTab === "birth" ? "bg-gradient-to-r from-yellow-100 to-red-100" : ""} ref={heightRef}>
       <Tabs value={activeTab} onChange={setActiveTab} variant="pills" radius={"lg"}>
         <Tabs.List justify="space-between">
           <Group styles={{ root: { zIndex: 1 } }}>
@@ -39,7 +41,7 @@ const NoticeBirth = () => {
           <Notice />
         </Tabs.Panel>
         <Tabs.Panel value="birth" pt={"md"}>
-          <Birth activeTab={activeTab} month={(dayjs(dateValue).month() + 1).toString()} />
+          <Birth activeTab={activeTab} month={(dayjs(dateValue).month() + 1).toString()} ref={heightRef} />
         </Tabs.Panel>
       </Tabs>
     </Paper>
