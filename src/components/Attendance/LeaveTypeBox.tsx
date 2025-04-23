@@ -20,16 +20,16 @@ export default function LeaveTypeBox({ attendance, setAttendance }: any) {
     <div className={classes.root} dir="ltr" ref={setRootRef}>
       <FloatingIndicator target={controlsRefs[attendance]} parent={rootRef} className={classes.indicator} />
       <div className={classes.label}>
-        <Text fz={"sm"}>종일</Text>
-        <Text fz={"sm"}>오전</Text>
-        <Text fz={"sm"}>오후</Text>
+        <Text fz={"xs"}>종일</Text>
+        <Text fz={"xs"}>오전</Text>
+        <Text fz={"xs"}>오후</Text>
       </div>
       <Divider my={"xs"} />
       <div className={classes.controlsGroupContainer}>
         <div className={classes.controlsGroup}>
           <Button
             variant="subtle"
-            size="sm"
+            size="xs"
             className={classes.control}
             onClick={() => vacationType(LEAVE_TYPE.연차)}
             ref={setControlRef(LEAVE_TYPE.연차)}
@@ -39,7 +39,7 @@ export default function LeaveTypeBox({ attendance, setAttendance }: any) {
           </Button>
           <Button
             variant="subtle"
-            size="sm"
+            size="xs"
             className={classes.control}
             onClick={() => vacationType(LEAVE_TYPE["오전 반반차"])}
             ref={setControlRef(LEAVE_TYPE["오전 반반차"])}
@@ -49,7 +49,7 @@ export default function LeaveTypeBox({ attendance, setAttendance }: any) {
           </Button>
           <Button
             variant="subtle"
-            size="sm"
+            size="xs"
             className={classes.control}
             onClick={() => vacationType(LEAVE_TYPE["오후 반반차"])}
             ref={setControlRef(LEAVE_TYPE["오후 반반차"])}
@@ -61,7 +61,7 @@ export default function LeaveTypeBox({ attendance, setAttendance }: any) {
         <div className={classes.controlsGroup}>
           <Button
             variant="subtle"
-            size="sm"
+            size="xs"
             className={classes.control}
             onClick={() => vacationType(LEAVE_TYPE.보건휴가)}
             ref={setControlRef(LEAVE_TYPE.보건휴가)}
@@ -71,7 +71,7 @@ export default function LeaveTypeBox({ attendance, setAttendance }: any) {
           </Button>
           <Button
             variant="subtle"
-            size="sm"
+            size="xs"
             className={classes.control}
             onClick={() => vacationType(LEAVE_TYPE["오전 반차"])}
             ref={setControlRef(LEAVE_TYPE["오전 반차"])}
@@ -81,7 +81,7 @@ export default function LeaveTypeBox({ attendance, setAttendance }: any) {
           </Button>
           <Button
             variant="subtle"
-            size="sm"
+            size="xs"
             className={classes.control}
             onClick={() => vacationType(LEAVE_TYPE["오후 반차"])}
             ref={setControlRef(LEAVE_TYPE["오후 반차"])}
@@ -93,7 +93,7 @@ export default function LeaveTypeBox({ attendance, setAttendance }: any) {
         <div className={classes.controlsGroup}>
           <Button
             variant="subtle"
-            size="sm"
+            size="xs"
             className={classes.control}
             onClick={() => vacationType(LEAVE_TYPE.병가)}
             ref={setControlRef(LEAVE_TYPE.병가)}
@@ -103,7 +103,7 @@ export default function LeaveTypeBox({ attendance, setAttendance }: any) {
           </Button>
           <Button
             variant="subtle"
-            size="sm"
+            size="xs"
             className={classes.control}
             onClick={() => vacationType(LEAVE_TYPE["대체 휴무(오전)"])}
             ref={setControlRef(LEAVE_TYPE["대체 휴무(오전)"])}
@@ -113,7 +113,7 @@ export default function LeaveTypeBox({ attendance, setAttendance }: any) {
           </Button>
           <Button
             variant="subtle"
-            size="sm"
+            size="xs"
             className={classes.control}
             onClick={() => vacationType(LEAVE_TYPE["대체 휴무(오후)"])}
             ref={setControlRef(LEAVE_TYPE["대체 휴무(오후)"])}
@@ -125,7 +125,7 @@ export default function LeaveTypeBox({ attendance, setAttendance }: any) {
         <div className={classes.controlsGroup}>
           <Button
             variant="subtle"
-            size="sm"
+            size="xs"
             className={classes.control}
             onClick={() => vacationType(LEAVE_TYPE["경조 휴무"])}
             ref={setControlRef(LEAVE_TYPE["경조 휴무"])}
@@ -135,7 +135,7 @@ export default function LeaveTypeBox({ attendance, setAttendance }: any) {
           </Button>
           <Button
             variant="subtle"
-            size="sm"
+            size="xs"
             className={classes.control}
             onClick={() => vacationType(LEAVE_TYPE["훈련(오전)"])}
             ref={setControlRef(LEAVE_TYPE["훈련(오전)"])}
@@ -145,7 +145,7 @@ export default function LeaveTypeBox({ attendance, setAttendance }: any) {
           </Button>
           <Button
             variant="subtle"
-            size="sm"
+            size="xs"
             className={classes.control}
             onClick={() => vacationType(LEAVE_TYPE["훈련(오후)"])}
             ref={setControlRef(LEAVE_TYPE["훈련(오후)"])}
@@ -157,7 +157,7 @@ export default function LeaveTypeBox({ attendance, setAttendance }: any) {
         <div className={classes.controlsGroup}>
           <Button
             variant="subtle"
-            size="sm"
+            size="xs"
             className={classes.control}
             onClick={() => vacationType(LEAVE_TYPE["특별 휴무"])}
             ref={setControlRef(LEAVE_TYPE["특별 휴무"])}
@@ -167,7 +167,7 @@ export default function LeaveTypeBox({ attendance, setAttendance }: any) {
           </Button>
           <Button
             variant="subtle"
-            size="sm"
+            size="xs"
             className={classes.control}
             onClick={() => vacationType(LEAVE_TYPE["특별 휴무(오전 반반)"])}
             ref={setControlRef(LEAVE_TYPE["특별 휴무(오전 반반)"])}
@@ -177,7 +177,7 @@ export default function LeaveTypeBox({ attendance, setAttendance }: any) {
           </Button>
           <Button
             variant="subtle"
-            size="sm"
+            size="xs"
             className={classes.control}
             onClick={() => vacationType(LEAVE_TYPE["특별 휴무(오후 반반)"])}
             ref={setControlRef(LEAVE_TYPE["특별 휴무(오후 반반)"])}
@@ -187,10 +187,10 @@ export default function LeaveTypeBox({ attendance, setAttendance }: any) {
           </Button>
         </div>
         <div className={classes.controlsGroup}>
-          <Button size="sm" variant="transparent" className={classes.control} styles={{ root: { cursor: "default" } }}></Button>
+          <Button size="xs" variant="transparent" className={classes.control} styles={{ root: { cursor: "default" } }}></Button>
           <Button
             variant="subtle"
-            size="sm"
+            size="xs"
             className={classes.control}
             onClick={() => vacationType(LEAVE_TYPE["특별 휴무(오전)"])}
             ref={setControlRef(LEAVE_TYPE["특별 휴무(오전)"])}
@@ -200,7 +200,7 @@ export default function LeaveTypeBox({ attendance, setAttendance }: any) {
           </Button>
           <Button
             variant="subtle"
-            size="sm"
+            size="xs"
             className={classes.control}
             onClick={() => vacationType(LEAVE_TYPE["특별 휴무(오후)"])}
             ref={setControlRef(LEAVE_TYPE["특별 휴무(오후)"])}
