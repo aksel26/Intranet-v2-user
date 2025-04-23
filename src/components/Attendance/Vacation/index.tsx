@@ -3,7 +3,7 @@
 import * as api from "@/app/api/get/getApi";
 import { LEAVE_TYPE } from "@/lib/enums";
 import { getWeekdaysBetweenDates } from "@/utils/vacationDate";
-import { Box, Button, Drawer, FileButton, Group, Indicator, MultiSelect, Select, Text, TextInput } from "@mantine/core";
+import { Badge, Box, Button, Drawer, FileButton, Group, Indicator, MultiSelect, Popover, Select, Text, TextInput } from "@mantine/core";
 import { DatePicker } from "@mantine/dates";
 import { useDisclosure } from "@mantine/hooks";
 import { useQuery } from "@tanstack/react-query";
@@ -15,6 +15,8 @@ import VacationConfirmModal from "../VacationConfirmModal";
 import { getLeaveTypeKey } from "@/utils/leaveTypeKey";
 import { TYearMonth } from "@/types/apiTypes";
 import AttachmentPreview from "./attachment";
+import { IconClick } from "@tabler/icons-react";
+import ToolTipDetailsVacation from "../ToolTipDetailsVacation";
 
 type TDateRange = [Date | null, Date | null];
 type TSelect = { value: string | undefined; label: string | undefined };
@@ -32,6 +34,13 @@ function Vacation({ opened, close }: any) {
     isLoading: isLoading_vacations,
     isError: isError_vacations,
   } = useQuery({ queryKey: ["vacationAll", params], queryFn: () => api.getMyVacations(params) });
+
+  const {
+    data: vacationSummary,
+    isLoading: isLoading_vacationSummary,
+    isError: isError_vacationSummary,
+  } = useQuery({ queryKey: ["vacationSummary", { year: params.year }], queryFn: () => api.getVacationSummary({ year: params.year }) });
+  const leaveUsageStats = vacationSummary?.data.data.leaveUsageStats;
 
   const commuteData = vacations?.data.data;
 
@@ -158,28 +167,36 @@ function Vacation({ opened, close }: any) {
         renderDay={renderDay}
       />
 
-      <Group justify="end">
-        <Group gap={5}>
-          <Box w={10} h={10} style={{ borderRadius: "50%" }} bg={"yellow"} />
-          <Text fz={"xs"}>미승인</Text>
-        </Group>
-        <Group gap={5}>
-          <Box w={10} h={10} style={{ borderRadius: "50%" }} bg={"blue"} />
-          <Text fz={"xs"}>승인</Text>
+      <Group justify="space-between" align="center">
+        <ToolTipDetailsVacation details={leaveUsageStats}>
+          <Button variant="subtle" size="compact-xs" leftSection={<IconClick strokeWidth={1.2} size={18} />}>
+            휴가 사용현황 보기
+          </Button>
+        </ToolTipDetailsVacation>
+
+        <Group>
+          <Group gap={5}>
+            <Box w={10} h={10} style={{ borderRadius: "50%" }} bg={"yellow"} />
+            <Text fz={"xs"}>미승인</Text>
+          </Group>
+          <Group gap={5}>
+            <Box w={10} h={10} style={{ borderRadius: "50%" }} bg={"blue"} />
+            <Text fz={"xs"}>승인</Text>
+          </Group>
         </Group>
       </Group>
 
-      <Group my={"sm"} align="end">
-        <Text>휴가 선택</Text>
-        <Text fz={"sm"} c={"dimmed"}>
+      <Group my={"sm"} align="center" mt={"lg"}>
+        <Text fz={"sm"}>휴가 선택</Text>
+        <Badge color="blue" variant="light" radius="sm">
           {getLeaveTypeKey(attendance)}
-        </Text>
+        </Badge>
       </Group>
 
       <LeaveTypeBox attendance={attendance} setAttendance={setAttendance} />
 
       <MultiSelect
-        mb={"sm"}
+        my={"md"}
         styles={{ label: { fontSize: "var(--mantine-font-size-xs" } }}
         size="sm"
         label="승인자 선택"
@@ -192,7 +209,7 @@ function Vacation({ opened, close }: any) {
         searchable
       />
       <MultiSelect
-        mb={"sm"}
+        mb={"md"}
         styles={{ label: { fontSize: "var(--mantine-font-size-xs" } }}
         size="sm"
         label="참조자 선택"
@@ -206,7 +223,7 @@ function Vacation({ opened, close }: any) {
       />
 
       <TextInput
-        mb={"sm"}
+        mb={"md"}
         styles={{ label: { fontSize: "var(--mantine-font-size-xs" } }}
         label="특이사항 입력"
         placeholder="특이사항을 입력해 주세요."
