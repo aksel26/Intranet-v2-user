@@ -1,5 +1,5 @@
 import { ActionIcon, Button, Group, Paper, Title } from "@mantine/core";
-import { IconDots } from "@tabler/icons-react";
+import { IconBeach, IconDots } from "@tabler/icons-react";
 import React from "react";
 import { useRouter } from "next/navigation";
 import { useDisclosure } from "@mantine/hooks";
@@ -15,7 +15,14 @@ const VacationCard = () => {
       <Group justify="space-between" mb={"xs"}>
         <Title order={5}>휴가 요약</Title>
         <Group>
-          <Button variant="gradient" gradient={{ from: "blue", to: "cyan", deg: 90 }} size="xs" onClick={open}>
+          <Button
+            variant="gradient"
+            gradient={{ from: "lime", to: "cyan", deg: 90 }}
+            size="xs"
+            w={150}
+            onClick={open}
+            leftSection={<IconBeach size={22} strokeWidth={1.2} />}
+          >
             휴가 신청
           </Button>
           <ActionIcon onClick={goVacation} variant="default">
