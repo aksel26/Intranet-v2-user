@@ -26,9 +26,7 @@ const MENU_ITEMS: MenuItem[] = [
       { label: "휴가/연차 관리", href: "/attendance/vacation" },
     ],
   },
-  {
-    label: "검사현황",
-  },
+
   {
     label: "복지",
     childrenOffset: 28,
