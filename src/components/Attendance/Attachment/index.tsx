@@ -5,7 +5,8 @@ import { useUpdateAttachment } from "@/hooks/useSubmitForm";
 // import { IconUpload } from "@tabler/icons-react";
 import { useQueryClient } from "@tanstack/react-query";
 import notification from "@/components/GNB/Notification";
-import { IconDownload, IconPhotoScan } from "@tabler/icons-react";
+import { IconDownload, IconPhotoScan, IconUpload, IconX } from "@tabler/icons-react";
+import { useDisclosure } from "@mantine/hooks";
 
 const Attachment = ({ opened, close, details }: any) => {
   const { mutate } = useUpdateAttachment();
@@ -14,6 +15,8 @@ const Attachment = ({ opened, close, details }: any) => {
   const [imagePreview, setImagePreview] = useState<any>(details?.imageUrl);
 
   const queryClient = useQueryClient();
+
+  const [deleteConfirmOpened, { open: deleteConfirmOpen, close: deleteConfirmClose }] = useDisclosure(false);
 
   const handleFileChange = (file: File | null) => {
     if (file) {
@@ -56,6 +59,37 @@ const Attachment = ({ opened, close, details }: any) => {
     );
   };
 
+  const deleteImage = () => {
+    mutate(
+      {
+        commuteIdx: details?.commuteIdx,
+        leaveImage: null,
+      },
+      {
+        onSuccess: (res: any) => {
+          close();
+          queryClient.invalidateQueries({ queryKey: ["vacationAll"] });
+          notification({
+            color: "green",
+            title: "첨부파일",
+            message: "첨부파일이 삭제되었습니다.",
+          });
+          setFile(null);
+          deleteConfirmClose();
+        },
+        onError: (error: any) => {
+          const { message: err } = error.response.data || "";
+          notification({
+            color: "red",
+            title: "첨부파일",
+            message: err,
+          });
+          deleteConfirmClose();
+        },
+      }
+    );
+  };
+
   useEffect(() => {
     setImagePreview(details?.imageUrl);
   }, [details]);
@@ -86,8 +120,54 @@ const Attachment = ({ opened, close, details }: any) => {
     }
   }, []);
 
+  const handleClose = () => {
+    setImagePreview(details?.imageUrl);
+    setFile(null);
+    close();
+  };
+
+  const ButtonBranch = () => {
+    if ((file && imagePreview) || (!file && !imagePreview)) {
+      return (
+        <>
+          <Button
+            variant="light"
+            size="sm"
+            fullWidth
+            onClick={handleSave}
+            disabled={!file ? true : false}
+            leftSection={<IconUpload size={20} strokeWidth={1.5} />}
+          >
+            업로드
+          </Button>
+          <Button variant="light" color="gray" fullWidth onClick={close}>
+            닫기
+          </Button>
+        </>
+      );
+    } else if (!file && imagePreview) {
+      return (
+        <>
+          <Button
+            leftSection={<IconDownload size={20} strokeWidth={1.5} />}
+            variant="light"
+            size="sm"
+            fullWidth
+            onClick={() => downloadImage(details?.imageUrl, details?.imageName)}
+          >
+            {details.imageName}
+          </Button>
+          <Button fullWidth size="sm" variant="light" color="red" leftSection={<IconX size={18} strokeWidth={1.2} />} onClick={deleteConfirmOpen}>
+            삭제하기
+          </Button>
+        </>
+      );
+    }
+    return null;
+  };
+
   return (
-    <Modal opened={opened} onClose={close} title="첨부파일" centered size={"md"}>
+    <Modal opened={opened} onClose={handleClose} title="첨부파일" centered size={"md"}>
       {imagePreview ? (
         <Stack>
           <FileButton onChange={handleFileChange} accept="image/png,image/jpeg">
@@ -113,14 +193,9 @@ const Attachment = ({ opened, close, details }: any) => {
               </div>
             )}
           </FileButton>
-          <Button
-            leftSection={<IconDownload size={20} strokeWidth={1.5} />}
-            variant="subtle"
-            size="xs"
-            onClick={() => downloadImage(details?.imageUrl, details?.imageName)}
-          >
-            {details.imageName}
-          </Button>
+          <Text c={"dimmed"} fz={"xs"}>
+            이미지를 변경하려면 이미지를 클릭하세요.
+          </Text>
         </Stack>
       ) : (
         <FileButton onChange={handleFileChange} accept="image/png,image/jpeg">
@@ -152,15 +227,24 @@ const Attachment = ({ opened, close, details }: any) => {
           )}
         </FileButton>
       )}
-
       <Group wrap="nowrap" mt={"md"}>
-        <Button variant="light" size="sm" fullWidth onClick={handleSave} disabled={!file ? true : false}>
-          저장하기
-        </Button>
-        <Button variant="light" color="gray" fullWidth onClick={close}>
-          닫기
-        </Button>
+        {ButtonBranch()}
       </Group>
+
+      <Modal opened={deleteConfirmOpened} onClose={deleteConfirmClose} title="삭제 확인" centered size={"sm"}>
+        <Text fz={"sm"}>정말로 삭제하시겠습니까?</Text>
+        <Text fz={"xs"} c={"dimmed"} mt={"xs"}>
+          삭제된 이미지는 복구할 수 없습니다.
+        </Text>
+        <Group mt={"md"} wrap="nowrap">
+          <Button fullWidth variant="light" color="gray" onClick={deleteConfirmClose}>
+            취소
+          </Button>
+          <Button fullWidth variant="light" color="red" onClick={deleteImage}>
+            삭제하기
+          </Button>
+        </Group>
+      </Modal>
     </Modal>
   );
 };
