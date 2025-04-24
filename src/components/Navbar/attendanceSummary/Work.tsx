@@ -40,7 +40,7 @@ function Work({ myInfo }: any) {
           </Group>
 
           <Text pl={25} fz={"xs"} mb={5} styles={{ root: { letterSpacing: "0.5px" } }}>
-            {calculateNumberToTime(myInfo.workingMinutes).hours}시간 {calculateNumberToTime(myInfo.workingMinutes).minutes}분
+            {calculateNumberToTime(myInfo.workingMinutes)}
           </Text>
         </Stack>
       ) : (
