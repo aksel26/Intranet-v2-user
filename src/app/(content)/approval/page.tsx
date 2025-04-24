@@ -10,13 +10,14 @@ import ErrorView from "@/components/Global/view/ErrorView";
 import LoadingView from "@/components/Global/view/LoadingView";
 import { TApprovalList } from "@/lib/types/approval";
 import { TApproval } from "@/types/apiTypes";
-import { ActionIcon, Container, Group, List, ListItem, Paper, Stack, Text } from "@mantine/core";
+import { ActionIcon, Group, List, ListItem, Paper, Stack, Text } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { IconChevronRight } from "@tabler/icons-react";
 import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import React, { useState } from "react";
 import styles from "../../../styles/list.module.css";
+import PageContainer from "@/components/Global/container";
 
 const page = () => {
   const [params, setParams] = useState<TApproval>({
@@ -104,15 +105,7 @@ const page = () => {
   };
 
   return (
-    <Container
-      fluid
-      p={"lg"}
-      style={{
-        scrollPaddingBottom: "52px",
-        overflowY: "auto",
-        scrollSnapType: "y mandatory",
-      }}
-    >
+    <PageContainer>
       <Stack gap={1}>
         <Text size="lg" fw={600} component="a">
           결재 및 승인{" "}
@@ -135,7 +128,7 @@ const page = () => {
       </Paper>
 
       <ApprovalConfirm opened={confirmModal} close={closeConfirmModal} details={targetInfo} />
-    </Container>
+    </PageContainer>
   );
 };
 

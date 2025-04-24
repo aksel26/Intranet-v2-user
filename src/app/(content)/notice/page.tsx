@@ -10,6 +10,7 @@ import { Breadcrumbs, Container, Group, List, ListItem, Paper, Stack, Text } fro
 import { usePathname, useRouter } from "next/navigation";
 import React, { useState } from "react";
 import styles from "../../../styles/list.module.css";
+import PageContainer from "@/components/Global/container";
 const Notice = () => {
   const router = useRouter();
   const pathName = usePathname();
@@ -68,15 +69,7 @@ const Notice = () => {
   };
 
   return (
-    <Container
-      fluid
-      p={"lg"}
-      style={{
-        scrollPaddingBottom: "52px",
-        overflowY: "auto",
-        scrollSnapType: "y mandatory",
-      }}
-    >
+    <PageContainer>
       <Group justify="space-between" align="center" mb={"md"}>
         <Breadcrumbs>{items}</Breadcrumbs>
         <Text c={"gray.8"} fz={"xs"} ta={"right"}>
@@ -90,7 +83,7 @@ const Notice = () => {
           {renderContent()}
         </Stack>
       </Paper>
-    </Container>
+    </PageContainer>
   );
 };
 

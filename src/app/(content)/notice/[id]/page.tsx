@@ -7,6 +7,7 @@ import { useDisclosure } from "@mantine/hooks";
 import dayjs from "dayjs";
 import { useParams, useRouter } from "next/navigation";
 import IconLeft from "/public/icons/arrow-left.svg";
+import PageContainer from "@/components/Global/container";
 
 const items = [{ title: "공지사항", href: "#" }].map((item, index) => (
   <Text size="lg" fw={600} component="a" key={index}>
@@ -31,15 +32,7 @@ function page() {
   const back = () => router.push(`/notice`);
 
   return (
-    <Container
-      fluid
-      p={"lg"}
-      style={{
-        scrollPaddingBottom: "52px",
-        overflowY: "auto",
-        scrollSnapType: "y mandatory",
-      }}
-    >
+    <PageContainer>
       <Group align="center" mb={"md"}>
         <ActionIcon variant="subtle" color="gray" onClick={back}>
           <IconLeft style={{ width: "70%", height: "70%" }} />
@@ -87,7 +80,7 @@ function page() {
       <Modal opened={previewOpened} onClose={previewClose} title="첨부 이미지 미리보기">
         <img src={noticeDetails?.imageUrl || ""} alt="preview" />
       </Modal>
-    </Container>
+    </PageContainer>
   );
 }
 

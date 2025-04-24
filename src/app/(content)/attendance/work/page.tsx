@@ -3,13 +3,14 @@ import * as api from "@/app/api/get/getApi";
 import { AttendanceBadge, LeavTypeBadge } from "@/components/Attendance/work/badge";
 import DatePicker from "@/components/Attendance/work/datePicker";
 import WorkTimeByLeaveType from "@/components/Attendance/work/workTime";
+import PageContainer from "@/components/Global/container";
 import EmptyView from "@/components/Global/view/EmptyView";
 import ErrorView from "@/components/Global/view/ErrorView";
 import LoadingView from "@/components/Global/view/LoadingView";
 import { TMyAttendance } from "@/types/apiTypes";
 import { calculateNumberToTime } from "@/utils/dateFomat";
 import { detectDevice } from "@/utils/userAgent";
-import { Breadcrumbs, Container, Divider, Group, Paper, Space, Stack, Text } from "@mantine/core";
+import { Breadcrumbs, Divider, Group, Paper, Space, Stack, Text } from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import React, { useState } from "react";
@@ -114,15 +115,7 @@ function page() {
   };
 
   return (
-    <Container
-      fluid
-      p={"lg"}
-      style={{
-        scrollPaddingBottom: "52px",
-        overflowY: "auto",
-        scrollSnapType: "y mandatory",
-      }}
-    >
+    <PageContainer>
       <Stack gap={1}>
         <Breadcrumbs mb={"md"}>{items}</Breadcrumbs>
         <Text component="span" c={"gray.6"} fz={"sm"}>
@@ -134,7 +127,7 @@ function page() {
         <Space h={"md"} />
         {renderContent()}
       </Paper>
-    </Container>
+    </PageContainer>
   );
 }
 

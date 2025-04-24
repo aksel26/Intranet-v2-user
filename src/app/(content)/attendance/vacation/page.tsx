@@ -1,6 +1,6 @@
 "use client";
 
-import { Breadcrumbs, Container, Stack, Text } from "@mantine/core";
+import { Breadcrumbs, Stack, Text } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { useState } from "react";
 
@@ -12,6 +12,7 @@ import VacationList from "@/components/vacation/list";
 import VacationSummary from "@/components/vacation/summary";
 import { TYearMonth } from "@/types/apiTypes";
 import dayjs from "dayjs";
+import PageContainer from "@/components/Global/container";
 
 const items = [{ title: "휴가/연차 상세조회", href: "#" }].map((item, index) => (
   <Text size="lg" fw={600} component="a" key={index}>
@@ -42,15 +43,7 @@ function page() {
   };
 
   return (
-    <Container
-      fluid
-      p={"lg"}
-      style={{
-        scrollPaddingBottom: "52px",
-        overflowY: "auto",
-        scrollSnapType: "y mandatory",
-      }}
-    >
+    <PageContainer>
       <Stack gap={1}>
         <Breadcrumbs mb={"md"}>{items}</Breadcrumbs>
         <Text component="span" c={"gray.6"} fz={"sm"}>
@@ -64,7 +57,7 @@ function page() {
       <CancleVacation opened={cancelVacationOpened} close={cancelVacationModalClose} details={currentVacationInfo} />
       <Attachment opened={attachmentModalOpened} close={attachmentModalClose} details={currentVacationInfo} />
       {/* <Vacation opened={opened} close={close} /> */}
-    </Container>
+    </PageContainer>
   );
 }
 
