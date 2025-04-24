@@ -6,7 +6,7 @@ import { useRef, useState } from "react";
 import Birth from "./birth";
 import Notice from "./notice";
 import { mainDateStore } from "@/lib/store/mainDateStore";
-
+import Fireworks from "react-canvas-confetti/dist/presets/realistic";
 const NoticeBirth = () => {
   const { dateValue } = mainDateStore();
   const [activeTab, setActiveTab] = useState<string | null>("notice");
@@ -14,6 +14,8 @@ const NoticeBirth = () => {
   const goNotice = () => router.push("/notice");
 
   const heightRef = useRef<HTMLDivElement>(null);
+
+  const cardHeight = heightRef?.current?.offsetHeight || 0;
 
   return (
     <Paper p={"lg"} radius={"lg"} className={activeTab === "birth" ? "bg-gradient-to-r from-yellow-100 to-red-100" : ""} ref={heightRef}>
@@ -37,11 +39,12 @@ const NoticeBirth = () => {
           )}
         </Tabs.List>
 
-        <Tabs.Panel value="notice" pt={"md"}>
+        <Tabs.Panel value="notice" pt={"xs"}>
           <Notice />
         </Tabs.Panel>
-        <Tabs.Panel value="birth" pt={"md"}>
-          <Birth activeTab={activeTab} month={(dayjs(dateValue).month() + 1).toString()} ref={heightRef} />
+        <Tabs.Panel value="birth" pt={"xs"} pos={"relative"}>
+          <Birth month={(dayjs(dateValue).month() + 1).toString()} />
+          <Fireworks autorun={{ speed: 0.2 }} style={{ position: "absolute", width: "100%", height: cardHeight, right: 0, top: -50, zIndex: 0 }} />
         </Tabs.Panel>
       </Tabs>
     </Paper>
