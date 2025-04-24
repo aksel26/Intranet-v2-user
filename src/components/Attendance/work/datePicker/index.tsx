@@ -37,9 +37,9 @@ const DatePicker = ({ setParams }: TDatePicker) => {
       placeholder="조회일자를 선택해 주세요."
       miw={180}
       w={"max-content"}
-      styles={{ input: { letterSpacing: 1, border: "none", paddingLeft: 25 }, section: { justifyContent: "start" } }}
+      styles={{ input: { border: "none", paddingLeft: 25 }, section: { justifyContent: "start" } }}
       valueFormat="YYYY/MM/DD"
-      leftSection={<IconCalendar />}
+      leftSection={<IconCalendar size={20} strokeWidth={1.2} />}
       onChange={dateSelect}
       value={dateValue}
     />
