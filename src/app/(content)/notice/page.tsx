@@ -6,7 +6,7 @@ import Search from "@/components/notice/search";
 import useGetNotices from "@/hooks/useGetNotices";
 import { TNotice } from "@/lib/types/notice";
 import { formatYYYYMMDD } from "@/utils/dateFomat";
-import { Breadcrumbs, Container, Group, List, ListItem, Paper, Stack, Text } from "@mantine/core";
+import { Group, List, ListItem, Paper, Stack, Text } from "@mantine/core";
 import { usePathname, useRouter } from "next/navigation";
 import React, { useState } from "react";
 import styles from "../../../styles/list.module.css";
@@ -14,11 +14,6 @@ import PageContainer from "@/components/Global/container";
 const Notice = () => {
   const router = useRouter();
   const pathName = usePathname();
-  const items = [{ title: "공지사항", href: "#" }].map((item, index) => (
-    <Text size="lg" fw={600} component="a" key={index}>
-      {item.title}
-    </Text>
-  ));
 
   const [params, setParams] = useState({
     perPage: 20,
@@ -70,12 +65,14 @@ const Notice = () => {
 
   return (
     <PageContainer>
-      <Group justify="space-between" align="center" mb={"md"}>
-        <Breadcrumbs>{items}</Breadcrumbs>
-        <Text c={"gray.8"} fz={"xs"} ta={"right"}>
+      <Stack gap={1} mb="xs">
+        <Text size="lg" fw={600}>
+          공지사항
+        </Text>
+        <Text c={"gray.6"} fz={"sm"}>
           공지사항 등록은 P&C팀에게 문의해 주시기 바랍니다.
         </Text>
-      </Group>
+      </Stack>
 
       <Paper bg={"white"} px="md" py="lg" radius={"lg"}>
         <Stack gap={"xs"}>

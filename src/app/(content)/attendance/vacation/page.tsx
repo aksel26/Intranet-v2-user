@@ -1,26 +1,18 @@
 "use client";
 
-import { Breadcrumbs, Stack, Text } from "@mantine/core";
+import { Stack, Text } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { useState } from "react";
 
 import Attachment from "@/components/Attendance/Attachment";
 import CancleVacation from "@/components/Attendance/CancleVacation";
+import PageContainer from "@/components/Global/container";
 import MonthSelect from "@/components/Global/dateSelect/MonthSelect";
 import YearSelect from "@/components/Global/dateSelect/YearSelect";
 import VacationList from "@/components/vacation/list";
 import VacationSummary from "@/components/vacation/summary";
 import { TYearMonth } from "@/types/apiTypes";
 import dayjs from "dayjs";
-import PageContainer from "@/components/Global/container";
-
-const items = [{ title: "휴가/연차 상세조회", href: "#" }].map((item, index) => (
-  <Text size="lg" fw={600} component="a" key={index}>
-    {/* <Anchor href={item.href} key={index}> */}
-    {item.title}
-    {/* </Anchor> */}
-  </Text>
-));
 
 function page() {
   const [cancelVacationOpened, { open: cancelOpenVacationModal, close: cancelVacationModalClose }] = useDisclosure(false);
@@ -44,9 +36,11 @@ function page() {
 
   return (
     <PageContainer>
-      <Stack gap={1}>
-        <Breadcrumbs mb={"md"}>{items}</Breadcrumbs>
-        <Text component="span" c={"gray.6"} fz={"sm"}>
+      <Stack gap={1} mb="xs">
+        <Text size="lg" fw={600}>
+          휴가/연차 상세조회
+        </Text>
+        <Text c={"gray.6"} fz={"sm"}>
           나의 휴가/연차 사용 내역을 조회합니다.
         </Text>
       </Stack>

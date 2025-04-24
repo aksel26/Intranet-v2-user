@@ -10,18 +10,10 @@ import LoadingView from "@/components/Global/view/LoadingView";
 import { TMyAttendance } from "@/types/apiTypes";
 import { calculateNumberToTime } from "@/utils/dateFomat";
 import { detectDevice } from "@/utils/userAgent";
-import { Breadcrumbs, Divider, Group, Paper, Space, Stack, Text } from "@mantine/core";
+import { Divider, Group, Paper, Space, Stack, Text } from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import React, { useState } from "react";
-
-const items = [{ title: "출퇴근 관리", href: "#" }].map((item, index) => (
-  <Text size="lg" fw={600} component="a" key={index}>
-    {/* <Anchor href={item.href} key={index}> */}
-    {item.title}
-    {/* </Anchor> */}
-  </Text>
-));
 
 function page() {
   const [params, setParams] = useState<TMyAttendance>({
@@ -33,7 +25,6 @@ function page() {
 
   const { data, isLoading, isError } = useQuery({ queryKey: ["attendanceAll", params], queryFn: () => api.getMyAttendance(params) });
   const records = data?.data?.data?.records;
-  console.log("🚀 ~ page ~ records:", records);
 
   const ListWrapper = () => {
     return (
@@ -117,7 +108,9 @@ function page() {
   return (
     <PageContainer>
       <Stack gap={1}>
-        <Breadcrumbs mb={"md"}>{items}</Breadcrumbs>
+        <Text size="lg" fw={600}>
+          출퇴근 관리
+        </Text>
         <Text component="span" c={"gray.6"} fz={"sm"}>
           나의 출퇴근 내역을 조회합니다.
         </Text>

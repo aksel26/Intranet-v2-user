@@ -1,19 +1,13 @@
 "use client";
 
+import PageContainer from "@/components/Global/container";
 import useGetNoticeDetail from "@/hooks/useGetNoticeDetail";
 import { convertFileUnit } from "@/utils/convertFileUnit";
-import { ActionIcon, Box, Breadcrumbs, Button, Container, Divider, Group, Modal, Paper, Stack, Text, Title } from "@mantine/core";
+import { ActionIcon, Box, Button, Group, Modal, Paper, Stack, Text, Title } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import dayjs from "dayjs";
 import { useParams, useRouter } from "next/navigation";
 import IconLeft from "/public/icons/arrow-left.svg";
-import PageContainer from "@/components/Global/container";
-
-const items = [{ title: "공지사항", href: "#" }].map((item, index) => (
-  <Text size="lg" fw={600} component="a" key={index}>
-    {item.title}
-  </Text>
-));
 
 function page() {
   const { id } = useParams();
@@ -37,7 +31,9 @@ function page() {
         <ActionIcon variant="subtle" color="gray" onClick={back}>
           <IconLeft style={{ width: "70%", height: "70%" }} />
         </ActionIcon>
-        <Breadcrumbs>{items}</Breadcrumbs>
+        <Text size="lg" fw={600}>
+          공지사항
+        </Text>
       </Group>
 
       <Paper bg={"white"} px="md" py="lg" radius={"lg"} h={"100%"}>
