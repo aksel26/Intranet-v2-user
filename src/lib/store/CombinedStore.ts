@@ -5,6 +5,7 @@ import { welfareStore } from "./welfareStore";
 import { calendarDateStore } from "./calendarDateStore";
 // import { toggleStore } from "./toggleStore";
 import { activityStore } from "./activityStore";
+import { mainDateStore } from "./mainDateStore";
 
 // import { activityStore } from "./activityStore";
 
@@ -14,6 +15,7 @@ interface CombinedStore {
   calendarDateStore: ReturnType<typeof calendarDateStore>;
   // tooltipToggleStore: ReturnType<typeof toggleStore>;
   activityStore: ReturnType<typeof activityStore>;
+  mainDateStore: ReturnType<typeof mainDateStore>;
 }
 
 export const useCombinedStore = create<CombinedStore>(() => ({
@@ -21,6 +23,7 @@ export const useCombinedStore = create<CombinedStore>(() => ({
   welfareStore: welfareStore.getState(),
   activityStore: activityStore.getState(),
   calendarDateStore: calendarDateStore.getState(),
+  mainDateStore: mainDateStore.getState(),
   // tooltipToggleStore: toggleStore.getState(),
 }));
 
@@ -30,3 +33,4 @@ welfareStore.subscribe((state) => useCombinedStore.setState({ welfareStore: stat
 calendarDateStore.subscribe((state) => useCombinedStore.setState({ calendarDateStore: state }));
 // toggleStore.subscribe((state) => useCombinedStore.setState({ tooltipToggleStore: state }));
 activityStore.subscribe((state) => useCombinedStore.setState({ activityStore: state }));
+mainDateStore.subscribe((state) => useCombinedStore.setState({ mainDateStore: state }));

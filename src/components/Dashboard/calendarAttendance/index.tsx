@@ -11,7 +11,6 @@ import MainCalendar from "./calendar";
 
 const CalendarAttendance = () => {
   const { dateValue } = mainDateStore();
-  console.log("🚀 ~ CalendarAttendance ~ dateValue:", dateValue);
   const { data, isLoading, isError } = useQuery({
     queryKey: ["attendanceAllStaff", { year: dayjs(dateValue).year(), month: dayjs(dateValue).month() + 1 }],
     queryFn: () => getAllAttendanceStaff({ month: (dayjs(dateValue).month() + 1).toString(), year: dayjs(dateValue).year().toString() }),

@@ -3,7 +3,17 @@ import { Badge, Paper, Title } from "@mantine/core";
 import { DatePicker } from "@mantine/dates";
 import dayjs from "dayjs";
 const MainCalendar = ({ allAttendance }: any) => {
-  const { setDateValue, dateValue } = mainDateStore();
+  const { setDateValue, innerValue, setInnerValue } = mainDateStore();
+
+  const onChange = (date: any) => {
+    setInnerValue(date);
+    setDateValue(date);
+  };
+
+  const handleChangeMonth = (date: Date) => {
+    setInnerValue(date);
+    setDateValue(date);
+  };
 
   const renderDay = (date: any, allAttendance: any) => {
     const dateStr = dayjs(date).format("YYYY-MM-DD");
@@ -44,11 +54,11 @@ const MainCalendar = ({ allAttendance }: any) => {
       <DatePicker
         highlightToday
         locale="ko"
-        value={dateValue}
-        onChange={setDateValue}
+        onChange={onChange}
+        date={innerValue}
         onMonthSelect={() => {}}
-        onNextMonth={setDateValue}
-        onPreviousMonth={setDateValue}
+        onPreviousMonth={(date: Date) => handleChangeMonth(date)}
+        onNextMonth={(date: Date) => handleChangeMonth(date)}
         firstDayOfWeek={0}
         onLevelChange={() => {}} // 레벨 변경 이벤트를 무시
         level="month"
