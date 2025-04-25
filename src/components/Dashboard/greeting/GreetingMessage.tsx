@@ -16,7 +16,7 @@ function GreetingMessage() {
         </Text>
         님, 반가워요!
       </Text>
-      <Text size="sm">{`${today} 입니다.`}</Text>
+      <Text size="sm">{`오늘은 ${today} 입니다.`}</Text>
     </Stack>
   );
 }
