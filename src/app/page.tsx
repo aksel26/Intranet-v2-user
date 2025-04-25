@@ -6,6 +6,7 @@ import NextImage from "next/image";
 import { useRouter } from "next/navigation";
 import myImage from "/public/images/ACG_LOGO_GRAY.png";
 import { IconAbc, IconLock } from "@tabler/icons-react";
+import { signIn } from "next-auth/react";
 
 export default function page() {
   const router = useRouter();
@@ -26,35 +27,47 @@ export default function page() {
   const submit = async (value: any) => {
     const { id, password } = value;
 
-    await fetch("https://test-acg-playground.insahr.co.kr/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ id, password: password }),
-    })
-      .then((response) => response.json())
-      .then(async ({ statusCode, message, data }) => {
-        if (statusCode === 400 || statusCode === 401) {
-          notification({
-            title: "로그인 오류",
-            color: "red",
-            message: message,
-          });
-        }
+    const result = await signIn("credentials", {
+      redirect: false,
+      id,
+      password,
+    });
+    if (result?.error) {
+      alert(JSON.stringify(result));
+    } else {
+      console.log(result);
+      router.push("/main");
+      // router.push("/dashboard");
+    }
+    // await fetch("https://test-acg-playground.insahr.co.kr/login", {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify({ id, password: password }),
+    // })
+    //   .then((response) => response.json())
+    //   .then(async ({ statusCode, message, data }) => {
+    //     if (statusCode === 400 || statusCode === 401) {
+    //       notification({
+    //         title: "로그인 오류",
+    //         color: "red",
+    //         message: message,
+    //       });
+    //     }
 
-        if (statusCode === 200) {
-          router.push("/main");
-          sessionStorage.setItem("user", JSON.stringify(data));
-        }
-      })
-      .catch((error: any) => {
-        notification({
-          title: "로그인 오류",
-          color: "red",
-          message: "로그인 중 오류가 발생하였습니다.",
-        });
-      });
+    //     if (statusCode === 200) {
+    //       router.push("/main");
+    //       sessionStorage.setItem("user", JSON.stringify(data));
+    //     }
+    //   })
+    //   .catch((error: any) => {
+    //     notification({
+    //       title: "로그인 오류",
+    //       color: "red",
+    //       message: "로그인 중 오류가 발생하였습니다.",
+    //     });
+    //   });
   };
   return (
     <AppShell>
