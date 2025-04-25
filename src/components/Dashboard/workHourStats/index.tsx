@@ -1,11 +1,14 @@
 import * as api from "@/app/api/get/getApi";
+import { ErrorView } from "@/components/Global/view/ErrorView";
+import LoadingView from "@/components/Global/view/LoadingView";
 import { mainDateStore } from "@/lib/store/mainDateStore";
-import { CompositeChart } from "@mantine/charts";
-import { ActionIcon, Group, Loader, Paper, Title } from "@mantine/core";
+import { ActionIcon, Group, Paper, Title } from "@mantine/core";
+import { IconDots } from "@tabler/icons-react";
 import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { useRouter } from "next/navigation";
-import IconDots from "/public/icons/dots.svg";
+import WorkStats from "./chart";
+// import IconDots from "/public/icons/dots.svg";
 const WorkHourStats = () => {
   const { dateValue } = mainDateStore();
   const param = { year: dayjs(dateValue).year().toString(), month: (dayjs(dateValue).month() + 1).toString() };
@@ -16,6 +19,12 @@ const WorkHourStats = () => {
 
   const router = useRouter();
   const goWorkDetails = () => router.push("/attendance/work");
+  const workStats = data?.data.data.weeklyWorkHours || [];
+  const renderContent = () => {
+    if (isLoading) return <LoadingView />;
+    if (isError) return <ErrorView>업무시간 정보를 불러오는 중 문제가 발생하였습니다.</ErrorView>;
+    return <WorkStats workStats={workStats} />;
+  };
 
   return (
     <Paper bg={"white"} px="md" py="lg" radius={"lg"}>
@@ -23,69 +32,10 @@ const WorkHourStats = () => {
         <Title order={5}>이번달 나의 업무 시간</Title>
 
         <ActionIcon onClick={goWorkDetails} variant="default">
-          <IconDots />
+          <IconDots size={18} />
         </ActionIcon>
       </Group>
-      {isLoading ? (
-        <Group justify="center" py={"sm"}>
-          <Loader color="blue" type="dots" />
-        </Group>
-      ) : (
-        <CompositeChart
-          h={230}
-          dataKey="week"
-          data={data?.data.data.weeklyWorkHours || []}
-          withLegend
-          legendProps={{ verticalAlign: "top", height: 50 }}
-          // dataKey="date"
-          maxBarWidth={30}
-          referenceLines={[{ y: 40, label: "주 40시간", color: "red.6" }]}
-          series={[
-            {
-              name: "hours",
-              color: "rgba(18, 120, 255, 0.2)",
-              type: "bar",
-              label: "근무시간",
-            },
-          ]}
-          curveType="linear"
-          yAxisProps={{
-            domain: [0, 50],
-            ticks: [0, 10, 20, 30, 40, 50],
-            allowDecimals: false,
-          }}
-          tooltipProps={{
-            content: ({ payload, label }) => {
-              if (!payload || payload.length === 0) return null;
-
-              return (
-                <div
-                  style={{
-                    background: "white",
-                    padding: "8px 12px",
-                    border: "1px solid #ccc",
-                    borderRadius: "4px",
-                    boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
-                  }}
-                >
-                  <div className="text-sm mb-1 font-semibold">{label}주차</div>
-                  {payload.map((entry, index) => (
-                    <div key={index} className="flex items-center">
-                      <div
-                        className="w-[10px] h-[10px]"
-                        style={{
-                          background: entry.color,
-                        }}
-                      />
-                      <span className="ml-2 text-sm">{entry.value} 시간</span>
-                    </div>
-                  ))}
-                </div>
-              );
-            },
-          }}
-        />
-      )}
+      {renderContent()}
     </Paper>
   );
 };
