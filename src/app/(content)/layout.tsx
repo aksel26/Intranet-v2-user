@@ -101,15 +101,15 @@ export default function ContentLayout({ children }: { children: React.ReactNode 
           </Button>
         </Group>
 
-        <UserInfoCard myInfo={myInfo} isLoading={isLoading} />
+        {/* <UserInfoCard myInfo={myInfo} isLoading={isLoading} /> */}
 
-        {myInfo?.attendance === "연차" ? <Vacation /> : <Work myInfo={myInfo} />}
-        <AttendanceButtonWrapper onWorkModalOpen={onWorkModalOpen} offWorkModalOpen={offWorkModalOpen} />
+        {/* {myInfo?.attendance === "연차" ? <Vacation /> : <Work myInfo={myInfo} />}
+        <AttendanceButtonWrapper onWorkModalOpen={onWorkModalOpen} offWorkModalOpen={offWorkModalOpen} /> */}
         <NavMenu />
       </AppShell.Navbar>
 
-      <CheckIn myInfo={myInfo} onWorkModalClose={onWorkModalClose} onWorkTimeOpened={onWorkTimeOpened} />
-      <CheckOutWrapper myInfo={myInfo} offWorkModalClose={offWorkModalClose} offWorkTimeOpened={offWorkTimeOpened} />
+      {/* <CheckIn myInfo={myInfo} onWorkModalClose={onWorkModalClose} onWorkTimeOpened={onWorkTimeOpened} />
+      <CheckOutWrapper myInfo={myInfo} offWorkModalClose={offWorkModalClose} offWorkTimeOpened={offWorkTimeOpened} /> */}
     </AppShell>
   );
 }
