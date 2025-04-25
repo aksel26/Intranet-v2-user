@@ -1,4 +1,4 @@
-import ErrorView from "@/components/Global/view/ErrorView";
+import { ErrorView } from "@/components/Global/view/ErrorView";
 import LoadingView from "@/components/Global/view/LoadingView";
 import { Box, Flex, Paper, Stack, Text } from "@mantine/core";
 import NumberFlow from "@number-flow/react";

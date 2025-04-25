@@ -1,6 +1,6 @@
 import * as api from "@/app/api/get/getApi";
 import EmptyView from "@/components/Global/view/EmptyView";
-import ErrorView from "@/components/Global/view/ErrorView";
+import { ErrorView } from "@/components/Global/view/ErrorView";
 import LoadingView from "@/components/Global/view/LoadingView";
 import { Group, ScrollArea, Stack, Text } from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
@@ -11,7 +11,7 @@ interface BirthProps {
 }
 
 const Birth = ({ month }: BirthProps) => {
-  const { data, isLoading, isError } = useQuery({ queryKey: ["notices", { month: month }], queryFn: () => api.getBirth({ month }) });
+  const { data, isLoading, isError } = useQuery({ queryKey: ["birth", { month: month }], queryFn: () => api.getBirth({ month }) });
   const birth = data?.data.data;
 
   const renderContent = () => {

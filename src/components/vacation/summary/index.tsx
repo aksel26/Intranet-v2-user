@@ -1,6 +1,6 @@
 import { getVacationSummary } from "@/app/api/get/getApi";
 import ToolTipDetailsVacation from "@/components/Attendance/ToolTipDetailsVacation";
-import ErrorView from "@/components/Global/view/ErrorView";
+import { ErrorView } from "@/components/Global/view/ErrorView";
 import LoadingView from "@/components/Global/view/LoadingView";
 import { TYearMonth } from "@/types/apiTypes";
 import { ActionIcon, Flex, Group, Loader, Paper, Stack, Text } from "@mantine/core";

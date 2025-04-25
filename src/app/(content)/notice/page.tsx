@@ -1,6 +1,6 @@
 "use client";
 import EmptyView from "@/components/Global/view/EmptyView";
-import ErrorView from "@/components/Global/view/ErrorView";
+import { ErrorView } from "@/components/Global/view/ErrorView";
 import LoadingView from "@/components/Global/view/LoadingView";
 import Search from "@/components/notice/search";
 import useGetNotices from "@/hooks/useGetNotices";

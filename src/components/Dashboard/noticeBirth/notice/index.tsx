@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import styles from "../../../../styles/list.module.css";
 import LoadingView from "@/components/Global/view/LoadingView";
-import ErrorView from "@/components/Global/view/ErrorView";
+import { ErrorView } from "@/components/Global/view/ErrorView";
 import EmptyView from "@/components/Global/view/EmptyView";
 const LIST_LIMIT = 4;
 

@@ -1,4 +1,4 @@
-import ErrorView from "@/components/Global/view/ErrorView";
+import { ErrorView } from "@/components/Global/view/ErrorView";
 import LoadingView from "@/components/Global/view/LoadingView";
 import { myInfoStore } from "@/lib/store/myInfoStore";
 import { Box, Flex, Group, Loader, Paper, Stack, Text } from "@mantine/core";

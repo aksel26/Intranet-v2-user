@@ -4,7 +4,7 @@ import NumberFlow from "@number-flow/react";
 import dayjs from "dayjs";
 import Rule from "./Rule";
 import LoadingView from "@/components/Global/view/LoadingView";
-import ErrorView from "@/components/Global/view/ErrorView";
+import { ErrorView } from "@/components/Global/view/ErrorView";
 // import Rule from "./rule";
 
 export const TopTitleMeal = ({ stats, isLoading, isError }: any) => {

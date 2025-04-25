@@ -2,7 +2,7 @@
 
 import * as api from "@/app/api/get/getApi";
 import EmptyView from "@/components/Global/view/EmptyView";
-import ErrorView from "@/components/Global/view/ErrorView";
+import { ErrorView } from "@/components/Global/view/ErrorView";
 import LoadingView from "@/components/Global/view/LoadingView";
 import { ActionIcon, Avatar, Box, Button, Group, Modal, Paper, Text, Title } from "@mantine/core";
 import { useDisclosure, useMediaQuery } from "@mantine/hooks";

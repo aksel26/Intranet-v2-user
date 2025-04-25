@@ -11,7 +11,7 @@ import React, { useState } from "react";
 import WelfareInputForm from "./WelfareInputForm";
 import WelfareUpdateForm from "./WelfareUpdateForm";
 import ArrowRight from "/public/icons/arrow-right.svg";
-import ErrorView from "@/components/Global/view/ErrorView";
+import { ErrorView } from "@/components/Global/view/ErrorView";
 
 export const UsedListWelfare = ({ welfares, isLoading, isError }: any) => {
   const [opened, { toggle, close }] = useDisclosure(false);

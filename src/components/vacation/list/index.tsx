@@ -1,7 +1,7 @@
 import { getMyVacations } from "@/app/api/get/getApi";
 import ConfirmStatus from "@/components/Attendance/ConfirmStatus";
 import EmptyView from "@/components/Global/view/EmptyView";
-import ErrorView from "@/components/Global/view/ErrorView";
+import { ErrorView } from "@/components/Global/view/ErrorView";
 import LoadingView from "@/components/Global/view/LoadingView";
 import { isDateBeforeToday } from "@/utils/date/isBeforeToday";
 import { Button, Divider, Group, Paper, Stack, Text } from "@mantine/core";

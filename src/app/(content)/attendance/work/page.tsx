@@ -5,7 +5,7 @@ import DatePicker from "@/components/Attendance/work/datePicker";
 import WorkTimeByLeaveType from "@/components/Attendance/work/workTime";
 import PageContainer from "@/components/Global/container";
 import EmptyView from "@/components/Global/view/EmptyView";
-import ErrorView from "@/components/Global/view/ErrorView";
+import { ErrorView } from "@/components/Global/view/ErrorView";
 import LoadingView from "@/components/Global/view/LoadingView";
 import { TMyAttendance } from "@/types/apiTypes";
 import { calculateNumberToTime } from "@/utils/dateFomat";

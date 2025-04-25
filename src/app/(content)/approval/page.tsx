@@ -6,7 +6,7 @@ import UserSelect from "@/components/Approval/userSelect";
 import MonthSelect from "@/components/Global/dateSelect/MonthSelect";
 import YearSelect from "@/components/Global/dateSelect/YearSelect";
 import EmptyView from "@/components/Global/view/EmptyView";
-import ErrorView from "@/components/Global/view/ErrorView";
+import { ErrorView } from "@/components/Global/view/ErrorView";
 import LoadingView from "@/components/Global/view/LoadingView";
 import { TApprovalList } from "@/lib/types/approval";
 import { TApproval } from "@/types/apiTypes";
