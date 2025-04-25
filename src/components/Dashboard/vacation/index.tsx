@@ -26,7 +26,7 @@ const VacationCard = () => {
             휴가 신청
           </Button>
           <ActionIcon onClick={goVacation} variant="default">
-            <IconDots />
+            <IconDots size={18} />
           </ActionIcon>
         </Group>
       </Group>
