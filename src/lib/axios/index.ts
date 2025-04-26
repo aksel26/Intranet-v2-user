@@ -1,7 +1,7 @@
 import axios, { AxiosError } from "axios";
 import { getSession } from "next-auth/react";
 
-const api = axios.create({
+const apiClient = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
   headers: {
     "Content-Type": "application/json",
@@ -9,7 +9,7 @@ const api = axios.create({
 });
 
 // 요청 인터셉터
-api.interceptors.request.use(
+apiClient.interceptors.request.use(
   async (config) => {
     if (typeof window !== "undefined") {
       const session = await getSession();
@@ -23,7 +23,7 @@ api.interceptors.request.use(
 );
 
 // 응답 인터셉터
-api.interceptors.response.use(
+apiClient.interceptors.response.use(
   (response) => response,
   async (error: AxiosError) => {
     if (error.response?.status === 401 && typeof window !== "undefined") {
@@ -34,4 +34,4 @@ api.interceptors.response.use(
   }
 );
 
-export default api;
+export default apiClient;
