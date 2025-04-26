@@ -12,26 +12,26 @@ export const authOptions: NextAuthOptions = {
       },
 
       async authorize(credentials) {
-        console.log("🚀 ~ authorize ~ credentials:", credentials);
         if (!credentials?.id || !credentials?.password) {
           return null;
         }
 
-        console.log("🚀 ~ authorize ~ credentials:", credentials);
-
         try {
           // 외부 API에 로그인 요청
-          const { data } = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/login`, {
-            password: credentials.password,
-            id: credentials.id,
-          });
-          console.log("🚀 ~ authorize ~ data:", data);
+          const { data } = await axios.post(
+            `${process.env.NEXT_PUBLIC_API_URL}/login`,
+            {
+              password: credentials.password,
+              id: credentials.id,
+            }
+          );
 
           if (data.data.accessToken) {
             // Auth.js 사용자 객체에 토큰 포함
+
             return {
               id: credentials.id,
-              accessToken: data.data.accessToken,
+              ...data.data, // API 응답의 모든 데이터를 포함
             };
           }
           return null;
@@ -44,16 +44,17 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     // JWT에 토큰 저장
     async jwt({ token, user }) {
-      console.log("🚀 ~ jwt ~ token, user:", token, user);
       if (user) {
-        token.accessToken = user.accessToken;
+        // user 객체의 모든 속성을 token에 복사
+        token.user = user;
       }
       return token;
     },
     // 세션에 토큰 전달
     async session({ session, token }) {
-      console.log("🚀 ~ session ~ session, token:", session, token);
-      session.accessToken = token.accessToken as string;
+      session.user = token.user;
+      // 기존 accessToken도 유지
+      session.accessToken = token.user.accessToken;
       return session;
     },
   },
