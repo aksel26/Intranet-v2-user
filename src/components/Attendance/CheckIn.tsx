@@ -3,12 +3,13 @@
 import { useCheckIn } from "@/hooks/useSubmitForm";
 import { Button, Group, Modal, Text } from "@mantine/core";
 
-import { getDeviceType } from "@/utils/userAgent";
+import { useQueryClient } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import notification from "../GNB/Notification";
-import { useQueryClient } from "@tanstack/react-query";
+import { myInfoStore } from "@/lib/store/myInfoStore";
 
-function CheckIn({ myInfo, onWorkModalClose, onWorkTimeOpened }: any) {
+function CheckIn({ checkInModalClose, checkInTimeOpened }: any) {
+  const { myInfo } = myInfoStore();
   const { mutate: checkIn } = useCheckIn();
   const queryClient = useQueryClient();
   const handleCheckIn = () => {
@@ -24,7 +25,7 @@ function CheckIn({ myInfo, onWorkModalClose, onWorkTimeOpened }: any) {
             title: "출석체크",
           });
           await queryClient.invalidateQueries({ queryKey: ["me"] });
-          onWorkModalClose();
+          checkInModalClose();
         },
         onError: (error: any) => {
           const { message: err } = error.response.data || "";
@@ -33,14 +34,20 @@ function CheckIn({ myInfo, onWorkModalClose, onWorkTimeOpened }: any) {
             message: err,
             title: "출석체크",
           });
-          onWorkModalClose();
+          checkInModalClose();
         },
       }
     );
   };
 
   return (
-    <Modal opened={onWorkTimeOpened} onClose={onWorkModalClose} title="출근하기" centered size={"xs"}>
+    <Modal
+      opened={checkInTimeOpened}
+      onClose={checkInModalClose}
+      title="출근하기"
+      centered
+      size={"xs"}
+    >
       <Text>
         {myInfo?.userName} <Text component="span">{myInfo?.gradeName}</Text>
         님,
@@ -53,7 +60,12 @@ function CheckIn({ myInfo, onWorkModalClose, onWorkTimeOpened }: any) {
         <Button fullWidth onClick={handleCheckIn} data-autofocus>
           출근하기
         </Button>
-        <Button fullWidth variant="light" color="gray.8" onClick={onWorkModalClose}>
+        <Button
+          fullWidth
+          variant="light"
+          color="gray.8"
+          onClick={checkInModalClose}
+        >
           닫기
         </Button>
       </Group>
