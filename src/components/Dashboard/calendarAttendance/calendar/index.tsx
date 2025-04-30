@@ -1,3 +1,4 @@
+"use client";
 import { mainDateStore } from "@/lib/store/mainDateStore";
 import { Badge, Paper, Title } from "@mantine/core";
 import { DatePicker } from "@mantine/dates";
