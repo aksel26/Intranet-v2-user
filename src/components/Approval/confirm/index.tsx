@@ -4,6 +4,7 @@ import dayjs from "dayjs";
 import { useApproveVacation } from "@/hooks/useSubmitForm";
 import notification from "@/components/GNB/Notification";
 import { useQueryClient } from "@tanstack/react-query";
+import { useDisclosure } from "@mantine/hooks";
 
 const StackLabelText = ({ label, value, ...props }: any) => {
   return (
@@ -12,6 +13,26 @@ const StackLabelText = ({ label, value, ...props }: any) => {
         {label}
       </Text>
       <Text fz={"xs"}>{value}</Text>
+    </Stack>
+  );
+};
+
+const StackLabelButton = ({ label, value, open, ...props }: any) => {
+  return (
+    <Stack gap={2} {...props}>
+      <Text fz={"xs"} c={"dimmed"}>
+        {label}
+      </Text>
+
+      {value ? (
+        <Text td="underline" c={"blue"} fz={"xs"} styles={{ root: { cursor: "pointer" } }} onClick={open}>
+          {value}
+        </Text>
+      ) : (
+        <Text c={"dimmed"} fz={"xs"}>
+          없음
+        </Text>
+      )}
     </Stack>
   );
 };
@@ -48,7 +69,7 @@ const ApprovalConfirm = ({ opened, close, details }: any) => {
   console.log("🚀 ~ ApprovalConfirm ~ details:", details);
   const queryClient = useQueryClient();
   const { mutate } = useApproveVacation();
-
+  const [previewOpened, { open: previewOpen, close: previewClose }] = useDisclosure(false);
   const confirm = (confirm: string) => {
     mutate(
       { commuteIdx: details.commuteIdx, confirmYN: confirm },
@@ -82,13 +103,19 @@ const ApprovalConfirm = ({ opened, close, details }: any) => {
         <StackLabelText value={details?.userName} label={"요청자"} />
         <StackLabelText value={details?.leaveType} label={"유형"} />
         <StackLabelText value={details?.confirmStatus} label={"상태"} />
-        <StackLabelText value={"hi"} label={"첨부파일"} />
+        <StackLabelButton value={details?.imageName} open={previewOpen} label={"청부파일"} />
       </Group>
       <Group pb={"md"}>
         <StackLabelText value={dayjs(details?.createdAt).format("YYYY-MM-DD")} label={"기안일"} />
         <StackLabelText value={details?.commuteDate} label={"대상일"} />
       </Group>
       <ConfirmStatusButton details={details} close={close} confirm={confirm} />
+      <Modal opened={previewOpened} onClose={previewClose} title="첨부 이미지 미리보기">
+        <img src={details?.imageUrl || ""} alt="preview" />
+        <Button fullWidth size="sm" fz={"xs"} variant="light" color="gray" mt={"md"} onClick={previewClose}>
+          닫기
+        </Button>
+      </Modal>
     </Modal>
   );
 };
