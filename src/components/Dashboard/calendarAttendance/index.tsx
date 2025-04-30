@@ -1,6 +1,6 @@
 import { getAllAttendanceStaff } from "@/app/api/get/getApi";
 import EmptyView from "@/components/Global/view/EmptyView";
-import ErrorView from "@/components/Global/view/ErrorView";
+import { ErrorView } from "@/components/Global/view/ErrorView";
 import LoadingView from "@/components/Global/view/LoadingView";
 import { mainDateStore } from "@/lib/store/mainDateStore";
 import { Stack } from "@mantine/core";
