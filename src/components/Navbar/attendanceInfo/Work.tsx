@@ -15,7 +15,7 @@ function Work() {
   const { elapsedTime, percentage } = useElapsedTime(myInfo?.checkInTime, totalTime);
 
   return (
-    <Stack gap={"xs"}>
+    <Stack gap={0}>
       <Card w={"100%"} mih={100} mt={"xs"} p={"xs"}>
         <Stack gap={3} mb={"lg"}>
           <Group justify="space-between">
