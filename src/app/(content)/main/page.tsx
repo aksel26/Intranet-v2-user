@@ -10,15 +10,17 @@ import { Container, Grid, GridCol, Stack } from "@mantine/core";
 function page() {
   return (
     <Container fluid p={"lg"}>
-      {/* <GreetingMessage /> */}
+      <GreetingMessage />
       <Grid>
-        <GridCol span={{ base: 12, md: 6 }}>{/* <CalendarAttendance /> */}</GridCol>
+        <GridCol span={{ base: 12, md: 6 }}>
+          <CalendarAttendance />
+        </GridCol>
         <GridCol span={{ base: 12, md: 6 }}>
           <Stack>
-            {/* <WelfareButtons />
+            <WelfareButtons />
             <NoticeBirth />
             <VacationCard />
-            <WorkHourStats /> */}
+            <WorkHourStats />
           </Stack>
         </GridCol>
       </Grid>
