@@ -28,7 +28,8 @@ apiClient.interceptors.response.use(
   async (error: AxiosError) => {
     if (error.response?.status === 401 && typeof window !== "undefined") {
       // 401 에러 시 로그아웃
-      window.location.href = "/login";
+      window.location.href = "/";
+      throw new Error("Unauthorized");
     }
     return Promise.reject(error);
   }
