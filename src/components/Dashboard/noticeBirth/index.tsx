@@ -44,7 +44,9 @@ const NoticeBirth = () => {
         </Tabs.Panel>
         <Tabs.Panel value="birth" pt={"xs"} pos={"relative"}>
           <Birth month={(dayjs(dateValue).month() + 1).toString()} />
-          <Fireworks autorun={{ speed: 0.2 }} style={{ position: "absolute", width: "100%", height: cardHeight, right: 0, top: -50, zIndex: 0 }} />
+          {activeTab === "birth" && (
+            <Fireworks autorun={{ speed: 0.2 }} style={{ position: "absolute", width: "100%", height: cardHeight, right: 0, top: -50, zIndex: 0 }} />
+          )}
         </Tabs.Panel>
       </Tabs>
     </Paper>

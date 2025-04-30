@@ -1,5 +1,5 @@
 import { useNavStore } from "@/lib/store/toggleStore";
-import { NavLink } from "@mantine/core";
+import { Box, NavLink } from "@mantine/core";
 import Link from "next/link";
 import { memo } from "react";
 
@@ -50,7 +50,13 @@ const NavItem = memo(({ item, toggleDesktop }: NavItemProps) => {
   return (
     <NavLink label={item.label} childrenOffset={item.childrenOffset}>
       {item.children?.map((child, index) => (
-        <NavLink onClick={toggleDesktop} key={`${child.label}-${index}`} component={Link} href={child.href} label={child.label} />
+        <NavLink
+          onClick={toggleDesktop}
+          key={`${child.label}-${index}`}
+          component={Link}
+          href={child.href}
+          label={child.label}
+        />
       ))}
     </NavLink>
   );
@@ -63,11 +69,15 @@ const NavMenu = memo(() => {
   console.log("🚀 ~ NavMenu ~ mobileOpened:", mobileOpened);
   const toggleDesktop = useNavStore((state) => state.toggleMobile);
   return (
-    <>
+    <Box mt={"xs"}>
       {MENU_ITEMS.map((item, index) => (
-        <NavItem key={`${item.label}-${index}`} item={item} toggleDesktop={toggleDesktop} />
+        <NavItem
+          key={`${item.label}-${index}`}
+          item={item}
+          toggleDesktop={toggleDesktop}
+        />
       ))}
-    </>
+    </Box>
   );
 });
 
