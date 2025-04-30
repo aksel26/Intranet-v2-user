@@ -2,16 +2,22 @@ import { getMe } from "@/app/api/get/getApi";
 import { ErrorViewSmall } from "@/components/Global/view/ErrorView";
 import LoadingView from "@/components/Global/view/LoadingView";
 import { myInfoStore } from "@/lib/store/myInfoStore";
+import { getDDayCount } from "@/utils/date/dDayCount";
 import { Box, Flex, Group, Skeleton, Stack, Text } from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
-import React, { useCallback, useEffect } from "react";
+import { useSession } from "next-auth/react";
+import React, { useCallback, useEffect, useState } from "react";
 
 const UserInfoCard = () => {
   const { setMyInfo } = myInfoStore();
 
+  const session = useSession();
+
+  const [queryKey, setQueryKey] = useState<string>();
+
   const { data, isLoading, isError } = useQuery({
-    queryKey: ["me"],
+    queryKey: ["me", { userIdx: queryKey }],
     queryFn: () => getMe(),
   });
 
@@ -19,37 +25,19 @@ const UserInfoCard = () => {
 
   useEffect(() => {
     setMyInfo(data?.data.data);
-  }, [data]);
-
-  const getDDayCount = useCallback((baseDate: string | null) => {
-    const today = dayjs();
-    const target = dayjs(baseDate);
-    const diff = today.diff(target, "day") + 1;
-
-    return diff >= 0 ? `ACG Day + ${diff}` : `-`;
-  }, []);
+    if (session.data) setQueryKey(session?.data.user.id);
+  }, [data, session]);
 
   const renderContent = () => {
-    if (isError)
-      return (
-        <ErrorViewSmall>
-          유저 정보를 불러오는 중 문제가 발생했습니다.
-        </ErrorViewSmall>
-      );
+    if (isError) return <ErrorViewSmall>유저 정보를 불러오는 중 문제가 발생했습니다.</ErrorViewSmall>;
 
     if (isLoading) return <LoadingView />;
-    const { userName, gradeName, hqName, teamName, userEmail, joinDate } =
-      myInfo;
+    const { userName, gradeName, hqName, teamName, userEmail, joinDate } = myInfo;
 
     return (
       <Skeleton visible={isLoading}>
         <Stack w={"100%"} bg={"primary.0"} align={"center"} mih={100} p={"md"}>
-          <Flex
-            direction={"column"}
-            w={"100%"}
-            columnGap={"xl"}
-            style={{ position: "relative", borderRadius: 7 }}
-          >
+          <Flex direction={"column"} w={"100%"} columnGap={"xl"} style={{ position: "relative", borderRadius: 7 }}>
             <Flex direction={"column"} rowGap={"md"} w={"100%"}>
               <Box>
                 <Text fz={"lg"} fw={600} c={"primary.9"}>
