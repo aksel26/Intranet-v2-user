@@ -12,11 +12,7 @@ function Work() {
   const { myInfo } = myInfoStore();
 
   const totalTime = useTimeByLeaveType(myInfo?.leaveTypeIdx);
-  const { elapsedTime, percentage } = useElapsedTime(
-    myInfo?.checkInTime,
-    totalTime
-  );
-  console.log("myInfo: ", myInfo);
+  const { elapsedTime, percentage } = useElapsedTime(myInfo?.checkInTime, totalTime);
 
   return (
     <Stack gap={"xs"}>
@@ -29,13 +25,7 @@ function Work() {
                 출근시간
               </Text>
             </Group>
-            <Badge
-              variant="light"
-              radius={"sm"}
-              size="md"
-              fw={500}
-              color={myInfo?.attendance?.includes("지각") ? "yellow" : "blue"}
-            >
+            <Badge variant="light" radius={"sm"} size="md" fw={500} color={myInfo?.attendance?.includes("지각") ? "yellow" : "blue"}>
               {myInfo?.attendance}
             </Badge>
           </Group>
@@ -52,12 +42,7 @@ function Work() {
               </Text>
             </Group>
 
-            <Text
-              pl={25}
-              fz={"xs"}
-              mb={5}
-              styles={{ root: { letterSpacing: "0.5px" } }}
-            >
+            <Text pl={25} fz={"xs"} mb={5} styles={{ root: { letterSpacing: "0.5px" } }}>
               {calculateNumberToTime(myInfo?.workingMinutes)}
             </Text>
           </Stack>
@@ -70,12 +55,7 @@ function Work() {
               </Text>
             </Group>
 
-            <Text
-              pl={25}
-              fz={"xs"}
-              mb={5}
-              styles={{ root: { letterSpacing: "0.5px" } }}
-            >
+            <Text pl={25} fz={"xs"} mb={5} styles={{ root: { letterSpacing: "0.5px" } }}>
               {elapsedTime}
             </Text>
             <Progress value={percentage} />
