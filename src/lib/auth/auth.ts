@@ -18,13 +18,10 @@ export const authOptions: NextAuthOptions = {
 
         try {
           // 외부 API에 로그인 요청
-          const { data } = await axios.post(
-            `${process.env.NEXT_PUBLIC_API_URL}/login`,
-            {
-              password: credentials.password,
-              id: credentials.id,
-            }
-          );
+          const { data } = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/login`, {
+            password: credentials.password,
+            id: credentials.id,
+          });
 
           if (data.data.accessToken) {
             // Auth.js 사용자 객체에 토큰 포함
@@ -36,6 +33,7 @@ export const authOptions: NextAuthOptions = {
           }
           return null;
         } catch (error) {
+          console.log("🚀 ~ authorize ~ error:", error);
           return null;
         }
       },
@@ -60,10 +58,11 @@ export const authOptions: NextAuthOptions = {
   },
   session: {
     strategy: "jwt", // JWT 기반 세션
-    maxAge: 60 * 60, // 세션 1시간
+    maxAge: 60 * 60 * 24 * 14, // 2주 (14일)
   },
   pages: {
     signIn: "/", // 커스텀 로그인 페이지
+    signOut: "/", // 커스텀 로그아웃 페이지
   },
   secret: process.env.NEXTAUTH_SECRET, // .env에 설정
 };
