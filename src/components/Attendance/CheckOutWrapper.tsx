@@ -12,8 +12,6 @@ import EarlyCheckOut from "./EarlyCheckOut";
 import InTimeCheckOut from "./InTimeCheckOut";
 
 function CheckOutWrapper({ checkOutModalClose, checkOutTimeOpened }: any) {
-  // const { myInfo, isLoading, isError } = useGetMe();
-
   const { myInfo } = myInfoStore();
   const { mutate: checkOut } = useCheckOut();
   //   const { hours } = checkOutTimeValidation(myInfo.checkInTime);

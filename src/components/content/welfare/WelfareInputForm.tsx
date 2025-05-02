@@ -3,7 +3,14 @@ import notification from "@/components/GNB/Notification";
 import { useGetUsers } from "@/hooks/useGetUsers";
 import { useSubmitFormWelfare } from "@/hooks/useSubmitForm";
 import { myInfoStore } from "@/lib/store/myInfoStore";
-import { Button, Flex, LoadingOverlay, MultiSelect, NumberInput, rem, TextInput } from "@mantine/core";
+import {
+  Button,
+  Flex,
+  MultiSelect,
+  NumberInput,
+  rem,
+  TextInput,
+} from "@mantine/core";
 import { DatePickerInput } from "@mantine/dates";
 import { useForm } from "@mantine/form";
 import { IconCalendar } from "@tabler/icons-react";
@@ -50,11 +57,15 @@ export default function WelfareInputForm({ onClose, opened }: any) {
     },
   });
   useEffect(() => {
-    setUsers(userList?.data.data.filter((user: any) => user.userName !== myInfo.userName));
+    setUsers(
+      userList?.data.data.filter(
+        (user: any) => user.userName !== myInfo?.userName
+      )
+    );
   }, [userList, myInfo]);
 
   useEffect(() => {
-    const userName = myInfo.userName || "";
+    const userName = myInfo?.userName || "";
     form.setFieldValue("payerName", userName); // form의 name 필드값을 업데이트
   }, [myInfo]);
 
@@ -95,12 +106,22 @@ export default function WelfareInputForm({ onClose, opened }: any) {
   return (
     <form onSubmit={form.onSubmit(handleSubmit)}>
       <Flex direction={"column"} rowGap={10}>
-        <TextInput label="결제자" disabled key={form.key("payerName")} {...form.getInputProps("payerName")} />
+        <TextInput
+          label="결제자"
+          disabled
+          key={form.key("payerName")}
+          {...form.getInputProps("payerName")}
+        />
         <DatePickerInput
           label="일자"
           locale="ko"
           highlightToday
-          leftSection={<IconCalendar style={{ width: rem(18), height: rem(18) }} stroke={1.5} />}
+          leftSection={
+            <IconCalendar
+              style={{ width: rem(18), height: rem(18) }}
+              stroke={1.5}
+            />
+          }
           placeholder="사용일자를 선택해 주세요."
           key={form.key("targetDay")}
           {...form.getInputProps("targetDay")}
@@ -125,7 +146,12 @@ export default function WelfareInputForm({ onClose, opened }: any) {
           {...form.getInputProps("payeeIdxs")}
           searchable
         />
-        <TextInput label="사용처" placeholder="결제하신 곳의 상호명을 입력해 주세요." key={form.key("content")} {...form.getInputProps("content")} />
+        <TextInput
+          label="사용처"
+          placeholder="결제하신 곳의 상호명을 입력해 주세요."
+          key={form.key("content")}
+          {...form.getInputProps("content")}
+        />
 
         <NumberInput
           label="금액"
