@@ -36,40 +36,72 @@ const VacationList = ({ params, openAttachmentModal, openVacationModal }: any) =
         </Text>
         <Group gap={"xl"} align="end">
           <Stack gap={1}>
-            <Text fz={"xs"} c={"dimmed"}>
+            <Text fz={"xs"} c={"gray.5"}>
               차감갯수
             </Text>
             <Text fz={"xs"}>{record.annualLeaveReduceUnit}</Text>
           </Stack>
           <Stack gap={1}>
             {record.confirmYN === "Y" ? (
-              <Text fz={"xs"} c={"dimmed"}>
+              <Text fz={"xs"} c={"gray.5"}>
                 잔여 개수
               </Text>
             ) : (
-              <Text fz={"xs"} c={"dimmed"}>
+              <Text fz={"xs"} c={"gray.5"}>
                 (예상) 잔여 개수
               </Text>
             )}
 
             <Text fz={"xs"}>{record.remainingAnnualLeaveQuota}</Text>
           </Stack>
+
           <Stack gap={1}>
-            <Text fz={"xs"} c={"dimmed"}>
-              결재일자
+            <Text fz={"xs"} c={"gray.5"}>
+              결재자
+            </Text>
+            <Group gap={"xs"}>
+              {record.confirmPersonName ? (
+                <Text c={"black"} fz={"xs"}>
+                  {record.confirmPersonName}
+                </Text>
+              ) : (
+                record.approverInfo.map((approver: any, index: number) => (
+                  <Text key={index} fz={"xs"}>
+                    {approver.approverName}
+                  </Text>
+                ))
+              )}
+            </Group>
+          </Stack>
+          <Stack gap={1}>
+            <Text fz={"xs"} c={"gray.5"}>
+              결재상태
             </Text>
             <ConfirmStatus record={record} />
           </Stack>
           <Stack gap={1}>
-            <Text fz={"xs"} c={"dimmed"}>
-              결재자
+            <Text fz={"xs"} c={"gray.5"}>
+              결재일자
             </Text>
-            <Text c={!record.confirmPersonName ? "dimmed" : "black"} fz={"xs"}>
-              {record.confirmPersonName || "결재 승인 전 입니다."}
+            <Text c={"dimmed"} fz={"xs"}>
+              {record.confirmDate || "-"}
             </Text>
+            {/* <ConfirmStatus record={record} /> */}
           </Stack>
           <Stack gap={1}>
-            <Text fz={"xs"} c={"dimmed"}>
+            <Text fz={"xs"} c={"gray.5"}>
+              참조자
+            </Text>
+            <Group gap={"xs"}>
+              {record.ccUserInfo.map((cc: any, index: number) => (
+                <Text key={index} c={"dimmed"} fz={"xs"}>
+                  {cc.ccUserName}
+                </Text>
+              ))}
+            </Group>
+          </Stack>
+          <Stack gap={1}>
+            <Text fz={"xs"} c={"gray.5"}>
               첨부파일
             </Text>
             {record.imageUrl ? (
@@ -83,7 +115,7 @@ const VacationList = ({ params, openAttachmentModal, openVacationModal }: any) =
             )}
           </Stack>
           <Stack gap={1}>
-            <Text fz={"xs"} c={"dimmed"}>
+            <Text fz={"xs"} c={"gray.5"}>
               내용
             </Text>
             {record.note ? (
