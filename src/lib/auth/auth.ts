@@ -23,6 +23,7 @@ export const authOptions: NextAuthOptions = {
             id: credentials.id,
           });
 
+          console.log("🚀 ~ authorize ~ data:", data.status);
           if (data.data.accessToken) {
             // Auth.js 사용자 객체에 토큰 포함
 
@@ -33,8 +34,7 @@ export const authOptions: NextAuthOptions = {
           }
           return null;
         } catch (error) {
-          console.log("🚀 ~ authorize ~ error:", error);
-          return null;
+          throw new Error(error.response.data.message);
         }
       },
     }),
@@ -58,7 +58,7 @@ export const authOptions: NextAuthOptions = {
   },
   session: {
     strategy: "jwt", // JWT 기반 세션
-    maxAge: 60 * 60 * 24 * 14, // 2주 (14일)
+    maxAge: 60 * 60 * 24 * 2, // 2일 (48시간)
   },
   pages: {
     signIn: "/", // 커스텀 로그인 페이지
