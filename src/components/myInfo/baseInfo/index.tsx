@@ -1,12 +1,14 @@
 import notification from "@/components/GNB/Notification";
 import { useChangeMyInfo } from "@/hooks/useSubmitForm";
+import { myInfoStore } from "@/lib/store/myInfoStore";
 import { formatPhoneNumber } from "@/utils/phoneNumber";
 import { Box, Button, Paper, Text, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { useQueryClient } from "@tanstack/react-query";
-import React from "react";
+import React, { useEffect } from "react";
 
 const UpdateBaseInfo = () => {
+  const { myInfo } = myInfoStore();
   const queryClient = useQueryClient();
   const { mutate: changeMyInfo } = useChangeMyInfo();
   const userInfoform = useForm({
@@ -45,6 +47,17 @@ const UpdateBaseInfo = () => {
       },
     });
   };
+
+  useEffect(() => {
+    const initialValues = {
+      userAddress: myInfo?.userAddress || "",
+      userCell: myInfo?.userCell || "",
+    };
+
+    userInfoform.setInitialValues(initialValues);
+    userInfoform.setValues(initialValues);
+  }, [myInfo]);
+
   return (
     <Paper bg={"white"} px="md" py="lg" radius={"lg"} mt={"md"}>
       <Text mb={"xs"}>개인정보 수정</Text>
