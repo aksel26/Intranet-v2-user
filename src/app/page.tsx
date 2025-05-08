@@ -33,41 +33,14 @@ export default function page() {
       password,
     });
     if (result?.error) {
-      alert(JSON.stringify(result));
+      notification({
+        title: "로그인 오류",
+        color: "red",
+        message: result?.error,
+      });
     } else {
-      console.log(result);
       router.push("/main");
-      // router.push("/dashboard");
     }
-    // await fetch("https://test-acg-playground.insahr.co.kr/login", {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify({ id, password: password }),
-    // })
-    //   .then((response) => response.json())
-    //   .then(async ({ statusCode, message, data }) => {
-    //     if (statusCode === 400 || statusCode === 401) {
-    //       notification({
-    //         title: "로그인 오류",
-    //         color: "red",
-    //         message: message,
-    //       });
-    //     }
-
-    //     if (statusCode === 200) {
-    //       router.push("/main");
-    //       sessionStorage.setItem("user", JSON.stringify(data));
-    //     }
-    //   })
-    //   .catch((error: any) => {
-    //     notification({
-    //       title: "로그인 오류",
-    //       color: "red",
-    //       message: "로그인 중 오류가 발생하였습니다.",
-    //     });
-    //   });
   };
   return (
     <AppShell>
