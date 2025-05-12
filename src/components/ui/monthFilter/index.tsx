@@ -37,7 +37,7 @@ const MonthFilter = ({ trigger }: any) => {
   };
 
   return (
-    <Group justify="flex-end" mb={"xs"}>
+    <Group justify="flex-end">
       <Popover position="left-start" offset={8} withArrow shadow="md" opened={monthSelectOpened} onChange={setMonthSelectOpened}>
         <Popover.Target>
           <Button size="xs" leftSection={<IconCalendar size={18} strokeWidth={1.2} />} variant="light" onClick={() => setMonthSelectOpened((o) => !o)}>

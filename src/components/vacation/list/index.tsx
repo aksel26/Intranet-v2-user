@@ -14,7 +14,7 @@ const VacationList = ({ params, openAttachmentModal, openVacationModal }: any) =
 
   const ListWrapper = () => {
     return (
-      <Paper bg={"white"} p="lg" py={"lg"} radius={"lg"}>
+      <Paper bg={"white"} p="lg" py={"lg"} radius={"lg"} mt={"xs"}>
         <Stack gap={"lg"}>
           {vacations?.map((record: any, index: number, arr: any) => {
             return <Items key={record.commuteIdx} record={record} index={index} arr={arr} />;

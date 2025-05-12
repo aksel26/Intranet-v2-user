@@ -18,11 +18,12 @@ import dayjs from "dayjs";
 import React, { useState } from "react";
 import styles from "../../../styles/list.module.css";
 import PageContainer from "@/components/Global/container";
+import MonthFilter from "@/components/ui/monthFilter";
 
 const page = () => {
   const [params, setParams] = useState<TApproval>({
     year: dayjs().year().toString(),
-    month: (dayjs().month() + 1).toString(),
+    // month: (dayjs().month() + 1).toString(),
   });
   const { data, isLoading, isError } = useQuery({
     queryKey: ["approvals", params],
@@ -118,10 +119,12 @@ const page = () => {
         </Text>
       </Stack>
 
-      <Group align="end">
-        <YearSelect w={150} setParams={setParams} />
-        <MonthSelect w={100} setParams={setParams} />
-        <UserSelect w={250} setParams={setParams} />
+      <Group justify="space-between" align="center">
+        <Group>
+          <YearSelect w={150} setParams={setParams} />
+          <UserSelect w={250} setParams={setParams} />
+        </Group>
+        <MonthFilter trigger={setParams} />
       </Group>
       <Paper bg={"white"} px="md" py="md" radius={"lg"}>
         {renderContent()}
