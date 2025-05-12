@@ -31,6 +31,11 @@ export const GlobalContainer = ({ children }: { children: React.ReactNode }) => 
           },
         },
       },
+      Checkbox: {
+        defaultProps: {
+          radius: "sm", // 여기에 원하는 radius 값 설정 ('xs', 'sm', 'md', 'lg', 'xl' 또는 숫자)
+        },
+      },
       DatePicker: {
         styles: {
           month: { width: "100%" },
