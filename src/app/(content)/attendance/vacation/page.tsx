@@ -13,6 +13,7 @@ import VacationList from "@/components/vacation/list";
 import VacationSummary from "@/components/vacation/summary";
 import { TYearMonth } from "@/types/apiTypes";
 import dayjs from "dayjs";
+import MonthFilter from "@/components/ui/monthFilter";
 
 function page() {
   const [cancelVacationOpened, { open: cancelOpenVacationModal, close: cancelVacationModalClose }] = useDisclosure(false);
@@ -20,7 +21,6 @@ function page() {
 
   const [params, setParams] = useState<TYearMonth>({
     year: dayjs().year().toString(),
-    month: (dayjs().month() + 1).toString(),
   });
 
   const [currentVacationInfo, setCurrentVacationInfo] = useState();
@@ -46,7 +46,9 @@ function page() {
       </Stack>
       <YearSelect setParams={setParams} w={120} />
       <VacationSummary params={params} />
-      <MonthSelect setParams={setParams} w={100} />
+      <MonthFilter trigger={setParams} />
+
+      {/* <MonthSelect setParams={setParams} w={100} /> */}
       <VacationList params={params} openAttachmentModal={openAttachmentModal} openVacationModal={openVacationModal} />
       <CancleVacation opened={cancelVacationOpened} close={cancelVacationModalClose} details={currentVacationInfo} />
       <Attachment opened={attachmentModalOpened} close={attachmentModalClose} details={currentVacationInfo} />

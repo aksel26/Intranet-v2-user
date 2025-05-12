@@ -6,7 +6,7 @@ export interface TMyAttendance {
 }
 
 export interface TYearMonth {
-  month: string;
+  month?: string;
   year: string;
 }
 export interface TSearchNotice {
