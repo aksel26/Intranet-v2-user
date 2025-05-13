@@ -30,20 +30,17 @@ export const Attend = ({ toggle, values, type }: any) => {
     >
       <Group>
         {renderIcon(type)}
-        <Flex direction={"column"} align={"flex-start"}>
-          <Text size="sm" fw={600} c={"blue.8"}>
-            <NumberFormatter thousandSeparator value={values?.amount || 0} />
-            <Text component="span" size="sm" ml={2}>
-              원
-            </Text>
+        <Flex direction={"column"} align={"flex-start"} gap={2}>
+          <Text size="sm" fw={500} c={"blue.6"}>
+            <NumberFormatter thousandSeparator value={values?.amount || 0} suffix=" 원" />
           </Text>
-          <Group>
+          <Group gap={"xs"}>
             <Text c={"gray.6"} size="xs">
-              {values?.place || ""}
+              {values?.place || "입력정보가 없습니다."}
             </Text>
             <Divider size={"xs"} orientation="vertical" />
             <Text c={"gray.6"} size="xs">
-              {values?.payerName || ""}
+              {values?.payerName || "입력정보가 없습니다."}
             </Text>
           </Group>
         </Flex>

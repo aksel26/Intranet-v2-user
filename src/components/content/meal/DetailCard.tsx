@@ -15,6 +15,10 @@ export const DetailCard = ({ toggle, targetList }: any) => {
   );
 
   if (targetList) {
+    if (isAllEmpty(targetList, mealType[0]) && isAllEmpty(targetList, mealType[1]) && isAllEmpty(targetList, mealType[2])) {
+      return <Attend type={mealType[1]} toggle={toggle} values={targetList} />;
+    }
+
     return mealType.map((item: string, index: number) => {
       if (isAllEmpty(targetList, item)) return null;
       else return <Attend type={item} key={index} toggle={toggle} values={targetList[item]} />;
