@@ -1,6 +1,8 @@
 name: Deploy to testServer
 on:
   # master 브랜치로 PR될 때 마다 이 workflow를 수행
+  push:
+    branches: ["main"]
   pull_request:
     branches: ["main"]
 jobs:
