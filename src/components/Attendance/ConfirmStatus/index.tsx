@@ -15,15 +15,16 @@ const ConfirmStatus = ({ record }: any) => {
         </Group>
       );
     }
+  } else if (record.confirmYN === "Y") {
     return (
-      <Badge variant="outline" color="yellow" radius="sm" size="sm">
-        승인 대기
+      <Badge variant="outline" color="green" radius="sm" size="sm">
+        승인
       </Badge>
     );
   } else {
     return (
-      <Badge variant="outline" color="green" radius="sm" size="sm">
-        승인
+      <Badge variant="outline" color="yellow" radius="sm" size="sm">
+        승인 대기
       </Badge>
     );
   }
