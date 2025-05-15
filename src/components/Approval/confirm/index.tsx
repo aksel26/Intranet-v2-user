@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Group, Modal, Stack, Text } from "@mantine/core";
 import dayjs from "dayjs";
 import { useApproveVacation } from "@/hooks/useSubmitForm";
@@ -45,9 +45,9 @@ const ConfirmStatusButton = ({ details, close, confirm }: any) => {
       </Button>
     );
   } else {
-    if (details.confirmYN === "Y") {
+    if (details.confirmYN === "R") {
       return (
-        <Button size="xs" variant="light" color="red" fullWidth onClick={() => confirm("N")}>
+        <Button size="xs" variant="light" color="red" fullWidth onClick={() => confirm("R")}>
           취소하기
         </Button>
       );
@@ -69,6 +69,7 @@ const ApprovalConfirm = ({ opened, close, details }: any) => {
   const queryClient = useQueryClient();
   const { mutate } = useApproveVacation();
   const [previewOpened, { open: previewOpen, close: previewClose }] = useDisclosure(false);
+
   const confirm = (confirm: string) => {
     mutate(
       { commuteIdx: details.commuteIdx, confirmYN: confirm },
@@ -97,7 +98,7 @@ const ApprovalConfirm = ({ opened, close, details }: any) => {
     );
   };
   return (
-    <Modal opened={opened} onClose={close} title="휴가신청 승인하기" centered size={"sm"}>
+    <Modal opened={opened} onClose={close} title={`휴가신청 결재`} centered size={"sm"}>
       <Group pb={"md"} justify="space-between">
         <StackLabelText value={details?.userName} label={"요청자"} />
         <StackLabelText value={details?.leaveType} label={"유형"} />
