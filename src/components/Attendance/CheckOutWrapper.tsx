@@ -58,32 +58,17 @@ function CheckOutWrapper({ checkOutModalClose, checkOutTimeOpened }: any) {
     );
   };
   return (
-    <Modal
-      opened={checkOutTimeOpened}
-      onClose={checkOutModalClose}
-      title="퇴근하기"
-      centered
-      size={"xs"}
-    >
+    <Modal opened={checkOutTimeOpened} onClose={checkOutModalClose} title="퇴근하기" centered size={"xs"}>
       <Text>
         {myInfo?.userName} <Text component="span">{myInfo?.gradeName}</Text>
         님,
       </Text>
-      {hours < totalTime ? (
-        <EarlyCheckOut reasonRef={reasonRef} />
-      ) : (
-        <InTimeCheckOut />
-      )}
+      {hours < totalTime ? <EarlyCheckOut reasonRef={reasonRef} /> : <InTimeCheckOut />}
       <Group wrap="nowrap" mt={"md"}>
         <Button fullWidth onClick={handleCheckOut}>
           퇴근하기
         </Button>
-        <Button
-          fullWidth
-          variant="light"
-          color="gray.8"
-          onClick={checkOutModalClose}
-        >
+        <Button fullWidth variant="light" color="gray.8" onClick={checkOutModalClose}>
           닫기
         </Button>
       </Group>
