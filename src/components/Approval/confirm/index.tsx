@@ -57,7 +57,7 @@ const ConfirmStatusButton = ({ details, close, confirm }: any) => {
           <Button size="xs" fullWidth variant="light" color="green" onClick={() => confirm("Y")}>
             승인하기
           </Button>
-          <Button size="xs" variant="light" color="red" fullWidth onClick={() => confirm("N")}>
+          <Button size="xs" variant="light" color="red" fullWidth onClick={() => confirm("R")}>
             반려하기
           </Button>
         </Group>
