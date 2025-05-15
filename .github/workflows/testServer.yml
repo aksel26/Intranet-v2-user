@@ -12,7 +12,7 @@ jobs:
       - name: remote ssh
         run: |
           echo "############# CREATE .ENV #############"
-          cd ../../main
+          cd ../../main/testServer/benefit2024/user/
           [ -f .env.local ] && rm .env.local
           touch .env.local
           echo "NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_URL }}" >> .env.local
