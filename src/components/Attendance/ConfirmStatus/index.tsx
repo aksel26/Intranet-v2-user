@@ -2,7 +2,7 @@ import { Badge, Group, Text } from "@mantine/core";
 import React from "react";
 
 const ConfirmStatus = ({ record }: any) => {
-  if (record.confirmYN === "N") {
+  if (record.confirmYN === "R") {
     if (record.rejectDate) {
       return (
         <Group gap={"xs"}>
