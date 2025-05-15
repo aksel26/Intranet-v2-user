@@ -66,7 +66,6 @@ const ConfirmStatusButton = ({ details, close, confirm }: any) => {
   }
 };
 const ApprovalConfirm = ({ opened, close, details }: any) => {
-  console.log("🚀 ~ ApprovalConfirm ~ details:", details);
   const queryClient = useQueryClient();
   const { mutate } = useApproveVacation();
   const [previewOpened, { open: previewOpen, close: previewClose }] = useDisclosure(false);
@@ -77,9 +76,9 @@ const ApprovalConfirm = ({ opened, close, details }: any) => {
         onSuccess: async () => {
           close();
           notification({
-            title: "휴가신청 승인하기",
+            title: `휴가신청 ${confirm === "R" ? "반려" : "승인"}하기`,
             color: "green",
-            message: "휴가신청 내역이 승인되었습니다.",
+            message: `휴가신청 내역이 ${confirm === "R" ? "반려" : "승인"} 되었습니다.`,
           });
           queryClient.invalidateQueries({
             queryKey: ["approvals"],
@@ -89,7 +88,7 @@ const ApprovalConfirm = ({ opened, close, details }: any) => {
           const errorMessage = error.response?.data?.message || "오류가 발생했습니다.";
 
           notification({
-            title: "휴가신청 승인하기",
+            title: `휴가신청 ${confirm === "R" ? "반려" : "승인"}하기`,
             color: "red",
             message: errorMessage,
           });
