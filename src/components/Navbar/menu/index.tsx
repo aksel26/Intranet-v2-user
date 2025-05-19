@@ -44,19 +44,18 @@ const MENU_ITEMS: MenuItem[] = [
       { label: "공지사항", href: "/notice" },
     ],
   },
+  {
+    label: "검사 * 교육 운영(임시)",
+    children: [{ label: "검사 * 교육운영", href: "/assessment" }],
+    // href:"/text",
+  },
 ];
 
 const NavItem = memo(({ item, toggleDesktop }: NavItemProps) => {
   return (
     <NavLink label={item.label} childrenOffset={item.childrenOffset}>
       {item.children?.map((child, index) => (
-        <NavLink
-          onClick={toggleDesktop}
-          key={`${child.label}-${index}`}
-          component={Link}
-          href={child.href}
-          label={child.label}
-        />
+        <NavLink onClick={toggleDesktop} key={`${child.label}-${index}`} component={Link} href={child.href} label={child.label} />
       ))}
     </NavLink>
   );
@@ -71,11 +70,7 @@ const NavMenu = memo(() => {
   return (
     <Box mt={"xs"}>
       {MENU_ITEMS.map((item, index) => (
-        <NavItem
-          key={`${item.label}-${index}`}
-          item={item}
-          toggleDesktop={toggleDesktop}
-        />
+        <NavItem key={`${item.label}-${index}`} item={item} toggleDesktop={toggleDesktop} />
       ))}
     </Box>
   );
