@@ -43,6 +43,7 @@ function CheckOutWrapper({ checkOutModalClose, checkOutTimeOpened }: any) {
             title: "퇴근",
           });
           await queryClient.invalidateQueries({ queryKey: ["me"] });
+          await queryClient.invalidateQueries({ queryKey: ["attendanceSummary"] });
           checkOutModalClose();
         },
         onError: (error: any) => {
