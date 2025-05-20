@@ -1,0 +1,222 @@
+"use client";
+
+import React, { useEffect, useState, useRef } from "react";
+import FullCalendar from "@fullcalendar/react";
+import timelinePlugin from "@fullcalendar/timeline";
+import resourceTimelinePlugin from "@fullcalendar/resource-timeline";
+import interactionPlugin from "@fullcalendar/interaction";
+import dayGridPlugin from "@fullcalendar/daygrid";
+import listPlugin from "@fullcalendar/list";
+// import printPlugin from '@fullcalendar/print';
+import koLocale from "@fullcalendar/core/locales/ko";
+import "../../../styles/reserveRoom.css";
+import PageContainer from "@/components/Global/container";
+import { Paper, Stack, Text } from "@mantine/core";
+// import { LicenseController } from '@fullcalendar/core/internal';
+// LicenseController.key = 'YOUR_LICENSE_KEY_HERE';
+
+// GlobalContext.Calendar.name = 'CC-Attribution-NonCommercial-NoDerivatives';  // 필수 설정
+const TimelineCalendarWithPrint = () => {
+  const calendarRef = useRef(null);
+  const [isMounted, setIsMounted] = useState(false);
+
+  // 자원 정의
+  const [resources, setResources] = useState([
+    { id: "a", title: "회의실 A", eventColor: "#3788d8" },
+    { id: "b", title: "회의실 B", eventColor: "#4682B4" },
+    { id: "c", title: "회의실 C", eventColor: "#1E90FF" },
+    { id: "d", title: "프로젝터", eventColor: "#28a745" },
+    { id: "e", title: "노트북", eventColor: "#20c997" },
+    { id: "f", title: "개발팀", eventColor: "#dc3545" },
+    { id: "g", title: "디자인팀", eventColor: "#fd7e14" },
+    { id: "h", title: "마케팅팀", eventColor: "#6f42c1" },
+    { id: "D", title: "마케팅팀3", eventColor: "#6f42c1" },
+  ]);
+
+  // 이벤트 데이터
+  const [events, setEvents] = useState<any>([
+    {
+      id: "1",
+      resourceId: "a",
+      title: "경영진 회의",
+      start: "2025-05-20T09:00:00",
+      end: "2025-05-20T10:30:00",
+      description: "분기별 실적 검토 미팅",
+    },
+    {
+      id: "2",
+      resourceId: "b",
+      title: "제품 기획 회의",
+      start: "2025-05-20T11:00:00",
+      end: "2025-05-20T12:30:00",
+      description: "신규 기능 브레인스토밍",
+    },
+    {
+      id: "3",
+      resourceId: "d",
+      title: "프로젝터 대여",
+      start: "2025-05-20T13:00:00",
+      end: "2025-05-20T17:00:00",
+      description: "외부 고객 미팅용",
+    },
+    {
+      id: "4",
+      resourceId: "f",
+      title: "스프린트 계획",
+      start: "2025-05-20T10:00:00",
+      end: "2025-05-20T16:00:00",
+      description: "다음 스프린트 작업 계획 및 할당",
+    },
+    {
+      id: "5",
+      resourceId: "g",
+      title: "UI 디자인 작업",
+      start: "2025-05-21T09:00:00",
+      end: "2025-05-21T17:00:00",
+      description: "모바일 앱 UI 리뉴얼",
+    },
+  ]);
+  const [currentView, setCurrentView] = useState("resourceTimeline");
+
+  const [dateRange, setDateRange] = useState({
+    start: new Date(),
+    end: new Date(new Date().setDate(new Date().getDate() + 7)),
+  });
+  // 일정 목록 인쇄
+
+  const handleViewChange = (viewInfo: any) => {
+    // 인쇄 모드가 아닐 때만 현재 뷰 저장
+    // if (!printMode) {
+    setCurrentView(viewInfo.view.type);
+
+    // 현재 날짜 범위 저장
+    if (viewInfo.view.currentStart && viewInfo.view.currentEnd) {
+      setDateRange({
+        start: viewInfo.view.currentStart,
+        end: viewInfo.view.currentEnd,
+      });
+    }
+  };
+
+  const handleDateSelect = (selectInfo: any) => {
+    if (!selectInfo.resource) {
+      alert("자원을 선택해야 합니다.");
+      return;
+    }
+
+    let title = prompt("새 일정 제목을 입력하세요:");
+    let description = prompt("일정 설명을 입력하세요:");
+    let calendarApi = selectInfo.view.calendar;
+
+    calendarApi.unselect();
+
+    if (title) {
+      const newEvent = {
+        id: String(Date.now()),
+        resourceId: selectInfo.resource.id,
+        title,
+        description,
+        start: selectInfo.startStr,
+        end: selectInfo.endStr,
+      };
+
+      setEvents([...events, newEvent]);
+    }
+  };
+
+  const handleEventClick = (clickInfo: any) => {
+    // 인쇄 모드일 때는 이벤트 클릭 처리 무시
+
+    // 일정 상세 정보 표시
+    const event = clickInfo.event;
+    const description = event.extendedProps.description || "설명 없음";
+
+    alert(`일정: ${event.title}
+시간: ${event.start ? event.start.toLocaleString() : "시간 정보 없음"} ~ ${event.end ? event.end.toLocaleString() : ""}
+설명: ${description}`);
+
+    // 삭제 여부 확인
+    if (confirm("이 일정을 삭제하시겠습니까?")) {
+      event.remove();
+      setEvents(events.filter((e: any) => e.id !== event.id));
+    }
+  };
+
+  // 서버 사이드 렌더링 시 빈 div 반환
+  //   if (!isMounted) {
+  //     return <div className="flex items-center justify-center h-screen">로딩 중...</div>;
+  //   }
+
+  return (
+    <PageContainer>
+      <Stack gap={1}>
+        <Text size="lg" fw={600} component="a">
+          회의실 예약
+        </Text>
+        <Text component="span" c={"gray.6"} fz={"sm"}>
+          회의실 예약 현황을 확인할 수 있습니다.
+        </Text>
+      </Stack>
+      <Paper bg={"white"} px="lg" py="lg" radius={"lg"} mt={"md"}>
+        <div className="calendar-container calendar-print-container" style={{ height: "420px" }}>
+          <FullCalendar
+            ref={calendarRef}
+            plugins={[resourceTimelinePlugin, timelinePlugin, dayGridPlugin, interactionPlugin, listPlugin]}
+            initialView="resourceTimeline"
+            headerToolbar={{
+              left: "title",
+              right: "prev,next today",
+              center: "",
+            }}
+            resources={resources}
+            events={events}
+            editable
+            selectable
+            selectMirror={true}
+            eventClick={handleEventClick}
+            select={handleDateSelect}
+            resourceAreaWidth={"90px"}
+            resourceAreaHeaderContent="회의실"
+            locale={koLocale}
+            viewDidMount={handleViewChange}
+            slotMinTime="08:00:00"
+            slotMaxTime="20:00:00"
+            height="100%"
+            nowIndicator={true}
+            eventDidMount={(info) => {
+              // 툴팁 추가
+              const description = info.event.extendedProps.description;
+              if (description) {
+                info.el.title = description;
+              }
+            }}
+            slotLabelFormat={{
+              hour: "2-digit",
+              minute: "2-digit",
+              hour12: false,
+            }}
+            // views={{
+            //   resourceTimelineDay: {
+            //     slotDuration: "00:30:00",
+            //   },
+            //   //   resourceTimelineWeek: {
+            //   //     slotDuration: "01:00:00",
+            //   //   },
+            //   listWeek: {
+            //     displayEventTime: true,
+            //     displayEventEnd: true,
+            //     eventTimeFormat: {
+            //       hour: "2-digit",
+            //       minute: "2-digit",
+            //       hour12: false,
+            //     },
+            //   },
+            // }}
+          />
+        </div>
+      </Paper>
+    </PageContainer>
+  );
+};
+
+export default TimelineCalendarWithPrint;
