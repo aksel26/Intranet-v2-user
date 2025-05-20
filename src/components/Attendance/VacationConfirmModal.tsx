@@ -5,6 +5,7 @@ import notification from "../GNB/Notification";
 import IconInfoCircle from "/public/icons/info-circle.svg";
 import { useQueryClient } from "@tanstack/react-query";
 import { getLeaveTypeKey } from "@/utils/leaveTypeKey";
+import { AxiosError } from "axios";
 function VacationConfirmModal({ opened, close, submitInfo, confirmPerson, closeDrawer, file }: any) {
   const { mutate: leave } = useLeave();
   const queryClient = useQueryClient();
@@ -15,8 +16,10 @@ function VacationConfirmModal({ opened, close, submitInfo, confirmPerson, closeD
     leave(
       { dto: temp, leaveImage: file },
       {
-        onError: (error: any) => {
-          notification({ color: "red", title: "휴가 신청", message: "휴가 신청 중 오류가 발생하였습니다." });
+        onError: (error: Error) => {
+          const axiosError = error as AxiosError<{ message: string }>;
+          const errorMessage = axiosError.response?.data?.message || "오류가 발생했습니다.";
+          notification({ title: "휴가 신청", color: "red", message: errorMessage });
         },
         onSuccess: async (data: any) => {
           notification({ color: "green", title: "휴가 신청 완료", message: "결재자의 승인을 기다려주세요." });
