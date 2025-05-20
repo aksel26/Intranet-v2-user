@@ -127,12 +127,13 @@ export default function LeaveTypeBox({ attendance, setAttendance }: any) {
             variant="subtle"
             size="xs"
             className={classes.control}
-            onClick={() => vacationType(LEAVE_TYPE["경조 휴무"])}
-            ref={setControlRef(LEAVE_TYPE["경조 휴무"])}
-            mod={{ active: attendance === LEAVE_TYPE["경조 휴무"] }}
+            onClick={() => vacationType(LEAVE_TYPE.훈련)}
+            ref={setControlRef(LEAVE_TYPE.훈련)}
+            mod={{ active: attendance === LEAVE_TYPE.훈련 }}
           >
-            경조휴무
+            훈련
           </Button>
+
           <Button
             variant="subtle"
             size="xs"
@@ -165,6 +166,7 @@ export default function LeaveTypeBox({ attendance, setAttendance }: any) {
           >
             특별휴무
           </Button>
+
           <Button
             variant="subtle"
             size="xs"
@@ -187,7 +189,17 @@ export default function LeaveTypeBox({ attendance, setAttendance }: any) {
           </Button>
         </div>
         <div className={classes.controlsGroup}>
-          <Button size="xs" variant="transparent" className={classes.control} styles={{ root: { cursor: "default" } }}></Button>
+          <Button
+            variant="subtle"
+            size="xs"
+            className={classes.control}
+            onClick={() => vacationType(LEAVE_TYPE["경조 휴무"])}
+            ref={setControlRef(LEAVE_TYPE["경조 휴무"])}
+            mod={{ active: attendance === LEAVE_TYPE["경조 휴무"] }}
+          >
+            경조휴무
+          </Button>
+
           <Button
             variant="subtle"
             size="xs"
@@ -208,6 +220,20 @@ export default function LeaveTypeBox({ attendance, setAttendance }: any) {
           >
             특별휴무 반차
           </Button>
+        </div>
+        <div className={classes.controlsGroup}>
+          <Button
+            variant="subtle"
+            size="xs"
+            className={classes.control}
+            onClick={() => vacationType(LEAVE_TYPE["대체 휴무"])}
+            ref={setControlRef(LEAVE_TYPE["대체 휴무"])}
+            mod={{ active: attendance === LEAVE_TYPE["대체 휴무"] }}
+          >
+            대체휴무
+          </Button>
+          <Button size="xs" variant="transparent" className={classes.control} styles={{ root: { cursor: "default" } }}></Button>
+          <Button size="xs" variant="transparent" className={classes.control} styles={{ root: { cursor: "default" } }}></Button>
         </div>
       </div>
     </div>
