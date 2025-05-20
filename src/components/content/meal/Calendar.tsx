@@ -9,7 +9,6 @@ import { DatePicker } from "@mantine/dates";
 import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { useCallback, useMemo, useRef, useState } from "react";
-import "../../../styles/calendar.css";
 
 export default function Calendar() {
   const mealList = mealStore((state) => state.mealInfo);

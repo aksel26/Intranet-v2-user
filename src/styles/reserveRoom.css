@@ -1,0 +1,29 @@
+.fc-toolbar-title {
+  font-size: 1rem !important;
+  font-weight: bold;
+}
+
+/* 전체 폰트 사이즈 */
+.fc .fc-view-harness {
+  font-size: 12.5px;
+}
+
+/* 오른쪽 왼쪽 버튼 */
+.fc-button-group {
+  column-gap: 8px;
+}
+.fc .fc-button-primary.fc-prev-button,
+.fc .fc-button-primary.fc-next-button {
+  background-color: var(--mantine-color-blue-1);
+  color: var(--mantine-color-blue-3);
+  border: none;
+  border-radius: 8px;
+  font-size: 0.8em;
+}
+
+.fc .fc-button-primary.fc-today-button {
+  background-color: var(--mantine-color-blue-7);
+  border: none;
+  border-radius: 8px;
+  font-size: 0.8em;
+}
