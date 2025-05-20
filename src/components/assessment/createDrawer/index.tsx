@@ -1,9 +1,14 @@
 import {
   ActionIcon,
+  Badge,
   Box,
   Button,
+  Center,
+  Collapse,
+  Divider,
   Drawer,
   FileButton,
+  Grid,
   Group,
   Modal,
   NumberInput,
@@ -26,7 +31,7 @@ import React, { useState } from "react";
 //   { position: 58, mass: 140.12, symbol: "Ce", name: "Cerium" },
 // ];
 
-import { IconTrash, IconPlus } from "@tabler/icons-react";
+import { IconTrash, IconPlus, IconChevronDown } from "@tabler/icons-react";
 import dayjs from "dayjs";
 import { useDisclosure } from "@mantine/hooks";
 
@@ -211,6 +216,8 @@ const CreateDrawer = ({ open, close }: any) => {
   const [value, setValue] = useState<[string | null, string | null]>([null, null]);
   const [file, setFile] = useState<File | null>(null);
   const [openedAddRow, { open: addRowOpen, close: addRowClose }] = useDisclosure(false);
+  const [opened, { toggle }] = useDisclosure(false);
+  const [executionInfoOpened, { toggle: executionInfo }] = useDisclosure(false);
 
   return (
     <Modal opened={open} onClose={close} title="일정 등록" centered size="lg">
@@ -224,56 +231,69 @@ const CreateDrawer = ({ open, close }: any) => {
         >
           <Group mt={4}>
             <Radio size="xs" value="react2" label="검사운영" defaultChecked />
+            <Radio size="xs" value="react3" label="평가운영" defaultChecked />
             <Radio size="xs" value="svelte2" label="교육운영" />
             <Radio size="xs" value="sve3lte2" label="면접운영" />
           </Group>
         </Radio.Group>
 
-        <TextInput
-          styles={{ label: { fontSize: "var(--mantine-font-size-xs)", color: "var(--mantine-color-gray-5)" } }}
-          label="제목"
-          placeholder="제목을 입력하세요."
-        />
-        <Radio.Group
-          name="favoriteFramework"
-          label="차량 사용 여부"
-          styles={{ label: { fontSize: "var(--mantine-font-size-xs)", color: "var(--mantine-color-gray-5)" } }}
-        >
-          <Group mt={4}>
-            <Radio size="xs" value="react" label="사용" />
-            <Radio size="xs" value="svelte" label="미사용" />
+        {/* <Group justify="center"> */}
+        <Paper shadow="xs" p="xs" onClick={toggle} bg="gray.1" styles={{ root: { cursor: "pointer" } }}>
+          <Group justify="space-between" align="center">
+            <Text fz={"xs"}>검사 정보 입력</Text>
+            <IconChevronDown size={16} />
           </Group>
-        </Radio.Group>
+        </Paper>
 
-        <Stack gap={3}>
-          <Text fz={"xs"} c={"gray.5"}>
-            파일 첨부
-          </Text>
-          <FileButton onChange={setFile} accept="image/png,image/jpeg">
-            {(props) => (
-              <Button variant="light" {...props} size="xs" w={"max-content"}>
-                파일 첨부하기
-              </Button>
-            )}
-          </FileButton>
-          {file ? (
-            <Button variant="subtle" onClick={() => {}}>
-              파일명: {file.name}
-            </Button>
-          ) : (
+        {/* </Group> */}
+
+        <Collapse in={opened}>
+          <TextInput
+            styles={{ label: { fontSize: "var(--mantine-font-size-xs)", color: "var(--mantine-color-gray-5)" } }}
+            label="제목"
+            placeholder="제목을 입력하세요."
+          />
+          <Radio.Group
+            name="favoriteFramework"
+            label="차량 사용 여부"
+            styles={{ label: { fontSize: "var(--mantine-font-size-xs)", color: "var(--mantine-color-gray-5)" } }}
+          >
+            <Group mt={4}>
+              <Radio size="xs" value="react" label="사용" />
+              <Radio size="xs" value="svelte" label="미사용" />
+            </Group>
+          </Radio.Group>
+
+          <Stack gap={3}>
             <Text fz={"xs"} c={"gray.5"}>
-              선택된 파일이 없습니다.
+              파일 첨부
             </Text>
-          )}
-        </Stack>
-        <Textarea
-          styles={{ label: { fontSize: "var(--mantine-font-size-xs)", color: "var(--mantine-color-gray-5)" } }}
-          autosize
-          label="내용"
-          placeholder="작성 내용이 없습니다."
-          minRows={4}
-          maxRows={4}
-        />
+            <FileButton onChange={setFile} accept="image/png,image/jpeg">
+              {(props) => (
+                <Button variant="light" {...props} size="xs" w={"max-content"}>
+                  파일 첨부하기
+                </Button>
+              )}
+            </FileButton>
+            {file ? (
+              <Button variant="subtle" onClick={() => {}}>
+                파일명: {file.name}
+              </Button>
+            ) : (
+              <Text fz={"xs"} c={"gray.5"}>
+                선택된 파일이 없습니다.
+              </Text>
+            )}
+          </Stack>
+          <Textarea
+            styles={{ label: { fontSize: "var(--mantine-font-size-xs)", color: "var(--mantine-color-gray-5)" } }}
+            autosize
+            label="내용"
+            placeholder="작성 내용이 없습니다."
+            minRows={4}
+            maxRows={4}
+          />
+        </Collapse>
 
         {/* <Stack gap={2}>
           <Text fz={"sm"} c={"gray"}>
@@ -298,43 +318,201 @@ const CreateDrawer = ({ open, close }: any) => {
             <Table.Tbody>{rows}</Table.Tbody>
           </Table>
         </Stack> */}
-
-        {/* <EditableTable /> */}
-        <Button size="xs" variant="light" onClick={addRowOpen}>
-          추가(모바일전용버튼)
-        </Button>
-        <Paper bg="gray.1" p="xs">
-          <Group gap={"xs"}>
-            <TextInput size="xs" label="그룹" styles={{ label: { fontSize: "var(--mantine-font-size-xs)", color: "var(--mantine-color-gray-5)" } }} />
-            <TextInput size="xs" label="회사" styles={{ label: { fontSize: "var(--mantine-font-size-xs)", color: "var(--mantine-color-gray-5)" } }} />
-            <TextInput size="xs" label="검사" styles={{ label: { fontSize: "var(--mantine-font-size-xs)", color: "var(--mantine-color-gray-5)" } }} />
-            <TextInput size="xs" label="구분" styles={{ label: { fontSize: "var(--mantine-font-size-xs)", color: "var(--mantine-color-gray-5)" } }} />
-            <TextInput size="xs" label="시간" styles={{ label: { fontSize: "var(--mantine-font-size-xs)", color: "var(--mantine-color-gray-5)" } }} />
-            <TextInput size="xs" label="장소" styles={{ label: { fontSize: "var(--mantine-font-size-xs)", color: "var(--mantine-color-gray-5)" } }} />
+        <Paper shadow="xs" p="xs" onClick={executionInfo} bg="gray.1" styles={{ root: { cursor: "pointer" } }}>
+          <Group justify="space-between" align="center">
+            <Text fz={"xs"}>시행 정보 입력</Text>
+            <IconChevronDown size={16} />
           </Group>
         </Paper>
+        <Collapse in={executionInfoOpened}>
+          {/* <EditableTable /> */}
+
+          {/* <Paper bg="gray.1" p="xs">
+            <Center py={"md"}>
+              <Stack gap={"xs"}>
+                <Text fz={"xs"} c={"gray.5"}>
+                  등록된 시행정보가 없습니다.
+                </Text>
+                <Button size="xs" variant="light" onClick={addRowOpen}>
+                  추가하기
+                </Button>
+              </Stack>
+            </Center>
+          </Paper> */}
+
+          <Paper bg="gray.1" p="xs">
+            <Stack gap={"xs"}>
+              <Group>
+                <Text fz={"sm"}>SK</Text>
+                <Text fz={"sm"}>SK 엔펄스</Text>
+                <Badge radius={"sm"}>인적성</Badge>
+                <Badge radius={"sm"} variant="outline" color="lime">
+                  온라인
+                </Badge>
+              </Group>
+              <Group gap={"xs"}>
+                <Text c={"gray.6"} fz={"xs"}>
+                  ACG
+                </Text>
+
+                <Divider orientation="vertical" />
+                <Text c={"gray.6"} fz={"xs"}>
+                  9시 00분 ~ 12시 00분
+                </Text>
+              </Group>
+              <Group align="flex-start">
+                <Stack gap={1}>
+                  <Group gap={"xs"}>
+                    <Text c={"gray.6"} fz={"xs"}>
+                      응시인원
+                    </Text>
+                    <Text fz={"xs"}>8명</Text>
+                  </Group>
+                  <Group gap={"xs"}>
+                    <Text c={"gray.6"} fz={"xs"}>
+                      출석인원
+                    </Text>
+                    <Text fz={"xs"}>3명</Text>
+                  </Group>
+                </Stack>
+                <Stack gap={1}>
+                  <Group gap={"xs"}>
+                    <Text c={"gray.6"} fz={"xs"}>
+                      감독관
+                    </Text>
+                    <Text fz={"xs"}>김다은</Text>
+                  </Group>
+                  <Group gap={"xs"}>
+                    <Text c={"gray.6"} fz={"xs"}>
+                      ACG담당자
+                    </Text>
+                    <Text fz={"xs"}>김낙균</Text>
+                  </Group>
+                  <Group gap={"xs"}>
+                    <Text c={"gray.6"} fz={"xs"}>
+                      HR 담당자
+                    </Text>
+                    <Text fz={"xs"}>이솔</Text>
+                  </Group>
+                </Stack>
+              </Group>
+            </Stack>
+          </Paper>
+        </Collapse>
       </Stack>
 
       <Modal opened={openedAddRow} onClose={addRowClose} title="시행정보 추가" centered>
-        <TextInput size="xs" label="그룹" styles={{ label: { fontSize: "var(--mantine-font-size-xs)", color: "var(--mantine-color-gray-5)" } }} />
-        <TextInput size="xs" label="회사" styles={{ label: { fontSize: "var(--mantine-font-size-xs)", color: "var(--mantine-color-gray-5)" } }} />
-        <TextInput size="xs" label="검사" styles={{ label: { fontSize: "var(--mantine-font-size-xs)", color: "var(--mantine-color-gray-5)" } }} />
-        <TextInput size="xs" label="구분" styles={{ label: { fontSize: "var(--mantine-font-size-xs)", color: "var(--mantine-color-gray-5)" } }} />
-        <TextInput size="xs" label="시간" styles={{ label: { fontSize: "var(--mantine-font-size-xs)", color: "var(--mantine-color-gray-5)" } }} />
-        <TextInput size="xs" label="장소" styles={{ label: { fontSize: "var(--mantine-font-size-xs)", color: "var(--mantine-color-gray-5)" } }} />
-        <TextInput size="xs" label="응시인원" styles={{ label: { fontSize: "var(--mantine-font-size-xs)", color: "var(--mantine-color-gray-5)" } }} />
-        <TextInput size="xs" label="출석인원" styles={{ label: { fontSize: "var(--mantine-font-size-xs)", color: "var(--mantine-color-gray-5)" } }} />
-        <TextInput size="xs" label="감독관" styles={{ label: { fontSize: "var(--mantine-font-size-xs)", color: "var(--mantine-color-gray-5)" } }} />
-        <TextInput size="xs" label="ACG담당자" styles={{ label: { fontSize: "var(--mantine-font-size-xs)", color: "var(--mantine-color-gray-5)" } }} />
-        <TextInput size="xs" label="HR담당자" styles={{ label: { fontSize: "var(--mantine-font-size-xs)", color: "var(--mantine-color-gray-5)" } }} />
-        <Group wrap="nowrap" mt={"md"}>
-          <Button fullWidth size="xs" variant="light">
-            추가하기
-          </Button>
-          <Button fullWidth size="xs" variant="light" color="gray" onClick={addRowClose}>
-            닫기
-          </Button>
-        </Group>
+        <Stack>
+          <Stack gap={1}>
+            <Text fz={"sm"}>회사정보</Text>
+            <Grid>
+              <Grid.Col span={4}>
+                <Select
+                  label="그룹"
+                  size="xs"
+                  data={["LG", "SK", "ACG"]}
+                  styles={{ label: { fontSize: "var(--mantine-font-size-xs)", color: "var(--mantine-color-gray-5)" } }}
+                />
+              </Grid.Col>
+              <Grid.Col span={8}>
+                <TextInput size="xs" label="회사" styles={{ label: { fontSize: "var(--mantine-font-size-xs)", color: "var(--mantine-color-gray-5)" } }} />
+              </Grid.Col>
+            </Grid>
+          </Stack>
+
+          <Stack gap={1}>
+            <Text fz={"sm"}>검사정보</Text>
+            <Grid>
+              <Grid.Col span={6}>
+                <Select
+                  label="검사"
+                  size="xs"
+                  data={["인적성", "인성", "적성", "기타"]}
+                  styles={{ label: { fontSize: "var(--mantine-font-size-xs)", color: "var(--mantine-color-gray-5)" } }}
+                />
+              </Grid.Col>
+              <Grid.Col span={6}>
+                <Select
+                  label="구분"
+                  size="xs"
+                  data={["온라인", "오프라인"]}
+                  styles={{ label: { fontSize: "var(--mantine-font-size-xs)", color: "var(--mantine-color-gray-5)" } }}
+                />
+              </Grid.Col>
+            </Grid>
+          </Stack>
+
+          <Grid>
+            <Grid.Col span={6}>
+              <TextInput size="xs" label="시간" styles={{ label: { fontSize: "var(--mantine-font-size-xs)", color: "var(--mantine-color-gray-5)" } }} />
+            </Grid.Col>
+            <Grid.Col span={6}>
+              <TextInput size="xs" label="장소" styles={{ label: { fontSize: "var(--mantine-font-size-xs)", color: "var(--mantine-color-gray-5)" } }} />
+            </Grid.Col>
+          </Grid>
+          <Grid>
+            <Grid.Col span={6}>
+              <NumberInput
+                size="xs"
+                label="응시인원"
+                min={0}
+                hideControls
+                rightSection={
+                  <Text mr={"lg"} fz={"xs"}>
+                    명
+                  </Text>
+                }
+                styles={{ label: { fontSize: "var(--mantine-font-size-xs)", color: "var(--mantine-color-gray-5)" } }}
+              />
+            </Grid.Col>
+            <Grid.Col span={6}>
+              <NumberInput
+                size="xs"
+                label="출석인원"
+                min={0}
+                hideControls
+                rightSection={
+                  <Text mr={"lg"} fz={"xs"}>
+                    명
+                  </Text>
+                }
+                styles={{ label: { fontSize: "var(--mantine-font-size-xs)", color: "var(--mantine-color-gray-5)" } }}
+              />
+            </Grid.Col>
+          </Grid>
+
+          <Stack gap={1}>
+            <Text fz={"sm"}>인원정보</Text>
+            <Stack>
+              <TextInput
+                size="xs"
+                label="감독관"
+                placeholder="알바"
+                styles={{ label: { fontSize: "var(--mantine-font-size-xs)", color: "var(--mantine-color-gray-5)" } }}
+              />
+              <Select
+                label="ACG 담당자"
+                size="xs"
+                data={["김정훈", "안정현"]}
+                styles={{ label: { fontSize: "var(--mantine-font-size-xs)", color: "var(--mantine-color-gray-5)" } }}
+              />
+              <TextInput
+                placeholder="이름/연락처"
+                size="xs"
+                label="HR 담당자"
+                styles={{ label: { fontSize: "var(--mantine-font-size-xs)", color: "var(--mantine-color-gray-5)" } }}
+              />
+            </Stack>
+          </Stack>
+          <Group wrap="nowrap" mt={"md"}>
+            <Button fullWidth size="xs" variant="light">
+              추가하기
+            </Button>
+            <Button fullWidth size="xs" variant="light" color="gray" onClick={addRowClose}>
+              닫기
+            </Button>
+          </Group>
+        </Stack>
       </Modal>
     </Modal>
   );

@@ -93,13 +93,17 @@ const VacationList = ({ params, openAttachmentModal, openVacationModal }: any) =
               참조자
             </Text>
             <Group gap={"xs"}>
-              {record.ccUserInfo.length < 1
-                ? "-"
-                : record.ccUserInfo.map((cc: any, index: number) => (
-                    <Text key={index} c={"dimmed"} fz={"xs"}>
-                      {cc.ccUserName}
-                    </Text>
-                  ))}
+              {record.ccUserInfo.length < 1 ? (
+                <Text c={"dimmed"} fz={"xs"}>
+                  -
+                </Text>
+              ) : (
+                record.ccUserInfo.map((cc: any, index: number) => (
+                  <Text key={index} c={"dimmed"} fz={"xs"}>
+                    {cc.ccUserName}
+                  </Text>
+                ))
+              )}
             </Group>
           </Stack>
           <Stack gap={1}>
