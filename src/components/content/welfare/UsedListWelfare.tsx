@@ -3,7 +3,7 @@ import BottomModal from "@/components/Global/BottomModal";
 import EmptyView from "@/components/Global/view/EmptyView";
 import LoadingView from "@/components/Global/view/LoadingView";
 import { TPayeeList, TWelfare } from "@/lib/types/welfare";
-import { ActionIcon, Affix, Button, Checkbox, Flex, Group, NumberFormatter, Paper, rem, Stack, Text, Title } from "@mantine/core";
+import { ActionIcon, Affix, Badge, Button, Checkbox, Divider, Flex, Group, NumberFormatter, Paper, rem, Stack, Text, Title } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { IconPlus } from "@tabler/icons-react";
 import dayjs from "dayjs";
@@ -41,40 +41,49 @@ export const UsedListWelfare = ({ welfares, isLoading, isError }: any) => {
   };
 
   const Items = ({ item, key }: any) => (
-    <Stack gap={5} my={"xl"}>
+    <Stack gap={8} my={"xl"}>
       <Text c={"dimmed"} size="xs">
         {dayjs(item.date).format("MM월 D일 dddd")}
       </Text>
-      {item.list.map((t: any) => (
-        <Paper key={t.welfareIdx}>
-          <Group justify="space-between" w="100%" h={"100%"}>
-            <Flex align={"center"} columnGap={"sm"}>
-              <Checkbox size="xs" checked={t.confirmYN === "Y" ? true : false} radius="sm" readOnly />
-              <Stack gap={3}>
-                <Text fw={600} ta={"left"} fz={"sm"}>
-                  <NumberFormatter thousandSeparator value={t.amount || 0} suffix=" 원" className="text-md font-bold" />
-                </Text>
-
-                <Group gap={"xs"}>
-                  <Text fz={"xs"} c={"dimmed"}>
-                    {t.content}
-                  </Text>
-                </Group>
-                <Group>
-                  {t.payeeList.map((p: TPayeeList) => (
-                    <Text key={p.userIdx} fz={"xs"} c={"dimmed"}>
-                      {p.userName}
+      <Stack>
+        {item.list.map((t: any) => (
+          <Paper key={t.welfareIdx}>
+            <Group justify="space-between" w="100%" h={"100%"}>
+              <Flex align={"center"} columnGap={"sm"}>
+                <Badge radius={"sm"} size="sm" variant="light" color={t.confirmYN === "Y" ? "blue" : "yellow"} miw={48}>
+                  {t.confirmYN === "Y" ? "확정" : "미확정"}
+                </Badge>
+                {/* <Checkbox size="xs" checked={t.confirmYN === "Y" ? true : false} radius="sm" readOnly /> */}
+                <Stack gap={3}>
+                  <Group gap={"xs"}>
+                    <NumberFormatter
+                      thousandSeparator
+                      value={t.amount || 0}
+                      suffix=" 원"
+                      style={{ fontSize: "var(--mantine-font-size-sm)", fontWeight: 600 }}
+                    />
+                    <Divider orientation="vertical" />
+                    <Text fz={"xs"} c={"dimmed"}>
+                      {t.content}
                     </Text>
-                  ))}
-                </Group>
-              </Stack>
-            </Flex>
-            <ActionIcon variant="subtle" size="xl" onClick={(e) => handleUpdateWelfare(e, item, t.welfareIdx)}>
-              <ArrowRight color="gray" width={18} />
-            </ActionIcon>
-          </Group>
-        </Paper>
-      ))}
+                  </Group>
+
+                  <Group>
+                    {t.payeeList.map((p: TPayeeList) => (
+                      <Text key={p.userIdx} fz={"xs"} c={"dimmed"}>
+                        {p.userName}
+                      </Text>
+                    ))}
+                  </Group>
+                </Stack>
+              </Flex>
+              <ActionIcon variant="subtle" size="xl" onClick={(e) => handleUpdateWelfare(e, item, t.welfareIdx)}>
+                <ArrowRight color="gray" width={18} />
+              </ActionIcon>
+            </Group>
+          </Paper>
+        ))}
+      </Stack>
     </Stack>
   );
 
@@ -87,9 +96,14 @@ export const UsedListWelfare = ({ welfares, isLoading, isError }: any) => {
 
   return (
     <Paper bg={"white"} px="lg" py="lg" radius={"lg"}>
-      <Text mb={4} c={"dimmed"} fz={"sm"}>
-        사용내역
-      </Text>
+      <Stack gap={3}>
+        <Text c={"gray.7"} fz={"sm"}>
+          사용내역
+        </Text>
+        <Text fz={"xs"} c={"gray"}>
+          확정 / 미확정은 P&C 담당자의 사용내역 확인 결과를 나타냅니다.
+        </Text>
+      </Stack>
       {renderContent()}
       <BottomModal opened={openedUpdateForm} onClose={closeUpdateForm} title={"복지포인트 수정"}>
         <WelfareUpdateForm opened={openedUpdateForm} onClose={closeUpdateForm} updateWelfareDetail={updateWelfareDetail} />
