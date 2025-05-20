@@ -8,7 +8,7 @@ import EmptyView from "@/components/Global/view/EmptyView";
 import { ErrorView } from "@/components/Global/view/ErrorView";
 import LoadingView from "@/components/Global/view/LoadingView";
 import { TMyAttendance } from "@/types/apiTypes";
-import { calculateNumberToTime } from "@/utils/dateFomat";
+import { calculateNumberToTime, formatTime } from "@/utils/dateFomat";
 import { detectDevice } from "@/utils/userAgent";
 import { Divider, Group, Paper, Space, Stack, Text } from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
@@ -41,21 +41,39 @@ function page() {
   };
 
   const Items = ({ record, arr, index }: { record: any; arr: any; index: number }) => (
-    <Stack key={record.commuteIdx} gap={8}>
+    <Stack key={record.commuteIdx} gap={10}>
       <Group gap={2} align="center" justify="space-between" wrap="nowrap">
-        <Stack gap={4}>
-          <Text fz={"sm"} fw={600}>
+        <Group gap={"xs"} align="end">
+          <Text fz={"md"} fw={500}>
             {dayjs(record.commuteDate).format("YYYY-MM-DD (dd)")}
           </Text>
-          <Group py={4}>
+          <Group>
             <LeavTypeBadge leaveType={record.leaveType} />
             <AttendanceBadge attendance={record.attendance} />
-            <WorkTimeByLeaveType record={record} />
+            {/* <WorkTimeByLeaveType record={record} /> */}
           </Group>
-        </Stack>
+        </Group>
       </Group>
 
       <div className="flex gap-y-4 gap-x-8 flex-wrap">
+        <Stack gap={1}>
+          <Text fz={"xs"} c={"dimmed"}>
+            출근시간
+          </Text>
+          <Text fz={"xs"}>{formatTime(record.checkInTime)}</Text>
+        </Stack>
+        <Stack gap={1}>
+          <Text fz={"xs"} c={"dimmed"}>
+            퇴근시간
+          </Text>
+          {!record.checkOutTime ? (
+            <Text fz={"xs"} c={"gray.4"}>
+              시간 정보가 없습니다.
+            </Text>
+          ) : (
+            <Text fz={"xs"}>{formatTime(record.checkOutTime)}</Text>
+          )}
+        </Stack>
         <Stack gap={1}>
           <Text fz={"xs"} c={"dimmed"}>
             근무시간
@@ -68,33 +86,8 @@ function page() {
           </Text>
           <Text fz={"xs"}>{`${calculateNumberToTime(record.overtimeWorkingMinutes)}`}</Text>
         </Stack>
-        <Stack gap={1}>
-          <Text fz={"xs"} c={"dimmed"}>
-            출근기기
-          </Text>
-          <Text fz={"xs"}>{detectDevice(record.checkInLogAgent, record.checkInIpAddr)}</Text>
-        </Stack>
-        <Stack gap={1}>
-          <Text fz={"xs"} c={"dimmed"}>
-            퇴근기기
-          </Text>
-          <Text fz={"xs"}>{detectDevice(record.checkOutLogAgent, record.checkOutIpAddr)}</Text>
-        </Stack>
-
-        <Stack gap={1}>
-          <Text fz={"xs"} c={"dimmed"}>
-            내용
-          </Text>
-          {record.note ? (
-            <Text fz={"xs"}>{record.note}</Text>
-          ) : (
-            <Text fz={"xs"} c={"dimmed"}>
-              특이사항이 없습니다.
-            </Text>
-          )}
-        </Stack>
       </div>
-      {arr.length === index + 1 ? null : <Divider my={"xl"} color="gray.1" />}
+      {arr.length === index + 1 ? null : <Divider my={"lg"} color="gray.1" />}
     </Stack>
   );
 
