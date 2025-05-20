@@ -24,6 +24,7 @@ const MENU_ITEMS: MenuItem[] = [
     children: [
       { label: "출퇴근 관리", href: "/attendance/work" },
       { label: "휴가/연차 관리", href: "/attendance/vacation" },
+      { label: "시간외 근무 관리", href: "/attendance/overtime" },
     ],
   },
 
@@ -42,6 +43,7 @@ const MENU_ITEMS: MenuItem[] = [
       { label: "내 정보 수정", href: "/myInfo" },
       { label: "결재/승인", href: "/approval" },
       { label: "공지사항", href: "/notice" },
+      { label: "회의실 예약", href: "/room" },
     ],
   },
   {
