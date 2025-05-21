@@ -5,7 +5,9 @@ import Calendar from "@/components/content/meal/Calendar";
 import { useCombinedStore } from "@/lib/store/CombinedStore";
 
 import * as api from "@/app/api/get/getApi";
+import VisitedFrequency from "@/components/content/meal/frequencyVisited";
 import LunchGroup from "@/components/content/meal/LunchGroup";
+import LunchStats from "@/components/content/meal/stats";
 import { TopTitleMeal } from "@/components/content/meal/TopTitleMeal";
 import { mealStateStore, useCalendarStore } from "@/lib/store/mealStore";
 import { Container, Grid, GridCol, Stack } from "@mantine/core";
@@ -33,6 +35,14 @@ const Main = () => {
         <GridCol span={{ base: 12, md: 8 }}>
           <Stack>
             <TopTitleMeal stats={mealStats} isLoading={isLoading} isError={isError} />
+            <Grid>
+              <GridCol span={{ base: 12, sm: 12, lg: 6 }}>
+                <LunchStats mealStats={mealStats} />
+              </GridCol>
+              <GridCol span={{ base: 12, sm: 12, lg: 6 }}>
+                <VisitedFrequency />
+              </GridCol>
+            </Grid>
             <LunchGroup />
           </Stack>
         </GridCol>
