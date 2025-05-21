@@ -11,106 +11,105 @@ function Rule() {
         </Button>
       </Popover.Target>
       <Popover.Dropdown py={"md"}>
-        <Group>
+        <Group align="start">
           <Stack>
             <Text fz={"sm"}>평일근무</Text>
-            <Stack gap={2}>
-              <Text fz={"sm"}>ACG 본사</Text>
-              <Group align="start">
-                <Stack gap={1}>
+            <Stack gap={"xs"}>
+              <Text fz={"xs"}>ACG 본사</Text>
+              <Stack align="start" gap={2}>
+                <Group gap={"xs"}>
                   <Text c={"dimmed"} fz={"xs"}>
                     조식
                   </Text>
                   <Text fz={"xs"}>0</Text>
-                </Stack>
-                <Stack gap={1}>
+                </Group>
+                <Group gap={"xs"}>
                   <Text c={"dimmed"} fz={"xs"}>
                     중식
                   </Text>
-                  <Text fz={"xs"}>근무일 당 10,000원</Text>
-                  {/* <Text fz={"xs"}>(월 근무일 * 10,000원)</Text> */}
-                </Stack>
-                <Stack gap={1}>
+                  <Text fz={"xs"}>10,000원 * 근무일</Text>
+                </Group>
+                <Group gap={"xs"}>
                   <Text c={"dimmed"} fz={"xs"}>
                     석식
                   </Text>
                   <Text fz={"xs"}>11,000원</Text>
-                </Stack>
-              </Group>
+                </Group>
+              </Stack>
             </Stack>
-            <Stack gap={2}>
-              <Text fz={"sm"}>외근(출장)</Text>
-              <Group>
-                <Stack gap={1}>
+            <Stack gap={"xs"}>
+              <Text fz={"xs"}>외근(출장)</Text>
+              <Stack gap={2}>
+                <Group gap={"xs"}>
                   <Text c={"dimmed"} fz={"xs"}>
                     조식
                   </Text>
                   <Text fz={"xs"}>9,000원</Text>
-                </Stack>
-                <Stack gap={1}>
+                </Group>
+                <Group gap={"xs"}>
                   <Text c={"dimmed"} fz={"xs"}>
                     중식
                   </Text>
                   <Text fz={"xs"}>10,000원</Text>
-                </Stack>
-                <Stack gap={1}>
+                </Group>
+                <Group gap={"xs"}>
                   <Text c={"dimmed"} fz={"xs"}>
                     석식
                   </Text>
                   <Text fz={"xs"}>11,000원</Text>
-                </Stack>
-              </Group>
+                </Group>
+              </Stack>
             </Stack>
           </Stack>
 
           <Divider orientation="vertical" />
           <Stack>
             <Text fz={"sm"}>주말근무</Text>
-            <Stack gap={2}>
-              <Text fz={"sm"}>ACG 본사</Text>
-              <Group>
-                <Stack gap={1}>
+            <Stack gap={"xs"}>
+              <Text fz={"xs"}>ACG 본사</Text>
+              <Stack gap={2}>
+                <Group gap={"xs"}>
                   <Text c={"dimmed"} fz={"xs"}>
                     조식
                   </Text>
                   <Text fz={"xs"}>0</Text>
-                </Stack>
-                <Stack gap={1}>
+                </Group>
+                <Group gap={"xs"}>
                   <Text c={"dimmed"} fz={"xs"}>
                     중식
                   </Text>
                   <Text fz={"xs"}>10,000원</Text>
-                </Stack>
-                <Stack gap={1}>
+                </Group>
+                <Group gap={"xs"}>
                   <Text c={"dimmed"} fz={"xs"}>
                     석식
                   </Text>
                   <Text fz={"xs"}>11,000원</Text>
-                </Stack>
-              </Group>
+                </Group>
+              </Stack>
             </Stack>
-            <Stack gap={2}>
-              <Text fz={"sm"}>외근(출장)</Text>
-              <Group>
-                <Stack gap={1}>
+            <Stack gap={"xs"} w={133}>
+              <Text fz={"xs"}>외근(출장)</Text>
+              <Stack gap={2}>
+                <Group gap={"xs"}>
                   <Text c={"dimmed"} fz={"xs"}>
                     조식
                   </Text>
                   <Text fz={"xs"}>9,000원</Text>
-                </Stack>
-                <Stack gap={1}>
+                </Group>
+                <Group gap={"xs"}>
                   <Text c={"dimmed"} fz={"xs"}>
                     중식
                   </Text>
                   <Text fz={"xs"}>10,000원</Text>
-                </Stack>
-                <Stack gap={1}>
+                </Group>
+                <Group gap={"xs"}>
                   <Text c={"dimmed"} fz={"xs"}>
                     석식
                   </Text>
                   <Text fz={"xs"}>11,000원</Text>
-                </Stack>
-              </Group>
+                </Group>
+              </Stack>
             </Stack>
           </Stack>
         </Group>
