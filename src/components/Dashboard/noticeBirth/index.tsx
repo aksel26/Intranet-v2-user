@@ -7,6 +7,7 @@ import Birth from "./birth";
 import Notice from "./notice";
 import { mainDateStore } from "@/lib/store/mainDateStore";
 import Fireworks from "react-canvas-confetti/dist/presets/realistic";
+import MonthlyDrink from "./drink";
 const NoticeBirth = () => {
   const { dateValue } = mainDateStore();
   const [activeTab, setActiveTab] = useState<string | null>("notice");
@@ -18,8 +19,15 @@ const NoticeBirth = () => {
   const cardHeight = heightRef?.current?.offsetHeight || 0;
 
   return (
-    <Paper p={"lg"} radius={"lg"} className={activeTab === "birth" ? "bg-gradient-to-r from-yellow-100 to-red-100" : ""} ref={heightRef}>
-      <Tabs value={activeTab} onChange={setActiveTab} variant="pills" radius={"lg"}>
+    <Paper
+      p={"lg"}
+      radius={"lg"}
+      className={activeTab === "birth" ? "bg-gradient-to-r from-yellow-100 to-red-100" : ""}
+      ref={heightRef}
+      mah={500}
+      styles={{ root: { overflow: "scroll" } }}
+    >
+      <Tabs value={activeTab} onChange={setActiveTab} variant="pills" radius={"md"}>
         <Tabs.List justify="space-between">
           <Group styles={{ root: { zIndex: 1 } }}>
             <Tabs.Tab value="notice">공지사항</Tabs.Tab>
@@ -30,6 +38,14 @@ const NoticeBirth = () => {
               value="birth"
             >
               생일자
+            </Tabs.Tab>
+            <Tabs.Tab
+              bg={activeTab === "monthlyDrink" ? "green.8" : "transparent"}
+              c={activeTab === "monthlyDrink" ? "green.1" : "black"}
+              fw={activeTab === "monthlyDrink" ? 600 : 400}
+              value="monthlyDrink"
+            >
+              Monthly 음료
             </Tabs.Tab>
           </Group>
           {activeTab === "notice" && (
@@ -47,6 +63,9 @@ const NoticeBirth = () => {
           {activeTab === "birth" && (
             <Fireworks autorun={{ speed: 0.2 }} style={{ position: "absolute", width: "100%", height: cardHeight, right: 0, top: -50, zIndex: 0 }} />
           )}
+        </Tabs.Panel>
+        <Tabs.Panel value="monthlyDrink" pt={"xs"} pos={"relative"}>
+          <MonthlyDrink />
         </Tabs.Panel>
       </Tabs>
     </Paper>
