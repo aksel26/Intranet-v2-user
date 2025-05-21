@@ -1,10 +1,11 @@
+import { ErrorView } from "@/components/Global/view/ErrorView";
+import LoadingView from "@/components/Global/view/LoadingView";
 import { myInfoStore } from "@/lib/store/myInfoStore";
-import { Box, Flex, Group, Loader, Paper, Stack, Text } from "@mantine/core";
+import { Box, Button, Flex, Group, Paper, Stack, Text } from "@mantine/core";
 import NumberFlow from "@number-flow/react";
+import { IconCopy } from "@tabler/icons-react";
 import dayjs from "dayjs";
 import Rule from "./Rule";
-import LoadingView from "@/components/Global/view/LoadingView";
-import { ErrorView } from "@/components/Global/view/ErrorView";
 // import Rule from "./rule";
 
 export const TopTitleMeal = ({ stats, isLoading, isError }: any) => {
@@ -47,7 +48,12 @@ export const TopTitleMeal = ({ stats, isLoading, isError }: any) => {
                   <Text fz={"sm"}>원 입니다</Text>
                 </Flex>
               </Flex>
-              <Rule />
+              <Stack gap={4}>
+                <Rule />
+                <Button size="xs" variant="subtle" leftSection={<IconCopy size={18} />}>
+                  입금계좌 복사하기
+                </Button>
+              </Stack>
             </Group>
             {/* <ChartSummary statsInfo={statsInfo} /> */}
           </Stack>
