@@ -17,7 +17,7 @@ const LunchStats = ({ mealStats }: any) => {
       // 예산 초과
       return [{ name: "예산금액", value: mealBudget }];
     }
-  }, []);
+  }, [mealStats]);
   const chartColor = useMemo(() => {
     return (entry: any) => {
       if (entry.name === "사용금액") return "#1964AB";

@@ -18,20 +18,20 @@ export const TopTitleMeal = ({ stats, isLoading, isError }: any) => {
       return (
         <Paper bg={"white"} px="md" py="lg" radius={"lg"}>
           <Stack gap={"md"}>
-            <Box>
-              <Text size="xl" fw={700}>
-                식대
-              </Text>
-              <Text size="sm" fw={500} c={"gray.6"}>
-                {dayjs().format("MM월 DD일 dddd")}
-              </Text>
-            </Box>
+            <Text size="xl" fw={700}>
+              식대
+            </Text>
+
             <Group justify="space-between" align={"end"}>
               <Flex direction={"column"} rowGap={5}>
                 <Text fw={600} c={"blue.9"} fz={"lg"}>
                   {myInfo.userName || ""}
                   <Text c={"gray.9"} component="span" mr={0} fz={"sm"}>
-                    님의 잔여 식대는
+                    님의
+                    <Text fw={600} c={"blue.9"} fz={"lg"} component="span" mx={5}>
+                      {stats.month}월
+                    </Text>
+                    잔여 식대는
                   </Text>
                 </Text>
 
