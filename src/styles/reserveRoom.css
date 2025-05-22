@@ -1,11 +1,64 @@
-.fc-toolbar-title {
-  font-size: 1rem !important;
-  font-weight: bold;
+:root {
+  --fc-border-color: #efefef;
+  --fc-button-text-color: #fff;
+  --fc-button-bg-color: #2c3e50;
+  --fc-button-border-color: #2c3e50;
+  --fc-button-hover-bg-color: #34495e;
+  --fc-button-active-bg-color: #1a252f;
+  --fc-event-bg-color: #e0fbff;
+  --fc-event-border-color: none;
+  --fc-event-text-color: #0275a0;
+  --fc-neutral-bg-color: #f8f9fa;
+  --fc-page-bg-color: #fff;
+  --fc-text-color: #212529;
 }
 
-/* 전체 폰트 사이즈 */
+/* 전체 */
+.fc-license-message {
+  display: none;
+}
+.fc-theme-standard .fc-scrollgrid {
+  border: none;
+}
+/* 폰트 사이즈 */
 .fc .fc-view-harness {
   font-size: 12.5px;
+}
+
+/* 헤더 영역 */
+.fc-toolbar-title {
+  font-size: 0.9rem !important;
+  font-weight: semibold;
+}
+
+.fc-timeline-header-row > th {
+  border: none !important;
+  border-bottom: 1px solid var(--fc-border-color) !important;
+}
+.fc-datagrid-header .fc-datagrid-cell {
+  border: none !important;
+  border-bottom: 1px solid var(--fc-border-color) !important;
+}
+
+/* 현재시간을 나타내는 선 */
+.fc .fc-timeline-now-indicator-line {
+  border: 1.5px dotted #0067e536;
+}
+.fc .fc-timeline-now-indicator-arrow {
+  border-color: transparent;
+}
+
+/* 타임라인 바디 */
+.fc-timeline-lane-frame {
+  padding-top: 6px !important;
+}
+.fc-timeline-event {
+  border-radius: 5px;
+  padding: 4.5px 8px;
+}
+.fc-direction-ltr .fc-timeline-event.fc-event-end {
+  margin-right: 4px;
+  margin-left: 3px;
 }
 
 /* 오른쪽 왼쪽 버튼 */

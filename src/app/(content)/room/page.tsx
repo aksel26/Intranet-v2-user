@@ -11,7 +11,9 @@ import listPlugin from "@fullcalendar/list";
 import koLocale from "@fullcalendar/core/locales/ko";
 import "../../../styles/reserveRoom.css";
 import PageContainer from "@/components/Global/container";
-import { Paper, Stack, Text } from "@mantine/core";
+import { Modal, Paper, Stack, Text } from "@mantine/core";
+import ReserveModal from "@/components/roomReserve/reserveModal";
+import { useDisclosure } from "@mantine/hooks";
 // import { LicenseController } from '@fullcalendar/core/internal';
 // LicenseController.key = 'YOUR_LICENSE_KEY_HERE';
 
@@ -20,56 +22,61 @@ const TimelineCalendarWithPrint = () => {
   const calendarRef = useRef(null);
   const [isMounted, setIsMounted] = useState(false);
 
+  const [opened, { open, close }] = useDisclosure(false);
+
   // 자원 정의
   const [resources, setResources] = useState([
-    { id: "a", title: "회의실 A", eventColor: "#3788d8" },
-    { id: "b", title: "회의실 B", eventColor: "#4682B4" },
-    { id: "c", title: "회의실 C", eventColor: "#1E90FF" },
-    { id: "d", title: "프로젝터", eventColor: "#28a745" },
-    { id: "e", title: "노트북", eventColor: "#20c997" },
-    { id: "f", title: "개발팀", eventColor: "#dc3545" },
-    { id: "g", title: "디자인팀", eventColor: "#fd7e14" },
-    { id: "h", title: "마케팅팀", eventColor: "#6f42c1" },
-    { id: "D", title: "마케팅팀3", eventColor: "#6f42c1" },
+    { id: "A", room: "A Room", limit: "6인" },
+    { id: "C", room: "C Room", limit: "12인" },
+    { id: "C2", room: "C_2 Room", limit: "12인" },
+    { id: "G", room: "G Room", limit: "6인" },
+    { id: "R", room: "R Room", limit: "12인" },
+    { id: "L1", room: "L_1 Room", limit: "1인" },
+    { id: "L2", room: "L_2 Room", limit: "1인" },
+    { id: "S1", room: "S_1 Room", limit: "1인" },
+    { id: "S2", room: "S_2 Room", limit: "1인" },
   ]);
 
   // 이벤트 데이터
   const [events, setEvents] = useState<any>([
     {
       id: "1",
-      resourceId: "a",
-      title: "경영진 회의",
-      start: "2025-05-20T09:00:00",
-      end: "2025-05-20T10:30:00",
-      description: "분기별 실적 검토 미팅",
+      resourceId: "A",
+      title: "팀 미팅",
+      start: "2025-05-22T14:00:00",
+      end: "2025-05-22T16:00:00",
+      backgroundColor: "#3788d8",
+      textColor: "white",
     },
     {
       id: "2",
-      resourceId: "b",
+      resourceId: "C",
       title: "제품 기획 회의",
-      start: "2025-05-20T11:00:00",
-      end: "2025-05-20T12:30:00",
+      start: "2025-05-22T11:00:00",
+      end: "2025-05-22T12:30:00",
       description: "신규 기능 브레인스토밍",
+      backgroundColor: "#40c057",
+      textColor: "white",
     },
     {
       id: "3",
-      resourceId: "d",
+      resourceId: "C2",
       title: "프로젝터 대여",
-      start: "2025-05-20T13:00:00",
-      end: "2025-05-20T17:00:00",
+      start: "2025-05-22T13:00:00",
+      end: "2025-05-22T17:00:00",
       description: "외부 고객 미팅용",
     },
     {
       id: "4",
-      resourceId: "f",
+      resourceId: "L1",
       title: "스프린트 계획",
-      start: "2025-05-20T10:00:00",
-      end: "2025-05-20T16:00:00",
+      start: "2025-05-22T10:00:00",
+      end: "2025-05-22T16:00:00",
       description: "다음 스프린트 작업 계획 및 할당",
     },
     {
       id: "5",
-      resourceId: "g",
+      resourceId: "G",
       title: "UI 디자인 작업",
       start: "2025-05-21T09:00:00",
       end: "2025-05-21T17:00:00",
@@ -104,24 +111,25 @@ const TimelineCalendarWithPrint = () => {
       return;
     }
 
-    let title = prompt("새 일정 제목을 입력하세요:");
-    let description = prompt("일정 설명을 입력하세요:");
-    let calendarApi = selectInfo.view.calendar;
+    open();
+    // let title = prompt("새 일정 제목을 입력하세요:");
+    // let description = prompt("일정 설명을 입력하세요:");
+    // let calendarApi = selectInfo.view.calendar;
 
-    calendarApi.unselect();
+    // calendarApi.unselect();
 
-    if (title) {
-      const newEvent = {
-        id: String(Date.now()),
-        resourceId: selectInfo.resource.id,
-        title,
-        description,
-        start: selectInfo.startStr,
-        end: selectInfo.endStr,
-      };
+    // if (title) {
+    //   const newEvent = {
+    //     id: String(Date.now()),
+    //     resourceId: selectInfo.resource.id,
+    //     title,
+    //     description,
+    //     start: selectInfo.startStr,
+    //     end: selectInfo.endStr,
+    //   };
 
-      setEvents([...events, newEvent]);
-    }
+    //   setEvents([...events, newEvent]);
+    // }
   };
 
   const handleEventClick = (clickInfo: any) => {
@@ -168,15 +176,27 @@ const TimelineCalendarWithPrint = () => {
               right: "prev,next today",
               center: "",
             }}
+            resourceAreaColumns={[
+              {
+                field: "room",
+                headerContent: "회의실",
+                width: 80,
+              },
+              {
+                field: "limit",
+                headerContent: "정원",
+                width: 60,
+              },
+            ]}
             resources={resources}
             events={events}
             editable
             selectable
-            selectMirror={true}
+            selectMirror
             eventClick={handleEventClick}
             select={handleDateSelect}
-            resourceAreaWidth={"90px"}
-            resourceAreaHeaderContent="회의실"
+            resourceAreaWidth={"130px"}
+            // resourceAreaHeaderContent="회의실"
             locale={koLocale}
             viewDidMount={handleViewChange}
             slotMinTime="08:00:00"
@@ -191,8 +211,7 @@ const TimelineCalendarWithPrint = () => {
               }
             }}
             slotLabelFormat={{
-              hour: "2-digit",
-              minute: "2-digit",
+              hour: "numeric",
               hour12: false,
             }}
             // views={{
@@ -215,6 +234,7 @@ const TimelineCalendarWithPrint = () => {
           />
         </div>
       </Paper>
+      <ReserveModal opened={opened} close={close} />
     </PageContainer>
   );
 };
