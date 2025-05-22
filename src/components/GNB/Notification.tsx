@@ -6,12 +6,13 @@ type TNotification = {
   color: string;
 };
 
-export default function notification({ title, message, color }: TNotification) {
+export default function notification({ title, message, color, ...props }: any) {
   return notifications.show({
     title: title,
     message: message,
     position: "top-right",
     color: color,
     radius: "lg",
+    ...props,
   });
 }
