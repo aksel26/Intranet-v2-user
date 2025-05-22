@@ -1,6 +1,7 @@
 import { Badge, Box, Group, NumberFormatter, Paper, Stack, Text, Title } from "@mantine/core";
 import React, { useMemo } from "react";
 import { Cell, Pie, PieChart, ResponsiveContainer } from "recharts";
+import Rule from "../Rule";
 
 const LunchStats = ({ mealStats }: any) => {
   if (!mealStats) return null;
@@ -30,6 +31,7 @@ const LunchStats = ({ mealStats }: any) => {
     <Paper bg={"white"} px="lg" py="lg" radius={"lg"} w={"100%"}>
       <Group align="flex-start" mb={"md"} justify="space-between">
         <Title order={5}>식대 사용금액 현황</Title>
+        <Rule />
       </Group>
 
       <Stack gap={"xs"} justify="center" align="center" pos={"relative"} mx={"auto"}>
