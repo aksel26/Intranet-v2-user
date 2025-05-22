@@ -1,10 +1,14 @@
 import { ErrorView } from "@/components/Global/view/ErrorView";
 import LoadingView from "@/components/Global/view/LoadingView";
-import { Box, Flex, Paper, Stack, Text } from "@mantine/core";
+import useCopyBankAccount from "@/hooks/useCopyBankAccount";
+import { Box, Button, Flex, Group, Paper, Stack, Text } from "@mantine/core";
 import NumberFlow from "@number-flow/react";
+import { IconCopy } from "@tabler/icons-react";
 import dayjs from "dayjs";
 
 export const ToptitleActivity = ({ stats, isLoading, isError }: any) => {
+  const { copyBankAccount } = useCopyBankAccount();
+
   const renderContent = () => {
     if (isLoading) return <LoadingView />;
     if (isError) return <ErrorView>활동비 내역을 불러오는 중 문제가 발생했습니다.</ErrorView>;
@@ -19,7 +23,7 @@ export const ToptitleActivity = ({ stats, isLoading, isError }: any) => {
               {dayjs().format("MM월 DD일 dddd")}
             </Text>
           </Box>
-          <Box>
+          <Group justify="space-between" align={"end"}>
             <Flex direction={"column"} rowGap={5}>
               <Text fw={600} c={"blue.9"} fz={"lg"}>
                 {stats.hqName || ""}
@@ -41,7 +45,10 @@ export const ToptitleActivity = ({ stats, isLoading, isError }: any) => {
                 <Text fz={"sm"}>원 입니다</Text>
               </Flex>
             </Flex>
-          </Box>
+            <Button size="xs" variant="subtle" leftSection={<IconCopy size={18} />} onClick={copyBankAccount}>
+              입금계좌 복사하기
+            </Button>
+          </Group>
         </Stack>
         {/* <ChartSummary statsInfo={statsInfo} /> */}
       </Paper>

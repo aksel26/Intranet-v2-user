@@ -1,13 +1,15 @@
 import { ErrorView } from "@/components/Global/view/ErrorView";
 import LoadingView from "@/components/Global/view/LoadingView";
+import useCopyBankAccount from "@/hooks/useCopyBankAccount";
 import { myInfoStore } from "@/lib/store/myInfoStore";
-import { Box, Flex, Group, Loader, Paper, Stack, Text } from "@mantine/core";
+import { Box, Button, Flex, Group, Loader, Paper, Stack, Text } from "@mantine/core";
 import NumberFlow from "@number-flow/react";
+import { IconCopy } from "@tabler/icons-react";
 import dayjs from "dayjs";
 
 export const TopTitleWelfare = ({ stats, isLoading, isError }: any) => {
   const { myInfo } = myInfoStore();
-
+  const { copyBankAccount } = useCopyBankAccount();
   const renderContent = () => {
     if (isLoading) return <LoadingView />;
     if (isError) return <ErrorView>복지포인트 조회를 불러오는 중 문제가 발생했습니다.</ErrorView>;
@@ -23,7 +25,7 @@ export const TopTitleWelfare = ({ stats, isLoading, isError }: any) => {
                 {dayjs().format("MM월 DD일 dddd")}
               </Text>
             </Box>
-            <Box>
+            <Group justify="space-between" align={"end"}>
               <Flex direction={"column"} rowGap={5}>
                 <Text fw={600} c={"blue.9"} fz={"lg"}>
                   {myInfo.userName || ""}
@@ -45,7 +47,10 @@ export const TopTitleWelfare = ({ stats, isLoading, isError }: any) => {
                   <Text fz={"sm"}>원 입니다</Text>
                 </Flex>
               </Flex>
-            </Box>
+              <Button size="xs" variant="subtle" leftSection={<IconCopy size={18} />} onClick={copyBankAccount}>
+                입금계좌 복사하기
+              </Button>
+            </Group>
           </Stack>
         </Paper>
       );

@@ -3,13 +3,16 @@ import LoadingView from "@/components/Global/view/LoadingView";
 import { myInfoStore } from "@/lib/store/myInfoStore";
 import { Box, Button, Flex, Group, Paper, Stack, Text } from "@mantine/core";
 import NumberFlow from "@number-flow/react";
-import { IconCopy } from "@tabler/icons-react";
+import { IconCheck, IconCopy, IconX } from "@tabler/icons-react";
 import dayjs from "dayjs";
 import Rule from "./Rule";
+import notification from "@/components/GNB/Notification";
+import useCopyBankAccount from "@/hooks/useCopyBankAccount";
 // import Rule from "./rule";
 
 export const TopTitleMeal = ({ stats, isLoading, isError }: any) => {
   const { myInfo } = myInfoStore();
+  const { copyBankAccount } = useCopyBankAccount();
 
   const renderContent = () => {
     if (isLoading) return <LoadingView />;
@@ -48,12 +51,9 @@ export const TopTitleMeal = ({ stats, isLoading, isError }: any) => {
                   <Text fz={"sm"}>원 입니다</Text>
                 </Flex>
               </Flex>
-              <Stack gap={4}>
-                <Rule />
-                <Button size="xs" variant="subtle" leftSection={<IconCopy size={18} />}>
-                  입금계좌 복사하기
-                </Button>
-              </Stack>
+              <Button size="xs" variant="subtle" leftSection={<IconCopy size={18} />} onClick={copyBankAccount}>
+                입금계좌 복사하기
+              </Button>
             </Group>
             {/* <ChartSummary statsInfo={statsInfo} /> */}
           </Stack>
