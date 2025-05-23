@@ -30,11 +30,14 @@ const NoticeBirth = () => {
       <Tabs value={activeTab} onChange={setActiveTab} variant="pills" radius={"md"}>
         <Tabs.List justify="space-between">
           <Group styles={{ root: { zIndex: 1 } }}>
-            <Tabs.Tab value="notice">공지사항</Tabs.Tab>
+            <Tabs.Tab fz="xs" value="notice">
+              공지사항
+            </Tabs.Tab>
             <Tabs.Tab
               bg={activeTab === "birth" ? "pink.1" : "transparent"}
               c={activeTab === "birth" ? "pink.4" : "black"}
-              fw={activeTab === "birth" ? 600 : 400}
+              fw={activeTab === "birth" ? 500 : 400}
+              fz="xs"
               value="birth"
             >
               생일자
@@ -42,7 +45,8 @@ const NoticeBirth = () => {
             <Tabs.Tab
               bg={activeTab === "monthlyDrink" ? "green.8" : "transparent"}
               c={activeTab === "monthlyDrink" ? "green.1" : "black"}
-              fw={activeTab === "monthlyDrink" ? 600 : 400}
+              fw={activeTab === "monthlyDrink" ? 500 : 400}
+              fz="xs"
               value="monthlyDrink"
             >
               Monthly 음료

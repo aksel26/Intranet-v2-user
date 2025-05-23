@@ -17,7 +17,8 @@ const WelfareButtons = () => {
         variant="gradient"
         gradient={{ from: "lime.2", to: "yellow.2", deg: 154 }}
         c={"lime.9"}
-        leftSection={<IconSoup color="green" size={18} />}
+        fz={"xs"}
+        leftSection={<IconSoup color="green" size={16} />}
       >
         식대
       </Button>
@@ -27,7 +28,8 @@ const WelfareButtons = () => {
         variant="gradient"
         gradient={{ from: "cyan", to: "green", deg: 154 }}
         c={"cyan.1"}
-        leftSection={<IconCreditCard color="white" size={18} />}
+        fz={"xs"}
+        leftSection={<IconCreditCard color="white" size={16} />}
       >
         복지포인트
       </Button>
@@ -35,9 +37,10 @@ const WelfareButtons = () => {
         fullWidth
         onClick={() => handleButtonClick("/welfare/activity")}
         variant="gradient"
-        leftSection={<IconUsersGroup color="white" size={18} />}
+        leftSection={<IconUsersGroup color="white" size={16} />}
         gradient={{ from: "violet", to: "teal", deg: 154 }}
         c={"violet.1"}
+        fz={"xs"}
       >
         활동비
       </Button>
