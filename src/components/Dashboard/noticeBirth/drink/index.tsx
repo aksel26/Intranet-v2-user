@@ -6,12 +6,19 @@ import { useQuery } from "@tanstack/react-query";
 import Details from "./details";
 import LoadingView from "@/components/Global/view/LoadingView";
 import { ErrorView } from "@/components/Global/view/ErrorView";
+import { mainDateStore } from "@/lib/store/mainDateStore";
+import dayjs from "dayjs";
 
 const MonthlyDrink = () => {
+  const { dateValue } = mainDateStore();
   const [opened, { open, close }] = useDisclosure(false);
-  const { data, isLoading, isError } = useQuery({ queryKey: ["monthlyDrink"], queryFn: () => monthlyDrink() });
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ["monthlyDrink", { month: dayjs(dateValue).month() + 1 }],
+    queryFn: () => monthlyDrink({ month: (dayjs(dateValue).month() + 1).toString() }),
+  });
 
   const config = data?.data.data.config;
+  console.log("🚀 ~ MonthlyDrink ~ config:", config);
   const myBaverage = data?.data.data.myBaverage;
   const details = data?.data.data.details;
   if (isLoading) return <LoadingView />;
@@ -40,11 +47,17 @@ const MonthlyDrink = () => {
             픽업 :
           </Text>
           <Group>
-            {config?.pickup.map((item: any, index: number) => (
-              <Text key={index} fz={"xs"}>
-                {item}
+            {config?.pickup.length < 1 ? (
+              <Text fz={"xs"} c={"gray"}>
+                픽업 인원이 베정되지 않았습니다
               </Text>
-            ))}
+            ) : (
+              config?.pickup.map((item: any, index: number) => (
+                <Text key={index} fz={"xs"}>
+                  {item}
+                </Text>
+              ))
+            )}
           </Group>
         </Group>
         <Group justify="space-between" align="center">
