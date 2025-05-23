@@ -1,37 +1,51 @@
-import { Modal, Box, Group, ScrollArea, Select, Stack, Text } from "@mantine/core";
-import React from "react";
-const names = "가나다라마바사아자차카타파하거너더러머버서어저처커터퍼허".split("");
+import notification from "@/components/GNB/Notification";
+import { useUpdateDrink } from "@/hooks/useSubmitForm";
+import { Group, Modal, Select, Stack, Text } from "@mantine/core";
+import { useQueryClient } from "@tanstack/react-query";
 
-const drinks = [
-  "HOT 아메리카노",
-  "ICE 아메리카노",
-  "HOT 디카페인 아메리카노",
-  "ICE 디카페인 아메리카노",
-  "바닐라크림 콜드브루",
-  "ICE 자몽허니블랙티",
-  "선택안함",
-];
-const data = Array.from({ length: 50 }, (_, i) => ({
-  id: i,
-  name: Array.from({ length: 3 }, () => names[Math.floor(Math.random() * names.length)]).join(""),
-  drink: drinks[Math.floor(Math.random() * drinks.length)],
-}));
-
-const Details = ({ opened, close }: any) => {
+const Details = ({ opened, close, details, configId }: any) => {
+  const queryClient = useQueryClient();
+  const { mutate } = useUpdateDrink();
+  const updateDrink = (value: any, info: any) => {
+    const params = {
+      configId: configId,
+      userName: info.userName,
+      baverage: value,
+    };
+    mutate(params, {
+      onSuccess: async () => {
+        notification({
+          title: "음료 신청",
+          message: "음료 신청이 완료되었습니다.",
+          color: "green",
+        });
+        await queryClient.invalidateQueries({ queryKey: ["monthlyDrink"] });
+      },
+      onError: (error) => {
+        notification({
+          title: "음료 신청",
+          message: "음료 신청 중 문제가 발생했습니다.",
+          color: "red",
+        });
+        console.error("Error updating drink:", error);
+      },
+    });
+  };
   return (
     <Modal opened={opened} onClose={close} title="Monthly Meeting 음료 신청 현황" centered size={"xs"}>
       <Stack gap={6}>
-        {data.map((item) => (
-          <Group key={item.id} wrap="nowrap">
+        {details.map((item: any, index: number) => (
+          <Group key={index} wrap="nowrap">
             <Text w={20} fz={"xs"}>
-              {item.id + 1}.
+              {index + 1}.
             </Text>
-            <Text fz={"xs"}>{item.name}</Text>
+            <Text fz={"xs"}>{item.userName}</Text>
             <Select
               variant="unstyled"
               size="xs"
               flex={1}
-              value={item.drink}
+              value={item.baverage}
+              onChange={(value) => updateDrink(value, item)}
               data={[
                 "HOT 아메리카노",
                 "ICE 아메리카노",

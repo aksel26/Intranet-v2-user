@@ -1,36 +1,50 @@
-import { Box, Button, Group, ScrollArea, Select, Stack, Text } from "@mantine/core";
+import { monthlyDrink } from "@/app/api/get/getApi";
+import { Box, Button, Divider, Group, Stack, Text } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import React from "react";
-import Details from "./details";
 import { IconChevronRight } from "@tabler/icons-react";
+import { useQuery } from "@tanstack/react-query";
+import Details from "./details";
+import LoadingView from "@/components/Global/view/LoadingView";
+import { ErrorView } from "@/components/Global/view/ErrorView";
 
 const MonthlyDrink = () => {
   const [opened, { open, close }] = useDisclosure(false);
+  const { data, isLoading, isError } = useQuery({ queryKey: ["monthlyDrink"], queryFn: () => monthlyDrink() });
 
+  const config = data?.data.data.config;
+  const myBaverage = data?.data.data.myBaverage;
+  const details = data?.data.data.details;
+  if (isLoading) return <LoadingView />;
+  if (isError) return <ErrorView />;
   return (
     <Box px={"md"}>
-      <Group justify="space-between" align="center" my={"xs"}>
-        <Text fz={"sm"} fw={500} mb={10}>
-          6월 Monthly Meeting 음료 신청
+      <Group justify="space-between" align="center">
+        <Text fz={"xs"} fw={400}>
+          <Text component="span" fw={600} fz={"xs"}>
+            {config?.month}월{" "}
+          </Text>
+          Monthly Meeting 음료 신청
         </Text>
+
         <Group>
           <Text fz={"xs"} c={"gray"}>
             작성기한
           </Text>
-          <Text fz={"xs"}>2025.05.02</Text>
+          <Text fz={"xs"}>{config?.dueDate}</Text>
         </Group>
       </Group>
+      <Divider my={"xs"} />
       <Stack gap={"xs"}>
         <Group>
           <Text fz={"xs"} c={"gray"}>
             픽업 :
           </Text>
           <Group>
-            <Text fz={"xs"}>이재명</Text>
-            <Text fz={"xs"}>김문수</Text>
-            <Text fz={"xs"}>이준석</Text>
-            <Text fz={"xs"}>권영국</Text>
-            <Text fz={"xs"}>황교안</Text>
+            {config?.pickup.map((item: any, index: number) => (
+              <Text key={index} fz={"xs"}>
+                {item}
+              </Text>
+            ))}
           </Group>
         </Group>
         <Group justify="space-between" align="center">
@@ -38,7 +52,13 @@ const MonthlyDrink = () => {
             <Text fz={"xs"} c={"gray"}>
               내가 선택한 음료 :
             </Text>
-            <Text fz={"xs"}>ICE 디카페인 아메리카노</Text>
+            {myBaverage ? (
+              <Text fz={"xs"}>{myBaverage}</Text>
+            ) : (
+              <Text c={"gray"} fz={"xs"}>
+                아직 선택하지 않았습니다.
+              </Text>
+            )}
           </Group>
           <Button size="compact-xs" variant="subtle" rightSection={<IconChevronRight size={15} strokeWidth={1.2} />} onClick={open}>
             전체보기
@@ -46,7 +66,7 @@ const MonthlyDrink = () => {
         </Group>
       </Stack>
 
-      <Details opened={opened} close={close} />
+      <Details opened={opened} close={close} details={details} configId={config.configId} />
     </Box>
   );
 };

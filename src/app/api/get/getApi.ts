@@ -49,3 +49,6 @@ export const getAllAttendanceStaff = (params: TYearMonth) => apiClient.get(`/use
 
 // 사용자 공지사항 목록 조회 API
 export const searchNotice = (params: TSearchNotice) => apiClient.get(`/users/notices`, { params: params });
+
+// 사용자 먼슬리 음료 현황 API
+export const monthlyDrink = () => apiClient.get(`/users/playground/monthly-baverage`);

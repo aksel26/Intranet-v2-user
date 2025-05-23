@@ -61,3 +61,7 @@ export const approveVacation = (values: any) =>
   apiClient.patch(`/users/intranet/approval/${values.commuteIdx}`, {
     confirmYN: values.confirmYN,
   });
+
+// 사용자 먼슬리 음료 신청 API
+
+export const updateDrink = (values: any) => apiClient.put(`/users/playground/monthly-baverage`, values);

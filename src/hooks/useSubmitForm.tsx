@@ -111,3 +111,9 @@ export const useApproveVacation = () => {
     mutationFn: (values: any) => api.approveVacation(values),
   });
 };
+
+export const useUpdateDrink = () => {
+  return useMutation({
+    mutationFn: (values: any) => api.updateDrink(values),
+  });
+};
