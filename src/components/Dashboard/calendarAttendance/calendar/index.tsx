@@ -57,12 +57,12 @@ const MainCalendar = ({ allAttendance }: any) => {
         locale="ko"
         onChange={onChange}
         date={innerValue}
-        onMonthSelect={() => {}}
+        // onMonthSelect={() => {}}
         onPreviousMonth={(date: Date) => handleChangeMonth(date)}
         onNextMonth={(date: Date) => handleChangeMonth(date)}
         firstDayOfWeek={0}
-        onLevelChange={() => {}} // 레벨 변경 이벤트를 무시
-        level="month"
+        // onLevelChange={() => {}} // 레벨 변경 이벤트를 무시
+        // level="month"
         renderDay={(date) => renderDay(date, allAttendance)} // 여기에 커스텀 renderDay 함수를 전달
       />
     </Paper>
