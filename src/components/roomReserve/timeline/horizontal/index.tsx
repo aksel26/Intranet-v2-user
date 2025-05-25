@@ -1,27 +1,25 @@
-"use client";
-
-import { useState } from "react";
+import React, { useState } from "react";
+import FullCalendar from "@fullcalendar/react";
+import timelinePlugin from "@fullcalendar/timeline";
+import resourceTimelinePlugin from "@fullcalendar/resource-timeline";
+import interactionPlugin from "@fullcalendar/interaction";
+import dayGridPlugin from "@fullcalendar/daygrid";
+import listPlugin from "@fullcalendar/list";
 // import printPlugin from '@fullcalendar/print';
-import PageContainer from "@/components/Global/container";
-import ReserveModal from "@/components/roomReserve/reserveModal";
-import HorizontalTimeline from "@/components/roomReserve/timeline/horizontal";
-import ResourceTimeGridCalendar from "@/components/roomReserve/timeline/vertical";
-import { Group, Paper, Stack, Switch, Text } from "@mantine/core";
-import { useDisclosure } from "@mantine/hooks";
-import { IconArrowsHorizontal, IconArrowsVertical } from "@tabler/icons-react";
-import "../../../styles/reserveRoom.css";
-// import { LicenseController } from '@fullcalendar/core/internal';
-// LicenseController.key = 'YOUR_LICENSE_KEY_HERE';
-
-// GlobalContext.Calendar.name = 'CC-Attribution-NonCommercial-NoDerivatives';  // 필수 설정
-const TimelineCalendarWithPrint = () => {
-  const [isMounted, setIsMounted] = useState(false);
-
-  const [opened, { open, close }] = useDisclosure(false);
-
-  // 자원 정의
-
-  // 이벤트 데이터
+import koLocale from "@fullcalendar/core/locales/ko";
+import "../../../../styles/reserveRoom.css";
+const HorizontalTimeline = () => {
+  const [resources, setResources] = useState([
+    { id: "A", room: "A Room", limit: "6인" },
+    { id: "C", room: "C Room", limit: "12인" },
+    { id: "C2", room: "C_2 Room", limit: "12인" },
+    { id: "G", room: "G Room", limit: "6인" },
+    { id: "R", room: "R Room", limit: "12인" },
+    { id: "L1", room: "L_1 Room", limit: "1인" },
+    { id: "L2", room: "L_2 Room", limit: "1인" },
+    { id: "S1", room: "S_1 Room", limit: "1인" },
+    { id: "S2", room: "S_2 Room", limit: "1인" },
+  ]);
   const [events, setEvents] = useState<any>([
     {
       id: "1",
@@ -68,13 +66,10 @@ const TimelineCalendarWithPrint = () => {
     },
   ]);
   const [currentView, setCurrentView] = useState("resourceTimeline");
-
   const [dateRange, setDateRange] = useState({
     start: new Date(),
     end: new Date(new Date().setDate(new Date().getDate() + 7)),
   });
-  // 일정 목록 인쇄
-
   const handleViewChange = (viewInfo: any) => {
     // 인쇄 모드가 아닐 때만 현재 뷰 저장
     // if (!printMode) {
@@ -135,69 +130,80 @@ const TimelineCalendarWithPrint = () => {
       setEvents(events.filter((e: any) => e.id !== event.id));
     }
   };
-
-  // 서버 사이드 렌더링 시 빈 div 반환
-  //   if (!isMounted) {
-  //     return <div className="flex items-center justify-center h-screen">로딩 중...</div>;
-  //   }
-
   return (
-    <PageContainer>
-      <Group justify="space-between" align="end">
-        <Stack gap={1}>
-          <Text size="lg" fw={600} component="a">
-            회의실 예약
-          </Text>
-          <Text component="span" c={"gray.6"} fz={"sm"}>
-            회의실 예약 현황을 확인할 수 있습니다.
-          </Text>
-        </Stack>
-
-        <Switch
-          label="보기 설정"
-          styles={{
-            body: { flexDirection: "column-reverse", justifyContent: "center" },
-            label: {
-              padding: 0,
-              fontSize: "12px",
-              color: "var(--mantine-color-gray-6)",
-            },
-          }}
-          onChange={() => {
-            setCurrentView(
-              currentView === "resourceTimeline"
-                ? "resourceTimeGrid"
-                : "resourceTimeline"
-            );
-          }}
-          size="md"
-          color="dark.4"
-          onLabel={
-            <IconArrowsVertical
-              size={16}
-              stroke={2.5}
-              color="var(--mantine-color-yellow-4)"
-            />
+    <div className="calendar-container calendar-print-container">
+      <FullCalendar
+        plugins={[
+          resourceTimelinePlugin,
+          timelinePlugin,
+          dayGridPlugin,
+          interactionPlugin,
+          listPlugin,
+        ]}
+        initialView="resourceTimeline"
+        headerToolbar={{
+          left: "title",
+          right: "prev,next today",
+          center: "",
+        }}
+        resourceAreaColumns={[
+          {
+            field: "room",
+            headerContent: "회의실",
+            width: 80,
+          },
+          {
+            field: "limit",
+            headerContent: "정원",
+            width: 60,
+          },
+        ]}
+        resources={resources}
+        events={events}
+        editable
+        selectable
+        selectMirror
+        eventClick={handleEventClick}
+        select={handleDateSelect}
+        resourceAreaWidth={"130px"}
+        // resourceAreaHeaderContent="회의실"
+        locale={koLocale}
+        viewDidMount={handleViewChange}
+        slotMinTime="08:00:00"
+        slotMaxTime="20:00:00"
+        height="auto"
+        nowIndicator={true}
+        eventDidMount={(info) => {
+          // 툴팁 추가
+          const description = info.event.extendedProps.description;
+          if (description) {
+            info.el.title = description;
           }
-          offLabel={
-            <IconArrowsHorizontal
-              size={16}
-              stroke={2.5}
-              color="var(--mantine-color-blue-6)"
-            />
-          }
-        />
-      </Group>
-      <Paper bg={"white"} px="xs" py="lg" radius={"lg"} mt={"md"}>
-        {currentView === "resourceTimeline" ? (
-          <HorizontalTimeline />
-        ) : (
-          <ResourceTimeGridCalendar />
-        )}
-      </Paper>
-      <ReserveModal opened={opened} close={close} />
-    </PageContainer>
+        }}
+        slotLabelFormat={{
+          hour: "numeric",
+          hour12: false,
+        }}
+        // views={{
+        //   resourceTimelineDay: {
+        //     slotDuration: "00:30:00",
+        //   },
+        //   //   resourceTimelineWeek: {
+        //   //     slotDuration: "01:00:00",
+        //   //   },
+        //   listWeek: {
+        //     displayEventTime: true,
+        //     displayEventEnd: true,
+        //     eventTimeFormat: {
+        //       hour: "2-digit",
+        //       minute: "2-digit",
+        //       hour12: false,
+        //     },
+        //   },
+        // }}
+      />
+    </div>
   );
 };
 
-export default TimelineCalendarWithPrint;
+export default HorizontalTimeline;
