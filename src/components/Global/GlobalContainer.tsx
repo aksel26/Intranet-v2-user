@@ -4,7 +4,11 @@ import { theme } from "@/lib/theme";
 import { createTheme, MantineProvider, rem } from "@mantine/core";
 import { Notifications } from "@mantine/notifications";
 import React from "react";
-export const GlobalContainer = ({ children }: { children: React.ReactNode }) => {
+export const GlobalContainer = ({
+  children,
+}: {
+  children: React.ReactNode;
+}) => {
   //   const [isLoading, setIsLoading] = useState(true);
 
   //   useEffect(() => {
@@ -17,8 +21,20 @@ export const GlobalContainer = ({ children }: { children: React.ReactNode }) => 
     defaultRadius: "md",
     // primaryColor: "indigo",
     colors: {
-      primary: ["#e0fbff", "#cff1fd", "#a4dff4", "#76ccec", "#4fbce5", "#36b2e1", "#21aee1", "#0498c8", "#0087b4", "#0075a0"],
+      primary: [
+        "#e0fbff",
+        "#cff1fd",
+        "#a4dff4",
+        "#76ccec",
+        "#4fbce5",
+        "#36b2e1",
+        "#21aee1",
+        "#0498c8",
+        "#0087b4",
+        "#0075a0",
+      ],
     },
+    cursorType: "pointer",
 
     primaryColor: "primary",
 
