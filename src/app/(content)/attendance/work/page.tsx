@@ -44,7 +44,7 @@ function page() {
     <Stack key={record.commuteIdx} gap={10}>
       <Group gap={2} align="center" justify="space-between" wrap="nowrap">
         <Group gap={"xs"} align="end">
-          <Text fz={"md"} fw={500}>
+          <Text fz={"sm"} fw={500}>
             {dayjs(record.commuteDate).format("YYYY-MM-DD (dd)")}
           </Text>
           <Group>
@@ -68,7 +68,7 @@ function page() {
           </Text>
           {!record.checkOutTime ? (
             <Text fz={"xs"} c={"gray.4"}>
-              시간 정보가 없습니다.
+              퇴근 전
             </Text>
           ) : (
             <Text fz={"xs"}>{formatTime(record.checkOutTime)}</Text>

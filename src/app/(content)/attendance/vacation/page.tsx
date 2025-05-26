@@ -45,10 +45,10 @@ function page() {
       </Stack>
       <YearSelect setParams={setParams} w={120} />
       <VacationSummary params={params} />
-      <MonthFilter trigger={setParams} />
+      {/* <MonthFilter trigger={setParams} /> */}
 
       {/* <MonthSelect setParams={setParams} w={100} /> */}
-      <VacationList params={params} openAttachmentModal={openAttachmentModal} openVacationModal={openVacationModal} />
+      <VacationList params={params} setParams={setParams} openAttachmentModal={openAttachmentModal} openVacationModal={openVacationModal} />
       <CancleVacation opened={cancelVacationOpened} close={cancelVacationModalClose} details={currentVacationInfo} />
       <Attachment opened={attachmentModalOpened} close={attachmentModalClose} details={currentVacationInfo} />
       {/* <Vacation opened={opened} close={close} /> */}
