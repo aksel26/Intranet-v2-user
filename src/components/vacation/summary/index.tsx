@@ -3,7 +3,7 @@ import ToolTipDetailsVacation from "@/components/Attendance/ToolTipDetailsVacati
 import { ErrorView } from "@/components/Global/view/ErrorView";
 import LoadingView from "@/components/Global/view/LoadingView";
 import { TYearMonth } from "@/types/apiTypes";
-import { ActionIcon, Flex, Group, Loader, Paper, Stack, Text } from "@mantine/core";
+import { ActionIcon, Divider, Flex, Grid, Group, Loader, Paper, Stack, Text } from "@mantine/core";
 import { IconDots } from "@tabler/icons-react";
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
@@ -23,98 +23,91 @@ const VacationSummary = ({ params }: { params: TYearMonth }) => {
     if (isLoading) return <Loading />;
     if (isError) return <ErrorView>휴가정보를 불러오는 중 문제가 발생하였습니다.</ErrorView>;
     return (
-      <Flex gap={"md"} wrap={"wrap"}>
-        <Paper bg={"white"} px="lg" py="md" radius={"lg"} h={"100%"} miw={300}>
-          <Group gap={"xl"}>
-            <Stack gap={4}>
-              <Text c={"dimmed"} fz={"xs"}>
-                입사일
-              </Text>
-              <Text fw={600} ta={"center"} fz={"sm"}>
-                {leaveSummary.joinDate}
-              </Text>
-            </Stack>
-            <Stack gap={4}>
-              <Text c={"dimmed"} fz={"xs"}>
-                근속년수
-              </Text>
-              <Text fz={"sm"} ta={"center"}>
-                <Text fw={600} component="span" fz={"md"}>
-                  {leaveSummary.yearsSinceJoin}
-                </Text>
-                년
-              </Text>
-            </Stack>
-            {leaveSummary.yearsSinceJoin >= 3 ? null : (
-              <>
+      <Stack gap={2} w={"100%"}>
+        <Text fz={"sm"} fw={500} c={"gray"}>
+          휴가정보
+        </Text>
+        <Paper bg={"white"} px="lg" py="md" h={"100%"} radius={"lg"} pos={"relative"}>
+          <Grid align="stretch" gutter="lg">
+            <Grid.Col span={{ base: 12, md: 6 }}>
+              <Group gap={"xl"} justify="space-around" align="end" maw={350} mx={"auto"}>
                 <Stack gap={4}>
                   <Text c={"dimmed"} fz={"xs"}>
-                    만 1년 날짜
-                  </Text>
-                  <Text fz={"sm"} fw={600} ta={"center"}>
-                    {leaveSummary.oneYearAfterJoin}
-                  </Text>
-                </Stack>
-                <Stack gap={4}>
-                  <Text c={"dimmed"} fz={"xs"}>
-                    중도입사 연차 부여
+                    총 연차 개수
                   </Text>
                   <Text fz={"sm"} ta={"center"}>
-                    <Text fw={600} component="span" fz={"md"}>
-                      {leaveSummary.midJoinReceivedAnnualLeave}
+                    <Text fw={500} component="span" fz={"md"}>
+                      {leaveSummary.totalReceivedAnnualLeave}
                     </Text>
-                    개
+                    일
                   </Text>
                 </Stack>
-              </>
-            )}
-          </Group>
-        </Paper>
+                <Stack gap={4}>
+                  <Text c={"dimmed"} fz={"xs"}>
+                    사용 연차
+                  </Text>
+                  <Text fz={"sm"} ta={"center"}>
+                    <Text fw={500} component="span" fz={"md"}>
+                      {leaveSummary.totalAnnualLeaveUsage}
+                    </Text>
+                    일
+                  </Text>
+                </Stack>
+                <Stack gap={4}>
+                  <Text c={"dimmed"} fz={"xs"}>
+                    잔여 연차
+                  </Text>
+                  <Text fz={"sm"} ta={"center"}>
+                    <Text fw={500} component="span" fz={"md"}>
+                      {leaveSummary.totalAnnualLeaveBalance}
+                    </Text>
+                    일
+                  </Text>
+                </Stack>
+              </Group>
+            </Grid.Col>
 
-        <Paper bg={"white"} px="lg" py="md" h={"100%"} radius={"lg"} miw={300} pos={"relative"}>
-          <Group gap={"xl"} justify="space-around" align="end">
-            <Stack gap={4}>
-              <Text c={"dimmed"} fz={"xs"}>
-                총 연차 개수
-              </Text>
-              <Text fz={"sm"} ta={"center"}>
-                <Text fw={600} component="span" fz={"md"}>
-                  {leaveSummary.totalReceivedAnnualLeave}
-                </Text>
-                일
-              </Text>
-            </Stack>
-            <Stack gap={4}>
-              <Text c={"dimmed"} fz={"xs"}>
-                사용 연차
-              </Text>
-              <Text fz={"sm"} ta={"center"}>
-                <Text fw={600} component="span" fz={"md"}>
-                  {leaveSummary.totalAnnualLeaveUsage}
-                </Text>
-                일
-              </Text>
-            </Stack>
-            <Stack gap={4}>
-              <Text c={"dimmed"} fz={"xs"}>
-                잔여 연차
-              </Text>
-              <Text fz={"sm"} ta={"center"}>
-                <Text fw={600} component="span" fz={"md"}>
-                  {leaveSummary.totalAnnualLeaveBalance}
-                </Text>
-                일
-              </Text>
-            </Stack>
-
-            <ToolTipDetailsVacation details={leaveUsageStats}>
-              <ActionIcon size="compact-xs" variant="subtle" radius={"xs"}>
-                <IconDots />
-              </ActionIcon>
-            </ToolTipDetailsVacation>
-          </Group>
+            {/* <Divider my={"sm"} /> */}
+            <Grid.Col span={{ base: 12, md: 6 }}>
+              <Group justify="space-between" align="end">
+                <Stack gap={"xs"}>
+                  <Group gap={"xs"}>
+                    <Text fz={"xs"} c={"gray"}>
+                      입사일
+                    </Text>
+                    <Text fz={"xs"}>2022-03-01</Text>
+                  </Group>
+                  <Group gap={"xs"}>
+                    <Text fz={"xs"} c={"gray"}>
+                      근속년수
+                    </Text>
+                    <Text fz={"xs"}>3년</Text>
+                  </Group>
+                </Stack>
+                <Stack gap={"xs"}>
+                  <Group gap={"xs"}>
+                    <Text fz={"xs"} c={"gray"}>
+                      만 1년 날짜
+                    </Text>
+                    <Text fz={"xs"}>2022-03-01</Text>
+                  </Group>
+                  <Group gap={"xs"}>
+                    <Text fz={"xs"} c={"gray"}>
+                      중도입사 연차 부여
+                    </Text>
+                    <Text fz={"xs"}>3년</Text>
+                  </Group>
+                </Stack>
+                <ToolTipDetailsVacation details={leaveUsageStats}>
+                  <ActionIcon size="compact-xs" variant="subtle" radius={"xs"}>
+                    <IconDots />
+                  </ActionIcon>
+                </ToolTipDetailsVacation>
+              </Group>
+            </Grid.Col>
+          </Grid>
         </Paper>
-      </Flex>
+      </Stack>
     );
   };
 
