@@ -36,15 +36,22 @@ const VacationList = ({ params, setParams, openAttachmentModal, openVacationModa
   const Items = ({ record, index, arr }: any) => {
     return (
       <Stack key={record.commuteIdx} gap={"xs"}>
-        <Stack gap={3}>
-          <Text fz={"xs"} fw={500} c={"dimmed"}>
-            {dayjs(record.commuteDate).format("YYYY-MM-DD (dd)")}
-          </Text>
+        <Group justify="space-between" align="start" wrap="nowrap">
+          <Stack gap={3}>
+            <Text fz={"xs"} fw={500} c={"dimmed"}>
+              {dayjs(record.commuteDate).format("YYYY-MM-DD (dd)")}
+            </Text>
 
-          <Text fz={"sm"} fw={500}>
-            {record.leaveType}
-          </Text>
-        </Stack>
+            <Text fz={"sm"} fw={500}>
+              {record.leaveType}
+            </Text>
+          </Stack>
+          {isDateBeforeToday(record.commuteDate) ? null : (
+            <Button variant="light" color="red" size="compact-xs" onClick={() => openVacationModal(record)}>
+              취소
+            </Button>
+          )}
+        </Group>
         <Grid gutter={"xs"}>
           <Grid.Col span={{ base: 6, md: 2 }}>
             <Stack gap={4}>
@@ -154,12 +161,6 @@ const VacationList = ({ params, setParams, openAttachmentModal, openVacationModa
               </Group>
             </Stack>
           </Grid.Col>
-
-          {isDateBeforeToday(record.commuteDate) ? null : (
-            <Button variant="light" color="red" size="compact-xs" onClick={() => openVacationModal(record)}>
-              취소
-            </Button>
-          )}
         </Grid>
         {arr.length === index + 1 ? null : <Divider my={"md"} color="gray.1" />}
       </Stack>
