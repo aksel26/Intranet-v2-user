@@ -5,13 +5,13 @@ const ConfirmStatus = ({ record }: any) => {
   if (record.confirmYN === "R") {
     if (record.rejectDate) {
       return (
-        <Group gap={"xs"}>
-          <Text c={"dimmed"} fz={"xs"}>
-            {record.rejectDate}
-          </Text>
+        <Group gap={"xs"} align="end">
           <Badge variant="outline" color="red" radius="sm" size="sm">
             반려
           </Badge>
+          <Text c={"dimmed"} fz={11}>
+            {record.rejectDate}
+          </Text>
         </Group>
       );
     }
