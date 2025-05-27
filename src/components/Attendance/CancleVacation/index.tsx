@@ -32,7 +32,7 @@ const CancleVacation = ({ opened, close, details }: any) => {
           queryClient.invalidateQueries({
             predicate: (query) => {
               const queryKey = query.queryKey;
-              const targetKeys = ["vacationAll", "attendanceSummary", "vacationAll", "vacationSummary"];
+              const targetKeys = ["vacationAll", "attendanceSummary", "vacationAll", "attendanceAllStaff", "vacationSummary"];
               return Array.isArray(queryKey) && targetKeys.includes(queryKey[0]);
             },
           });

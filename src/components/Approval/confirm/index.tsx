@@ -81,8 +81,13 @@ const ApprovalConfirm = ({ opened, close, details }: any) => {
             color: "green",
             message: `휴가신청 내역이 ${confirm === "R" ? "반려" : "승인"} 되었습니다.`,
           });
+
           queryClient.invalidateQueries({
-            queryKey: ["approvals"],
+            predicate: (query) => {
+              const queryKey = query.queryKey;
+              const targetKeys = ["approvals", "vacationAll", "vacationSummary"];
+              return Array.isArray(queryKey) && targetKeys.includes(queryKey[0]);
+            },
           });
         },
         onError: (error: any) => {
