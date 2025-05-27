@@ -2,6 +2,7 @@
 import * as api from "@/app/api/get/getApi";
 import { AttendanceBadge, LeavTypeBadge } from "@/components/Attendance/work/badge";
 import DatePicker from "@/components/Attendance/work/datePicker";
+import UpdateNote from "@/components/Attendance/work/updateNote";
 import WorkTimeByLeaveType from "@/components/Attendance/work/workTime";
 import PageContainer from "@/components/Global/container";
 import EmptyView from "@/components/Global/view/EmptyView";
@@ -10,7 +11,9 @@ import LoadingView from "@/components/Global/view/LoadingView";
 import { TMyAttendance } from "@/types/apiTypes";
 import { calculateNumberToTime, formatTime } from "@/utils/dateFomat";
 import { detectDevice } from "@/utils/userAgent";
-import { Divider, Group, Paper, Space, Stack, Text } from "@mantine/core";
+import { Box, Divider, Group, Paper, Space, Stack, Text } from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
+import { IconPencilMinus } from "@tabler/icons-react";
 import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import React, { useState } from "react";
@@ -23,8 +26,16 @@ function page() {
     eDate: dayjs().endOf("month").format("YYYY-MM-DD"),
   });
 
+  const [setselectRow, setSetsetselectRow] = useState();
+  const [opened, { open, close }] = useDisclosure(false);
+
   const { data, isLoading, isError } = useQuery({ queryKey: ["attendanceAll", params], queryFn: () => api.getMyAttendance(params) });
   const records = data?.data?.data?.records;
+  console.log("🚀 ~ page ~ records:", records);
+  const openModal = (record: any) => {
+    setSetsetselectRow(record);
+    open();
+  };
 
   const ListWrapper = () => {
     return (
@@ -55,39 +66,64 @@ function page() {
         </Group>
       </Group>
 
-      <div className="flex gap-y-4 gap-x-8 flex-wrap">
-        <Stack gap={1}>
-          <Text fz={"xs"} c={"dimmed"}>
-            출근시간
-          </Text>
-          <Text fz={"xs"}>{formatTime(record.checkInTime)}</Text>
-        </Stack>
-        <Stack gap={1}>
-          <Text fz={"xs"} c={"dimmed"}>
-            퇴근시간
-          </Text>
-          {!record.checkOutTime ? (
-            <Text fz={"xs"} c={"gray.4"}>
-              퇴근 전
+      <Group gap={"md"}>
+        <Stack gap={"xs"} flex={1}>
+          <Group gap={"xs"}>
+            <Text fz={"xs"} c={"dimmed"}>
+              출근시간
             </Text>
-          ) : (
-            <Text fz={"xs"}>{formatTime(record.checkOutTime)}</Text>
-          )}
+            {!record.checkOutTime ? (
+              <Text fz={"xs"} c={"gray.4"}>
+                출근 전
+              </Text>
+            ) : (
+              <Text fz={"xs"}>{formatTime(record.checkInTime)}</Text>
+            )}
+          </Group>
+          <Group gap={"xs"}>
+            <Text fz={"xs"} c={"dimmed"}>
+              퇴근시간
+            </Text>
+            {!record.checkOutTime ? (
+              <Text fz={"xs"} c={"gray.4"}>
+                퇴근 전
+              </Text>
+            ) : (
+              <Text fz={"xs"}>{formatTime(record.checkOutTime)}</Text>
+            )}
+          </Group>
         </Stack>
-        <Stack gap={1}>
+        <Stack gap={"xs"} flex={1}>
+          <Group gap={"xs"}>
+            <Text fz={"xs"} c={"dimmed"}>
+              근무시간
+            </Text>
+            <Text fz={"xs"}>{`${calculateNumberToTime(record.workingMinutes)}`}</Text>
+          </Group>
+          <Group gap={"xs"}>
+            <Text fz={"xs"} c={"dimmed"}>
+              초과시간
+            </Text>
+            <Text fz={"xs"}>{`${calculateNumberToTime(record.overtimeWorkingMinutes)}`}</Text>
+          </Group>
+        </Stack>
+      </Group>
+      <Group align="center" justify="space-between" styles={{ root: { cursor: "pointer" } }} onClick={() => openModal(record)}>
+        <Group gap={"xs"}>
           <Text fz={"xs"} c={"dimmed"}>
-            근무시간
+            비고
           </Text>
-          <Text fz={"xs"}>{`${calculateNumberToTime(record.workingMinutes)}`}</Text>
-        </Stack>
-        <Stack gap={1}>
-          <Text fz={"xs"} c={"dimmed"}>
-            초과시간
-          </Text>
-          <Text fz={"xs"}>{`${calculateNumberToTime(record.overtimeWorkingMinutes)}`}</Text>
-        </Stack>
-      </div>
-      {arr.length === index + 1 ? null : <Divider my={"lg"} color="gray.1" />}
+          <Box w={"60vw"}>
+            <Text c={"gray"} fz={"xs"} truncate="end">
+              <Text truncate="end" c={record.note ? "black" : "gray.4"} fz={"xs"}>
+                {record.note ? record.note : "내용이 없습니다."}
+              </Text>
+            </Text>
+          </Box>
+        </Group>
+        <IconPencilMinus size={14} strokeWidth={1.2} />
+      </Group>
+      {arr.length === index + 1 ? null : <Divider my={"sm"} color="gray.1" />}
     </Stack>
   );
 
@@ -113,6 +149,7 @@ function page() {
         <Space h={"md"} />
         {renderContent()}
       </Paper>
+      <UpdateNote opened={opened} close={close} details={setselectRow} />
     </PageContainer>
   );
 }

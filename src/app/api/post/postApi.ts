@@ -65,3 +65,7 @@ export const approveVacation = (values: any) =>
 // 사용자 먼슬리 음료 신청 API
 
 export const updateDrink = (values: any) => apiClient.put(`/users/playground/monthly-baverage`, values);
+
+// 사용자 출퇴근 특이사항 수정 API
+
+export const updateAttendanceNote = (values: any) => apiClient.patch(`/users/intranet/commute/${values.commuteIdx}/note`, values.body);
