@@ -3,22 +3,21 @@ import * as api from "@/app/api/get/getApi";
 import { ApprovalStatus, ApprovalType } from "@/components/Approval/badge";
 import ApprovalConfirm from "@/components/Approval/confirm";
 import UserSelect from "@/components/Approval/userSelect";
-import MonthSelect from "@/components/Global/dateSelect/MonthSelect";
+import PageContainer from "@/components/Global/container";
 import YearSelect from "@/components/Global/dateSelect/YearSelect";
 import EmptyView from "@/components/Global/view/EmptyView";
 import { ErrorView } from "@/components/Global/view/ErrorView";
 import LoadingView from "@/components/Global/view/LoadingView";
+import MonthFilter from "@/components/ui/monthFilter";
 import { TApprovalList } from "@/lib/types/approval";
 import { TApproval } from "@/types/apiTypes";
-import { ActionIcon, Group, List, ListItem, Paper, Stack, Text } from "@mantine/core";
+import { ActionIcon, Grid, Group, List, Paper, Stack, Text } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { IconChevronRight } from "@tabler/icons-react";
 import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import React, { useState } from "react";
 import styles from "../../../styles/list.module.css";
-import PageContainer from "@/components/Global/container";
-import MonthFilter from "@/components/ui/monthFilter";
 
 const page = () => {
   const [params, setParams] = useState<TApproval>({
@@ -55,47 +54,61 @@ const page = () => {
     );
   };
   const Items = ({ record }: { record: TApprovalList }) => (
-    <ListItem w={"100%"} onClick={() => modalOpen(record)} key={record?.commuteIdx} className={styles.element} px={"sm"} py={"xl"}>
-      <Stack gap={8}>
-        <Text fz={"sm"} fw={600}>
-          {`${dayjs(record?.commuteDate).format("YYYY-MM-DD (dd)")}`}
-        </Text>
-        <Group gap={"xl"} align="end">
-          <Stack gap={2}>
-            <Text fz={"xs"} c={"dimmed"}>
-              결재유형
-            </Text>
-            <ApprovalType value={record?.relationType} />
-          </Stack>
-          <Stack gap={2}>
-            <Text fz={"xs"} c={"dimmed"}>
-              성명
-            </Text>
-            <Text fz={"xs"}>{record?.userName}</Text>
-          </Stack>
-          <Stack gap={2}>
-            <Text fz={"xs"} c={"dimmed"}>
-              휴가유형
-            </Text>
-            <Text fz={"xs"}>{record?.leaveType}</Text>
-          </Stack>
-          <Stack gap={2}>
-            <Text fz={"xs"} c={"dimmed"}>
-              상태
-            </Text>
-            <ApprovalStatus record={record} />
-          </Stack>
-
-          <Text c={record?.note ? "black" : "dimmed"} fz={"xs"}>
-            {record?.note || "작성 내용이 없습니다."}
+    <List.Item
+      w={"100%"}
+      onClick={() => modalOpen(record)}
+      key={record?.commuteIdx}
+      className={styles.element}
+      py={"md"}
+      styles={{ item: { width: "100%" }, itemLabel: { width: "100%" }, itemWrapper: { width: "100%" } }}
+    >
+      <Stack gap={8} w={"100%"}>
+        <Group justify="space-between" align="center" wrap="nowrap" w={"100%"}>
+          <Text fz={"sm"} fw={500}>
+            {`${dayjs(record?.commuteDate).format("YYYY-MM-DD (dd)")}`}
           </Text>
           <ActionIcon variant="subtle" color="gray.4" size={"sm"}>
             <IconChevronRight />
           </ActionIcon>
-          {/* <ButtonByApprovalStatus setTargetInfo={setTargetInfo} record={record} open={openConfirmModal} /> */}
         </Group>
+        <Grid align="center">
+          <Grid.Col span={{ base: 2, md: 0.7 }}>
+            <ApprovalType value={record?.relationType} />
+          </Grid.Col>
+          <Grid.Col span={{ base: 10 }}>
+            <Stack gap={6}>
+              <Group gap={"xs"}>
+                <Text fz={"xs"} c={"dimmed"} w={50}>
+                  성명
+                </Text>
+                <Text fz={"xs"}>{record?.userName}</Text>
+              </Group>
+              <Group gap={"xs"}>
+                <Text fz={"xs"} c={"dimmed"} w={50}>
+                  휴가유형
+                </Text>
+                <Text fz={"xs"}>{record?.leaveType}</Text>
+              </Group>
+              <Group gap={"xs"}>
+                <Text fz={"xs"} c={"dimmed"} w={50}>
+                  상태
+                </Text>
+                <ApprovalStatus record={record} />
+              </Group>
+
+              <Group gap={"xs"}>
+                <Text fz={"xs"} c={"dimmed"} w={50}>
+                  내용
+                </Text>
+                <Text c={record?.note ? "black" : "dimmed"} fz={"xs"}>
+                  {record?.note || "작성 내용이 없습니다."}
+                </Text>
+              </Group>
+            </Stack>
+          </Grid.Col>
+        </Grid>
       </Stack>
-    </ListItem>
+    </List.Item>
   );
 
   const renderContent = () => {

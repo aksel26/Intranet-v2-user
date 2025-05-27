@@ -7,7 +7,7 @@ export const ApprovalType = ({ value }: { value: string }) => {
 
   useEffect(() => {
     if (value === "APPROVER") {
-      setColor("orange.5");
+      setColor("blue.5");
       setRender("승인요청");
     } else {
       setColor("yellow.5");
@@ -16,9 +16,21 @@ export const ApprovalType = ({ value }: { value: string }) => {
   }, [value]);
 
   return (
-    <Badge miw={70} color={color} radius="sm" size="md" variant="light">
+    <Text
+      fz={10}
+      c={value === "APPROVER" ? "blue.5" : "gray.6"}
+      w={35}
+      bg={value === "APPROVER" ? "blue.0" : "gray.1"}
+      ta={"center"}
+      styles={{ root: { borderRadius: "8px" } }}
+      p={3}
+      px={4}
+    >
       {render}
-    </Badge>
+    </Text>
+    // <Badge miw={70} color={color} radius="sm" size="md" variant="light">
+
+    // </Badge>
   );
 };
 
