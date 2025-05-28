@@ -1,11 +1,14 @@
 "use client";
 import { mainDateStore } from "@/lib/store/mainDateStore";
-import { Badge, Paper, Title } from "@mantine/core";
+import { myInfoStore } from "@/lib/store/myInfoStore";
+import { Badge, Box, Group, Paper, Text, Title } from "@mantine/core";
 import { DatePicker } from "@mantine/dates";
 import dayjs from "dayjs";
 const MainCalendar = ({ allAttendance }: any) => {
   const { setDateValue, innerValue, setInnerValue } = mainDateStore();
-
+  const { myInfo } = myInfoStore();
+  const myName = myInfo?.userName || "";
+  console.log("🚀 ~ MainCalendar ~ myInfo:", myInfo);
   const onChange = (date: any) => {
     setInnerValue(date);
     setDateValue(date);
@@ -19,6 +22,8 @@ const MainCalendar = ({ allAttendance }: any) => {
   const renderDay = (date: any, allAttendance: any) => {
     const dateStr = dayjs(date).format("YYYY-MM-DD");
     const events = allAttendance[dateStr] || [];
+
+    const isInclude = events.some((obj: any) => obj["userName"] === myName);
     const count = events.length;
 
     return (
@@ -28,7 +33,7 @@ const MainCalendar = ({ allAttendance }: any) => {
           <Badge
             size="sm"
             radius="sm"
-            variant="light"
+            variant={isInclude ? "filled" : "light"}
             color="lime"
             style={{
               position: "absolute",
@@ -65,6 +70,20 @@ const MainCalendar = ({ allAttendance }: any) => {
         // level="month"
         renderDay={(date) => renderDay(date, allAttendance)} // 여기에 커스텀 renderDay 함수를 전달
       />
+
+      <Group justify="end" mt={"md"}>
+        <Box
+          h={10}
+          w={10}
+          bg={"lime"}
+          style={{
+            borderRadius: 3,
+          }}
+        />
+        <Text fz={"xs"} c={"gray"}>
+          나의 휴가/연차
+        </Text>
+      </Group>
     </Paper>
   );
 };
