@@ -17,7 +17,7 @@ const Label = ({ label }: { label: string }) => {
 const Result = ({ value, suffix = "건" }: { value: number; suffix?: string }) => {
   return (
     <Text fz={"sm"} ta={"center"}>
-      <Text fw={600} component="span" fz={"xl"} mr={2}>
+      <Text fw={500} component="span" fz={"md"} mr={2}>
         {value}
       </Text>
       {suffix}
