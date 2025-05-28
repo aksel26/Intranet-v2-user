@@ -52,3 +52,6 @@ export const searchNotice = (params: TSearchNotice) => apiClient.get(`/users/not
 
 // 사용자 먼슬리 음료 현황 API
 export const monthlyDrink = ({ month }: { month: string }) => apiClient.get(`/users/playground/monthly-baverage`, { params: { month: month } });
+
+// 사용자 결제승인 NEW 존재 확인 API
+export const approvalHasNew = () => apiClient.get(`/users/intranet/approval/has-new`);

@@ -26,7 +26,7 @@ function VacationConfirmModal({ opened, close, submitInfo, confirmPerson, closeD
           queryClient.invalidateQueries({
             predicate: (query) => {
               const queryKey = query.queryKey;
-              const targetKeys = ["attendanceAllStaff", "vacationSummary", "approvals"];
+              const targetKeys = ["attendanceAllStaff", "vacationSummary", "approvals", "approvalNew"];
               return Array.isArray(queryKey) && targetKeys.includes(queryKey[0]);
             },
           });
