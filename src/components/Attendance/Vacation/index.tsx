@@ -144,6 +144,10 @@ function Vacation({ opened, close }: any) {
     // For dates without commuteData, show a processing indicator only if it's today
   };
 
+  const isWeekend = (date: any) => {
+    const day = date.getDay();
+    return day === 0 || day === 6; // 0: 일요일, 6: 토요일
+  };
   return (
     <Drawer opened={opened} onClose={closeDrawer} position="right" title="휴가 신청하기">
       <DatePicker
@@ -151,6 +155,7 @@ function Vacation({ opened, close }: any) {
         type="range"
         locale="ko"
         allowSingleDateInRange
+        excludeDate={isWeekend}
         // type="multiple"
         value={dateValue}
         firstDayOfWeek={0}
