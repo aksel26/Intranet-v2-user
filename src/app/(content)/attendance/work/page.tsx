@@ -72,7 +72,7 @@ function page() {
             <Text fz={"xs"} c={"dimmed"}>
               출근시간
             </Text>
-            {!record.checkOutTime ? (
+            {!record.checkInTime ? (
               <Text fz={"xs"} c={"gray.4"}>
                 출근 전
               </Text>
@@ -114,10 +114,8 @@ function page() {
             비고
           </Text>
           <Box w={"60vw"}>
-            <Text c={"gray"} fz={"xs"} truncate="end">
-              <Text truncate="end" c={record.note ? "black" : "gray.4"} fz={"xs"}>
-                {record.note ? record.note : "내용이 없습니다."}
-              </Text>
+            <Text truncate="end" c={record.note ? "black" : "gray.4"} fz={"xs"}>
+              {record.note ? record.note : "내용이 없습니다."}
             </Text>
           </Box>
         </Group>
