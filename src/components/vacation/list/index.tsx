@@ -74,6 +74,20 @@ const VacationList = ({ params, setParams, openAttachmentModal, openVacationModa
 
                 <Text fz={"xs"}>{record.remainingAnnualLeaveQuota}</Text>
               </Group>
+              <Group gap={"xs"}>
+                <Text fz={"xs"} c={"gray.5"} w={50}>
+                  첨부파일
+                </Text>
+                {record.imageUrl ? (
+                  <Text fz={"xs"} td="underline" c={"blue"} onClick={() => openAttachmentModal(record)} styles={{ root: { cursor: "pointer" } }}>
+                    조회
+                  </Text>
+                ) : (
+                  <Text fz={"xs"} td="underline" c={"dimmed"} onClick={() => openAttachmentModal(record)} styles={{ root: { cursor: "pointer" } }}>
+                    업로드하기
+                  </Text>
+                )}
+              </Group>
             </Stack>
           </Grid.Col>
           <Grid.Col span={{ base: 6, md: 2 }}>
@@ -133,20 +147,7 @@ const VacationList = ({ params, setParams, openAttachmentModal, openVacationModa
                   )}
                 </Group>
               </Group>
-              <Group gap={"xs"}>
-                <Text fz={"xs"} c={"gray.5"} w={50}>
-                  첨부파일
-                </Text>
-                {record.imageUrl ? (
-                  <Text fz={"xs"} td="underline" c={"blue"} onClick={() => openAttachmentModal(record)} styles={{ root: { cursor: "pointer" } }}>
-                    조회
-                  </Text>
-                ) : (
-                  <Text fz={"xs"} td="underline" c={"dimmed"} onClick={() => openAttachmentModal(record)} styles={{ root: { cursor: "pointer" } }}>
-                    업로드하기
-                  </Text>
-                )}
-              </Group>
+
               <Group gap={"xs"}>
                 <Text fz={"xs"} c={"gray.5"} w={50}>
                   내용
