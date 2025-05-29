@@ -32,7 +32,7 @@ const Details = ({ opened, close, details, configId }: any) => {
     });
   };
   return (
-    <Modal opened={opened} onClose={close} title="Monthly Meeting 음료 신청 현황" centered size={"xs"}>
+    <Modal opened={opened} onClose={close} title="Monthly Meeting 음료 신청 현황" centered size={"sm"}>
       <Stack gap={6}>
         {details.map((item: any, index: number) => (
           <Group key={index} wrap="nowrap">
@@ -42,10 +42,11 @@ const Details = ({ opened, close, details, configId }: any) => {
             <Text fz={"xs"}>{item.userName}</Text>
             <Select
               variant="unstyled"
-              size="xs"
+              size="sm"
               flex={1}
               value={item.baverage}
               onChange={(value) => updateDrink(value, item)}
+              styles={{ option: { fontSize: "var(--mantine-font-size-xs)" } }}
               data={[
                 "HOT 아메리카노",
                 "ICE 아메리카노",
