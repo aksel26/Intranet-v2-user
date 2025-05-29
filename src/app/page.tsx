@@ -1,11 +1,11 @@
 "use client";
 import notification from "@/components/GNB/Notification";
-import { AppShell, Center, Container, Box, Button, Checkbox, Group, Image, PasswordInput, Space, Stack, Text, TextInput } from "@mantine/core";
+import { AppShell, Center, Container, Box, Button, Checkbox, Group, Image, PasswordInput, Space, Stack, Text, TextInput, Affix } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import NextImage from "next/image";
 import { useRouter } from "next/navigation";
 import myImage from "/public/images/ACG_LOGO_GRAY.png";
-import { IconAbc, IconLock } from "@tabler/icons-react";
+import { IconAbc, IconChevronRight, IconLock } from "@tabler/icons-react";
 import { signIn } from "next-auth/react";
 
 export default function page() {
@@ -45,6 +45,16 @@ export default function page() {
   return (
     <AppShell>
       <AppShell.Main>
+        <Affix position={{ bottom: 40, right: 40 }}>
+          <Button
+            variant="gradient"
+            gradient={{ from: "rgba(156, 219, 175, 1)", to: "yellow", deg: 90 }}
+            leftSection={<IconChevronRight size={16} />}
+            onClick={() => alert("검사운영관리 페이지로 이동")}
+          >
+            검사운영 관리
+          </Button>
+        </Affix>
         <Container h={"100svh"} size={"xs"}>
           <Center h={"100%"}>
             <Box w={"70%"}>
