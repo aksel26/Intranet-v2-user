@@ -11,7 +11,7 @@ import LoadingView from "@/components/Global/view/LoadingView";
 import MonthFilter from "@/components/ui/monthFilter";
 import { TApprovalList } from "@/lib/types/approval";
 import { TApproval } from "@/types/apiTypes";
-import { ActionIcon, Grid, Group, List, Paper, Stack, Text } from "@mantine/core";
+import { ActionIcon, Box, Grid, Group, List, Paper, Stack, Text } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { IconChevronRight } from "@tabler/icons-react";
 import { useQuery } from "@tanstack/react-query";
@@ -73,7 +73,9 @@ const page = () => {
         </Group>
         <Grid align="center">
           <Grid.Col span={{ base: 2, md: 0.7 }}>
-            <ApprovalType value={record?.relationType} />
+            <Group justify="center">
+              <ApprovalType value={record?.relationType} />
+            </Group>
           </Grid.Col>
           <Grid.Col span={{ base: 10 }}>
             <Stack gap={6}>
