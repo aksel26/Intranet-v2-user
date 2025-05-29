@@ -13,17 +13,8 @@ import LotteryComponent from "./Lottery";
 import IconLottery from "/public/icons/clover.svg";
 import IconRefresh from "/public/icons/refresh.svg";
 import { adjustGroupArrays } from "@/utils/meal/lunchGroup";
-const GroupNumber = ({ groupNumber }: { groupNumber: number }) => {
-  return (
-    <Avatar color="blue" radius="md" size={"sm"}>
-      <Text fz={"xs"} fw={500}>{`${groupNumber}조`}</Text>
-    </Avatar>
-  );
-};
 
 const GroupDisplay = ({ data, matches }: any) => {
-  // Convert the object keys to an array and sort them numerically
-
   const result = adjustGroupArrays(data);
   const groupNumbers = Object.keys(result.groups);
 
@@ -37,7 +28,7 @@ const GroupDisplay = ({ data, matches }: any) => {
         return (
           <Group wrap="nowrap" key={`group-${groupNumber}`} mb="xs">
             <Group gap={matches ? 7 : "md"} w={"100%"}>
-              <GroupNumber groupNumber={parseInt(groupNumber)} />
+              <Text bg={"blue.0"} c={"blue.7"} px={"xs"} py={2} styles={{ root: { borderRadius: 5 } }} fz={"xs"} fw={500}>{`${groupNumber}조`}</Text>
               <Group gap={"sm"}>
                 {members.map((member: any, index: number) => {
                   if (!member) {
@@ -83,8 +74,10 @@ function LunchGroup() {
   const { data, isLoading, isError } = useQuery({ queryKey: ["lunchGroup", { current: now }], queryFn: () => api.getLunchGroup() });
 
   const lunchGroup = data?.data.data;
+  console.log("🚀 ~ LunchGroup ~ lunchGroup:", lunchGroup);
 
   const notice = lunchGroup?.notice ? lunchGroup?.notice.split(",") : ["-", "-"];
+  console.log("🚀 ~ LunchGroup ~ notice:", notice);
 
   const refresh = () => queryClient.invalidateQueries({ queryKey: ["lunchGroup"] });
 
@@ -106,7 +99,7 @@ function LunchGroup() {
               "MM월 DD일"
             )}`}</Text>
           </Text>
-          <Stack gap={5} mt={"xs"}>
+          <Stack gap={5} mt={"xs"} bg={"#f3faff"} px={"xs"} py={"xs"} styles={{ root: { borderRadius: 5 } }}>
             <Text fz={"xs"} c={"dimmed"}>
               월요일 :
               <Text fz={"xs"} component="span" c={"black"}>
