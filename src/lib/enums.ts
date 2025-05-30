@@ -103,6 +103,7 @@ export const MENU_ITEMS: MenuItem[] = [
       { label: "결재/승인", href: "/approval" },
       { label: "공지사항", href: "/notice" },
       { label: "회의실 예약", href: "/room" },
+      { label: "SMS 전송", href: "/sms" },
     ],
   },
   {
