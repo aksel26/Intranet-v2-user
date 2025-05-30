@@ -27,7 +27,7 @@ const AttendanceAll = ({ allAttendance }: any) => {
         </Text>
       </Group>
       {filteredEvents.length === 0 ? (
-        <Text c={"dimmed"} fz={"sm"} ta={"center"} my={"md"}>
+        <Text c={"dimmed"} fz={"xs"} ta={"center"} my={"md"}>
           근태 내역이 없습니다.
         </Text>
       ) : (
