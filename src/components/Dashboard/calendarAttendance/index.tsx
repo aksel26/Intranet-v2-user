@@ -1,4 +1,4 @@
-import { getAllAttendanceStaff } from "@/app/api/get/getApi";
+import { getAllAttendanceStaff, getHolidays } from "@/app/api/get/getApi";
 import EmptyView from "@/components/Global/view/EmptyView";
 import { ErrorView } from "@/components/Global/view/ErrorView";
 import LoadingView from "@/components/Global/view/LoadingView";
@@ -13,8 +13,25 @@ const CalendarAttendance = () => {
   const { dateValue } = mainDateStore();
   const { data, isLoading, isError } = useQuery({
     queryKey: ["attendanceAllStaff", { year: dayjs(dateValue).year(), month: dayjs(dateValue).month() + 1 }],
-    queryFn: () => getAllAttendanceStaff({ month: (dayjs(dateValue).month() + 1).toString(), year: dayjs(dateValue).year().toString() }),
+    queryFn: () =>
+      getAllAttendanceStaff({
+        month: (dayjs(dateValue).month() + 1).toString(),
+        year: dayjs(dateValue).year().toString(),
+      }),
   });
+  const {
+    data: holidays,
+    isLoading: isLoadingHolidays,
+    isError: isErrorHolidays,
+  } = useQuery({
+    queryKey: ["holidays", { year: dayjs(dateValue).year(), month: dayjs(dateValue).month() + 1 }],
+    queryFn: () =>
+      getHolidays({
+        month: (dayjs(dateValue).month() + 1).toString(),
+        year: dayjs(dateValue).year().toString(),
+      }),
+  });
+  console.log("holidays:", holidays);
 
   const allAttendance = data?.data?.data;
 
