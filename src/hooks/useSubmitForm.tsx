@@ -117,3 +117,9 @@ export const useUpdateDrink = () => {
     mutationFn: (values: any) => api.updateDrink(values),
   });
 };
+
+export const useUpdateNew = () => {
+  return useMutation({
+    mutationFn: (values: any) => api.updateCheckNew(values),
+  });
+};

@@ -43,11 +43,7 @@ export const leave = (values: any) =>
 
 // 사용자 개인 휴가 이미지 수정 API
 export const leaveAttachment = (values: any) =>
-  apiClient.patch(
-    `/users/intranet/leave/${values.commuteIdx}/image`,
-    { leaveImage: values.leaveImage },
-    { headers: { "Content-Type": "multipart/form-data" } }
-  );
+  apiClient.patch(`/users/intranet/leave/${values.commuteIdx}/image`, { leaveImage: values.leaveImage }, { headers: { "Content-Type": "multipart/form-data" } });
 
 // 사용자 개인 휴가 삭제 API
 
@@ -69,3 +65,6 @@ export const updateDrink = (values: any) => apiClient.put(`/users/playground/mon
 // 사용자 출퇴근 특이사항 수정 API
 
 export const updateAttendanceNote = (values: any) => apiClient.patch(`/users/intranet/commute/${values.commuteIdx}/note`, values.body);
+
+// 사용자 결재승인 조회 마지막 확인시간 업데이트 API
+export const updateCheckNew = (values: any) => apiClient.patch(`/users/intranet/approval/${values.commuteIdx}/last-check`, values.body);

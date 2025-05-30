@@ -9,19 +9,10 @@ import EmptyView from "@/components/Global/view/EmptyView";
 import { ErrorView } from "@/components/Global/view/ErrorView";
 import LoadingView from "@/components/Global/view/LoadingView";
 import MonthFilter from "@/components/ui/monthFilter";
+import { useUpdateNew } from "@/hooks/useSubmitForm";
 import { TApprovalList } from "@/lib/types/approval";
 import { TApproval } from "@/types/apiTypes";
-import {
-  ActionIcon,
-  Box,
-  Grid,
-  Group,
-  Indicator,
-  List,
-  Paper,
-  Stack,
-  Text,
-} from "@mantine/core";
+import { ActionIcon, Grid, Group, Indicator, List, Paper, Stack, Text } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { IconChevronRight } from "@tabler/icons-react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
@@ -35,37 +26,53 @@ const page = () => {
     // month: (dayjs().month() + 1).toString(),
   });
 
+  const { mutate } = useUpdateNew();
+
   const queryClient = useQueryClient();
   const { data, isLoading, isError } = useQuery({
     queryKey: ["approvals", params],
     queryFn: () => api.getApprovals(params),
   });
   const approvalsList = data?.data.data;
-  console.log("🚀 ~ page ~ approvalsList:", approvalsList);
 
   const [targetInfo, setTargetInfo] = useState();
 
-  const [confirmModal, { open: openConfirmModal, close: closeConfirmModal }] =
-    useDisclosure(false);
+  const [confirmModal, { open: openConfirmModal, close: closeConfirmModal }] = useDisclosure(false);
 
   const modalOpen = async (record: any) => {
     setTargetInfo(record);
     openConfirmModal();
     await queryClient.invalidateQueries({ queryKey: ["approvals"] });
+    mutate(
+      {
+        commuteIdx: record.commuteIdx,
+        body: {
+          lastCheckedAt: dayjs().toISOString(),
+          relationType: record.relationType,
+        },
+      },
+      {
+        onSuccess: (res) => {
+          console.log("res:", res);
+        },
+        onError: (error: Error) => {
+          console.error("error:", error);
+          // notification({title:"hi", color:"red", message:""})
+        },
+      }
+    );
   };
 
   const ListWrapper = () => {
     return (
       <List spacing={0} size="sm" center>
-        {approvalsList?.map(
-          (record: TApprovalList, index: number, arr: any) => {
-            return (
-              <React.Fragment key={index}>
-                <Items key={record.commuteIdx} record={record} />
-              </React.Fragment>
-            );
-          }
-        )}
+        {approvalsList?.map((record: TApprovalList, index: number, arr: any) => {
+          return (
+            <React.Fragment key={index}>
+              <Items key={record.commuteIdx} record={record} />
+            </React.Fragment>
+          );
+        })}
       </List>
     );
   };
@@ -137,10 +144,7 @@ const page = () => {
 
   const renderContent = () => {
     if (isLoading) return <LoadingView />;
-    if (isError)
-      return (
-        <ErrorView>결재/승인 내역을 불러오는 중 문제가 발생했습니다.</ErrorView>
-      );
+    if (isError) return <ErrorView>결재/승인 내역을 불러오는 중 문제가 발생했습니다.</ErrorView>;
     if (approvalsList?.length === 0) return <EmptyView />;
     return <ListWrapper />;
   };
@@ -170,11 +174,7 @@ const page = () => {
         {renderContent()}
       </Paper>
 
-      <ApprovalConfirm
-        opened={confirmModal}
-        close={closeConfirmModal}
-        details={targetInfo}
-      />
+      <ApprovalConfirm opened={confirmModal} close={closeConfirmModal} details={targetInfo} />
     </PageContainer>
   );
 };
