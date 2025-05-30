@@ -1,6 +1,6 @@
 import { mainDateStore } from "@/lib/store/mainDateStore";
 import { TAttendance } from "@/lib/types/attendance";
-import { Badge, Group, Paper, Stack, Text, Title } from "@mantine/core";
+import { Badge, Box, Group, Paper, Stack, Text, Title } from "@mantine/core";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 const AttendanceAll = ({ allAttendance }: any) => {
@@ -35,12 +35,19 @@ const AttendanceAll = ({ allAttendance }: any) => {
           {filteredEvents.map((list: TAttendance, idx: number, arr: any) => {
             return (
               <Group key={idx}>
-                <Badge variant="dot" size="md" color={list.confirmYN === "N" ? "yellow" : "lime"} radius={"md"}>
-                  {list.leaveType}
-                </Badge>
+                <Box w={55}>
+                  <Badge
+                    variant="light"
+                    size="md"
+                    color={list.confirmYN === "N" ? "yellow" : "lime"}
+                    radius={"sm"}
+                  >
+                    {list.confirmYN === "N" ? "미승인" : "승인"}
+                  </Badge>
+                </Box>
                 <Text fz={"xs"}>{list.userName}</Text>
                 <Text c={"dimmed"} fz={"xs"}>
-                  {list.confirmYN === "N" ? "미승인" : "승인"}
+                  {list.leaveType}
                 </Text>
               </Group>
             );
