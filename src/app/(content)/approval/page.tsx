@@ -11,10 +11,20 @@ import LoadingView from "@/components/Global/view/LoadingView";
 import MonthFilter from "@/components/ui/monthFilter";
 import { TApprovalList } from "@/lib/types/approval";
 import { TApproval } from "@/types/apiTypes";
-import { ActionIcon, Box, Grid, Group, List, Paper, Stack, Text } from "@mantine/core";
+import {
+  ActionIcon,
+  Box,
+  Grid,
+  Group,
+  Indicator,
+  List,
+  Paper,
+  Stack,
+  Text,
+} from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { IconChevronRight } from "@tabler/icons-react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import React, { useState } from "react";
 import styles from "../../../styles/list.module.css";
@@ -24,6 +34,8 @@ const page = () => {
     year: dayjs().year().toString(),
     // month: (dayjs().month() + 1).toString(),
   });
+
+  const queryClient = useQueryClient();
   const { data, isLoading, isError } = useQuery({
     queryKey: ["approvals", params],
     queryFn: () => api.getApprovals(params),
@@ -33,23 +45,27 @@ const page = () => {
 
   const [targetInfo, setTargetInfo] = useState();
 
-  const [confirmModal, { open: openConfirmModal, close: closeConfirmModal }] = useDisclosure(false);
+  const [confirmModal, { open: openConfirmModal, close: closeConfirmModal }] =
+    useDisclosure(false);
 
-  const modalOpen = (record: any) => {
+  const modalOpen = async (record: any) => {
     setTargetInfo(record);
     openConfirmModal();
+    await queryClient.invalidateQueries({ queryKey: ["approvals"] });
   };
 
   const ListWrapper = () => {
     return (
       <List spacing={0} size="sm" center>
-        {approvalsList?.map((record: TApprovalList, index: number, arr: any) => {
-          return (
-            <React.Fragment key={index}>
-              <Items key={record.commuteIdx} record={record} />
-            </React.Fragment>
-          );
-        })}
+        {approvalsList?.map(
+          (record: TApprovalList, index: number, arr: any) => {
+            return (
+              <React.Fragment key={index}>
+                <Items key={record.commuteIdx} record={record} />
+              </React.Fragment>
+            );
+          }
+        )}
       </List>
     );
   };
@@ -60,13 +76,19 @@ const page = () => {
       key={record?.commuteIdx}
       className={styles.element}
       py={"md"}
-      styles={{ item: { width: "100%" }, itemLabel: { width: "100%" }, itemWrapper: { width: "100%" } }}
+      styles={{
+        item: { width: "100%" },
+        itemLabel: { width: "100%" },
+        itemWrapper: { width: "100%" },
+      }}
     >
       <Stack gap={8} w={"100%"}>
         <Group justify="space-between" align="center" wrap="nowrap" w={"100%"}>
-          <Text fz={"sm"} fw={500}>
-            {`${dayjs(record?.commuteDate).format("YYYY-MM-DD (dd)")}`}
-          </Text>
+          <Indicator disabled={record.isNew ? false : true} offset={-5}>
+            <Text fz={"sm"} fw={500}>
+              {`${dayjs(record?.commuteDate).format("YYYY-MM-DD (dd)")}`}
+            </Text>
+          </Indicator>
           <ActionIcon variant="subtle" color="gray.4" size={"sm"}>
             <IconChevronRight />
           </ActionIcon>
@@ -115,7 +137,10 @@ const page = () => {
 
   const renderContent = () => {
     if (isLoading) return <LoadingView />;
-    if (isError) return <ErrorView>결재/승인 내역을 불러오는 중 문제가 발생했습니다.</ErrorView>;
+    if (isError)
+      return (
+        <ErrorView>결재/승인 내역을 불러오는 중 문제가 발생했습니다.</ErrorView>
+      );
     if (approvalsList?.length === 0) return <EmptyView />;
     return <ListWrapper />;
   };
@@ -145,7 +170,11 @@ const page = () => {
         {renderContent()}
       </Paper>
 
-      <ApprovalConfirm opened={confirmModal} close={closeConfirmModal} details={targetInfo} />
+      <ApprovalConfirm
+        opened={confirmModal}
+        close={closeConfirmModal}
+        details={targetInfo}
+      />
     </PageContainer>
   );
 };

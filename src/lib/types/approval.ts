@@ -13,4 +13,5 @@ export interface TApprovalList {
   createdAt: string;
   relationType: string;
   confirmStatus: string;
+  isNew: boolean;
 }
