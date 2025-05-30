@@ -6,7 +6,7 @@ import Search from "@/components/notice/search";
 import useGetNotices from "@/hooks/useGetNotices";
 import { TNotice } from "@/lib/types/notice";
 import { formatYYYYMMDD } from "@/utils/dateFomat";
-import { Group, List, ListItem, Paper, Stack, Text } from "@mantine/core";
+import { Badge, Group, List, ListItem, Paper, Stack, Text } from "@mantine/core";
 import { usePathname, useRouter } from "next/navigation";
 import React, { useState } from "react";
 import styles from "../../../styles/list.module.css";
@@ -43,7 +43,14 @@ const Notice = () => {
   const Items = ({ record }: { record: TNotice }) => (
     <ListItem w={"100%"} onClick={() => goDetail(record.noticeIdx)} key={record.noticeIdx} className={styles.element} px={"sm"} py={"md"}>
       <Stack gap={4}>
-        <Text fz={"xs"}>{record.title}</Text>
+        <Group>
+          <Text fz={"xs"}>{record.title}</Text>
+          {record.isNew && (
+            <Badge size="xs" variant="light">
+              New
+            </Badge>
+          )}
+        </Group>
         <Group>
           <Text c={"dimmed"} fz={"xs"}>
             {record.creatorName}

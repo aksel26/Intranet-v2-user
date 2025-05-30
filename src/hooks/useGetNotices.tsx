@@ -14,7 +14,7 @@ function useGetNotices({ params }: TNotices) {
   const { data, isLoading, isError } = useQuery({ queryKey: ["notices", params], queryFn: () => api.getNotices(params) });
 
   useEffect(() => {
-    setNotices(data?.data.data.notices);
+    setNotices(data?.data.data.result);
   }, [data]);
 
   return { notices, isLoading, isError };

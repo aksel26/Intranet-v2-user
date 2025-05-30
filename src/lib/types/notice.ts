@@ -3,4 +3,5 @@ export interface TNotice {
   title: string;
   creatorName: string;
   createdAt: string;
+  isNew: boolean;
 }
