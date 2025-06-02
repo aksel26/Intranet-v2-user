@@ -1,9 +1,15 @@
+"use client";
 import PageContainer from "@/components/Global/container";
+import SmsDetails from "@/components/sms/details";
 import { ActionIcon, Button, Grid, GridCol, Group, Input, Paper, ScrollArea, Stack, Text, Textarea, TextInput } from "@mantine/core";
-import { IconX } from "@tabler/icons-react";
+import { useDisclosure } from "@mantine/hooks";
+import { IconUpload, IconX } from "@tabler/icons-react";
 import React from "react";
 
 const SMS = () => {
+  // const [opened, { open, close }] = useDisclosure(false);
+  const [opened, { open, close }] = useDisclosure(false);
+
   return (
     <PageContainer>
       <Group justify="space-between" align="end">
@@ -16,65 +22,94 @@ const SMS = () => {
           </Text>
         </Stack>
       </Group>
-      <Grid>
+      <Grid mt={"md"}>
         <GridCol span={{ base: 12, md: 6 }}>
-          <Paper p={"lg"}>
-            <Textarea placeholder="안내 문구를 입력해 주세요." autosize label="안내문구" minRows={5} maxRows={10} />
-            <TextInput placeholder="010-0000-0000" label="회신번호" />
-          </Paper>
+          <Stack gap={2}>
+            <Group justify="space-between" align="end">
+              <Text fz={"sm"}>발신정보</Text>
+              <Button variant="outline" size="xs" onClick={open}>
+                내역
+              </Button>
+            </Group>
+            <Paper p={"lg"}>
+              <Textarea
+                styles={{ label: { fontSize: "var(--mantine-font-size-xs)", color: "var(--mantine-color-gray-6)" } }}
+                placeholder="안내 문구를 입력해 주세요."
+                autosize
+                label="안내문구"
+                minRows={5}
+                maxRows={10}
+              />
+              <TextInput styles={{ label: { fontSize: "var(--mantine-font-size-xs)", color: "var(--mantine-color-gray-6)" } }} placeholder="010-0000-0000" label="회신번호" />
+            </Paper>
+          </Stack>
         </GridCol>
         <GridCol span={{ base: 12, md: 6 }}>
-          <Paper p={"lg"}>
-            <Group wrap="nowrap" align="end">
-              <TextInput w={"100%"} placeholder="010-0000-0000" label="수신번호" />
-              <Button>추가</Button>
-            </Group>
-            <Text fz={"sm"}>총 : 5명</Text>
-            <Paper withBorder p="sm">
-              <ScrollArea h={200}>
-                <Stack gap={"xs"}>
-                  <Group>
-                    <Text fz={"xs"}>010-2121-1212</Text>
-                    <ActionIcon variant="subtle">
-                      <IconX size={14} strokeWidth={1.4} color="gray" />
-                    </ActionIcon>
-                  </Group>
-                  <Group>
-                    <Text fz={"xs"}>010-2121-1212</Text>
-                    <ActionIcon variant="subtle">
-                      <IconX size={14} strokeWidth={1.4} color="gray" />
-                    </ActionIcon>
-                  </Group>
-                  <Group>
-                    <Text fz={"xs"}>010-2121-1212</Text>
-                    <ActionIcon variant="subtle">
-                      <IconX size={14} strokeWidth={1.4} color="gray" />
-                    </ActionIcon>
-                  </Group>
-                  <Group>
-                    <Text fz={"xs"}>010-2121-1212</Text>
-                    <ActionIcon variant="subtle">
-                      <IconX size={14} strokeWidth={1.4} color="gray" />
-                    </ActionIcon>
-                  </Group>
-                  <Group>
-                    <Text fz={"xs"}>010-2121-1212</Text>
-                    <ActionIcon variant="subtle">
-                      <IconX size={14} strokeWidth={1.4} color="gray" />
-                    </ActionIcon>
-                  </Group>
-                  <Group>
-                    <Text fz={"xs"}>010-2121-1212</Text>
-                    <ActionIcon variant="subtle">
-                      <IconX size={14} strokeWidth={1.4} color="gray" />
-                    </ActionIcon>
-                  </Group>
-                </Stack>
-              </ScrollArea>
+          <Stack gap={2}>
+            <Text fz={"sm"}>수신정보</Text>
+            <Paper p={"lg"}>
+              <Group wrap="nowrap" align="end" mb={"md"}>
+                <TextInput flex={1} styles={{ label: { fontSize: "var(--mantine-font-size-xs)", color: "var(--mantine-color-gray-6)" } }} placeholder="010-0000-0000" label="수신번호" />
+                <Group>
+                  <Button variant="light">추가</Button>
+                  <ActionIcon size="input-sm" variant="light">
+                    <IconUpload size={18} />
+                  </ActionIcon>
+                </Group>
+              </Group>
+              <Text fw={500} fz={"sm"}>
+                총 : 5명
+              </Text>
+              <Paper withBorder p="sm">
+                <ScrollArea h={200}>
+                  <Stack gap={5}>
+                    <Group>
+                      <Text fz={"xs"}>1. 010-2121-1212</Text>
+                      <ActionIcon variant="subtle">
+                        <IconX size={14} strokeWidth={1.4} color="gray" />
+                      </ActionIcon>
+                    </Group>
+                    <Group>
+                      <Text fz={"xs"}>2. 010-2121-1212</Text>
+                      <ActionIcon variant="subtle">
+                        <IconX size={14} strokeWidth={1.4} color="gray" />
+                      </ActionIcon>
+                    </Group>
+                    <Group>
+                      <Text fz={"xs"}>3. 010-2121-1212</Text>
+                      <ActionIcon variant="subtle">
+                        <IconX size={14} strokeWidth={1.4} color="gray" />
+                      </ActionIcon>
+                    </Group>
+                    <Group>
+                      <Text fz={"xs"}>4. 010-2121-1212</Text>
+                      <ActionIcon variant="subtle">
+                        <IconX size={14} strokeWidth={1.4} color="gray" />
+                      </ActionIcon>
+                    </Group>
+                    <Group>
+                      <Text fz={"xs"}>5. 010-2121-1212</Text>
+                      <ActionIcon variant="subtle">
+                        <IconX size={14} strokeWidth={1.4} color="gray" />
+                      </ActionIcon>
+                    </Group>
+                    <Group>
+                      <Text fz={"xs"}>6. 010-2121-1212</Text>
+                      <ActionIcon variant="subtle">
+                        <IconX size={14} strokeWidth={1.4} color="gray" />
+                      </ActionIcon>
+                    </Group>
+                  </Stack>
+                </ScrollArea>
+              </Paper>
+              <Button fullWidth mt={"md"}>
+                전송
+              </Button>
             </Paper>
-          </Paper>
+          </Stack>
         </GridCol>
       </Grid>
+      <SmsDetails opened={opened} close={close} />
     </PageContainer>
   );
 };
