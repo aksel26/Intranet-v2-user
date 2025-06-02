@@ -8,9 +8,12 @@ import { useDisclosure } from "@mantine/hooks";
 import dayjs from "dayjs";
 import { useParams, useRouter } from "next/navigation";
 import IconLeft from "/public/icons/arrow-left.svg";
+import { useQueryClient } from "@tanstack/react-query";
+import { useEffect } from "react";
 
 function page() {
   const { id } = useParams();
+  const queryClient = useQueryClient();
 
   const { noticeDetails, isLoading, isError } = useGetNoticeDetail({ id });
   function createMarkup() {
@@ -24,6 +27,11 @@ function page() {
   const router = useRouter();
 
   const back = () => router.push(`/notice`);
+
+  useEffect(() => {
+    queryClient.invalidateQueries({ queryKey: ["notices"] });
+    queryClient.invalidateQueries({ queryKey: ["noticeNew"] });
+  }, []);
 
   return (
     <PageContainer>

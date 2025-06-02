@@ -59,6 +59,10 @@ export const monthlyDrink = ({ month }: { month: string }) =>
 // 사용자 결제승인 NEW 존재 확인 API
 export const approvalHasNew = () => apiClient.get(`/users/intranet/approval/has-new`);
 
+// 사용자 공지사항 NEW 존재 확인 API
+
+export const noticeHasNew = () => apiClient.get(`/users/notices/has-new`);
+
 // 월별 주말 및 공휴일 날짜 조회 API
 
 export const getHolidays = (params: TYearMonth) => apiClient.get(`/users/intranet/holiday`, { params: params });

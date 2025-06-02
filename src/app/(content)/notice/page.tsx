@@ -1,4 +1,5 @@
 "use client";
+import PageContainer from "@/components/Global/container";
 import EmptyView from "@/components/Global/view/EmptyView";
 import { ErrorView } from "@/components/Global/view/ErrorView";
 import LoadingView from "@/components/Global/view/LoadingView";
@@ -10,7 +11,6 @@ import { Badge, Group, List, ListItem, Paper, Stack, Text } from "@mantine/core"
 import { usePathname, useRouter } from "next/navigation";
 import React, { useState } from "react";
 import styles from "../../../styles/list.module.css";
-import PageContainer from "@/components/Global/container";
 const Notice = () => {
   const router = useRouter();
   const pathName = usePathname();
@@ -22,7 +22,7 @@ const Notice = () => {
 
   const { notices, isLoading, isError } = useGetNotices({ params });
 
-  const goDetail = (id: number) => {
+  const goDetail = async (id: number) => {
     router.push(`${pathName}/${id}`);
   };
 

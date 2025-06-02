@@ -74,7 +74,7 @@ interface MenuItem {
 export interface NavItemProps {
   item: MenuItem;
   clickMenu: any;
-  hasNew: boolean;
+  hasNew: { approval: boolean; notice: boolean };
 }
 export const MENU_ITEMS: MenuItem[] = [
   {

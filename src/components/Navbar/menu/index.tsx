@@ -1,42 +1,66 @@
-import { approvalHasNew } from "@/app/api/get/getApi";
+import { useHasNew } from "@/hooks/useHasNew";
 import { MENU_ITEMS, NavItemProps } from "@/lib/enums";
 import { useNavStore } from "@/lib/store/toggleStore";
-import { Box, Group, Indicator, NavLink, Text } from "@mantine/core";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { Badge, Box, Group, NavLink, Text } from "@mantine/core";
+import { useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
-import { memo } from "react";
+import { memo, useCallback } from "react";
+
+interface NavItemWithIndicatorProps {
+  child: any;
+  index: number;
+  hasNew: boolean;
+  clickMenu: () => void;
+}
+
+// Indicator가 있는 NavLink 컴포넌트를 별도로 분리
+const NavItemWithIndicator = memo(({ child, index, hasNew, clickMenu }: NavItemWithIndicatorProps) => (
+  <NavLink
+    pos="relative"
+    onClick={clickMenu}
+    key={`${child.label}-${index}`}
+    component={Link}
+    href={child.href}
+    label={
+      <Group>
+        <Text fz="sm">{child.label}</Text>
+        {hasNew && (
+          <Badge size="xs" variant="light">
+            New
+          </Badge>
+        )}
+      </Group>
+    }
+  />
+));
+
+NavItemWithIndicator.displayName = "NavItemWithIndicator";
+
+// 일반 NavLink 컴포넌트
+const RegularNavItem = memo(({ child, index, clickMenu }: Omit<NavItemWithIndicatorProps, "hasNew">) => (
+  <NavLink onClick={clickMenu} key={`${child.label}-${index}`} component={Link} href={child.href} label={child.label} />
+));
+
+RegularNavItem.displayName = "RegularNavItem";
 
 const NavItem = memo(({ item, clickMenu, hasNew }: NavItemProps) => {
+  const renderChildNavItem = useCallback(
+    (child: any, index: number) => {
+      switch (child.label) {
+        case "결재/승인":
+          return <NavItemWithIndicator child={child} index={index} hasNew={hasNew.approval} clickMenu={clickMenu} />;
+        case "공지사항":
+          return <NavItemWithIndicator child={child} index={index} hasNew={hasNew.notice} clickMenu={clickMenu} />;
+        default:
+          return <RegularNavItem child={child} index={index} clickMenu={clickMenu} />;
+      }
+    },
+    [hasNew, clickMenu]
+  );
+
   return (
     <NavLink label={item.label} childrenOffset={item.childrenOffset}>
-      {item.children?.map((child, index) =>
-        child.label === "결재/승인" && hasNew ? (
-          <NavLink
-            pos={"relative"}
-            onClick={clickMenu}
-            key={`${child.label}-${index}`}
-            component={Link}
-            href={child.href}
-            label={
-              <Group>
-                <Indicator
-                  position="middle-end"
-                  label="New"
-                  offset={-25}
-                  color={"#238be6a6"}
-                  size={16}
-                  disabled={!hasNew}
-                  styles={{ indicator: { fontSize: "9.5px" } }}
-                >
-                  <Text fz={"sm"}>{child.label}</Text>
-                </Indicator>
-              </Group>
-            }
-          />
-        ) : (
-          <NavLink onClick={clickMenu} key={`${child.label}-${index}`} component={Link} href={child.href} label={child.label} />
-        )
-      )}
+      {item.children?.map(renderChildNavItem)}
     </NavLink>
   );
 });
@@ -45,16 +69,17 @@ NavItem.displayName = "NavItem";
 
 const NavMenu = memo(() => {
   const queryClient = useQueryClient();
-  const { data, isLoading, isError } = useQuery({ queryKey: ["approvalNew"], queryFn: () => approvalHasNew() });
-  const hasNew = data?.data.data.hasNew;
-  const mobileOpened = useNavStore((state) => state.mobileOpened);
-  const toggleDesktop = useNavStore((state) => state.toggleMobile);
-  const clickMenu = async () => {
-    toggleDesktop();
-    await queryClient.invalidateQueries({ queryKey: ["approvalNew"] });
-  };
+  const hasNew = useHasNew();
+  const toggleMobile = useNavStore((state) => state.toggleMobile);
+
+  const clickMenu = useCallback(async () => {
+    toggleMobile();
+    // 관련된 모든 쿼리 무효화
+    await Promise.all([queryClient.invalidateQueries({ queryKey: ["approvalNew"] }), queryClient.invalidateQueries({ queryKey: ["noticeNew"] })]);
+  }, [toggleMobile, queryClient]);
+
   return (
-    <Box mt={"xs"}>
+    <Box mt="xs">
       {MENU_ITEMS.map((item, index) => (
         <NavItem key={`${item.label}-${index}`} hasNew={hasNew} item={item} clickMenu={clickMenu} />
       ))}
