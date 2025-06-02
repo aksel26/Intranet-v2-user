@@ -1,6 +1,7 @@
 "use client";
 import PageContainer from "@/components/Global/container";
 import SmsDetails from "@/components/sms/details";
+import SmsDetailsModal from "@/components/sms/details/modal";
 import { ActionIcon, Button, Grid, GridCol, Group, Input, Paper, ScrollArea, Stack, Text, Textarea, TextInput } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { IconUpload, IconX } from "@tabler/icons-react";
@@ -27,7 +28,7 @@ const SMS = () => {
           <Stack gap={2}>
             <Group justify="space-between" align="end">
               <Text fz={"sm"}>발신정보</Text>
-              <Button variant="outline" size="xs" onClick={open}>
+              <Button variant="outline" size="xs" onClick={open} hiddenFrom="md">
                 내역
               </Button>
             </Group>
@@ -52,16 +53,16 @@ const SMS = () => {
                 <TextInput flex={1} styles={{ label: { fontSize: "var(--mantine-font-size-xs)", color: "var(--mantine-color-gray-6)" } }} placeholder="010-0000-0000" label="수신번호" />
                 <Group>
                   <Button variant="light">추가</Button>
-                  <ActionIcon size="input-sm" variant="light">
+                  <ActionIcon size="input-sm" variant="light" onClick={() => alert("엑셀 업로드??")}>
                     <IconUpload size={18} />
                   </ActionIcon>
                 </Group>
               </Group>
               <Text fw={500} fz={"sm"}>
-                총 : 5명
+                총 5명
               </Text>
               <Paper withBorder p="sm">
-                <ScrollArea h={200}>
+                <ScrollArea h={150}>
                   <Stack gap={5}>
                     <Group>
                       <Text fz={"xs"}>1. 010-2121-1212</Text>
@@ -109,7 +110,8 @@ const SMS = () => {
           </Stack>
         </GridCol>
       </Grid>
-      <SmsDetails opened={opened} close={close} />
+      <SmsDetails />
+      <SmsDetailsModal opened={opened} close={close} />
     </PageContainer>
   );
 };

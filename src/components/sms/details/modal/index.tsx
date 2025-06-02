@@ -1,15 +1,23 @@
-import React from "react";
 import { Badge, Group, Modal, Paper, ScrollArea, Stack, Text } from "@mantine/core";
+import React from "react";
+
+const Label = ({ content }: { content: string }) => {
+  return (
+    <Text fz={"xs"} c={"gray"} w={50}>
+      {content}
+    </Text>
+  );
+};
 const Value = ({ content }: { content: string }) => {
   return <Text fz={"xs"}>{content}</Text>;
 };
-const SmsDetails = () => {
+
+const SmsDetailsModal = ({ opened, close }: any) => {
   return (
-    <Stack gap={2}>
-      <Text fz="sm">발송내역</Text>
-      <ScrollArea h={"40vh"}>
+    <Modal opened={opened} onClose={close} title="발송 내역" centered>
+      <ScrollArea h={"80vh"}>
         <Stack gap={"xs"}>
-          <Paper radius={"md"} bg={"white"} p={"md"}>
+          <Paper radius={"md"} bg={"gray.1"} p={"md"}>
             <Stack gap={"xs"}>
               <Group justify="space-between">
                 <Group gap={"xs"}>
@@ -206,8 +214,8 @@ const SmsDetails = () => {
           </Paper>
         </Stack>
       </ScrollArea>
-    </Stack>
+    </Modal>
   );
 };
 
-export default SmsDetails;
+export default SmsDetailsModal;
