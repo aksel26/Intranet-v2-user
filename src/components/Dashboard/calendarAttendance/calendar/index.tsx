@@ -1,14 +1,27 @@
 "use client";
+import { getHolidays } from "@/app/api/get/getApi";
 import { mainDateStore } from "@/lib/store/mainDateStore";
 import { myInfoStore } from "@/lib/store/myInfoStore";
 import { Badge, Box, Group, Paper, Text, Title } from "@mantine/core";
 import { DatePicker } from "@mantine/dates";
+import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
 const MainCalendar = ({ allAttendance }: any) => {
-  const { setDateValue, innerValue, setInnerValue } = mainDateStore();
+  const { setDateValue, innerValue, setInnerValue, dateValue } = mainDateStore();
   const { myInfo } = myInfoStore();
   const myName = myInfo?.userName || "";
-  console.log("🚀 ~ MainCalendar ~ myInfo:", myInfo);
+
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ["holidays", { year: dayjs(dateValue).year(), month: dayjs(dateValue).month() + 1 }],
+    queryFn: () =>
+      getHolidays({
+        month: (dayjs(dateValue).month() + 1).toString(),
+        year: dayjs(dateValue).year().toString(),
+      }),
+  });
+
+  const holidays = data?.data.data || [];
+
   const onChange = (date: any) => {
     setInnerValue(date);
     setDateValue(date);
@@ -23,12 +36,14 @@ const MainCalendar = ({ allAttendance }: any) => {
     const dateStr = dayjs(date).format("YYYY-MM-DD");
     const events = allAttendance[dateStr] || [];
 
+    const targetHoliday = holidays.find((item: any) => item.holidayDate === dateStr);
     const isInclude = events.some((obj: any) => obj["userName"] === myName);
     const count = events.length;
 
     return (
       <div style={{ position: "relative" }}>
-        <div>{date.getDate()}</div>
+        <div className={targetHoliday ? "text-red-400" : "text-black-400"}>{date.getDate()}</div>
+        {targetHoliday && <div className="absolute text-center -bottom-4 w-[60px] left-1/2 -translate-x-1/2 text-[9px] text-red-400">{targetHoliday.holidayName}</div>}
         {count > 0 && (
           <Badge
             size="sm"

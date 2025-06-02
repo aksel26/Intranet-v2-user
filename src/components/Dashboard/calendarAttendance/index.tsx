@@ -19,19 +19,6 @@ const CalendarAttendance = () => {
         year: dayjs(dateValue).year().toString(),
       }),
   });
-  const {
-    data: holidays,
-    isLoading: isLoadingHolidays,
-    isError: isErrorHolidays,
-  } = useQuery({
-    queryKey: ["holidays", { year: dayjs(dateValue).year(), month: dayjs(dateValue).month() + 1 }],
-    queryFn: () =>
-      getHolidays({
-        month: (dayjs(dateValue).month() + 1).toString(),
-        year: dayjs(dateValue).year().toString(),
-      }),
-  });
-  console.log("holidays:", holidays);
 
   const allAttendance = data?.data?.data;
 
