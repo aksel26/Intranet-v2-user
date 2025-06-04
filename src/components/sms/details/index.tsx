@@ -5,10 +5,10 @@ const Value = ({ content }: { content: string }) => {
 };
 const SmsDetails = () => {
   return (
-    <Stack gap={2}>
-      <Text fz="sm">발송내역</Text>
-      <ScrollArea h={"40vh"}>
-        <Stack gap={"xs"}>
+    <Stack gap={2} visibleFrom="md">
+      <Text fz="sm">발송내역(PC화면)</Text>
+      <ScrollArea h={"78vh"}>
+        <Stack gap={"md"}>
           <Paper radius={"md"} bg={"white"} p={"md"}>
             <Stack gap={"xs"}>
               <Group justify="space-between">
@@ -48,7 +48,7 @@ const SmsDetails = () => {
               </Group>
             </Stack>
           </Paper>
-          <Paper radius={"md"} bg={"gray.1"} p={"md"}>
+          <Paper radius={"md"} bg={"white"} p={"md"}>
             <Stack gap={"xs"}>
               <Group justify="space-between">
                 <Group gap={"xs"}>
@@ -87,7 +87,7 @@ const SmsDetails = () => {
               </Group>
             </Stack>
           </Paper>
-          <Paper radius={"md"} bg={"gray.1"} p={"md"}>
+          <Paper radius={"md"} bg={"white"} p={"md"}>
             <Stack gap={"xs"}>
               <Group justify="space-between">
                 <Group gap={"xs"}>
@@ -126,7 +126,7 @@ const SmsDetails = () => {
               </Group>
             </Stack>
           </Paper>
-          <Paper radius={"md"} bg={"gray.1"} p={"md"}>
+          <Paper radius={"md"} bg={"white"} p={"md"}>
             <Stack gap={"xs"}>
               <Group justify="space-between">
                 <Group gap={"xs"}>
@@ -165,7 +165,7 @@ const SmsDetails = () => {
               </Group>
             </Stack>
           </Paper>
-          <Paper radius={"md"} bg={"gray.1"} p={"md"}>
+          <Paper radius={"md"} bg={"white"} p={"md"}>
             <Stack gap={"xs"}>
               <Group justify="space-between">
                 <Group gap={"xs"}>

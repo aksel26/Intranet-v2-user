@@ -24,7 +24,7 @@ const SMS = () => {
         </Stack>
       </Group>
       <Grid mt={"md"}>
-        <GridCol span={{ base: 12, md: 6 }}>
+        <GridCol span={{ base: 12, md: 4 }}>
           <Stack gap={2}>
             <Group justify="space-between" align="end">
               <Text fz={"sm"}>발신정보</Text>
@@ -44,9 +44,8 @@ const SMS = () => {
               <TextInput styles={{ label: { fontSize: "var(--mantine-font-size-xs)", color: "var(--mantine-color-gray-6)" } }} placeholder="010-0000-0000" label="회신번호" />
             </Paper>
           </Stack>
-        </GridCol>
-        <GridCol span={{ base: 12, md: 6 }}>
-          <Stack gap={2}>
+
+          <Stack gap={2} mt={"md"}>
             <Text fz={"sm"}>수신정보</Text>
             <Paper p={"lg"}>
               <Group wrap="nowrap" align="end" mb={"md"}>
@@ -63,7 +62,7 @@ const SMS = () => {
               </Text>
               <Paper withBorder p="sm">
                 <ScrollArea h={150}>
-                  <Stack gap={5}>
+                  <Stack gap={2}>
                     <Group>
                       <Text fz={"xs"}>1. 010-2121-1212</Text>
                       <ActionIcon variant="subtle">
@@ -100,6 +99,24 @@ const SMS = () => {
                         <IconX size={14} strokeWidth={1.4} color="gray" />
                       </ActionIcon>
                     </Group>
+                    <Group>
+                      <Text fz={"xs"}>6. 010-2121-1212</Text>
+                      <ActionIcon variant="subtle">
+                        <IconX size={14} strokeWidth={1.4} color="gray" />
+                      </ActionIcon>
+                    </Group>
+                    <Group>
+                      <Text fz={"xs"}>6. 010-2121-1212</Text>
+                      <ActionIcon variant="subtle">
+                        <IconX size={14} strokeWidth={1.4} color="gray" />
+                      </ActionIcon>
+                    </Group>
+                    <Group>
+                      <Text fz={"xs"}>6. 010-2121-1212</Text>
+                      <ActionIcon variant="subtle">
+                        <IconX size={14} strokeWidth={1.4} color="gray" />
+                      </ActionIcon>
+                    </Group>
                   </Stack>
                 </ScrollArea>
               </Paper>
@@ -109,8 +126,11 @@ const SMS = () => {
             </Paper>
           </Stack>
         </GridCol>
+        <GridCol span={{ base: 12, md: 8 }}>
+          <SmsDetails />
+        </GridCol>
       </Grid>
-      <SmsDetails />
+
       <SmsDetailsModal opened={opened} close={close} />
     </PageContainer>
   );
