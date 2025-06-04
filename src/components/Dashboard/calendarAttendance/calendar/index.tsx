@@ -38,7 +38,7 @@ const MainCalendar = ({ allAttendance }: any) => {
 
     const targetHoliday = holidays.find((item: any) => item.holidayDate === dateStr);
     const isInclude = events.some((obj: any) => obj["userName"] === myName);
-    const count = events.length;
+    const count = events.filter((event: any) => event.confirmYN !== "R").length;
 
     return (
       <div style={{ position: "relative" }}>

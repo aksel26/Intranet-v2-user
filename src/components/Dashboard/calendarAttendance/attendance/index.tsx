@@ -33,15 +33,11 @@ const AttendanceAll = ({ allAttendance }: any) => {
       ) : (
         <Stack gap={"sm"} mt={"md"}>
           {filteredEvents.map((list: TAttendance, idx: number, arr: any) => {
+            if (list.confirmYN === "R") return null;
             return (
               <Group key={idx}>
                 <Box w={55}>
-                  <Badge
-                    variant="light"
-                    size="md"
-                    color={list.confirmYN === "N" ? "yellow" : "lime"}
-                    radius={"sm"}
-                  >
+                  <Badge variant="light" size="md" color={list.confirmYN === "N" ? "yellow" : "lime"} radius={"sm"}>
                     {list.confirmYN === "N" ? "미승인" : "승인"}
                   </Badge>
                 </Box>
