@@ -1,4 +1,4 @@
-import { Badge, Group, Paper, Stack, Table, Text, Textarea } from "@mantine/core";
+import { Badge, Divider, Group, Paper, Stack, Table, Text, Textarea } from "@mantine/core";
 import React from "react";
 const testData = [
   {
@@ -87,7 +87,7 @@ const InterviewCard = () => {
     <Paper radius={"lg"} p={"lg"}>
       <Group justify="space-between" align="center">
         <Group gap={"xs"}>
-          <Text fz={"md"} fw={600}>
+          <Text fz={"md"} fw={500}>
             2025-05-19
           </Text>
           <Badge size={"md"} radius={"sm"} color="lime">
@@ -125,36 +125,194 @@ const InterviewCard = () => {
           </Group>
         </Stack>
       </Group>
-      <Text fw={600} fz={"sm"} my={4} c={"dimmed"}>
-        시행 정보
-      </Text>
-      <Textarea
-        styles={{ label: { fontSize: "var(--mantine-font-size-xs)", color: "var(--mantine-color-gray-5)" } }}
-        autosize
-        value={`■ 예상 규모 : 3,854명
+      <Group justify="space-between" align="center" mt={"md"} mb={4}>
+        <Text fz={"sm"} c={"gray"}>
+          시행 정보
+        </Text>
+        <Group>
+          <Group gap={"xs"}>
+            <Text c={"gray"} fz={"xs"}>
+              차량
+            </Text>
+            <Text fz={"xs"}>미사용</Text>
+          </Group>
+          <Group gap={"xs"}>
+            <Text c={"gray"} fz={"xs"}>
+              첨부파일
+            </Text>
+            <Text fz={"xs"}>미사용</Text>
+          </Group>
+        </Group>
+      </Group>
+      <Paper bg={"gray.0"} p={"sm"}>
+        <Text fz={"xs"} styles={{ root: { whiteSpace: "pre-wrap", lineHeight: 2 } }}>{`■ 예상 규모 : 3,854명
 ■ 운영 매출 : 19,270,000
 ■ 운영 지출 : 9,607,500
 ■ 운영 인력 : 직원 - 10명 / 알바-39
-         김현해, 김소윤, 양우연, 이다빈, 황희은, 김낙균, 김다은, 박선아, 이우경, 김대희`}
-        label="내용"
-        placeholder="작성 내용이 없습니다."
-      />
-      <Group mt={"xs"}>
-        <Stack gap={1}>
-          <Text c={"gray"} fz={"xs"}>
-            차량
-          </Text>
-          <Text fz={"xs"}>미사용</Text>
-        </Stack>
-        <Stack gap={1}>
-          <Text c={"gray"} fz={"xs"}>
-            첨부파일
-          </Text>
-          <Text fz={"xs"}>미사용</Text>
-        </Stack>
-      </Group>
+         김현해, 김소윤, 양우연, 이다빈, 황희은, 김낙균, 김다은, 박선아, 이우경, 김대희`}</Text>
+      </Paper>
 
-      <Table mt={"md"} highlightOnHover verticalSpacing={6} striped fz={11}>
+      <Stack gap={1} mt={"md"}>
+        <Text fz={"sm"} c={"gray"}>
+          검사목록 (4건)
+        </Text>
+
+        <Paper bg={"gray.0"} p={"sm"}>
+          <Group>
+            <Group gap={"xs"}>
+              <Text fz={"xs"}>SK</Text>
+              <Text fz={"xs"}>SK온</Text>
+            </Group>
+            <Text fz={"xs"}>8시 00분 ~ 10시 30분(ACG)</Text>
+            <Group gap={"xs"}>
+              <Text fz={"xs"}>온라인</Text>
+              <Text fz={"xs"}>인적성</Text>
+            </Group>
+            <Text fz={"xs"}>
+              5/12{" "}
+              <Text c={"gray"} fz={"xs"} component="span">
+                (출석/응시)
+              </Text>
+            </Text>
+            <Group gap={2}>
+              <Text c={"gray"} fz={"xs"}>
+                감독관
+              </Text>
+              <Text fz={"xs"}>알바</Text>
+            </Group>
+            <Divider orientation="vertical" />
+
+            <Group gap={2}>
+              <Text c={"gray"} fz={"xs"}>
+                ACG 담당자
+              </Text>
+              <Text fz={"xs"}>김소윤</Text>
+            </Group>
+            <Group gap={2}>
+              <Text c={"gray"} fz={"xs"}>
+                HR 담당자
+              </Text>
+              <Text fz={"xs"}>어어어(010-1212-1212)</Text>
+            </Group>
+          </Group>
+          <Divider my={"xs"} />
+          <Group>
+            <Group gap={"xs"}>
+              <Text fz={"xs"}>SK</Text>
+              <Text fz={"xs"}>SK하이닉스스스</Text>
+            </Group>
+            <Text fz={"xs"}>8시 00분 ~ 10시 30분(ACG)</Text>
+            <Group gap={"xs"}>
+              <Text fz={"xs"}>온라인</Text>
+              <Text fz={"xs"}>인적성</Text>
+            </Group>
+            <Text fz={"xs"}>
+              5/12{" "}
+              <Text c={"gray"} fz={"xs"} component="span">
+                (출석/응시)
+              </Text>
+            </Text>
+            <Group gap={2}>
+              <Text c={"gray"} fz={"xs"}>
+                감독관
+              </Text>
+              <Text fz={"xs"}>알바</Text>
+            </Group>
+            <Divider orientation="vertical" />
+
+            <Group gap={2}>
+              <Text c={"gray"} fz={"xs"}>
+                ACG 담당자
+              </Text>
+              <Text fz={"xs"}>김소윤</Text>
+            </Group>
+            <Group gap={2}>
+              <Text c={"gray"} fz={"xs"}>
+                HR 담당자
+              </Text>
+              <Text fz={"xs"}>없음</Text>
+            </Group>
+          </Group>
+          <Divider my={"xs"} />
+          <Group>
+            <Group gap={"xs"}>
+              <Text fz={"xs"}>SK</Text>
+              <Text fz={"xs"}>SK하이닉스스스</Text>
+            </Group>
+            <Text fz={"xs"}>8시 00분 ~ 10시 30분(ACG)</Text>
+            <Group gap={"xs"}>
+              <Text fz={"xs"}>온라인</Text>
+              <Text fz={"xs"}>인적성</Text>
+            </Group>
+            <Text fz={"xs"}>
+              5/12{" "}
+              <Text c={"gray"} fz={"xs"} component="span">
+                (출석/응시)
+              </Text>
+            </Text>
+            <Group gap={2}>
+              <Text c={"gray"} fz={"xs"}>
+                감독관
+              </Text>
+              <Text fz={"xs"}>알바</Text>
+            </Group>
+            <Divider orientation="vertical" />
+
+            <Group gap={2}>
+              <Text c={"gray"} fz={"xs"}>
+                ACG 담당자
+              </Text>
+              <Text fz={"xs"}>김소윤</Text>
+            </Group>
+            <Group gap={2}>
+              <Text c={"gray"} fz={"xs"}>
+                HR 담당자
+              </Text>
+              <Text fz={"xs"}>없음</Text>
+            </Group>
+          </Group>
+          <Divider my={"xs"} />
+          <Group>
+            <Group gap={"xs"}>
+              <Text fz={"xs"}>SK</Text>
+              <Text fz={"xs"}>SK하이닉스스스</Text>
+            </Group>
+            <Text fz={"xs"}>8시 00분 ~ 10시 30분(ACG)</Text>
+            <Group gap={"xs"}>
+              <Text fz={"xs"}>온라인</Text>
+              <Text fz={"xs"}>인적성</Text>
+            </Group>
+            <Text fz={"xs"}>
+              5/12{" "}
+              <Text c={"gray"} fz={"xs"} component="span">
+                (출석/응시)
+              </Text>
+            </Text>
+            <Group gap={2}>
+              <Text c={"gray"} fz={"xs"}>
+                감독관
+              </Text>
+              <Text fz={"xs"}>알바</Text>
+            </Group>
+            <Divider orientation="vertical" />
+
+            <Group gap={2}>
+              <Text c={"gray"} fz={"xs"}>
+                ACG 담당자
+              </Text>
+              <Text fz={"xs"}>김소윤</Text>
+            </Group>
+            <Group gap={2}>
+              <Text c={"gray"} fz={"xs"}>
+                HR 담당자
+              </Text>
+              <Text fz={"xs"}>없음</Text>
+            </Group>
+          </Group>
+        </Paper>
+      </Stack>
+
+      {/* <Table mt={"md"} highlightOnHover verticalSpacing={6} striped fz={11}>
         <Table.Thead>
           <Table.Tr>
             <Table.Th>그룹</Table.Th>
@@ -171,7 +329,7 @@ const InterviewCard = () => {
           </Table.Tr>
         </Table.Thead>
         <Table.Tbody>{rows}</Table.Tbody>
-      </Table>
+      </Table> */}
     </Paper>
   );
 };

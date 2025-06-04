@@ -120,9 +120,11 @@ const AssessmentManage = () => {
       <Grid mt={"xs"}>
         <GridCol span={{ base: 12, md: 9 }}>
           <Stack gap={"md"}>
-            <AssessmentCard />
+            {/* <AssessmentCard /> */}
             <InterviewCard />
-            <TrainigCard />
+            <InterviewCard />
+            <InterviewCard />
+            {/* <TrainigCard /> */}
           </Stack>
         </GridCol>
         <GridCol span={{ base: 12, md: 3 }}>
