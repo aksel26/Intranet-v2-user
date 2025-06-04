@@ -1,5 +1,5 @@
 "use client";
-import { AppShell, Burger, Group, Image, rem } from "@mantine/core";
+import { AppShell, Burger, Group, Image, rem, ScrollArea } from "@mantine/core";
 // import Image from "next/image";
 import { useDisclosure, useHeadroom } from "@mantine/hooks";
 import NextImage from "next/image";
@@ -58,18 +58,22 @@ export default function ContentLayout({ children }: { children: React.ReactNode 
       <AppShell.Main styles={{ main: { background: "oklch(0.985 0.002 247.839)" } }} pt={`calc(${rem(50)}`}>
         {children}
       </AppShell.Main>
-      <AppShell.Navbar p="md" withBorder={false}>
-        <Group justify="space-between" mb={"lg"}>
-          <Group>
-            <Burger opened={mobileOpened} onClick={toggleMobile} hiddenFrom="sm" size="sm" />
-            <Image onClick={clickLogo} component={NextImage} src={myImage} alt="My image" fit="contain" h={20} w={80} style={{ cursor: "pointer" }} />
-          </Group>
+      <AppShell.Navbar p="md" withBorder={false} zIndex={9999}>
+        <AppShell.Section>
+          <Group justify="space-between">
+            <Group>
+              <Burger opened={mobileOpened} onClick={toggleMobile} hiddenFrom="sm" size="sm" />
+              <Image onClick={clickLogo} component={NextImage} src={myImage} alt="My image" fit="contain" h={20} w={80} style={{ cursor: "pointer" }} />
+            </Group>
 
-          <LogoutButton />
-        </Group>
-        <MemoizedUserInfoCard />
-        <AttendanceInfo />
-        <MemoizedNavMenu />
+            <LogoutButton />
+          </Group>
+        </AppShell.Section>
+        <AppShell.Section grow my="md" component={ScrollArea}>
+          <MemoizedUserInfoCard />
+          <AttendanceInfo />
+          <MemoizedNavMenu />
+        </AppShell.Section>
       </AppShell.Navbar>
     </AppShell>
   );
