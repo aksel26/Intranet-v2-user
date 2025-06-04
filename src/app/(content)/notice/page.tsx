@@ -3,13 +3,13 @@ import PageContainer from "@/components/Global/container";
 import EmptyView from "@/components/Global/view/EmptyView";
 import { ErrorView } from "@/components/Global/view/ErrorView";
 import LoadingView from "@/components/Global/view/LoadingView";
-import Search from "@/components/notice/search";
 import useGetNotices from "@/hooks/useGetNotices";
 import { TNotice } from "@/lib/types/notice";
 import { formatYYYYMMDD } from "@/utils/dateFomat";
-import { Badge, Group, List, ListItem, Paper, Stack, Text } from "@mantine/core";
+import { Badge, Button, Group, List, ListItem, Paper, Stack, Text, TextInput } from "@mantine/core";
+import { IconSearch } from "@tabler/icons-react";
 import { usePathname, useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import styles from "../../../styles/list.module.css";
 const Notice = () => {
   const router = useRouter();
@@ -22,8 +22,15 @@ const Notice = () => {
 
   const { notices, isLoading, isError } = useGetNotices({ params });
 
-  const goDetail = async (id: number) => {
-    router.push(`${pathName}/${id}`);
+  const goDetail = async (id: number) => router.push(`${pathName}/${id}`);
+  const searchRef = useRef<HTMLInputElement>(null);
+  const search = (e: any) => {
+    if (e.key === "Enter" || e.key === "NumpadEnter" || e.type === "click") {
+      if (searchRef.current) {
+        const value = searchRef.current.value || "";
+        setParams((prev: any) => ({ ...prev, searchWord: value }));
+      }
+    }
   };
 
   const ListWrapper = () => {
@@ -83,7 +90,13 @@ const Notice = () => {
 
       <Paper bg={"white"} px="md" py="lg" radius={"lg"}>
         <Stack gap={"xs"}>
-          <Search />
+          <Group>
+            <TextInput onKeyUp={(e) => search(e)} ref={searchRef} placeholder="제목 또는 내용을 입력하세요." w={400} leftSection={<IconSearch size={18} />} />
+            <Button onClick={search} onKeyUp={(e) => search(e)} variant="light">
+              검색
+            </Button>
+          </Group>
+          {/* <Search /> */}
           {renderContent()}
         </Stack>
       </Paper>

@@ -12,7 +12,7 @@ export const getActivities = ({ year, halfYear }: TActivityParams) => apiClient.
 export const getMe = () => apiClient.get(`/users/me`);
 export const getUsers = () => apiClient.get(`/users/ids`);
 export const getQnA = () => apiClient.get(`/users/qna`);
-export const getNotices = ({ pageNo, perPage }: { pageNo: number; perPage: number }) => apiClient.get(`/users/notices`, { params: { pageNo, perPage } });
+export const getNotices = (params: any) => apiClient.get(`/users/notices`, { params: params });
 export const getNoticeDetail = ({ noticeIdx }: { noticeIdx: number }) =>
   apiClient.get(`/users/notices/${noticeIdx}`, {
     params: { noticeIdx: noticeIdx },
