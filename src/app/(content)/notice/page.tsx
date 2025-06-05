@@ -6,15 +6,17 @@ import LoadingView from "@/components/Global/view/LoadingView";
 import useGetNotices from "@/hooks/useGetNotices";
 import { TNotice } from "@/lib/types/notice";
 import { formatYYYYMMDD } from "@/utils/dateFomat";
-import { Badge, Button, Group, List, ListItem, Paper, Stack, Text, TextInput } from "@mantine/core";
-import { IconSearch } from "@tabler/icons-react";
+import { Affix, Badge, Button, Group, List, ListItem, Paper, Stack, Text, TextInput } from "@mantine/core";
+import { IconPlus, IconSearch } from "@tabler/icons-react";
 import { usePathname, useRouter } from "next/navigation";
 import React, { useRef, useState } from "react";
 import styles from "../../../styles/list.module.css";
+import { useDisclosure } from "@mantine/hooks";
+import CreateNotice from "@/components/notice/create";
 const Notice = () => {
   const router = useRouter();
   const pathName = usePathname();
-
+  const [opened, { open, close }] = useDisclosure(false);
   const [params, setParams] = useState({
     perPage: 20,
     pageNo: 1,
@@ -80,26 +82,38 @@ const Notice = () => {
   return (
     <PageContainer>
       <Stack gap={1} mb="xs">
-        <Text size="lg" fw={600}>
-          공지/일정
-        </Text>
+        <Group justify="space-between">
+          <Text size="lg" fw={600}>
+            공지/일정
+          </Text>
+        </Group>
         <Text c={"gray.6"} fz={"sm"}>
-          공지/일정 등록은 P&C팀에게 문의해 주시기 바랍니다.
+          검사 외의 공지는 P&C팀에게 문의해 주시기 바랍니다.
         </Text>
       </Stack>
 
-      <Paper bg={"white"} px="md" py="lg" radius={"lg"}>
+      <Paper bg={"white"} px="md" py="lg" radius={"lg"} mt={"xs"}>
         <Stack gap={"xs"}>
-          <Group>
-            <TextInput onKeyUp={(e) => search(e)} ref={searchRef} placeholder="제목 또는 내용을 입력하세요." w={400} leftSection={<IconSearch size={18} />} />
-            <Button onClick={search} onKeyUp={(e) => search(e)} variant="light">
-              검색
+          <Group justify="space-between" align="center">
+            <Group wrap="nowrap">
+              <TextInput onKeyUp={(e) => search(e)} ref={searchRef} placeholder="제목 또는 내용을 입력하세요." miw={240} leftSection={<IconSearch size={18} />} />
+              <Button onClick={search} onKeyUp={(e) => search(e)} variant="light">
+                검색
+              </Button>
+            </Group>
+            <Button visibleFrom="md" leftSection={<IconPlus size={15} />} onClick={open}>
+              등록
             </Button>
           </Group>
-          {/* <Search /> */}
           {renderContent()}
         </Stack>
       </Paper>
+      <Affix position={{ bottom: 20, right: 20 }} hiddenFrom="md">
+        <Button leftSection={<IconPlus size={15} />} onClick={open}>
+          등록
+        </Button>
+      </Affix>
+      <CreateNotice opened={opened} close={close} />
     </PageContainer>
   );
 };
