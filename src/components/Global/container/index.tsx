@@ -8,8 +8,6 @@ const PageContainer = ({ children }: { children: React.ReactNode }) => {
       p={"lg"}
       style={{
         scrollPaddingBottom: "52px",
-        overflowY: "auto",
-        scrollSnapType: "y mandatory",
       }}
     >
       {children}

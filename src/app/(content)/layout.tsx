@@ -55,10 +55,10 @@ export default function ContentLayout({ children }: { children: React.ReactNode 
           <Burger opened={desktopOpened} onClick={toggleDesktop} visibleFrom="sm" size="sm" />
         </Group>
       </AppShell.Header>
-      <AppShell.Main styles={{ main: { background: "oklch(0.985 0.002 247.839)" } }} pt={`calc(${rem(50)}`}>
+      <AppShell.Main styles={{ main: { background: "oklch(0.985 0.002 247.839)", overflowY: "auto" } }} h={"calc(100vh - 50px)"} pt={`calc(${rem(50)}`}>
         {children}
       </AppShell.Main>
-      <AppShell.Navbar p="md" withBorder={false} zIndex={9999}>
+      <AppShell.Navbar p="md" withBorder={false} zIndex={199}>
         <AppShell.Section>
           <Group justify="space-between">
             <Group>
