@@ -49,7 +49,7 @@ const NavItem = memo(({ item, clickMenu, hasNew }: NavItemProps) => {
       switch (child.label) {
         case "결재/승인":
           return <NavItemWithIndicator child={child} index={index} hasNew={hasNew.approval} clickMenu={clickMenu} />;
-        case "공지사항":
+        case "공지/일정":
           return <NavItemWithIndicator child={child} index={index} hasNew={hasNew.notice} clickMenu={clickMenu} />;
         default:
           return <RegularNavItem child={child} index={index} clickMenu={clickMenu} />;

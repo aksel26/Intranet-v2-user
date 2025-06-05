@@ -19,27 +19,14 @@ const NoticeBirth = () => {
   const cardHeight = heightRef?.current?.offsetHeight || 0;
 
   return (
-    <Paper
-      p={"lg"}
-      radius={"lg"}
-      className={activeTab === "birth" ? "bg-gradient-to-r from-yellow-100 to-red-100" : ""}
-      ref={heightRef}
-      mah={500}
-      styles={{ root: { overflow: "scroll" } }}
-    >
+    <Paper p={"lg"} radius={"lg"} className={activeTab === "birth" ? "bg-gradient-to-r from-yellow-100 to-red-100" : ""} ref={heightRef} mah={500} styles={{ root: { overflow: "scroll" } }}>
       <Tabs value={activeTab} onChange={setActiveTab} variant="pills" radius={"md"}>
         <Tabs.List justify="space-between">
           <Group styles={{ root: { zIndex: 1 } }}>
             <Tabs.Tab fz="xs" value="notice">
-              공지사항
+              공지/일정
             </Tabs.Tab>
-            <Tabs.Tab
-              bg={activeTab === "birth" ? "pink.1" : "transparent"}
-              c={activeTab === "birth" ? "pink.4" : "black"}
-              fw={activeTab === "birth" ? 500 : 400}
-              fz="xs"
-              value="birth"
-            >
+            <Tabs.Tab bg={activeTab === "birth" ? "pink.1" : "transparent"} c={activeTab === "birth" ? "pink.4" : "black"} fw={activeTab === "birth" ? 500 : 400} fz="xs" value="birth">
               생일자
             </Tabs.Tab>
             <Tabs.Tab
@@ -64,9 +51,7 @@ const NoticeBirth = () => {
         </Tabs.Panel>
         <Tabs.Panel value="birth" pt={"xs"} pos={"relative"}>
           <Birth month={(dayjs(dateValue).month() + 1).toString()} />
-          {activeTab === "birth" && (
-            <Fireworks autorun={{ speed: 0.2 }} style={{ position: "absolute", width: "100%", height: cardHeight, right: 0, top: -50, zIndex: 0 }} />
-          )}
+          {activeTab === "birth" && <Fireworks autorun={{ speed: 0.2 }} style={{ position: "absolute", width: "100%", height: cardHeight, right: 0, top: -50, zIndex: 0 }} />}
         </Tabs.Panel>
         <Tabs.Panel value="monthlyDrink" pt={"xs"} pos={"relative"}>
           <MonthlyDrink />

@@ -72,7 +72,7 @@ const Notice = () => {
 
   const renderContent = () => {
     if (isLoading) return <LoadingView />;
-    if (isError) return <ErrorView>공지사항 내역을 불러오는 중 문제가 발생했습니다.</ErrorView>;
+    if (isError) return <ErrorView>공지/일정 내역을 불러오는 중 문제가 발생했습니다.</ErrorView>;
     if (notices?.length === 0) return <EmptyView />;
     return <ListWrapper />;
   };
@@ -81,10 +81,10 @@ const Notice = () => {
     <PageContainer>
       <Stack gap={1} mb="xs">
         <Text size="lg" fw={600}>
-          공지사항
+          공지/일정
         </Text>
         <Text c={"gray.6"} fz={"sm"}>
-          공지사항 등록은 P&C팀에게 문의해 주시기 바랍니다.
+          공지/일정 등록은 P&C팀에게 문의해 주시기 바랍니다.
         </Text>
       </Stack>
 

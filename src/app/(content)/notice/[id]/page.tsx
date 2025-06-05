@@ -40,7 +40,7 @@ function page() {
           <IconLeft style={{ width: "70%", height: "70%" }} />
         </ActionIcon>
         <Text size="lg" fw={600}>
-          공지사항
+          공지/일정
         </Text>
       </Group>
 

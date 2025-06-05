@@ -56,7 +56,7 @@ function Notice() {
 
   const renderContent = () => {
     if (isLoading) return <LoadingView />;
-    if (isError) return <ErrorView>공지사항을 불러오는 중 오류가 발생했어요.</ErrorView>;
+    if (isError) return <ErrorView>공지/일정을 불러오는 중 오류가 발생했어요.</ErrorView>;
     if (notices?.length === 0) return <EmptyView />;
     return <NoticeList />;
   };
