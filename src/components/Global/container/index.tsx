@@ -6,6 +6,7 @@ const PageContainer = ({ children }: { children: React.ReactNode }) => {
     <Container
       fluid
       p={"lg"}
+      pt={60}
       style={{
         scrollPaddingBottom: "52px",
       }}
