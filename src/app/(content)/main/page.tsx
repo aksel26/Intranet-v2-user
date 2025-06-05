@@ -5,11 +5,12 @@ import NoticeBirth from "@/components/Dashboard/noticeBirth";
 import VacationCard from "@/components/Dashboard/vacation";
 import WelfareButtons from "@/components/Dashboard/welfareButtons";
 import WorkHourStats from "@/components/Dashboard/workHourStats";
-import { Container, Grid, GridCol, Stack } from "@mantine/core";
+import PageContainer from "@/components/Global/container";
+import { Grid, GridCol, Stack } from "@mantine/core";
 
 function page() {
   return (
-    <Container fluid p={"lg"}>
+    <PageContainer>
       <GreetingMessage />
       <Grid>
         <GridCol span={{ base: 12, md: 6 }}>
@@ -24,7 +25,7 @@ function page() {
           </Stack>
         </GridCol>
       </Grid>
-    </Container>
+    </PageContainer>
   );
 }
 

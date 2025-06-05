@@ -1,25 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { Button, Group, Modal, Stack, Text } from "@mantine/core";
+import { Badge, Button, Group, Modal, Stack, Text } from "@mantine/core";
 import dayjs from "dayjs";
 import { useApproveVacation } from "@/hooks/useSubmitForm";
 import notification from "@/components/GNB/Notification";
 import { useQueryClient } from "@tanstack/react-query";
 import { useDisclosure } from "@mantine/hooks";
 
-const StackLabelText = ({ label, value, ...props }: any) => {
-  return (
-    <Stack gap={2} {...props}>
-      <Text fz={"xs"} c={"dimmed"}>
-        {label}
-      </Text>
-      <Text fz={"xs"}>{value}</Text>
-    </Stack>
-  );
-};
-
 const StackLabelButton = ({ label, value, open, ...props }: any) => {
   return (
-    <Stack gap={2} {...props}>
+    <Group {...props}>
       <Text fz={"xs"} c={"dimmed"}>
         {label}
       </Text>
@@ -33,8 +22,41 @@ const StackLabelButton = ({ label, value, open, ...props }: any) => {
           없음
         </Text>
       )}
-    </Stack>
+    </Group>
   );
+};
+
+const BadgeConfirmYN = ({ details }: { details: any }) => {
+  const { confirmYN, confirmDate, rejectDate } = details;
+  if (confirmYN === "Y") {
+    return (
+      <Group gap={8}>
+        <Badge variant="light" color="green">
+          승인
+        </Badge>
+        <Text c={"gray"} fz={"xs"}>
+          {confirmDate}
+        </Text>
+      </Group>
+    );
+  } else if (confirmYN === "R") {
+    return (
+      <Group gap={8}>
+        <Badge variant="light" color="red" size="sm">
+          반려
+        </Badge>
+        <Text c={"gray"} fz={"xs"}>
+          {rejectDate}
+        </Text>
+      </Group>
+    );
+  } else if (confirmYN === "N") {
+    return (
+      <Badge variant="light" color="yellow">
+        승인 대기
+      </Badge>
+    );
+  }
 };
 
 const ConfirmStatusButton = ({ details, close, confirm }: any) => {
@@ -47,11 +69,27 @@ const ConfirmStatusButton = ({ details, close, confirm }: any) => {
   } else {
     if (details.confirmYN === "R") {
       return (
-        <Button size="xs" variant="light" color="red" fullWidth onClick={() => confirm("R")}>
-          취소하기
-        </Button>
+        <Group wrap="nowrap">
+          <Button size="xs" variant="light" color="blue" fullWidth onClick={() => confirm("N")}>
+            반려 취소
+          </Button>
+          <Button size="xs" fullWidth variant="light" color="green" onClick={() => confirm("Y")}>
+            승인하기
+          </Button>
+        </Group>
       );
-    } else {
+    } else if (details.confirmYN === "Y") {
+      return (
+        <Group wrap="nowrap">
+          <Button size="xs" fullWidth variant="light" color="blue" onClick={() => confirm("N")}>
+            승인 취소
+          </Button>
+          <Button size="xs" variant="light" color="red" fullWidth onClick={() => confirm("R")}>
+            반려하기
+          </Button>
+        </Group>
+      );
+    } else if (details.confirmYN === "N") {
       return (
         <Group wrap="nowrap">
           <Button size="xs" fullWidth variant="light" color="green" onClick={() => confirm("Y")}>
@@ -66,6 +104,7 @@ const ConfirmStatusButton = ({ details, close, confirm }: any) => {
   }
 };
 const ApprovalConfirm = ({ opened, close, details }: any) => {
+  console.log("details:", details);
   const queryClient = useQueryClient();
   const { mutate } = useApproveVacation();
   const [previewOpened, { open: previewOpen, close: previewClose }] = useDisclosure(false);
@@ -85,7 +124,7 @@ const ApprovalConfirm = ({ opened, close, details }: any) => {
           queryClient.invalidateQueries({
             predicate: (query) => {
               const queryKey = query.queryKey;
-              const targetKeys = ["approvals", "vacationAll", "vacationSummary"];
+              const targetKeys = ["approvals", "vacationAll", "vacationSummary", "attendanceAllStaff"];
               return Array.isArray(queryKey) && targetKeys.includes(queryKey[0]);
             },
           });
@@ -103,16 +142,44 @@ const ApprovalConfirm = ({ opened, close, details }: any) => {
     );
   };
   return (
-    <Modal opened={opened} onClose={close} title={`휴가신청 결재`} centered size={"sm"}>
-      <Group pb={"md"} justify="space-between">
-        <StackLabelText value={details?.userName} label={"요청자"} />
-        <StackLabelText value={details?.leaveType} label={"유형"} />
-        <StackLabelText value={details?.confirmStatus} label={"상태"} />
-        <StackLabelButton value={details?.imageName} open={previewOpen} label={"청부파일"} />
-      </Group>
-      <Group pb={"md"}>
-        <StackLabelText value={dayjs(details?.createdAt).format("YYYY-MM-DD")} label={"기안일"} />
-        <StackLabelText value={details?.commuteDate} label={"대상일"} />
+    <Modal opened={opened} onClose={close} title={`휴가신청 결재`} centered size={"auto"}>
+      <Group align="start" gap={"xl"}>
+        <Stack pb={"md"} gap={"xs"}>
+          <Group gap={"xs"}>
+            <Text fz={"xs"} c={"dimmed"} w={50}>
+              요청자
+            </Text>
+            <Text fz={"xs"}>{details?.userName}</Text>
+          </Group>
+          <Group gap={"xs"}>
+            <Text fz={"xs"} c={"dimmed"} w={50}>
+              유형
+            </Text>
+            <Text fz={"xs"}>{details?.leaveType}</Text>
+          </Group>
+
+          <StackLabelButton value={details?.imageName} open={previewOpen} label={"청부파일"} />
+        </Stack>
+        <Stack pb={"md"} gap={"xs"}>
+          <Group gap={"xs"}>
+            <Text fz={"xs"} c={"dimmed"} w={50}>
+              기안날짜
+            </Text>
+            <Text fz={"xs"}>{dayjs(details?.createdAt).format("YYYY-MM-DD")}</Text>
+          </Group>
+          <Group gap={"xs"}>
+            <Text fz={"xs"} c={"dimmed"} w={50}>
+              대상날짜
+            </Text>
+            <Text fz={"xs"}>{details?.commuteDate}</Text>
+          </Group>
+          <Group gap={"xs"}>
+            <Text fz={"xs"} c={"dimmed"} w={50}>
+              상태
+            </Text>
+            <BadgeConfirmYN details={details} />
+          </Group>
+        </Stack>
       </Group>
       <ConfirmStatusButton details={details} close={close} confirm={confirm} />
       <Modal opened={previewOpened} onClose={previewClose} title="첨부 이미지 미리보기">

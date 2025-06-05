@@ -41,13 +41,7 @@ function CheckIn({ checkInModalClose, checkInTimeOpened }: any) {
   };
 
   return (
-    <Modal
-      opened={checkInTimeOpened}
-      onClose={checkInModalClose}
-      title="출근하기"
-      centered
-      size={"xs"}
-    >
+    <Modal opened={checkInTimeOpened} onClose={checkInModalClose} title="출근하기" centered size={"xs"}>
       <Text>
         {myInfo?.userName} <Text component="span">{myInfo?.gradeName}</Text>
         님,
@@ -60,12 +54,7 @@ function CheckIn({ checkInModalClose, checkInTimeOpened }: any) {
         <Button fullWidth onClick={handleCheckIn} data-autofocus>
           출근하기
         </Button>
-        <Button
-          fullWidth
-          variant="light"
-          color="gray.8"
-          onClick={checkInModalClose}
-        >
+        <Button fullWidth variant="light" color="gray.8" onClick={checkInModalClose}>
           닫기
         </Button>
       </Group>
