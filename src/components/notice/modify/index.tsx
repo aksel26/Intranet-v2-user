@@ -1,6 +1,5 @@
 import {
   Button,
-  Group,
   Modal,
   Select,
   Stack,
@@ -10,18 +9,16 @@ import {
 import { DatePickerInput } from "@mantine/dates";
 import { useForm } from "@mantine/form";
 import { IconCalendar } from "@tabler/icons-react";
-import React, { useState } from "react";
+import { useState } from "react";
 
-const CreateNotice = ({ opened, close }: any) => {
+const ModifyNotice = ({ opened, close, details }: any) => {
+  if (!details) return null;
+
   const form = useForm({
     mode: "uncontrolled",
     initialValues: {
-      email: "",
-      termsOfService: false,
-    },
-
-    validate: {
-      email: (value) => (/^\S+@\S+$/.test(value) ? null : "Invalid email"),
+      title: details.title,
+      content: "",
     },
   });
   const [dateValue, setDateValue] = useState<[Date | null, Date | null]>([
@@ -34,7 +31,7 @@ const CreateNotice = ({ opened, close }: any) => {
   };
 
   return (
-    <Modal opened={opened} onClose={close} title="공지/일정 등록" centered>
+    <Modal opened={opened} onClose={close} title="공지/일정 수정" centered>
       <form onSubmit={form.onSubmit((values) => console.log(values))}>
         <Stack gap={"xs"}>
           <TextInput
@@ -45,6 +42,8 @@ const CreateNotice = ({ opened, close }: any) => {
               },
             }}
             label="제목"
+            key={form.key("title")}
+            {...form.getInputProps("title")}
           />
 
           <DatePickerInput
@@ -162,6 +161,8 @@ const CreateNotice = ({ opened, close }: any) => {
             label="내용"
             autosize
             minRows={4}
+            key={form.key("content")}
+            {...form.getInputProps("content")}
           />
           <TextInput
             styles={{
@@ -173,7 +174,7 @@ const CreateNotice = ({ opened, close }: any) => {
             label="첨부파일"
           />
           <Button fullWidth type="submit">
-            등록하기
+            수정하기
           </Button>
         </Stack>
       </form>
@@ -181,4 +182,4 @@ const CreateNotice = ({ opened, close }: any) => {
   );
 };
 
-export default CreateNotice;
+export default ModifyNotice;
