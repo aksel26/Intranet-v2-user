@@ -3,34 +3,28 @@ import { TNotice } from "@/lib/types/notice";
 import { formatYYYYMMDD } from "@/utils/dateFomat";
 import { Badge, Group, List, ListItem, Stack, Text } from "@mantine/core";
 import { useSuspenseQuery } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
-
+import styles from "../../../styles/list.module.css";
 const NoticeList = () => {
+  const router = useRouter();
+  const goDetail = async (id: number) => router.push(`/notice/${id}`);
   const ListWrapper = () => {
     return (
       <List spacing={0} size="sm" center>
-        {data.data.data.result?.map(
-          (record: TNotice, index: number, arr: any) => {
-            return (
-              <React.Fragment key={index}>
-                <Items key={record.noticeIdx} record={record} />
-              </React.Fragment>
-            );
-          }
-        )}
+        {data.data.data.result?.map((record: TNotice, index: number, arr: any) => {
+          return (
+            <React.Fragment key={index}>
+              <Items key={record.noticeIdx} record={record} />
+            </React.Fragment>
+          );
+        })}
       </List>
     );
   };
 
   const Items = ({ record }: { record: TNotice }) => (
-    <ListItem
-      w={"100%"}
-      //   onClick={() => goDetail(record.noticeIdx)}
-      key={record.noticeIdx}
-      //   className={styles.element}
-      px={"sm"}
-      py={"md"}
-    >
+    <ListItem w={"100%"} onClick={() => goDetail(record.noticeIdx)} key={record.noticeIdx} className={styles.element} px={"sm"} py={"md"}>
       <Stack gap={4}>
         <Group>
           <Text fz={"xs"}>{record.title}</Text>
