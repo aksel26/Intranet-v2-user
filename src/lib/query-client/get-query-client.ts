@@ -1,10 +1,4 @@
-"use client";
-
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { useState } from "react";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { SessionProvider } from "next-auth/react";
-
+import { defaultShouldDehydrateQuery, QueryClient } from "@tanstack/react-query";
 function makeQueryClient() {
   return new QueryClient({
     defaultOptions: {
@@ -15,13 +9,17 @@ function makeQueryClient() {
         retry: 1,
         refetchOnWindowFocus: false,
       },
+      dehydrate: {
+        // include pending queries in dehydration
+        shouldDehydrateQuery: (query) => defaultShouldDehydrateQuery(query) || query.state.status === "pending",
+      },
     },
   });
 }
 
 let browserQueryClient: QueryClient | undefined = undefined;
 
-function getQueryClient() {
+export function getQueryClient() {
   if (typeof window === "undefined") {
     // Server일 경우
     // 매번 새로운 queryClient를 만든다.
@@ -33,16 +31,4 @@ function getQueryClient() {
     if (!browserQueryClient) browserQueryClient = makeQueryClient();
     return browserQueryClient;
   }
-}
-
-export default function Providers({ children }: { children: React.ReactNode }) {
-  const queryClient = getQueryClient();
-
-  return (
-    <QueryClientProvider client={queryClient}>
-      <ReactQueryDevtools />
-
-      <SessionProvider>{children}</SessionProvider>
-    </QueryClientProvider>
-  );
 }

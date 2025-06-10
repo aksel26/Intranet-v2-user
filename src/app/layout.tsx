@@ -6,7 +6,7 @@ import "./globals.css";
 
 import { GlobalContainer } from "@/components/Global/GlobalContainer";
 import { Metadata } from "next";
-import Providers from "@/components/Global/config/Provider";
+import Providers from "@/components/Global/config/providers";
 import { ColorSchemeScript } from "@mantine/core";
 // import StoreProvider from "@/components/Global/config/StoreProvider";
 // import { GlobalLayout } from "@/components/Global/layout/globalLayout";
