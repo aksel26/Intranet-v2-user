@@ -6,18 +6,7 @@ import LoadingView from "@/components/Global/view/LoadingView";
 import useGetNotices from "@/hooks/useGetNotices";
 import { TNotice } from "@/lib/types/notice";
 import { formatYYYYMMDD } from "@/utils/dateFomat";
-import {
-  Affix,
-  Badge,
-  Button,
-  Group,
-  List,
-  ListItem,
-  Paper,
-  Stack,
-  Text,
-  TextInput,
-} from "@mantine/core";
+import { Affix, Badge, Button, Group, List, ListItem, Paper, Stack, Text, TextInput } from "@mantine/core";
 import { IconPlus, IconSearch } from "@tabler/icons-react";
 import { usePathname, useRouter } from "next/navigation";
 import React, { Suspense, useRef, useState } from "react";
@@ -29,18 +18,18 @@ import { getNotices } from "@/app/api/get/getApi";
 import Loading from "./loading";
 import NoticeList from "@/components/notice/list";
 // import { ListWrapper } from "@/components/content/welfare/ListWrapper";
-const Notice = ({ state }: any) => {
-  console.log("state: ", state);
+const Notice = () => {
   const router = useRouter();
   const pathName = usePathname();
   const [opened, { open, close }] = useDisclosure(false);
-  // const [params, setParams] = useState({
-  //   perPage: 20,
-  //   pageNo: 1,
-  // });
+  const [params, setParams] = useState({
+    perPage: 20,
+    pageNo: 1,
+  });
 
   // const { notices, isLoading, isError } = useGetNotices({ params });
-  // const { data, isLoading, isError } = useSuspenseQuery({
+  // console.log("notices:", notices);
+  // const { data } = useSuspenseQuery({
   //   queryKey: ["notices", params],
   //   queryFn: () => getNotices(params),
   // });
@@ -142,11 +131,7 @@ const Notice = ({ state }: any) => {
                 검색
               </Button>
             </Group>
-            <Button
-              visibleFrom="md"
-              leftSection={<IconPlus size={15} />}
-              onClick={open}
-            >
+            <Button visibleFrom="md" leftSection={<IconPlus size={15} />} onClick={open}>
               등록
             </Button>
           </Group>

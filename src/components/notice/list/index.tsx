@@ -1,3 +1,4 @@
+"use client";
 import { getNotices } from "@/app/api/get/getApi";
 import { TNotice } from "@/lib/types/notice";
 import { formatYYYYMMDD } from "@/utils/dateFomat";
@@ -12,13 +13,13 @@ const NoticeList = () => {
   const ListWrapper = () => {
     return (
       <List spacing={0} size="sm" center>
-        {data.data.data.result?.map((record: TNotice, index: number, arr: any) => {
+        {/* {data.data.data.result?.map((record: TNotice, index: number, arr: any) => {
           return (
             <React.Fragment key={index}>
               <Items key={record.noticeIdx} record={record} />
             </React.Fragment>
           );
-        })}
+        })} */}
       </List>
     );
   };
@@ -46,16 +47,16 @@ const NoticeList = () => {
     </ListItem>
   );
 
-  const [params, setParams] = useState({
-    perPage: 20,
-    pageNo: 1,
-  });
+  // const [params, setParams] = useState({
+  //   perPage: 20,
+  //   pageNo: 1,
+  // });
 
-  // const { notices, isLoading, isError } = useGetNotices({ params });
-  const { data, isLoading, isError } = useSuspenseQuery({
-    queryKey: ["notices", params],
-    queryFn: () => getNotices(params),
-  });
+  // // const { notices, isLoading, isError } = useGetNotices({ params });
+  // const { data, isLoading, isError } = useSuspenseQuery({
+  //   queryKey: ["notices", params],
+  //   queryFn: () => getNotices(params),
+  // });
   return <ListWrapper />;
 };
 
