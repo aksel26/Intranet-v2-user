@@ -1,14 +1,7 @@
-import {
-  Button,
-  Modal,
-  Select,
-  Stack,
-  Textarea,
-  TextInput,
-} from "@mantine/core";
+import { Button, FileButton, FileInput, Group, Modal, Select, Stack, Text, Textarea, TextInput } from "@mantine/core";
 import { DatePickerInput } from "@mantine/dates";
 import { useForm } from "@mantine/form";
-import { IconCalendar } from "@tabler/icons-react";
+import { IconCalendar, IconUpload } from "@tabler/icons-react";
 import { useState } from "react";
 
 const ModifyNotice = ({ opened, close, details }: any) => {
@@ -21,14 +14,13 @@ const ModifyNotice = ({ opened, close, details }: any) => {
       content: "",
     },
   });
-  const [dateValue, setDateValue] = useState<[Date | null, Date | null]>([
-    null,
-    null,
-  ]);
+  const [dateValue, setDateValue] = useState<[Date | null, Date | null]>([null, null]);
 
   const dateSelect = (val: [Date | null, Date | null]) => {
     setDateValue(val);
   };
+
+  const [file, setFile] = useState<File | null>(null);
 
   return (
     <Modal opened={opened} onClose={close} title="공지/일정 수정" centered>
@@ -164,14 +156,18 @@ const ModifyNotice = ({ opened, close, details }: any) => {
             key={form.key("content")}
             {...form.getInputProps("content")}
           />
-          <TextInput
+
+          <FileInput
             styles={{
               label: {
                 fontSize: "var(--mantine-font-size-xs",
                 color: "var(--mantine-color-gray-5)",
               },
             }}
+            clearable
+            leftSection={<IconUpload size={17} strokeWidth={1.2} />}
             label="첨부파일"
+            placeholder="첨부파일을 업로드 해주세요."
           />
           <Button fullWidth type="submit">
             수정하기
