@@ -1,4 +1,4 @@
-import apiClient from "@/lib/axios";
+import apiClient from "@/lib/axios/client-api";
 
 // export const getMeals = () => jsonPlaceholderApi.get('/posts');
 

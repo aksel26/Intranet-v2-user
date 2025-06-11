@@ -1,4 +1,5 @@
-import apiClient from "@/lib/axios";
+// import apiClient from "@/lib/axios/client-api";
+import apiClient from "@/lib/axios/client-api";
 import { TActivityParams, TMealsParams, TWelfaresParams } from "@/lib/types/meal";
 import { TApproval, TMyAttendance, TSearchNotice, TWorkHourStats, TYearMonth } from "@/types/apiTypes";
 import axios from "axios";
