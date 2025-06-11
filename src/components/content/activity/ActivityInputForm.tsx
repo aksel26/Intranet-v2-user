@@ -37,7 +37,7 @@ export default function ActivityInputForm({ onClose, opened }: any) {
   });
 
   useEffect(() => {
-    const userName = myInfo.userName || "";
+    const userName = myInfo?.userName || "";
     form.setFieldValue("payerName", userName); // form의 name 필드값을 업데이트
   }, [myInfo]);
 
@@ -68,7 +68,7 @@ export default function ActivityInputForm({ onClose, opened }: any) {
     });
   };
 
-  if (myInfo.gradeName === "인턴" || myInfo.gradeName === "위원" || myInfo.gradeName === "선임" || myInfo.gradeName === "책임") {
+  if (myInfo?.gradeName === "인턴" || myInfo?.gradeName === "위원" || myInfo?.gradeName === "선임" || myInfo?.gradeName === "책임") {
     return (
       <Text fz={"sm"} c={"dimmed"}>
         활동비 입력 권한이 없습니다.
@@ -95,15 +95,7 @@ export default function ActivityInputForm({ onClose, opened }: any) {
         />
         <TextInput label="사용처" placeholder="결제하신 곳의 상호명을 입력해 주세요." key={form.key("content")} {...form.getInputProps("content")} />
 
-        <NumberInput
-          label="금액"
-          placeholder="금액을 입력해 주세요."
-          thousandSeparator=","
-          hideControls
-          suffix=" 원"
-          key={form.key("amount")}
-          {...form.getInputProps("amount")}
-        />
+        <NumberInput label="금액" placeholder="금액을 입력해 주세요." thousandSeparator="," hideControls suffix=" 원" key={form.key("amount")} {...form.getInputProps("amount")} />
 
         <Button type="submit" mt={20}>
           저장하기

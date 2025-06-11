@@ -10,8 +10,8 @@ export const ToptitleActivity = ({ stats, isLoading, isError }: any) => {
   const { copyBankAccount } = useCopyBankAccount();
 
   const renderContent = () => {
-    if (isLoading) return <LoadingView />;
-    if (isError) return <ErrorView>활동비 내역을 불러오는 중 문제가 발생했습니다.</ErrorView>;
+    // if (isLoading) return <LoadingView />;
+    // if (isError) return <ErrorView>활동비 내역을 불러오는 중 문제가 발생했습니다.</ErrorView>;
     return (
       <Paper bg={"white"} px="md" py="lg" radius={"lg"}>
         <Stack gap={"md"}>

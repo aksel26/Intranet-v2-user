@@ -8,8 +8,6 @@ import ArrowRight from "/public/icons/arrow-right.svg";
 
 import BottomModal from "@/components/Global/BottomModal";
 import EmptyView from "@/components/Global/view/EmptyView";
-import { ErrorView } from "@/components/Global/view/ErrorView";
-import LoadingView from "@/components/Global/view/LoadingView";
 import { myInfoStore } from "@/lib/store/myInfoStore";
 import { TActivityDetail } from "@/lib/types/activity";
 import ActivityInputForm from "./ActivityInputForm";
@@ -33,12 +31,12 @@ export const UsedListActivity = ({ activities, isLoading, isError }: any) => {
   const { myInfo } = myInfoStore();
 
   useEffect(() => {
-    if (myInfo.gradeName === "인턴" || myInfo.gradeName === "위원" || myInfo.gradeName === "선임" || myInfo.gradeName === "책임") {
+    if (myInfo?.gradeName === "인턴" || myInfo?.gradeName === "위원" || myInfo?.gradeName === "선임" || myInfo?.gradeName === "책임") {
       setIsAuthorized(false);
     } else {
       setIsAuthorized(true);
     }
-  }, []);
+  }, [myInfo]);
 
   const ListWrapper = () => {
     return (
@@ -84,8 +82,8 @@ export const UsedListActivity = ({ activities, isLoading, isError }: any) => {
   );
 
   const renderContent = () => {
-    if (isLoading) return <LoadingView />;
-    if (isError) return <ErrorView>활동비 내역을 불러오는 중 문제가 발생했습니다.</ErrorView>;
+    // if (isLoading) return <LoadingView />;
+    // if (isError) return <ErrorView>활동비 내역을 불러오는 중 문제가 발생했습니다.</ErrorView>;
     if (activities?.length === 0) return <EmptyView />;
     return <ListWrapper />;
   };
