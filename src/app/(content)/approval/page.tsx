@@ -14,26 +14,14 @@ const page = () => {
   });
 
   return (
-    <PageContainer>
-      <Stack gap={1}>
-        <Text size="lg" fw={600} component="a">
-          결재 및 승인{" "}
-          <Text component="span" fz={"sm"} c={"dimmed"} ml={"sm"}>
-            {/* {approvalsList?.length}건 */}
-          </Text>
-        </Text>
-        <Text component="span" c={"gray.6"} fz={"sm"}>
-          결재 및 승인 요청 내역이 보여지며, 참조 내역도 확인할 수 있습니다.
-        </Text>
-      </Stack>
-
+    <>
       <SearchApprovals setParams={setParams} />
       <Paper bg={"white"} px="md" py="md" radius={"lg"}>
         <Suspense fallback={<Loading />}>
           <ApprovalList params={params} />
         </Suspense>
       </Paper>
-    </PageContainer>
+    </>
   );
 };
 

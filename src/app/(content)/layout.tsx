@@ -14,13 +14,18 @@ import UserInfoCard from "@/components/Navbar/userInfoCard";
 import { useNavStore } from "@/lib/store/toggleStore";
 import dayjs from "dayjs";
 import "dayjs/locale/ko";
+import PageContainer from "@/components/Global/container";
 
 dayjs.locale("ko");
 
 const MemoizedUserInfoCard = memo(UserInfoCard);
 const MemoizedNavMenu = memo(NavMenu);
 
-export default function ContentLayout({ children }: { children: React.ReactNode }) {
+export default function ContentLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const pinned = useHeadroom({ fixedAt: 60 });
   // const [mobileOpened, { toggle: toggleMobile }] = useDisclosure();
   const [desktopOpened, { toggle: toggleDesktop }] = useDisclosure(true);
@@ -51,19 +56,48 @@ export default function ContentLayout({ children }: { children: React.ReactNode 
     >
       <AppShell.Header withBorder={false}>
         <Group h={"100%"} px={"sm"}>
-          <Burger opened={mobileOpened} onClick={toggleMobile} hiddenFrom="sm" size="sm" />
-          <Burger opened={desktopOpened} onClick={toggleDesktop} visibleFrom="sm" size="sm" />
+          <Burger
+            opened={mobileOpened}
+            onClick={toggleMobile}
+            hiddenFrom="sm"
+            size="sm"
+          />
+          <Burger
+            opened={desktopOpened}
+            onClick={toggleDesktop}
+            visibleFrom="sm"
+            size="sm"
+          />
         </Group>
       </AppShell.Header>
-      <AppShell.Main styles={{ main: { background: "oklch(0.985 0.002 247.839)", overflowY: "auto" } }} h={"calc(100vh - 50px)"}>
-        {children}
+      <AppShell.Main
+        styles={{
+          main: { background: "oklch(0.985 0.002 247.839)", overflowY: "auto" },
+        }}
+        h={"calc(100vh - 50px)"}
+      >
+        <PageContainer>{children}</PageContainer>
       </AppShell.Main>
       <AppShell.Navbar p="md" withBorder={false} zIndex={199}>
         <AppShell.Section>
           <Group justify="space-between">
             <Group>
-              <Burger opened={mobileOpened} onClick={toggleMobile} hiddenFrom="sm" size="sm" />
-              <Image onClick={clickLogo} component={NextImage} src={myImage} alt="My image" fit="contain" h={20} w={80} style={{ cursor: "pointer" }} />
+              <Burger
+                opened={mobileOpened}
+                onClick={toggleMobile}
+                hiddenFrom="sm"
+                size="sm"
+              />
+              <Image
+                onClick={clickLogo}
+                component={NextImage}
+                src={myImage}
+                alt="My image"
+                fit="contain"
+                h={20}
+                w={80}
+                style={{ cursor: "pointer" }}
+              />
             </Group>
 
             <LogoutButton />
