@@ -1,4 +1,4 @@
-import { defaultShouldDehydrateQuery, QueryClient } from "@tanstack/react-query";
+import { defaultShouldDehydrateQuery, isServer, QueryClient } from "@tanstack/react-query";
 function makeQueryClient() {
   return new QueryClient({
     defaultOptions: {
@@ -20,7 +20,7 @@ function makeQueryClient() {
 let browserQueryClient: QueryClient | undefined = undefined;
 
 export function getQueryClient() {
-  if (typeof window === "undefined") {
+  if (isServer) {
     // Server일 경우
     // 매번 새로운 queryClient를 만든다.
     return makeQueryClient();
