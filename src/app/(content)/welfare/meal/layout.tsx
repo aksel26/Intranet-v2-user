@@ -1,17 +1,28 @@
-import { dehydrate, HydrationBoundary, QueryClient } from "@tanstack/react-query";
+import { createServerApiClient } from "@/lib/axios/server-api";
+import { getQueryClient } from "@/lib/query-client/get-query-client";
+import { dehydrate, HydrationBoundary, queryOptions } from "@tanstack/react-query";
+import dayjs from "dayjs";
 import React from "react";
-import * as api from "@/app/api/get/getApi";
 
 export default async function layout({ children }: { children: React.ReactNode }) {
-  const queryClient = new QueryClient();
+  const queryClient = getQueryClient();
+  const apiClient = await createServerApiClient();
 
   // const now = {
-  const year = new Date().getFullYear();
-  const month = new Date().getMonth() + 1;
+  const year = dayjs().year().toString();
+  const month = (dayjs().month() + 1).toString();
   // };
-  await queryClient.prefetchQuery({
+
+  const prefetchOption = queryOptions({
     queryKey: ["meals", { year, month }],
-    queryFn: () => api.getMeals({ year, month }),
+    queryFn: async () => {
+      const res = await apiClient
+        .get(`/users/meals`, { params: { year, month } })
+        .then((res) => res.data)
+        .catch((error) => console.log(error));
+      return res;
+    },
   });
+  await queryClient.prefetchQuery(prefetchOption);
   return <HydrationBoundary state={dehydrate(queryClient)}>{children}</HydrationBoundary>;
 }
