@@ -23,7 +23,6 @@ export const authOptions: NextAuthOptions = {
             id: credentials.id,
           });
 
-          console.log("🚀 ~ authorize ~ data:", data.status);
           if (data.data.accessToken) {
             // Auth.js 사용자 객체에 토큰 포함
 

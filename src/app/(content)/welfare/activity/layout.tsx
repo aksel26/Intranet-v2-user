@@ -10,7 +10,6 @@ export default async function layout({ children }: { children: React.ReactNode }
 
   // const now = {
   const year = dayjs().year().toString();
-
   const halfYear = Number(year) > 6 ? "H2" : "H1";
   // };
 
