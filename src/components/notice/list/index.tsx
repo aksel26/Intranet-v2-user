@@ -5,21 +5,27 @@ import { formatYYYYMMDD } from "@/utils/dateFomat";
 import { Badge, Group, List, ListItem, Stack, Text } from "@mantine/core";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React from "react";
 import styles from "../../../styles/list.module.css";
-const NoticeList = () => {
+const NoticeList = ({ params }: any) => {
   const router = useRouter();
   const goDetail = async (id: number) => router.push(`/notice/${id}`);
-  const ListWrapper = () => {
+
+  const { data } = useSuspenseQuery({
+    queryKey: ["notices", params],
+    queryFn: () => getNotices(params).then((res) => res.data),
+  });
+
+  const ListWrapper = ({ result }: any) => {
     return (
       <List spacing={0} size="sm" center>
-        {/* {data.data.data.result?.map((record: TNotice, index: number, arr: any) => {
+        {result?.map((record: TNotice, index: number, arr: any) => {
           return (
             <React.Fragment key={index}>
               <Items key={record.noticeIdx} record={record} />
             </React.Fragment>
           );
-        })} */}
+        })}
       </List>
     );
   };
@@ -47,17 +53,7 @@ const NoticeList = () => {
     </ListItem>
   );
 
-  // const [params, setParams] = useState({
-  //   perPage: 20,
-  //   pageNo: 1,
-  // });
-
-  // // const { notices, isLoading, isError } = useGetNotices({ params });
-  // const { data, isLoading, isError } = useSuspenseQuery({
-  //   queryKey: ["notices", params],
-  //   queryFn: () => getNotices(params),
-  // });
-  return <ListWrapper />;
+  return <ListWrapper result={data?.data?.result} />;
 };
 
 export default NoticeList;
