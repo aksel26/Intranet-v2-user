@@ -1,5 +1,5 @@
 "use client";
-import { AppShell, Burger, Group, Image, rem, ScrollArea } from "@mantine/core";
+import { AppShell, Burger, Group, Image, ScrollArea, Text } from "@mantine/core";
 // import Image from "next/image";
 import { useDisclosure, useHeadroom } from "@mantine/hooks";
 import NextImage from "next/image";
@@ -14,18 +14,13 @@ import UserInfoCard from "@/components/Navbar/userInfoCard";
 import { useNavStore } from "@/lib/store/toggleStore";
 import dayjs from "dayjs";
 import "dayjs/locale/ko";
-import PageContainer from "@/components/Global/container";
 
 dayjs.locale("ko");
 
 const MemoizedUserInfoCard = memo(UserInfoCard);
 const MemoizedNavMenu = memo(NavMenu);
 
-export default function ContentLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function ContentLayout({ children }: { children: React.ReactNode }) {
   const pinned = useHeadroom({ fixedAt: 60 });
   // const [mobileOpened, { toggle: toggleMobile }] = useDisclosure();
   const [desktopOpened, { toggle: toggleDesktop }] = useDisclosure(true);
@@ -45,59 +40,30 @@ export default function ContentLayout({
       header={{
         height: 50,
         collapsed: !pinned,
-        offset: false,
+        // offset: false,
       }}
+      footer={{ height: 40 }}
       navbar={{
         width: 300,
         breakpoint: "sm",
         collapsed: { mobile: !mobileOpened, desktop: !desktopOpened },
       }}
       layout="alt"
+      padding="md"
     >
       <AppShell.Header withBorder={false}>
         <Group h={"100%"} px={"sm"}>
-          <Burger
-            opened={mobileOpened}
-            onClick={toggleMobile}
-            hiddenFrom="sm"
-            size="sm"
-          />
-          <Burger
-            opened={desktopOpened}
-            onClick={toggleDesktop}
-            visibleFrom="sm"
-            size="sm"
-          />
+          <Burger opened={mobileOpened} onClick={toggleMobile} hiddenFrom="sm" size="sm" />
+          <Burger opened={desktopOpened} onClick={toggleDesktop} visibleFrom="sm" size="sm" />
         </Group>
       </AppShell.Header>
-      <AppShell.Main
-        styles={{
-          main: { background: "oklch(0.985 0.002 247.839)", overflowY: "auto" },
-        }}
-        h={"calc(100vh - 50px)"}
-      >
-        <PageContainer>{children}</PageContainer>
-      </AppShell.Main>
+
       <AppShell.Navbar p="md" withBorder={false} zIndex={199}>
         <AppShell.Section>
           <Group justify="space-between">
             <Group>
-              <Burger
-                opened={mobileOpened}
-                onClick={toggleMobile}
-                hiddenFrom="sm"
-                size="sm"
-              />
-              <Image
-                onClick={clickLogo}
-                component={NextImage}
-                src={myImage}
-                alt="My image"
-                fit="contain"
-                h={20}
-                w={80}
-                style={{ cursor: "pointer" }}
-              />
+              <Burger opened={mobileOpened} onClick={toggleMobile} hiddenFrom="sm" size="sm" />
+              <Image onClick={clickLogo} component={NextImage} src={myImage} alt="My image" fit="contain" h={20} w={80} style={{ cursor: "pointer" }} />
             </Group>
 
             <LogoutButton />
@@ -109,6 +75,19 @@ export default function ContentLayout({
           <MemoizedNavMenu />
         </AppShell.Section>
       </AppShell.Navbar>
+      <AppShell.Main
+        styles={{
+          main: { background: "oklch(0.985 0.002 247.839)", overflowY: "auto" },
+        }}
+        // h={"calc(100vh - 50px)"}
+      >
+        {children}
+      </AppShell.Main>
+      <AppShell.Footer p="xs" withBorder={false}>
+        <Group align="center" h={"100%"} justify="center">
+          <Text fz={"xs"}>© {dayjs().year()} ACG</Text>
+        </Group>
+      </AppShell.Footer>
     </AppShell>
   );
 }
