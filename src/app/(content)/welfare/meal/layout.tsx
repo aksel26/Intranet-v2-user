@@ -1,18 +1,12 @@
+import Calendar from "@/components/content/meal/Calendar";
 import { createServerApiClient } from "@/lib/axios/server-api";
 import { getQueryClient } from "@/lib/query-client/get-query-client";
-import {
-  dehydrate,
-  HydrationBoundary,
-  queryOptions,
-} from "@tanstack/react-query";
+import { Grid, GridCol } from "@mantine/core";
+import { dehydrate, HydrationBoundary, queryOptions } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import React from "react";
 
-export default async function layout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default async function layout({ children }: { children: React.ReactNode }) {
   const queryClient = getQueryClient();
   const apiClient = await createServerApiClient();
 
@@ -34,7 +28,12 @@ export default async function layout({
   await queryClient.prefetchQuery(prefetchOption);
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      {children}
+      <Grid>
+        <GridCol span={{ base: 12, md: 8 }}>{children}</GridCol>
+        <GridCol span={{ base: 12, md: 4 }}>
+          <Calendar />
+        </GridCol>
+      </Grid>
     </HydrationBoundary>
   );
 }
