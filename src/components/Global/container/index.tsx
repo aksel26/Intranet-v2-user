@@ -3,14 +3,7 @@ import React from "react";
 
 const PageContainer = ({ children }: { children: React.ReactNode }) => {
   return (
-    <Container
-      fluid
-      p={"lg"}
-      pt={60}
-      style={{
-        scrollPaddingBottom: "52px",
-      }}
-    >
+    <Container fluid pt={50}>
       {children}
     </Container>
   );

@@ -10,7 +10,7 @@ import { Grid, GridCol, Stack } from "@mantine/core";
 
 function page() {
   return (
-    <PageContainer>
+    <>
       <GreetingMessage />
       <Grid>
         <GridCol span={{ base: 12, md: 6 }}>
@@ -25,7 +25,7 @@ function page() {
           </Stack>
         </GridCol>
       </Grid>
-    </PageContainer>
+    </>
   );
 }
 
