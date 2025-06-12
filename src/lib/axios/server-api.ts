@@ -19,6 +19,16 @@ export async function createServerApiClient() {
     },
   });
 
+  serverApiClient.interceptors.request.use(
+    async (config) => {
+      if (session?.accessToken) {
+        config.headers["Authorization"] = `Bearer ${session.accessToken}`;
+      }
+      return config;
+    },
+    (error) => Promise.reject(error)
+  );
+
   // 서버 사이드 응답 인터셉터
   serverApiClient.interceptors.response.use(
     (response) => response,
