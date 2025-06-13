@@ -9,7 +9,7 @@ const LogoutButton = () => {
 
   return (
     <>
-      <Button size="xs" variant="light" onClick={handleLogoutConfirm}>
+      <Button size="xs" variant="light" onClick={handleLogoutConfirm} fullWidth>
         로그아웃
       </Button>
       <ConfirmModal opened={opened} close={close} />

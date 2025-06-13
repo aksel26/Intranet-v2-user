@@ -9,15 +9,17 @@ export default async function layout({ children }: { children: React.ReactNode }
   const queryClient = getQueryClient();
   const apiClient = await createServerApiClient();
   const params = {
-    year: dayjs().year().toString(),
-    month: (dayjs().month() + 1).toString(),
+    pageNo: 1,
+    perPage: 31,
+    sDate: dayjs().startOf("month").format("YYYY-MM-DD"),
+    eDate: dayjs().endOf("month").format("YYYY-MM-DD"),
   };
 
   const prefetchOption = queryOptions({
-    queryKey: ["approvals", params],
+    queryKey: ["attendanceAll", params],
     queryFn: async () => {
       const res = await apiClient
-        .get(`/users/intranet/approval`, {
+        .get(`/users/intranet/commute`, {
           params: params,
           withCredentials: true,
         })
@@ -31,14 +33,11 @@ export default async function layout({ children }: { children: React.ReactNode }
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <Stack gap={1}>
-        <Text size="lg" fw={600} component="a">
-          결재 및 승인{" "}
-          <Text component="span" fz={"sm"} c={"dimmed"} ml={"sm"}>
-            {/* {approvalsList?.length}건 */}
-          </Text>
+        <Text size="lg" fw={600}>
+          출퇴근 관리
         </Text>
         <Text component="span" c={"gray.6"} fz={"sm"}>
-          결재 및 승인 요청 내역이 보여지며, 참조 내역도 확인할 수 있습니다.
+          나의 출퇴근 내역을 조회합니다.
         </Text>
       </Stack>
       {children}

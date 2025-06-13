@@ -58,68 +58,9 @@ const SMS = () => {
                 </Group>
               </Group>
               <Text fw={500} fz={"sm"}>
-                총 5명
+                총 00명
               </Text>
-              <Paper withBorder p="sm">
-                <ScrollArea h={150}>
-                  <Stack gap={2}>
-                    <Group>
-                      <Text fz={"xs"}>1. 010-2121-1212</Text>
-                      <ActionIcon variant="subtle">
-                        <IconX size={14} strokeWidth={1.4} color="gray" />
-                      </ActionIcon>
-                    </Group>
-                    <Group>
-                      <Text fz={"xs"}>2. 010-2121-1212</Text>
-                      <ActionIcon variant="subtle">
-                        <IconX size={14} strokeWidth={1.4} color="gray" />
-                      </ActionIcon>
-                    </Group>
-                    <Group>
-                      <Text fz={"xs"}>3. 010-2121-1212</Text>
-                      <ActionIcon variant="subtle">
-                        <IconX size={14} strokeWidth={1.4} color="gray" />
-                      </ActionIcon>
-                    </Group>
-                    <Group>
-                      <Text fz={"xs"}>4. 010-2121-1212</Text>
-                      <ActionIcon variant="subtle">
-                        <IconX size={14} strokeWidth={1.4} color="gray" />
-                      </ActionIcon>
-                    </Group>
-                    <Group>
-                      <Text fz={"xs"}>5. 010-2121-1212</Text>
-                      <ActionIcon variant="subtle">
-                        <IconX size={14} strokeWidth={1.4} color="gray" />
-                      </ActionIcon>
-                    </Group>
-                    <Group>
-                      <Text fz={"xs"}>6. 010-2121-1212</Text>
-                      <ActionIcon variant="subtle">
-                        <IconX size={14} strokeWidth={1.4} color="gray" />
-                      </ActionIcon>
-                    </Group>
-                    <Group>
-                      <Text fz={"xs"}>6. 010-2121-1212</Text>
-                      <ActionIcon variant="subtle">
-                        <IconX size={14} strokeWidth={1.4} color="gray" />
-                      </ActionIcon>
-                    </Group>
-                    <Group>
-                      <Text fz={"xs"}>6. 010-2121-1212</Text>
-                      <ActionIcon variant="subtle">
-                        <IconX size={14} strokeWidth={1.4} color="gray" />
-                      </ActionIcon>
-                    </Group>
-                    <Group>
-                      <Text fz={"xs"}>6. 010-2121-1212</Text>
-                      <ActionIcon variant="subtle">
-                        <IconX size={14} strokeWidth={1.4} color="gray" />
-                      </ActionIcon>
-                    </Group>
-                  </Stack>
-                </ScrollArea>
-              </Paper>
+              <Textarea placeholder="010-0000-0000" autosize minRows={5} maxRows={5} />
               <Button fullWidth mt={"md"}>
                 전송
               </Button>

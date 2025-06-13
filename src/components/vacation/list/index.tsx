@@ -1,17 +1,18 @@
 import { getMyVacations } from "@/app/api/get/getApi";
 import ConfirmStatus from "@/components/Attendance/ConfirmStatus";
-import EmptyView from "@/components/Global/view/EmptyView";
-import { ErrorView } from "@/components/Global/view/ErrorView";
-import LoadingView from "@/components/Global/view/LoadingView";
 import MonthFilter from "@/components/ui/monthFilter";
 import { isDateBeforeToday } from "@/utils/date/isBeforeToday";
 import { Button, Divider, Grid, Group, Paper, Stack, Text } from "@mantine/core";
-import { useQuery } from "@tanstack/react-query";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
 
 const VacationList = ({ params, setParams, openAttachmentModal, openVacationModal }: any) => {
-  const { data, isLoading, isError } = useQuery({ queryKey: ["vacationAll", params], queryFn: () => getMyVacations(params) });
-  const vacations = data?.data.data;
+  const { data } = useSuspenseQuery({
+    queryKey: ["vacationAll", params],
+    queryFn: () => getMyVacations(params).then((res) => res.data),
+  });
+
+  const vacations = data?.data;
 
   const ListWrapper = () => {
     return (
@@ -167,14 +168,8 @@ const VacationList = ({ params, setParams, openAttachmentModal, openVacationModa
       </Stack>
     );
   };
-  const renderContent = () => {
-    if (isLoading) return <LoadingView />;
-    if (isError) return <ErrorView>휴가정보를 불러오는 중 문제가 발생하였습니다.</ErrorView>;
-    if (vacations?.length === 0) return <EmptyView />;
-    return <ListWrapper />;
-  };
 
-  return <>{renderContent()}</>;
+  return <ListWrapper />;
 };
 
 export default VacationList;

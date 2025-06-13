@@ -1,9 +1,8 @@
 "use client";
 import ApprovalList from "@/components/Approval/list";
 import SearchApprovals from "@/components/Approval/search";
-import PageContainer from "@/components/Global/container";
 import { TApproval } from "@/types/apiTypes";
-import { Paper, Stack, Text } from "@mantine/core";
+import { Paper } from "@mantine/core";
 import dayjs from "dayjs";
 import { Suspense, useState } from "react";
 import Loading from "./loading";

@@ -21,7 +21,7 @@ const MemoizedUserInfoCard = memo(UserInfoCard);
 const MemoizedNavMenu = memo(NavMenu);
 
 export default function ContentLayout({ children }: { children: React.ReactNode }) {
-  const pinned = useHeadroom({ fixedAt: 60 });
+  const pinned = useHeadroom({ fixedAt: 50 });
   // const [mobileOpened, { toggle: toggleMobile }] = useDisclosure();
   const [desktopOpened, { toggle: toggleDesktop }] = useDisclosure(true);
 
@@ -35,46 +35,46 @@ export default function ContentLayout({ children }: { children: React.ReactNode 
     router.push("/main");
   };
 
+  const [opened, { toggle }] = useDisclosure();
+
   return (
-    <AppShell
-      header={{
-        height: 50,
-        collapsed: !pinned,
-        // offset: false,
-      }}
-      footer={{ height: 40 }}
-      navbar={{
-        width: 300,
-        breakpoint: "sm",
-        collapsed: { mobile: !mobileOpened, desktop: !desktopOpened },
-      }}
-      layout="alt"
-      padding="md"
-    >
+    <AppShell header={{ height: 60 }} footer={{ height: 40 }} navbar={{ width: 300, breakpoint: "sm", collapsed: { mobile: !opened } }} padding="md">
       <AppShell.Header withBorder={false}>
-        <Group h={"100%"} px={"sm"}>
+        <Group h="100%" px="md">
+          <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
+          <Image onClick={clickLogo} component={NextImage} src={myImage} alt="My image" fit="contain" h={20} w={80} style={{ cursor: "pointer" }} />
+        </Group>
+        {/* <Group h={"100%"} px={"sm"}>
           <Burger opened={mobileOpened} onClick={toggleMobile} hiddenFrom="sm" size="sm" />
           <Burger opened={desktopOpened} onClick={toggleDesktop} visibleFrom="sm" size="sm" />
-        </Group>
+        </Group> */}
       </AppShell.Header>
 
-      <AppShell.Navbar p="md" withBorder={false} zIndex={199}>
+      <AppShell.Navbar p="md">
         <AppShell.Section>
-          <Group justify="space-between">
-            <Group>
-              <Burger opened={mobileOpened} onClick={toggleMobile} hiddenFrom="sm" size="sm" />
-              <Image onClick={clickLogo} component={NextImage} src={myImage} alt="My image" fit="contain" h={20} w={80} style={{ cursor: "pointer" }} />
-            </Group>
-
-            <LogoutButton />
-          </Group>
-        </AppShell.Section>
-        <AppShell.Section grow my="md" component={ScrollArea}>
           <MemoizedUserInfoCard />
           <AttendanceInfo />
+        </AppShell.Section>
+        <AppShell.Section grow my="md" component={ScrollArea}>
           <MemoizedNavMenu />
         </AppShell.Section>
+        <AppShell.Section>
+          <LogoutButton />
+        </AppShell.Section>
       </AppShell.Navbar>
+
+      {/* <AppShell.Navbar p="md" zIndex={199}>
+        <AppShell.Section>
+          <MemoizedUserInfoCard />
+          <AttendanceInfo />
+        </AppShell.Section>
+        <AppShell.Section grow my="md" component={ScrollArea}>
+          <MemoizedNavMenu />
+        </AppShell.Section>
+        <AppShell.Section>
+          <LogoutButton />
+        </AppShell.Section>
+      </AppShell.Navbar> */}
       <AppShell.Main
         styles={{
           main: { background: "oklch(0.985 0.002 247.839)", overflowY: "auto" },
