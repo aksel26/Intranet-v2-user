@@ -5,8 +5,9 @@ import NoticeBirth from "@/components/Dashboard/noticeBirth";
 import VacationCard from "@/components/Dashboard/vacation";
 import WelfareButtons from "@/components/Dashboard/welfareButtons";
 import WorkHourStats from "@/components/Dashboard/workHourStats";
-import PageContainer from "@/components/Global/container";
 import { Grid, GridCol, Stack } from "@mantine/core";
+import { Suspense } from "react";
+import Loading from "./loading";
 
 function page() {
   return (
@@ -14,14 +15,22 @@ function page() {
       <GreetingMessage />
       <Grid>
         <GridCol span={{ base: 12, md: 6 }}>
-          <CalendarAttendance />
+          <Suspense fallback={<Loading />}>
+            <CalendarAttendance />
+          </Suspense>
         </GridCol>
         <GridCol span={{ base: 12, md: 6 }}>
           <Stack>
             <WelfareButtons />
-            <NoticeBirth />
-            <VacationCard />
-            <WorkHourStats />
+            <Suspense fallback={<Loading />}>
+              <NoticeBirth />
+            </Suspense>
+            <Suspense fallback={<Loading />}>
+              <VacationCard />
+            </Suspense>
+            <Suspense fallback={<Loading />}>
+              <WorkHourStats />
+            </Suspense>
           </Stack>
         </GridCol>
       </Grid>

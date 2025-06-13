@@ -1,5 +1,5 @@
 "use client";
-import { useQuery } from "@tanstack/react-query";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import React, { useEffect, useState } from "react";
 import * as api from "@/app/api/get/getApi";
 
@@ -11,7 +11,10 @@ interface TNotices {
 }
 function useGetNotices({ params }: TNotices) {
   const [notices, setNotices] = useState([]);
-  const { data, isLoading, isError } = useQuery({ queryKey: ["notices", params], queryFn: () => api.getNotices(params) });
+  const { data, isLoading, isError } = useSuspenseQuery({
+    queryKey: ["notices", params],
+    queryFn: () => api.getNotices(params).then((res) => res.data),
+  });
 
   useEffect(() => {
     setNotices(data?.data.result);
