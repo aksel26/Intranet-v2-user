@@ -1,7 +1,15 @@
 "use client";
-import { AppShell, Burger, Group, Image, ScrollArea, Text } from "@mantine/core";
+import {
+  AppShell,
+  Box,
+  Burger,
+  Group,
+  Image,
+  ScrollArea,
+  Text,
+} from "@mantine/core";
 // import Image from "next/image";
-import { useDisclosure, useHeadroom } from "@mantine/hooks";
+import { useDisclosure, useHeadroom, useViewportSize } from "@mantine/hooks";
 import NextImage from "next/image";
 import { useRouter } from "next/navigation";
 import React, { memo } from "react";
@@ -20,7 +28,11 @@ dayjs.locale("ko");
 const MemoizedUserInfoCard = memo(UserInfoCard);
 const MemoizedNavMenu = memo(NavMenu);
 
-export default function ContentLayout({ children }: { children: React.ReactNode }) {
+export default function ContentLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const pinned = useHeadroom({ fixedAt: 50 });
   // const [mobileOpened, { toggle: toggleMobile }] = useDisclosure();
   const [desktopOpened, { toggle: toggleDesktop }] = useDisclosure(true);
@@ -38,11 +50,25 @@ export default function ContentLayout({ children }: { children: React.ReactNode 
   const [opened, { toggle }] = useDisclosure();
 
   return (
-    <AppShell header={{ height: 60 }} footer={{ height: 40 }} navbar={{ width: 300, breakpoint: "sm", collapsed: { mobile: !opened } }} padding="md">
+    <AppShell
+      header={{ height: 60 }}
+      footer={{ height: 40 }}
+      navbar={{ width: 300, breakpoint: "sm", collapsed: { mobile: !opened } }}
+      padding="md"
+    >
       <AppShell.Header withBorder={false}>
         <Group h="100%" px="md">
           <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
-          <Image onClick={clickLogo} component={NextImage} src={myImage} alt="My image" fit="contain" h={20} w={80} style={{ cursor: "pointer" }} />
+          <Image
+            onClick={clickLogo}
+            component={NextImage}
+            src={myImage}
+            alt="My image"
+            fit="contain"
+            h={20}
+            w={80}
+            style={{ cursor: "pointer" }}
+          />
         </Group>
         {/* <Group h={"100%"} px={"sm"}>
           <Burger opened={mobileOpened} onClick={toggleMobile} hiddenFrom="sm" size="sm" />
@@ -50,7 +76,7 @@ export default function ContentLayout({ children }: { children: React.ReactNode 
         </Group> */}
       </AppShell.Header>
 
-      <AppShell.Navbar p="md">
+      <AppShell.Navbar p="md" withBorder={false}>
         <AppShell.Section>
           <MemoizedUserInfoCard />
           <AttendanceInfo />
@@ -63,25 +89,14 @@ export default function ContentLayout({ children }: { children: React.ReactNode 
         </AppShell.Section>
       </AppShell.Navbar>
 
-      {/* <AppShell.Navbar p="md" zIndex={199}>
-        <AppShell.Section>
-          <MemoizedUserInfoCard />
-          <AttendanceInfo />
-        </AppShell.Section>
-        <AppShell.Section grow my="md" component={ScrollArea}>
-          <MemoizedNavMenu />
-        </AppShell.Section>
-        <AppShell.Section>
-          <LogoutButton />
-        </AppShell.Section>
-      </AppShell.Navbar> */}
-      <AppShell.Main
-        styles={{
-          main: { background: "oklch(0.985 0.002 247.839)", overflowY: "auto" },
-        }}
-        // h={"calc(100vh - 50px)"}
-      >
-        {children}
+      <AppShell.Main bg={"oklch(0.985 0.002 247.839)"}>
+        <Box
+          style={{
+            minHeight: "100vh",
+          }}
+        >
+          {children}
+        </Box>
       </AppShell.Main>
       <AppShell.Footer p="xs" withBorder={false}>
         <Group align="center" h={"100%"} justify="center">
