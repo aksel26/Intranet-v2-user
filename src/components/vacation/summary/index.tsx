@@ -19,17 +19,30 @@ const VacationSummary = ({ params }: { params: TYearMonth }) => {
       <Text fz={"sm"} fw={500} c={"gray"}>
         휴가정보
       </Text>
-      <Paper bg={"white"} px="lg" py="md" h={"100%"} radius={"lg"} pos={"relative"}>
+      <Paper
+        bg={"white"}
+        px="lg"
+        py="md"
+        h={"100%"}
+        radius={"lg"}
+        pos={"relative"}
+      >
         <Grid align="stretch" gutter="lg">
           <Grid.Col span={{ base: 12, md: 6 }}>
-            <Group gap={"xl"} justify="space-around" align="end" maw={350} mx={"auto"}>
+            <Group
+              gap={"xl"}
+              justify="space-around"
+              align="end"
+              maw={350}
+              mx={"auto"}
+            >
               <Stack gap={4}>
                 <Text c={"dimmed"} fz={"xs"}>
                   총 연차 개수
                 </Text>
                 <Text fz={"sm"} ta={"center"}>
                   <Text fw={500} component="span" fz={"md"}>
-                    {leaveSummary.totalReceivedAnnualLeave}
+                    {leaveSummary?.totalReceivedAnnualLeave}
                   </Text>
                   일
                 </Text>
@@ -40,7 +53,7 @@ const VacationSummary = ({ params }: { params: TYearMonth }) => {
                 </Text>
                 <Text fz={"sm"} ta={"center"}>
                   <Text fw={500} component="span" fz={"md"}>
-                    {leaveSummary.totalAnnualLeaveUsage}
+                    {leaveSummary?.totalAnnualLeaveUsage}
                   </Text>
                   일
                 </Text>
@@ -51,7 +64,7 @@ const VacationSummary = ({ params }: { params: TYearMonth }) => {
                 </Text>
                 <Text fz={"sm"} ta={"center"}>
                   <Text fw={500} component="span" fz={"md"}>
-                    {leaveSummary.totalAnnualLeaveBalance}
+                    {leaveSummary?.totalAnnualLeaveBalance}
                   </Text>
                   일
                 </Text>
