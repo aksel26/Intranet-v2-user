@@ -27,6 +27,23 @@ const myFont = localFont({
   display: "swap",
 });
 
+export const metadata = {
+  title: "ACG 인트라넷",
+  description: "ACG 인트라넷",
+  viewport: {
+    width: "device-width",
+    initialScale: 1,
+    maximumScale: 1,
+    userScalable: false,
+  },
+  other: {
+    "apple-mobile-web-app-capable": "yes",
+    "apple-mobile-web-app-status-bar-style": "default",
+    "mobile-web-app-capable": "yes",
+    "format-detection": "telephone=no",
+  },
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -36,7 +53,10 @@ export default function RootLayout({
     <html lang="ko">
       <head>
         <title>하이</title>
-        <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width" />
+        <meta
+          name="viewport"
+          content="minimum-scale=1, initial-scale=1, width=device-width"
+        />
         <ColorSchemeScript />
       </head>
       <body style={{ height: "100vh" }} className={myFont.className}>
