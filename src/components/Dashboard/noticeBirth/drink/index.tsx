@@ -8,7 +8,7 @@ import { myInfoStore } from "@/lib/store/myInfoStore";
 import { Box, Button, Divider, Group, Select, Text } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { IconChevronRight } from "@tabler/icons-react";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import Details from "./details";
 
@@ -17,15 +17,18 @@ const MonthlyDrink = () => {
   const queryClient = useQueryClient();
   const { dateValue } = mainDateStore();
   const [opened, { open, close }] = useDisclosure(false);
-  const { data, isLoading, isError } = useQuery({
+  const { data, isLoading, isError } = useSuspenseQuery({
     queryKey: ["monthlyDrink", { month: dayjs(dateValue).month() + 1 }],
-    queryFn: () => monthlyDrink({ month: (dayjs(dateValue).month() + 1).toString() }),
+    queryFn: () =>
+      monthlyDrink({ month: (dayjs(dateValue).month() + 1).toString() }).then(
+        (res) => res.data
+      ),
   });
   const { mutate } = useUpdateDrink();
 
-  const config = data?.data.data.config;
-  const myBaverage = data?.data.data.myBaverage;
-  const details = data?.data.data.details;
+  const config = data?.data.config;
+  const myBaverage = data?.data.myBaverage;
+  const details = data?.data.details;
 
   const updateDrink = (value: any) => {
     if (!myInfo) return;
@@ -114,12 +117,22 @@ const MonthlyDrink = () => {
             )}
           </Group>
         </Group>
-        <Button size="compact-xs" variant="subtle" rightSection={<IconChevronRight size={15} strokeWidth={1.2} />} onClick={open}>
+        <Button
+          size="compact-xs"
+          variant="subtle"
+          rightSection={<IconChevronRight size={15} strokeWidth={1.2} />}
+          onClick={open}
+        >
           전체보기
         </Button>
       </Group>
 
-      <Details opened={opened} close={close} details={details} configId={config.configId} />
+      <Details
+        opened={opened}
+        close={close}
+        details={details}
+        configId={config.configId}
+      />
     </Box>
   );
 };

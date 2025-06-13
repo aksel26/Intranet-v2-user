@@ -2,7 +2,7 @@ import * as api from "@/app/api/get/getApi";
 import { ErrorView } from "@/components/Global/view/ErrorView";
 import LoadingView from "@/components/Global/view/LoadingView";
 import { Divider, Group, Stack, Text } from "@mantine/core";
-import { useQuery } from "@tanstack/react-query";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import React from "react";
 
@@ -14,7 +14,13 @@ const Label = ({ label }: { label: string }) => {
   );
 };
 
-const Result = ({ value, suffix = "건" }: { value: number; suffix?: string }) => {
+const Result = ({
+  value,
+  suffix = "건",
+}: {
+  value: number;
+  suffix?: string;
+}) => {
   return (
     <Text fz={"sm"} ta={"center"}>
       <Text fw={500} component="span" fz={"md"} mr={2}>
@@ -34,16 +40,22 @@ const SUMMARY_LABEL = [
 
 const VacationSummary = () => {
   const currentYear = dayjs().year();
-  const { data, isLoading, isError } = useQuery({
+  const { data, isLoading, isError } = useSuspenseQuery({
     queryKey: ["vacationSummary", { year: currentYear }],
-    queryFn: () => api.getAttendanceSummary({ year: currentYear }),
+    queryFn: () =>
+      api.getAttendanceSummary({ year: currentYear }).then((res) => res.data),
   });
 
-  const summary = data?.data.data.leaveSummary;
+  const summary = data?.data.leaveSummary || {};
 
   const renderContent = () => {
     if (isLoading) return <LoadingView />;
-    if (isError) return <ErrorView>휴가요약 정보를 불러오는 중 문제가 발생하였습니다.</ErrorView>;
+    if (isError)
+      return (
+        <ErrorView>
+          휴가요약 정보를 불러오는 중 문제가 발생하였습니다.
+        </ErrorView>
+      );
     return (
       <Group gap={"sm"} justify="space-evenly">
         {SUMMARY_LABEL.map((item, index, arr) => (
@@ -52,7 +64,9 @@ const VacationSummary = () => {
               <Label label={item.label} />
               <Result value={summary[item.value]} />
             </Stack>
-            {arr.length === index + 1 ? null : <Divider orientation="vertical" size={0.5} />}
+            {arr.length === index + 1 ? null : (
+              <Divider orientation="vertical" size={0.5} />
+            )}
           </React.Fragment>
         ))}
       </Group>
