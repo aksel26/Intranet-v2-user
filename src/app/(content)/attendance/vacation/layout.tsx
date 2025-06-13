@@ -1,18 +1,23 @@
 import { createServerApiClient } from "@/lib/axios/server-api";
 import { getQueryClient } from "@/lib/query-client/get-query-client";
 import { Stack, Text } from "@mantine/core";
-import { dehydrate, HydrationBoundary, queryOptions } from "@tanstack/react-query";
+import {
+  dehydrate,
+  HydrationBoundary,
+  queryOptions,
+} from "@tanstack/react-query";
 import dayjs from "dayjs";
 import React from "react";
 
-export default async function layout({ children }: { children: React.ReactNode }) {
+export default async function layout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const queryClient = getQueryClient();
   const apiClient = await createServerApiClient();
   const params = {
-    pageNo: 1,
-    perPage: 31,
-    sDate: dayjs().startOf("month").format("YYYY-MM-DD"),
-    eDate: dayjs().endOf("month").format("YYYY-MM-DD"),
+    year: dayjs().year(),
   };
 
   // vacationSummary 쿼리 옵션
@@ -46,7 +51,10 @@ export default async function layout({ children }: { children: React.ReactNode }
   });
 
   // 두 쿼리를 병렬로 실행
-  await Promise.all([queryClient.prefetchQuery(vacationSummaryOption), queryClient.prefetchQuery(vacationAllOption)]);
+  await Promise.all([
+    queryClient.prefetchQuery(vacationSummaryOption),
+    queryClient.prefetchQuery(vacationAllOption),
+  ]);
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
