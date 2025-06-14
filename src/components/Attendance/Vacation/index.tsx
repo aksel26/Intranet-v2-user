@@ -17,7 +17,7 @@ import {
 } from "@mantine/core";
 import { DatePicker } from "@mantine/dates";
 import { useDisclosure } from "@mantine/hooks";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useSuspenseQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import notification from "../../GNB/Notification";
@@ -54,12 +54,13 @@ function Vacation({ opened, close }: any) {
     data: vacationSummary,
     isLoading: isLoading_vacationSummary,
     isError: isError_vacationSummary,
-  } = useQuery({
+  } = useSuspenseQuery({
     queryKey: ["vacationSummary", { year: params.year }],
-    queryFn: () => api.getVacationSummary({ year: params.year }),
-    enabled: !!opened,
+    queryFn: () =>
+      api.getVacationSummary({ year: params.year }).then((res) => res.data),
   });
-  const leaveUsageStats = vacationSummary?.data.data.leaveUsageStats || {};
+
+  const leaveUsageStats = vacationSummary?.data.leaveUsageStats || {};
 
   const commuteData = vacations?.data.data;
 

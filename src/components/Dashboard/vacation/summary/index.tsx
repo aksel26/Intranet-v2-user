@@ -39,11 +39,11 @@ const SUMMARY_LABEL = [
 ];
 
 const VacationSummary = () => {
-  const currentYear = dayjs().year();
+  const currentYear = dayjs().year().toString();
   const { data, isLoading, isError } = useSuspenseQuery({
     queryKey: ["vacationSummary", { year: currentYear }],
     queryFn: () =>
-      api.getAttendanceSummary({ year: currentYear }).then((res) => res.data),
+      api.getVacationSummary({ year: currentYear }).then((res) => res.data),
   });
 
   const summary = data?.data.leaveSummary || {};
