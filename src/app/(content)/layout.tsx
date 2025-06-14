@@ -49,7 +49,7 @@ export default function ContentLayout({
 
   return (
     <AppShell
-      header={{ height: 60 }}
+      header={{ height: 50 }}
       footer={{ height: 40 }}
       navbar={{
         width: 300,
@@ -59,7 +59,7 @@ export default function ContentLayout({
       padding="md"
     >
       <AppShell.Header withBorder={false}>
-        <Group h="100%" px="md">
+        <Group h={"100%"} px="md">
           <Burger
             opened={mobileOpened}
             onClick={toggleMobile}
@@ -96,10 +96,15 @@ export default function ContentLayout({
         </AppShell.Section>
       </AppShell.Navbar>
 
-      <AppShell.Main bg={"oklch(0.985 0.002 247.839)"}>
+      <AppShell.Main
+        h={"100dvh"}
+        // style={{
+        //   height: "100dvh", // 동적 뷰포트 높이
+        // }}
+      >
         <Box
           style={{
-            minHeight: "100vh",
+            paddingBottom: 50,
           }}
         >
           {children}

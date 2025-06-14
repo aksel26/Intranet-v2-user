@@ -61,7 +61,7 @@ export default function RootLayout({
         />
         <ColorSchemeScript />
       </head>
-      <body style={{ height: "100vh" }} className={myFont.className}>
+      <body className={myFont.className}>
         <Providers>
           {/* <StoreProvider> */}
           <GlobalContainer>{children}</GlobalContainer>
