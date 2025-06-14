@@ -8,7 +8,7 @@
 } */
 
 /* app/globals.css */
-@import "@mantine/core/styles.css";
+/* @import "@mantine/core/styles.css"; */
 
 /* 기본 스타일 초기화 */
 * {
@@ -25,39 +25,10 @@ body {
 }
 
 /* iOS Safari 뷰포트 이슈 해결 */
-html {
-  height: 100%;
-  height: -webkit-fill-available;
-}
-
-body {
-  min-height: 100vh;
-  min-height: -webkit-fill-available;
-  /* font-family: var(--mantine-font-family); */
-}
 
 /* AppShell 모바일 최적화 */
-.mantine-AppShell-root {
-  min-height: 100vh;
-  min-height: -webkit-fill-available;
-}
-
-/* 모바일 네비게이션 최적화 */
-.mantine-AppShell-navbar {
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-}
 
 /* 터치 피드백 제거 */
-.mantine-Button-root,
-.mantine-ActionIcon-root,
-.mantine-NavLink-root,
-.mantine-Burger-root {
-  -webkit-tap-highlight-color: transparent;
-  touch-action: manipulation;
-}
 
 /* 모바일 반응형 */
 @media (max-width: 768px) {
@@ -65,9 +36,9 @@ body {
     z-index: 300;
   }
 
-  .mantine-AppShell-main {
-    /* padding: 0.75rem; */
-  }
+  /* .mantine-AppShell-main { */
+  /* padding: 0.75rem; */
+  /* } */
 
   /* 모바일에서 컨테이너 패딩 조정 */
   /* .mantine-Container-root {
@@ -77,19 +48,19 @@ body {
 }
 
 /* 스크롤바 숨김 */
-.mantine-ScrollArea-scrollbar {
+/* .mantine-ScrollArea-scrollbar {
   display: none;
-}
+} */
 
-@media (hover: hover) {
-  .mantine-ScrollArea-scrollbar {
+/* @media (hover: hover) { */
+/* .mantine-ScrollArea-scrollbar {
     display: block;
   }
-}
+} */
 
 /* PWA 스타일 */
-@media (display-mode: standalone) {
+/* @media (display-mode: standalone) {
   .mantine-AppShell-header {
     padding-top: env(safe-area-inset-top);
   }
-}
+} */
