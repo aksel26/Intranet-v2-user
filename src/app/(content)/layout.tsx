@@ -53,12 +53,21 @@ export default function ContentLayout({
     <AppShell
       header={{ height: 60 }}
       footer={{ height: 40 }}
-      navbar={{ width: 300, breakpoint: "sm", collapsed: { mobile: !opened } }}
+      navbar={{
+        width: 300,
+        breakpoint: "sm",
+        collapsed: { mobile: !mobileOpened },
+      }}
       padding="md"
     >
       <AppShell.Header withBorder={false}>
         <Group h="100%" px="md">
-          <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
+          <Burger
+            opened={mobileOpened}
+            onClick={toggleMobile}
+            hiddenFrom="sm"
+            size="sm"
+          />
           <Image
             onClick={clickLogo}
             component={NextImage}
