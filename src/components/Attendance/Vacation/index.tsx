@@ -59,7 +59,7 @@ function Vacation({ opened, close }: any) {
     queryFn: () => api.getVacationSummary({ year: params.year }),
     enabled: !!opened,
   });
-  const leaveUsageStats = vacationSummary?.data.data.leaveUsageStats;
+  const leaveUsageStats = vacationSummary?.data.data.leaveUsageStats || {};
 
   const commuteData = vacations?.data.data;
 
