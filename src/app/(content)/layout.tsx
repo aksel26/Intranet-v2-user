@@ -9,7 +9,7 @@ import {
   Text,
 } from "@mantine/core";
 // import Image from "next/image";
-import { useDisclosure, useHeadroom, useViewportSize } from "@mantine/hooks";
+import { useHeadroom } from "@mantine/hooks";
 import NextImage from "next/image";
 import { useRouter } from "next/navigation";
 import React, { memo } from "react";
@@ -35,19 +35,17 @@ export default function ContentLayout({
 }) {
   const pinned = useHeadroom({ fixedAt: 50 });
   // const [mobileOpened, { toggle: toggleMobile }] = useDisclosure();
-  const [desktopOpened, { toggle: toggleDesktop }] = useDisclosure(true);
 
   const mobileOpened = useNavStore((state) => state.mobileOpened);
   const toggleMobile = useNavStore((state) => state.toggleMobile);
+  const setMobileClose = useNavStore((state) => state.setMobileClose);
 
   const router = useRouter();
 
   const clickLogo = () => {
-    toggleMobile();
+    setMobileClose();
     router.push("/main");
   };
-
-  const [opened, { toggle }] = useDisclosure();
 
   return (
     <AppShell
