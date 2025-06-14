@@ -33,7 +33,7 @@ html {
 body {
   min-height: 100vh;
   min-height: -webkit-fill-available;
-  font-family: var(--mantine-font-family);
+  /* font-family: var(--mantine-font-family); */
 }
 
 /* AppShell 모바일 최적화 */
@@ -66,14 +66,14 @@ body {
   }
 
   .mantine-AppShell-main {
-    padding: 0.75rem;
+    /* padding: 0.75rem; */
   }
 
   /* 모바일에서 컨테이너 패딩 조정 */
-  .mantine-Container-root {
+  /* .mantine-Container-root {
     padding-left: 0.5rem;
     padding-right: 0.5rem;
-  }
+  } */
 }
 
 /* 스크롤바 숨김 */
