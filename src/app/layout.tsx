@@ -27,14 +27,16 @@ const myFont = localFont({
   display: "swap",
 });
 
-export const metadata = {
+export const metadata: Metadata = {
   title: "ACG 인트라넷",
   description: "ACG 인트라넷",
   viewport: {
     width: "device-width",
     initialScale: 1,
+    minimumScale: 1,
     maximumScale: 1,
     userScalable: false,
+    viewportFit: "cover", // iPhone X 등의 노치 대응
   },
   other: {
     "apple-mobile-web-app-capable": "yes",
