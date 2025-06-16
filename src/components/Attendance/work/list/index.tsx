@@ -14,7 +14,6 @@ const AttendanceList = ({ params }: any) => {
     queryKey: ["attendanceAll", params],
     queryFn: () => getMyAttendance(params).then((res) => res.data),
   });
-  console.log("data:", data);
   const [opened, { open, close }] = useDisclosure(false);
   const [setselectRow, setSetsetselectRow] = useState();
   const openModal = (record: any) => {

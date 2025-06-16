@@ -4,7 +4,7 @@ import { AppShell, Box, Burger, Group, Image, ScrollArea, Text } from "@mantine/
 import { useHeadroom } from "@mantine/hooks";
 import NextImage from "next/image";
 import { useRouter } from "next/navigation";
-import React, { memo } from "react";
+import React, { memo, useEffect } from "react";
 import myImage from "/public/images/ACG_LOGO_GRAY.png";
 
 import AttendanceInfo from "@/components/Navbar/attendanceInfo";
@@ -14,6 +14,7 @@ import UserInfoCard from "@/components/Navbar/userInfoCard";
 import { useNavStore } from "@/lib/store/toggleStore";
 import dayjs from "dayjs";
 import "dayjs/locale/ko";
+import { useQueryClient } from "@tanstack/react-query";
 
 dayjs.locale("ko");
 
@@ -31,6 +32,16 @@ export default function ContentLayout({ children }: { children: React.ReactNode 
     setMobileClose();
     router.push("/main");
   };
+  const queryClient = useQueryClient();
+  useEffect(() => {
+    queryClient.invalidateQueries({
+      predicate: (query) => {
+        const queryKey = query.queryKey;
+        const targetKeys = ["me", "noticeNew", "approvalNew", "vacationSummary", "notices", "workHours", "attendanceAllStaff", "vacationAll"];
+        return Array.isArray(queryKey) && targetKeys.includes(queryKey[0]);
+      },
+    });
+  }, []);
 
   return (
     <AppShell
