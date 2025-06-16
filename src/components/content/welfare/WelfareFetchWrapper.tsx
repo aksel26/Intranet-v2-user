@@ -2,12 +2,13 @@ import { getWelfares } from "@/app/api/get/getApi";
 import DurationSelect from "@/components/Global/dateSelect/DurationSelect";
 import YearSelect from "@/components/Global/dateSelect/YearSelect";
 import { groupByDate } from "@/utils/welfare/groupByDate";
-import { Group } from "@mantine/core";
+import { Group, Stack } from "@mantine/core";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { useState } from "react";
 import { TopTitleWelfare } from "./TopTitleWelfare";
 import { UsedListWelfare } from "./UsedListWelfare";
+import ScrollToTop from "@/components/Global/scrollToTop";
 
 export const WelfareFetchWrapper = () => {
   const [params, setParams] = useState({
@@ -23,7 +24,7 @@ export const WelfareFetchWrapper = () => {
   const welfareStats = data?.data.welfareStats;
 
   return (
-    <>
+    <Stack>
       <TopTitleWelfare stats={welfareStats} />
 
       <Group mt={"lg"}>
@@ -32,6 +33,7 @@ export const WelfareFetchWrapper = () => {
       </Group>
 
       <UsedListWelfare welfares={welfares} />
-    </>
+      <ScrollToTop />
+    </Stack>
   );
 };

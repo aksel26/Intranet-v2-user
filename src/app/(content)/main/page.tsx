@@ -8,6 +8,7 @@ import WorkHourStats from "@/components/Dashboard/workHourStats";
 import { Grid, GridCol, Stack } from "@mantine/core";
 import { Suspense } from "react";
 import Loading from "./loading";
+import ScrollToTop from "@/components/Global/scrollToTop";
 
 function page() {
   return (
@@ -33,6 +34,7 @@ function page() {
             </Suspense>
           </Stack>
         </GridCol>
+        <ScrollToTop />
       </Grid>
     </>
   );

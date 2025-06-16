@@ -6,6 +6,7 @@ import { Paper } from "@mantine/core";
 import dayjs from "dayjs";
 import { Suspense, useState } from "react";
 import Loading from "./loading";
+import ScrollToTop from "@/components/Global/scrollToTop";
 
 const page = () => {
   const [params, setParams] = useState<TApproval>({
@@ -19,6 +20,7 @@ const page = () => {
         <Suspense fallback={<Loading />}>
           <ApprovalList params={params} />
         </Suspense>
+        <ScrollToTop />
       </Paper>
     </>
   );

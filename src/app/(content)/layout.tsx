@@ -1,13 +1,5 @@
 "use client";
-import {
-  AppShell,
-  Box,
-  Burger,
-  Group,
-  Image,
-  ScrollArea,
-  Text,
-} from "@mantine/core";
+import { AppShell, Box, Burger, Group, Image, ScrollArea, Text } from "@mantine/core";
 // import Image from "next/image";
 import { useHeadroom } from "@mantine/hooks";
 import NextImage from "next/image";
@@ -28,11 +20,7 @@ dayjs.locale("ko");
 const MemoizedUserInfoCard = memo(UserInfoCard);
 const MemoizedNavMenu = memo(NavMenu);
 
-export default function ContentLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function ContentLayout({ children }: { children: React.ReactNode }) {
   const pinned = useHeadroom({ fixedAt: 50 });
   // const [mobileOpened, { toggle: toggleMobile }] = useDisclosure();
 
@@ -60,22 +48,8 @@ export default function ContentLayout({
     >
       <AppShell.Header withBorder={false}>
         <Group h={"100%"} px="md">
-          <Burger
-            opened={mobileOpened}
-            onClick={toggleMobile}
-            hiddenFrom="sm"
-            size="sm"
-          />
-          <Image
-            onClick={clickLogo}
-            component={NextImage}
-            src={myImage}
-            alt="My image"
-            fit="contain"
-            h={20}
-            w={80}
-            style={{ cursor: "pointer" }}
-          />
+          <Burger opened={mobileOpened} onClick={toggleMobile} hiddenFrom="sm" size="sm" />
+          <Image onClick={clickLogo} component={NextImage} src={myImage} alt="My image" fit="contain" h={20} w={80} style={{ cursor: "pointer" }} />
         </Group>
         {/* <Group h={"100%"} px={"sm"}>
           <Burger opened={mobileOpened} onClick={toggleMobile} hiddenFrom="sm" size="sm" />

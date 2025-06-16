@@ -6,6 +6,7 @@ import { Paper, Space } from "@mantine/core";
 import dayjs from "dayjs";
 import { Suspense, useState } from "react";
 import Loading from "../loading";
+import ScrollToTop from "@/components/Global/scrollToTop";
 
 function page() {
   const [params, setParams] = useState<TMyAttendance>({
@@ -23,6 +24,7 @@ function page() {
         <Suspense fallback={<Loading />}>
           <AttendanceList params={params} />
         </Suspense>
+        <ScrollToTop />
       </Paper>
     </>
   );
