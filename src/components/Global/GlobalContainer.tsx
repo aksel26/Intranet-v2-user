@@ -4,11 +4,7 @@ import { theme } from "@/lib/theme";
 import { createTheme, MantineProvider, rem } from "@mantine/core";
 import { Notifications } from "@mantine/notifications";
 import React from "react";
-export const GlobalContainer = ({
-  children,
-}: {
-  children: React.ReactNode;
-}) => {
+export const GlobalContainer = ({ children }: { children: React.ReactNode }) => {
   //   const [isLoading, setIsLoading] = useState(true);
 
   //   useEffect(() => {
@@ -21,18 +17,7 @@ export const GlobalContainer = ({
     defaultRadius: "md",
     // primaryColor: "indigo",
     colors: {
-      primary: [
-        "#e0fbff",
-        "#cff1fd",
-        "#a4dff4",
-        "#76ccec",
-        "#4fbce5",
-        "#36b2e1",
-        "#21aee1",
-        "#0498c8",
-        "#0087b4",
-        "#0075a0",
-      ],
+      primary: ["#e0fbff", "#cff1fd", "#a4dff4", "#76ccec", "#4fbce5", "#36b2e1", "#21aee1", "#0498c8", "#0087b4", "#0075a0"],
     },
     cursorType: "pointer",
 
@@ -50,6 +35,13 @@ export const GlobalContainer = ({
       Checkbox: {
         defaultProps: {
           radius: "sm", // 여기에 원하는 radius 값 설정 ('xs', 'sm', 'md', 'lg', 'xl' 또는 숫자)
+        },
+      },
+      Indicator: {
+        styles: {
+          root: {
+            zIndex: 1,
+          },
         },
       },
       DatePicker: {

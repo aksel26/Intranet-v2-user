@@ -21,9 +21,6 @@ const MemoizedUserInfoCard = memo(UserInfoCard);
 const MemoizedNavMenu = memo(NavMenu);
 
 export default function ContentLayout({ children }: { children: React.ReactNode }) {
-  const pinned = useHeadroom({ fixedAt: 50 });
-  // const [mobileOpened, { toggle: toggleMobile }] = useDisclosure();
-
   const mobileOpened = useNavStore((state) => state.mobileOpened);
   const toggleMobile = useNavStore((state) => state.toggleMobile);
   const setMobileClose = useNavStore((state) => state.setMobileClose);
@@ -51,10 +48,6 @@ export default function ContentLayout({ children }: { children: React.ReactNode 
           <Burger opened={mobileOpened} onClick={toggleMobile} hiddenFrom="sm" size="sm" />
           <Image onClick={clickLogo} component={NextImage} src={myImage} alt="My image" fit="contain" h={20} w={80} style={{ cursor: "pointer" }} />
         </Group>
-        {/* <Group h={"100%"} px={"sm"}>
-          <Burger opened={mobileOpened} onClick={toggleMobile} hiddenFrom="sm" size="sm" />
-          <Burger opened={desktopOpened} onClick={toggleDesktop} visibleFrom="sm" size="sm" />
-        </Group> */}
       </AppShell.Header>
 
       <AppShell.Navbar p="md" withBorder={false}>
@@ -71,20 +64,17 @@ export default function ContentLayout({ children }: { children: React.ReactNode 
       </AppShell.Navbar>
 
       <AppShell.Main
-        h={"100dvh"}
-        // style={{
-        //   height: "100dvh", // 동적 뷰포트 높이
-        // }}
+      // h={"100dvh"}
       >
         <Box
-          style={{
-            paddingBottom: 50,
-          }}
+        // style={{
+        //   paddingBottom: "calc(50px + var(--mantine-spacing-sm))",
+        // }}
         >
           {children}
         </Box>
       </AppShell.Main>
-      <AppShell.Footer p="xs" withBorder={false}>
+      <AppShell.Footer withBorder={false}>
         <Group align="center" h={"100%"} justify="center">
           <Text fz={"xs"}>© {dayjs().year()} ACG</Text>
         </Group>
