@@ -10,6 +10,7 @@ import VacationList from "@/components/vacation/list";
 import VacationSummary from "@/components/vacation/summary";
 import { TYearMonth } from "@/types/apiTypes";
 import dayjs from "dayjs";
+import ScrollToTop from "@/components/Global/scrollToTop";
 // import Loading from "../loading";
 
 function page() {
@@ -44,6 +45,7 @@ function page() {
 
       <CancleVacation opened={cancelVacationOpened} close={cancelVacationModalClose} details={currentVacationInfo} />
       <Attachment opened={attachmentModalOpened} close={attachmentModalClose} details={currentVacationInfo} />
+      <ScrollToTop />
       {/* <Vacation opened={opened} close={close} /> */}
     </>
   );
