@@ -1,18 +1,30 @@
 "use client";
 
 import { useCheckIn } from "@/hooks/useSubmitForm";
-import { Button, Group, Modal, Text } from "@mantine/core";
+import { Badge, Box, Button, Group, Modal, Stack, Text } from "@mantine/core";
 
 import { useQueryClient } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import notification from "../GNB/Notification";
 import { myInfoStore } from "@/lib/store/myInfoStore";
+import { TLeaveMyInfo } from "@/lib/types/myInfo";
+import { checkMorningLeave } from "@/utils/earlyCheckIn";
+import { useDisclosure } from "@mantine/hooks";
+import EarlyCheckIn from "./EarlyCheckIn";
 
 function CheckIn({ checkInModalClose, checkInTimeOpened }: any) {
   const { myInfo } = myInfoStore();
   const { mutate: checkIn } = useCheckIn();
   const queryClient = useQueryClient();
+  const [opened, { open, close }] = useDisclosure(false);
+
   const handleCheckIn = () => {
+    const result = checkMorningLeave(myInfo?.leave ?? []);
+    if (result?.shouldExecute) {
+      open();
+      return;
+    }
+
     checkIn(
       { checkInTime: dayjs().toISOString() },
       {
@@ -42,11 +54,22 @@ function CheckIn({ checkInModalClose, checkInTimeOpened }: any) {
 
   return (
     <Modal opened={checkInTimeOpened} onClose={checkInModalClose} title="출근하기" centered size={"xs"}>
-      <Text>
-        {myInfo?.userName} <Text component="span">{myInfo?.gradeName}</Text>
-        님,
-      </Text>
-      <Text>반갑습니다. 👋 </Text>
+      <Box pos={"relative"}>
+        {myInfo?.leave.length > 0 ? (
+          <Stack right={0} pos={"absolute"} top={0} gap={"xs"} align="end">
+            {myInfo?.leave.map((item: TLeaveMyInfo) => (
+              <Badge size="sm" radius={"sm"} color="lime" variant="light" key={item.leaveTypeIdx}>
+                {item.leaveType}
+              </Badge>
+            ))}
+          </Stack>
+        ) : null}
+        <Text>
+          {myInfo?.userName} <Text component="span">{myInfo?.gradeName}</Text>
+          님,
+        </Text>
+        <Text>반갑습니다. 👋 </Text>
+      </Box>
       <Text c={"dimmed"} fz={"sm"} mt={"md"}>
         아래 버튼을 눌러 출근을 완료해 주세요.
       </Text>
@@ -58,6 +81,7 @@ function CheckIn({ checkInModalClose, checkInTimeOpened }: any) {
           닫기
         </Button>
       </Group>
+      <EarlyCheckIn opened={opened} close={close} checkInModalClose={checkInModalClose} checkIn={handleCheckIn} />
     </Modal>
   );
 }
