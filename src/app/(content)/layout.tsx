@@ -1,7 +1,6 @@
 "use client";
 import { AppShell, Box, Burger, Group, Image, ScrollArea, Text } from "@mantine/core";
 // import Image from "next/image";
-import { useHeadroom } from "@mantine/hooks";
 import NextImage from "next/image";
 import { useRouter } from "next/navigation";
 import React, { memo, useEffect } from "react";
@@ -12,9 +11,9 @@ import LogoutButton from "@/components/Navbar/logout";
 import NavMenu from "@/components/Navbar/menu";
 import UserInfoCard from "@/components/Navbar/userInfoCard";
 import { useNavStore } from "@/lib/store/toggleStore";
+import { useQueryClient } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import "dayjs/locale/ko";
-import { useQueryClient } from "@tanstack/react-query";
 
 dayjs.locale("ko");
 
@@ -42,6 +41,19 @@ export default function ContentLayout({ children }: { children: React.ReactNode 
       },
     });
   }, []);
+
+  useEffect(() => {
+    if (mobileOpened) {
+      document.body.classList.add("navbar-open");
+    } else {
+      document.body.classList.remove("navbar-open");
+    }
+
+    // cleanup
+    return () => {
+      document.body.classList.remove("navbar-open");
+    };
+  }, [mobileOpened]);
 
   return (
     <AppShell
@@ -74,16 +86,8 @@ export default function ContentLayout({ children }: { children: React.ReactNode 
         </AppShell.Section>
       </AppShell.Navbar>
 
-      <AppShell.Main
-      // h={"100dvh"}
-      >
-        <Box
-        // style={{
-        //   paddingBottom: "calc(50px + var(--mantine-spacing-sm))",
-        // }}
-        >
-          {children}
-        </Box>
+      <AppShell.Main>
+        <Box pb={{ base: "calc(50px + var(--mantine-spacing-sm))", md: 0 }}>{children}</Box>
       </AppShell.Main>
       <AppShell.Footer withBorder={false}>
         <Group align="center" h={"100%"} justify="center">
