@@ -1,3 +1,5 @@
+import { Dayjs } from "dayjs";
+
 export interface TMyInfo {
   userIdx: number;
   userName: string;
@@ -15,4 +17,23 @@ export interface TMyInfo {
   attendance: any;
   workingMinutes: any;
   leaveTypeIdx: any;
+  availCheckOutTime: string | null;
+  leave: TLeaveMyInfo[];
+}
+
+export interface TLeaveMyInfo {
+  commuteIdx: number;
+  leaveTypeIdx: number;
+  leaveType: string;
+  confirmYN: string;
+}
+
+export interface EarlyCheckResult {
+  leaveType: string;
+  targetTime: Date;
+  targetTimeRaw: Dayjs;
+  currentTime: string;
+  isBeforeTargetTime: boolean;
+  shouldExecute: boolean;
+  timeUntilTarget: number;
 }
