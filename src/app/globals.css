@@ -17,7 +17,18 @@ body {
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch; /* iOS 부드러운 스크롤 */
   background-color: oklch(0.985 0.002 247.839);
+  overscroll-behavior: none;
 }
+
+.navbar-open {
+  overflow: hidden;
+  height: 100dvh;
+}
+
+/* body {
+  min-height: 100svh;
+  max-height: 100lvh;
+} */
 
 /* iOS Safari 뷰포트 이슈 해결 */
 
