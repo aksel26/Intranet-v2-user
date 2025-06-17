@@ -11,9 +11,11 @@ export const checkMorningLeave = (leaveData: TLeaveMyInfo[]): EarlyCheckResult |
 
   // 휴가 타입에 따른 시간 설정
   let targetTime;
-  if (morningLeave.leaveType.includes("오전 반반차")) {
+  if (morningLeave.leaveType.includes("오전") && (morningLeave.leaveType.includes("반반") || morningLeave.leaveType.includes("반반차"))) {
+    // 오전 + (반반 또는 반반차) → 오전 10시
     targetTime = dayjs().hour(10).minute(0).second(0);
-  } else if (morningLeave.leaveType.includes("오전 반차")) {
+  } else if (morningLeave.leaveType.includes("오전")) {
+    // 오전만 포함 → 오후 1시 30분
     targetTime = dayjs().hour(13).minute(30).second(0);
   } else {
     return null;
