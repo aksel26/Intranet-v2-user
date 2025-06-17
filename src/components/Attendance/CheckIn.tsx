@@ -18,6 +18,8 @@ function CheckIn({ checkInModalClose, checkInTimeOpened }: any) {
   const queryClient = useQueryClient();
   const [opened, { open, close }] = useDisclosure(false);
 
+  const leaveList = myInfo?.leave || [];
+
   const handleCheckIn = () => {
     const result = checkMorningLeave(myInfo?.leave ?? []);
     if (result?.shouldExecute) {
@@ -55,7 +57,7 @@ function CheckIn({ checkInModalClose, checkInTimeOpened }: any) {
   return (
     <Modal opened={checkInTimeOpened} onClose={checkInModalClose} title="출근하기" centered size={"xs"}>
       <Box pos={"relative"}>
-        {myInfo?.leave.length > 0 ? (
+        {leaveList.length > 0 ? (
           <Stack right={0} pos={"absolute"} top={0} gap={"xs"} align="end">
             {myInfo?.leave.map((item: TLeaveMyInfo) => (
               <Badge size="sm" radius={"sm"} color="lime" variant="light" key={item.leaveTypeIdx}>
