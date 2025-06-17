@@ -14,21 +14,18 @@ import InTimeCheckOut from "./InTimeCheckOut";
 function CheckOutWrapper({ checkOutModalClose, checkOutTimeOpened }: any) {
   const { myInfo } = myInfoStore();
   const { mutate: checkOut } = useCheckOut();
-  //   const { hours } = checkOutTimeValidation(myInfo.checkInTime);
 
   const reasonRef = useRef<any>();
   const queryClient = useQueryClient();
-  // const { setCheckInTime } = attendanceStore();
-  const totalTime = useTimeByLeaveType(myInfo?.leaveTypeIdx);
-  const { hours } = useMemo(() => {
-    return checkOutTimeValidation(myInfo?.checkInTime);
+
+  const isEarlyCheckout = useMemo(() => {
+    return checkOutTimeValidation(myInfo?.availCheckOutTime);
   }, [myInfo]);
 
   const handleCheckOut = () => {
     const reason = reasonRef?.current?.value || null;
     checkOut(
       {
-        // checkOutDeviceType: device,
         checkOutTime: dayjs().toISOString(),
         earlyLeaveReason: reason,
       },
@@ -64,7 +61,7 @@ function CheckOutWrapper({ checkOutModalClose, checkOutTimeOpened }: any) {
         {myInfo?.userName} <Text component="span">{myInfo?.gradeName}</Text>
         님,
       </Text>
-      {hours < totalTime ? <EarlyCheckOut reasonRef={reasonRef} /> : <InTimeCheckOut />}
+      {isEarlyCheckout ? <EarlyCheckOut reasonRef={reasonRef} /> : <InTimeCheckOut />}
       <Group wrap="nowrap" mt={"md"}>
         <Button fullWidth onClick={handleCheckOut}>
           퇴근하기
