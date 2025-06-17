@@ -44,6 +44,13 @@ export const GlobalContainer = ({ children }: { children: React.ReactNode }) => 
           },
         },
       },
+      Badge: {
+        styles: {
+          label: {
+            fontWeight: 500,
+          },
+        },
+      },
       DatePicker: {
         styles: {
           month: { width: "100%" },
