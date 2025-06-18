@@ -25,7 +25,7 @@ function Notice() {
   };
 
   const NoticeList = () => (
-    <List spacing={0} size="sm" center>
+    <List spacing={0} size="sm" center styles={{ itemWrapper: { width: "100%" } }}>
       {notices?.map((record: TNotice, index: number) => (
         <NoticeItem key={index} notice={record} index={index} />
       ))}
@@ -35,15 +35,15 @@ function Notice() {
   const NoticeItem = ({ notice, index }: { notice: TNotice; index: number }) => (
     <React.Fragment key={notice.noticeIdx}>
       {index + 1 > LIST_LIMIT ? null : (
-        <ListItem w={"100%"} onClick={() => goDetail(notice.noticeIdx)} key={notice.noticeIdx} className={styles.element} px={"sm"} py={"xs"}>
+        <ListItem w={"100%"} onClick={() => goDetail(notice.noticeIdx)} key={notice.noticeIdx} className={styles.element} px={"sm"} py={4} styles={{ itemLabel: { width: "100%" } }}>
           <Indicator offset={-14} disabled={notice.isNew ? false : true} position="middle-end">
-            <Group justify="space-between">
-              <Text fz={"xs"}>{notice.title}</Text>
-              <Group>
-                <Text c={"dimmed"} fz={"xs"}>
+            <Group justify="space-between" w={"100%"}>
+              <Text fz={"sm"}>{notice.title}</Text>
+              <Group gap={"xs"}>
+                <Text c={"dimmed"} fz={"sm"}>
                   {notice.creatorName}
                 </Text>
-                <Text c={"dimmed"} fz={"xs"}>
+                <Text c={"dimmed"} fz={"sm"} w={80} ta={"right"}>
                   {formatYYYYMMDD(notice.createdAt)}
                 </Text>
               </Group>

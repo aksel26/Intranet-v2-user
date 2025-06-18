@@ -8,19 +8,13 @@ import React from "react";
 
 const Label = ({ label }: { label: string }) => {
   return (
-    <Text fz={"xs"} c={"dimmed"}>
+    <Text fz={"sm"} c={"dimmed"}>
       {label}
     </Text>
   );
 };
 
-const Result = ({
-  value,
-  suffix = "건",
-}: {
-  value: number;
-  suffix?: string;
-}) => {
+const Result = ({ value, suffix = "건" }: { value: number; suffix?: string }) => {
   return (
     <Text fz={"sm"} ta={"center"}>
       <Text fw={500} component="span" fz={"md"} mr={2}>
@@ -42,31 +36,23 @@ const VacationSummary = () => {
   const currentYear = dayjs().year().toString();
   const { data, isLoading, isError } = useSuspenseQuery({
     queryKey: ["vacationSummary", { year: currentYear }],
-    queryFn: () =>
-      api.getVacationSummary({ year: currentYear }).then((res) => res.data),
+    queryFn: () => api.getVacationSummary({ year: currentYear }).then((res) => res.data),
   });
 
   const summary = data?.data.leaveSummary || {};
 
   const renderContent = () => {
     if (isLoading) return <LoadingView />;
-    if (isError)
-      return (
-        <ErrorView>
-          휴가요약 정보를 불러오는 중 문제가 발생하였습니다.
-        </ErrorView>
-      );
+    if (isError) return <ErrorView>휴가요약 정보를 불러오는 중 문제가 발생하였습니다.</ErrorView>;
     return (
-      <Group gap={"sm"} justify="space-evenly">
+      <Group gap={"xs"} justify="space-evenly">
         {SUMMARY_LABEL.map((item, index, arr) => (
           <React.Fragment key={index}>
             <Stack key={index} gap={4}>
               <Label label={item.label} />
               <Result value={summary[item.value]} />
             </Stack>
-            {arr.length === index + 1 ? null : (
-              <Divider orientation="vertical" size={0.5} />
-            )}
+            {arr.length === index + 1 ? null : <Divider orientation="vertical" size={0.2} />}
           </React.Fragment>
         ))}
       </Group>
