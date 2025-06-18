@@ -4,6 +4,7 @@ import { mainDateStore } from "@/lib/store/mainDateStore";
 import { myInfoStore } from "@/lib/store/myInfoStore";
 import { Badge, Box, Group, Paper, Text, Title } from "@mantine/core";
 import { DatePicker } from "@mantine/dates";
+import { IconChevronLeft, IconChevronRight } from "@tabler/icons-react";
 import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
 const MainCalendar = ({ allAttendance }: any) => {
@@ -42,7 +43,9 @@ const MainCalendar = ({ allAttendance }: any) => {
 
     return (
       <div style={{ position: "relative" }}>
-        <div className={targetHoliday ? "text-red-400" : "text-black-400"}>{date.getDate()}</div>
+        <Text c={targetHoliday ? "red" : "black"} fz={"sm"}>
+          {date.getDate()}
+        </Text>
         {targetHoliday && <div className="absolute text-center -bottom-4 w-[60px] left-1/2 -translate-x-1/2 text-[9px] text-red-400">{targetHoliday.holidayName}</div>}
         {count > 0 && (
           <Badge
@@ -69,10 +72,25 @@ const MainCalendar = ({ allAttendance }: any) => {
 
   return (
     <Paper p={"lg"} radius={"lg"}>
-      <Title order={5} mb={"md"}>
-        캘린더
-      </Title>
+      <Group mb={"sm"} align="center">
+        {/* <Title order={4}>
+          {dayjs(innerValue).year()}
+          <Text component="span" ml={2}>
+            년
+          </Text>
+        </Title> */}
+        <IconChevronLeft color="gray" size={"14"} />
+        <Title order={4}>
+          {dayjs(innerValue).month() + 1}
+          <Text component="span" ml={2}>
+            월
+          </Text>
+        </Title>
+        <Title order={4}>{dayjs(innerValue).year()}</Title>
+        <IconChevronRight color="gray" size={"14"} />
+      </Group>
       <DatePicker
+        styles={{ calendarHeader: { display: "none" } }}
         highlightToday
         locale="ko"
         onChange={onChange}
@@ -86,7 +104,7 @@ const MainCalendar = ({ allAttendance }: any) => {
         renderDay={(date) => renderDay(date, allAttendance)} // 여기에 커스텀 renderDay 함수를 전달
       />
 
-      <Group justify="end" mt={"md"}>
+      <Group justify="end" mt={"xs"}>
         <Box
           h={10}
           w={10}
