@@ -24,34 +24,3 @@ body {
   overflow: hidden;
   height: 100dvh;
 }
-
-/* body {
-  min-height: 100svh;
-  max-height: 100lvh;
-} */
-
-/* iOS Safari 뷰포트 이슈 해결 */
-
-/* AppShell 모바일 최적화 */
-
-/* 터치 피드백 제거 */
-
-/* 모바일 반응형 */
-
-/* 스크롤바 숨김 */
-/* .mantine-ScrollArea-scrollbar {
-  display: none;
-} */
-
-/* @media (hover: hover) { */
-/* .mantine-ScrollArea-scrollbar {
-    display: block;
-  }
-} */
-
-/* PWA 스타일 */
-/* @media (display-mode: standalone) {
-  .mantine-AppShell-header {
-    padding-top: env(safe-area-inset-top);
-  }
-} */
