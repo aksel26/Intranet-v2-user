@@ -1,18 +1,21 @@
 "use client";
-import { useElapsedTime } from "@/hooks/useElapsedTime";
-import useTimeByLeaveType from "@/hooks/useTimeByLeaveType";
+import { useCheckInProgress } from "@/hooks/useElapsedTime";
+import { myInfoStore } from "@/lib/store/myInfoStore";
 import { calculateNumberToTime } from "@/utils/dateFomat";
 import { Badge, Card, Group, Progress, Stack, Text } from "@mantine/core";
+import { IconThumbUp } from "@tabler/icons-react";
 import dayjs from "dayjs";
+import CommuteButton from "./CommuteButton";
 import IconWork from "/public/icons/briefcase.svg";
 import IconTimer from "/public/icons/clock-hour-10.svg";
-import { myInfoStore } from "@/lib/store/myInfoStore";
-import CommuteButton from "./CommuteButton";
+import "@/styles/checkout.css";
 function Work() {
   const { myInfo } = myInfoStore();
 
-  const totalTime = useTimeByLeaveType(myInfo?.leaveTypeIdx);
-  const { elapsedTime, percentage } = useElapsedTime(myInfo?.checkInTime, totalTime);
+  const { percentage, remainingTime, elapsedTime, isCheckOutAvailable, isBeforeCheckIn } = useCheckInProgress(myInfo?.checkInTime, myInfo?.availCheckOutTime, {
+    updateInterval: 1000, // 1초마다 업데이트
+    timezone: "Asia/Seoul", // 한국 시간대 설정 (선택사항)
+  });
 
   return (
     <Stack gap={0}>
@@ -48,15 +51,21 @@ function Work() {
           </Stack>
         ) : (
           <Stack gap={3}>
-            <Group gap={"xs"}>
-              <IconTimer color="#858e96" />
-              <Text fz={"sm"} c={"dimmed"}>
-                경과시간
-              </Text>
+            <Group justify="space-between">
+              <Group gap={"xs"}>
+                <IconTimer color="#858e96" />
+                <Text fz={"sm"} c={"dimmed"}>
+                  경과시간
+                </Text>
+              </Group>
+
+              <Badge className="isCheckout" color="lime" variant="light" hidden={!isCheckOutAvailable} leftSection={<IconThumbUp strokeWidth={2.5} size={15} />}>
+                퇴근가능
+              </Badge>
             </Group>
 
             <Text pl={25} fz={"sm"} mb={5} styles={{ root: { letterSpacing: "0.5px" } }}>
-              {elapsedTime}
+              {elapsedTime.formatted}
             </Text>
             <Progress value={percentage} />
           </Stack>

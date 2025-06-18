@@ -3,7 +3,7 @@ import { TApprovalList } from "@/lib/types/approval";
 import { ActionIcon, Grid, Group, Indicator, List, Stack, Text } from "@mantine/core";
 import { IconChevronRight } from "@tabler/icons-react";
 import { useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
-import styles from "../../../styles/list.module.css";
+import styles from "@/styles/list.module.css";
 import dayjs from "dayjs";
 import React, { useState } from "react";
 import { ApprovalStatus, ApprovalType } from "../badge";
@@ -19,7 +19,6 @@ const ApprovalList = ({ params }: any) => {
   const { mutate } = useUpdateNew();
   const queryClient = useQueryClient();
   const [targetInfo, setTargetInfo] = useState();
-  console.log(data);
 
   const [confirmModal, { open: openConfirmModal, close: closeConfirmModal }] = useDisclosure(false);
   const modalOpen = async (record: any) => {
