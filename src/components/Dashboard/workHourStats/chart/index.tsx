@@ -5,17 +5,18 @@ const WorkStats = ({ workStats }: any) => {
   return (
     <CompositeChart
       h={230}
+      barProps={{ radius: 5 }}
       dataKey="week"
       data={workStats}
       withLegend
       legendProps={{ verticalAlign: "top", height: 50 }}
       // dataKey="date"
       maxBarWidth={30}
-      referenceLines={[{ y: 40, label: "주 40시간", color: "red.6" }]}
+      referenceLines={[{ y: 40, label: "주 40시간", color: "red.4" }]}
       series={[
         {
           name: "hours",
-          color: "rgba(18, 120, 255, 0.2)",
+          color: "#23aee1",
           type: "bar",
           label: "근무시간",
         },
