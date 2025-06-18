@@ -1,6 +1,6 @@
 import { mainDateStore } from "@/lib/store/mainDateStore";
 import { TAttendance } from "@/lib/types/attendance";
-import { Badge, Box, Group, Paper, Stack, Text, Title } from "@mantine/core";
+import { Badge, Box, Group, Paper, ScrollArea, Stack, Text, Title } from "@mantine/core";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 const AttendanceAll = ({ allAttendance }: any) => {
@@ -15,7 +15,7 @@ const AttendanceAll = ({ allAttendance }: any) => {
 
     // 해당 날짜의 이벤트 데이터만 필터링
     const events = allAttendance[dateStr] || [];
-    setFilteredEvents(events);
+    setFilteredEvents(events.filter((event: any) => event.confirmYN !== "R"));
   }, [allAttendance, dateValue]);
 
   if (!filteredEvents) return null;
@@ -23,7 +23,12 @@ const AttendanceAll = ({ allAttendance }: any) => {
   return (
     <Paper p={"lg"} radius={"lg"}>
       <Group>
-        <Title order={5}>직원 근태 현황 </Title>
+        <Group gap={"xs"}>
+          <Title order={5}>직원 근태 현황 </Title>
+          <Text fz={"sm"} c={"gray"}>
+            ({filteredEvents.length}건)
+          </Text>
+        </Group>
         <Text c={"dimmed"} fz={"sm"}>
           {dayjs(dateValue).format("YYYY-MM-DD")}
         </Text>
@@ -33,24 +38,28 @@ const AttendanceAll = ({ allAttendance }: any) => {
           근태 내역이 없습니다.
         </Text>
       ) : (
-        <Stack gap={"sm"} mt={"md"}>
-          {filteredEvents.map((list: TAttendance, idx: number, arr: any) => {
-            if (list.confirmYN === "R") return null;
-            return (
-              <Group key={idx}>
-                <Box w={55}>
-                  <Badge variant="light" size="md" color={list.confirmYN === "N" ? "yellow" : "lime"} radius={"sm"}>
-                    {list.confirmYN === "N" ? "미승인" : "승인"}
-                  </Badge>
-                </Box>
-                <Text fz={"xs"}>{list.userName}</Text>
-                <Text c={"dimmed"} fz={"xs"}>
-                  {list.leaveType}
-                </Text>
-              </Group>
-            );
-          })}
-        </Stack>
+        <ScrollArea h={180} mt={"md"}>
+          <Stack gap={"xs"}>
+            {filteredEvents.map((list: TAttendance, idx: number, arr: any) => {
+              if (list.confirmYN === "R") return null;
+              return (
+                <Group key={idx} gap={"xs"}>
+                  <Box w={45}>
+                    <Badge variant="light" size="sm" color={list.confirmYN === "N" ? "yellow" : "lime"} radius={"sm"}>
+                      {list.confirmYN === "N" ? "미승인" : "승인"}
+                    </Badge>
+                  </Box>
+                  <Text miw={40} fz={"sm"}>
+                    {list.userName}
+                  </Text>
+                  <Text c={"dimmed"} fz={"sm"}>
+                    {list.leaveType}
+                  </Text>
+                </Group>
+              );
+            })}
+          </Stack>
+        </ScrollArea>
       )}
     </Paper>
   );

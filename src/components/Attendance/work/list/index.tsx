@@ -52,11 +52,11 @@ const AttendanceList = ({ params }: any) => {
       <Group gap={"md"}>
         <Stack gap={"xs"} flex={1}>
           <Group gap={"xs"}>
-            <Text fz={"xs"} c={"dimmed"}>
+            <Text fz={"sm"} c={"dimmed"}>
               출근시간
             </Text>
             {!record.checkInTime ? (
-              <Text fz={"xs"} c={"gray.4"}>
+              <Text fz={"sm"} c={"gray.4"}>
                 출근 전
               </Text>
             ) : (
@@ -64,40 +64,40 @@ const AttendanceList = ({ params }: any) => {
             )}
           </Group>
           <Group gap={"xs"}>
-            <Text fz={"xs"} c={"dimmed"}>
+            <Text fz={"sm"} c={"dimmed"}>
               퇴근시간
             </Text>
             {!record.checkOutTime ? (
-              <Text fz={"xs"} c={"gray.4"}>
+              <Text fz={"sm"} c={"gray.4"}>
                 퇴근 전
               </Text>
             ) : (
-              <Text fz={"xs"}>{formatTime(record.checkOutTime)}</Text>
+              <Text fz={"sm"}>{formatTime(record.checkOutTime)}</Text>
             )}
           </Group>
         </Stack>
         <Stack gap={"xs"} flex={1}>
           <Group gap={"xs"}>
-            <Text fz={"xs"} c={"dimmed"}>
+            <Text fz={"sm"} c={"dimmed"}>
               근무시간
             </Text>
-            <Text fz={"xs"}>{`${calculateNumberToTime(record.workingMinutes)}`}</Text>
+            <Text fz={"sm"}>{`${calculateNumberToTime(record.workingMinutes)}`}</Text>
           </Group>
           <Group gap={"xs"}>
-            <Text fz={"xs"} c={"dimmed"}>
+            <Text fz={"sm"} c={"dimmed"}>
               초과시간
             </Text>
-            <Text fz={"xs"}>{`${calculateNumberToTime(record.overtimeWorkingMinutes)}`}</Text>
+            <Text fz={"sm"}>{`${calculateNumberToTime(record.overtimeWorkingMinutes)}`}</Text>
           </Group>
         </Stack>
       </Group>
       <Group align="center" justify="space-between" styles={{ root: { cursor: "pointer" } }} onClick={() => openModal(record)}>
         <Group gap={"xs"}>
-          <Text fz={"xs"} c={"dimmed"}>
+          <Text fz={"sm"} c={"dimmed"}>
             비고
           </Text>
           <Box w={"60vw"}>
-            <Text truncate="end" c={record.note ? "black" : "gray.4"} fz={"xs"}>
+            <Text truncate="end" c={record.note ? "black" : "gray.4"} fz={"sm"}>
               {record.note ? record.note : "내용이 없습니다."}
             </Text>
           </Box>

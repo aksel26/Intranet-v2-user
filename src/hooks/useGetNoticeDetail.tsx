@@ -18,7 +18,7 @@ interface TNoticeDetail {
 }
 function useGetNoticeDetail({ id }: TNoticeDetailParam) {
   const [noticeDetails, setNoticeDetails] = useState<TNoticeDetail>();
-  const { data, isLoading, isError } = useQuery({ queryKey: ["noticesDetail", id], queryFn: () => api.getNoticeDetail({ noticeIdx: Number(id) }) });
+  const { data, isLoading, isError } = useQuery({ queryKey: ["noticesDetail", { noticeIdx: id }], queryFn: () => api.getNoticeDetail({ noticeIdx: Number(id) }) });
 
   useEffect(() => {
     setNoticeDetails(data?.data.data);

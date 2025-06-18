@@ -33,30 +33,22 @@ const Details = ({ opened, close, details, configId }: any) => {
   };
   return (
     <Modal opened={opened} onClose={close} title="Monthly Meeting 음료 신청 현황" centered size={"sm"}>
-      <Stack gap={6}>
+      <Stack gap={1}>
         {details.map((item: any, index: number) => (
           <Group key={index} wrap="nowrap">
-            <Text w={20} fz={"xs"}>
+            <Text w={15} fz={"sm"}>
               {index + 1}.
             </Text>
-            <Text fz={"xs"}>{item.userName}</Text>
+            <Text fz={"sm"}>{item.userName}</Text>
             <Select
               variant="unstyled"
               size="sm"
               flex={1}
               value={item.baverage}
               onChange={(value) => updateDrink(value, item)}
-              styles={{ option: { fontSize: "var(--mantine-font-size-xs)" } }}
-              data={[
-                "HOT 아메리카노",
-                "ICE 아메리카노",
-                "HOT 디카페인 아메리카노",
-                "ICE 디카페인 아메리카노",
-                "바닐라크림 콜드브루",
-                "ICE 자몽허니블랙티",
-                "선택안함",
-              ]}
-              fz={"xs"}
+              styles={{ option: { fontSize: "var(--mantine-font-size-sm)" } }}
+              data={["HOT 아메리카노", "ICE 아메리카노", "HOT 디카페인 아메리카노", "ICE 디카페인 아메리카노", "바닐라크림 콜드브루", "ICE 자몽허니블랙티", "선택안함"]}
+              fz={"sm"}
               placeholder="음료를 선택해 주세요."
             />
           </Group>

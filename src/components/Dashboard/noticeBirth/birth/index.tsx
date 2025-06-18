@@ -22,21 +22,23 @@ const Birth = ({ month }: BirthProps) => {
       return <LoadingView />;
     }
     if (isError) {
-      return (
-        <ErrorView>생일자 인원을 불러오는 중 문제가 발생하였습니다.</ErrorView>
-      );
+      return <ErrorView>생일자 인원을 불러오는 중 문제가 발생하였습니다.</ErrorView>;
     }
     if (birth?.length === 0) {
       return <EmptyView />;
     }
     return (
-      <Stack gap={"xs"}>
+      <Stack gap={"xs"} pt={"xs"}>
         {birth.map((item: any) => (
           <Group key={item.userIdx} ml={"xs"} style={{ zIndex: 1 }}>
-            <Text fz={"xs"}>🎉</Text>
-            <Text fz={"xs"}>{item.userName}</Text>
-            <Text fz={"xs"}>{item.gradeName}</Text>
-            <Text c="dimmed" fz={"xs"}>
+            <Text fz={"sm"}>🎉</Text>
+            <Text miw={35} fz={"sm"}>
+              {item.userName}
+            </Text>
+            <Text miw={40} fz={"sm"}>
+              {item.gradeName}
+            </Text>
+            <Text c="dimmed" fz={"sm"}>
               {dayjs(item.userBirth).format("MM월 DD일")}
             </Text>
           </Group>

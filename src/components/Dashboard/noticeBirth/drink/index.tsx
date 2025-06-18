@@ -58,25 +58,25 @@ const MonthlyDrink = () => {
   return (
     <Box px={"md"} pt={"xs"}>
       <Group justify="space-between" align="center">
-        <Text fz={"xs"} fw={400}>
-          <Text component="span" fw={500} fz={"xs"}>
+        <Text fz={"sm"} fw={400}>
+          <Text component="span" fw={500} fz={"sm"}>
             {config?.month}월{" "}
           </Text>
           Monthly Meeting 음료 신청
         </Text>
 
-        <Group>
-          <Text fz={"xs"} c={"gray"}>
+        <Group gap={"xs"}>
+          <Text fz={"sm"} c={"gray"}>
             작성기한
           </Text>
-          <Text fz={"xs"}>{config?.dueDate}</Text>
+          <Text fz={"sm"}>{config?.dueDate}</Text>
         </Group>
       </Group>
-      <Box mt={"md"}>
+      <Box mt={"xs"}>
         <Select
           variant="unstyled"
           size="sm"
-          styles={{ option: { fontSize: "var(--mantine-font-size-xs)" } }}
+          styles={{ option: { fontSize: "var(--mantine-font-size-sm)" } }}
           // flex={1}
           w={200}
           value={myBaverage}
@@ -89,17 +89,17 @@ const MonthlyDrink = () => {
       <Divider my={"xs"} size={0.5} />
       <Group justify="space-between" align="center">
         <Group>
-          <Text fz={"xs"} c={"gray"}>
+          <Text fz={"sm"} c={"gray"}>
             픽업 :
           </Text>
           <Group>
             {config?.pickup.length < 1 ? (
-              <Text fz={"xs"} c={"gray"}>
+              <Text fz={"sm"} c={"gray"}>
                 픽업 인원이 베정되지 않았습니다
               </Text>
             ) : (
               config?.pickup.map((item: any, index: number) => (
-                <Text key={index} fz={"xs"}>
+                <Text key={index} fz={"sm"}>
                   {item}
                 </Text>
               ))
