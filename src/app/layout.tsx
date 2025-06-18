@@ -28,8 +28,8 @@ dayjs.locale("ko");
 // });
 
 export const metadata: Metadata = {
-  title: "ALBA",
-  description: "ACG_alba",
+  title: "ACG 인트라넷",
+  description: "ACG 인트라넷",
   // viewport: "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no", // <-- here
 };
 
