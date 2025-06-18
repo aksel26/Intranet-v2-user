@@ -40,10 +40,10 @@ function Notice() {
             <Group justify="space-between" w={"100%"}>
               <Text fz={"sm"}>{notice.title}</Text>
               <Group gap={"xs"}>
-                <Text c={"dimmed"} fz={"sm"}>
+                <Text c={"dimmed"} fz={"xs"}>
                   {notice.creatorName}
                 </Text>
-                <Text c={"dimmed"} fz={"sm"} w={80} ta={"right"}>
+                <Text c={"dimmed"} fz={"xs"} w={80} ta={"right"}>
                   {formatYYYYMMDD(notice.createdAt)}
                 </Text>
               </Group>
