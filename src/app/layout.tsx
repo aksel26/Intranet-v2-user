@@ -3,6 +3,7 @@ import "@mantine/notifications/styles.css";
 import "@mantine/charts/styles.css";
 import "@mantine/dates/styles.css";
 import "./globals.css";
+import "@/styles/fonts.css"; // 새로 생성한 폰트 CSS 파일 import
 
 import { GlobalContainer } from "@/components/Global/GlobalContainer";
 import { Metadata, Viewport } from "next";
