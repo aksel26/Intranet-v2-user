@@ -3,14 +3,26 @@ import { Alert, Button, Group, Modal, Text } from "@mantine/core";
 import { useQueryClient } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import notification from "../GNB/Notification";
+import { checkMorningLeave } from "@/utils/earlyCheckIn";
+import { myInfoStore } from "@/lib/store/myInfoStore";
 
 const EarlyCheckIn = ({ opened, close, checkInModalClose }: any) => {
   const { mutate: checkIn } = useCheckIn();
   const queryClient = useQueryClient();
+  const { myInfo } = myInfoStore();
+  const result = checkMorningLeave(myInfo?.leave ?? []);
 
   const handleCheckIn = () => {
+    if (!result) {
+      notification({
+        color: "red",
+        message: "출근 확인 중 문제가 발생하였습니다.",
+        title: "출근하기",
+      });
+      return;
+    }
     checkIn(
-      { checkInTime: dayjs().toISOString() },
+      { checkInTime: result?.targetTime },
       {
         onSuccess: async (data) => {
           const { checkInTime } = data.data;
