@@ -45,7 +45,7 @@ function Work() {
               </Text>
             </Group>
 
-            <Text pl={25} fz={"xs"} mb={5} styles={{ root: { letterSpacing: "0.5px" } }}>
+            <Text pl={25} fz={"sm"} mb={5} styles={{ root: { letterSpacing: "0.5px" } }}>
               {calculateNumberToTime(myInfo?.workingMinutes)}
             </Text>
           </Stack>
