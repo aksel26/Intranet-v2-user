@@ -19,10 +19,7 @@ const MonthlyDrink = () => {
   const [opened, { open, close }] = useDisclosure(false);
   const { data, isLoading, isError } = useSuspenseQuery({
     queryKey: ["monthlyDrink", { month: dayjs(dateValue).month() + 1 }],
-    queryFn: () =>
-      monthlyDrink({ month: (dayjs(dateValue).month() + 1).toString() }).then(
-        (res) => res.data
-      ),
+    queryFn: () => monthlyDrink({ month: (dayjs(dateValue).month() + 1).toString() }).then((res) => res.data),
   });
   const { mutate } = useUpdateDrink();
 
@@ -62,7 +59,7 @@ const MonthlyDrink = () => {
     <Box px={"md"} pt={"xs"}>
       <Group justify="space-between" align="center">
         <Text fz={"xs"} fw={400}>
-          <Text component="span" fw={600} fz={"xs"}>
+          <Text component="span" fw={500} fz={"xs"}>
             {config?.month}월{" "}
           </Text>
           Monthly Meeting 음료 신청
@@ -84,15 +81,7 @@ const MonthlyDrink = () => {
           w={200}
           value={myBaverage}
           onChange={(value) => updateDrink(value)}
-          data={[
-            "HOT 아메리카노",
-            "ICE 아메리카노",
-            "HOT 디카페인 아메리카노",
-            "ICE 디카페인 아메리카노",
-            "바닐라크림 콜드브루",
-            "ICE 자몽허니블랙티",
-            "선택안함",
-          ]}
+          data={["HOT 아메리카노", "ICE 아메리카노", "HOT 디카페인 아메리카노", "ICE 디카페인 아메리카노", "바닐라크림 콜드브루", "ICE 자몽허니블랙티", "선택안함"]}
           // fz={"xsm"}
           placeholder="음료를 선택해 주세요."
         />
@@ -117,22 +106,12 @@ const MonthlyDrink = () => {
             )}
           </Group>
         </Group>
-        <Button
-          size="compact-xs"
-          variant="subtle"
-          rightSection={<IconChevronRight size={15} strokeWidth={1.2} />}
-          onClick={open}
-        >
+        <Button size="compact-xs" variant="subtle" rightSection={<IconChevronRight size={15} strokeWidth={1.2} />} onClick={open}>
           전체보기
         </Button>
       </Group>
 
-      <Details
-        opened={opened}
-        close={close}
-        details={details}
-        configId={config.configId}
-      />
+      <Details opened={opened} close={close} details={details} configId={config.configId} />
     </Box>
   );
 };

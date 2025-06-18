@@ -63,8 +63,8 @@ export const UsedListActivity = ({ activities, isLoading, isError }: any) => {
             <Flex align={"center"} columnGap={"sm"}>
               <Checkbox size="xs" checked={t.confirmYN === "Y" ? true : false} radius="sm" readOnly />
               <Stack gap={3}>
-                <Text fw={600} ta={"left"} fz={"sm"}>
-                  <NumberFormatter thousandSeparator value={t.amount || 0} suffix=" 원" className="text-md font-bold" />
+                <Text fw={500} ta={"left"} fz={"sm"}>
+                  <NumberFormatter thousandSeparator value={t.amount || 0} suffix=" 원" />
                 </Text>
 
                 <Text fz={"xs"} c={"dimmed"}>

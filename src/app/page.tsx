@@ -60,27 +60,14 @@ export default function page() {
             <Box w={"70%"}>
               <Stack justify="center" mb="md" align="center">
                 <Image component={NextImage} src={myImage} alt="CI" w={"5rem"} h={"1rem"} />
-                <Text fz={{ base: "sm", xs: "sm", sm: "sm", md: "md" }} variant="gradient" gradient={{ from: "blue", to: "pink", deg: 90 }} fw={700}>
+                <Text fz={{ base: "sm", xs: "sm", sm: "sm", md: "md" }} variant="gradient" gradient={{ from: "blue", to: "pink", deg: 90 }} fw={600}>
                   Valid Approach, Valuable People
                 </Text>
               </Stack>
               <form onSubmit={form.onSubmit((values) => submit(values))}>
-                <TextInput
-                  size="md"
-                  withAsterisk
-                  leftSection={<IconAbc strokeWidth={1.2} />}
-                  placeholder="아이디를 입력해 주세요."
-                  key={form.key("id")}
-                  {...form.getInputProps("id")}
-                />
+                <TextInput size="md" withAsterisk leftSection={<IconAbc strokeWidth={1.2} />} placeholder="아이디를 입력해 주세요." key={form.key("id")} {...form.getInputProps("id")} />
                 <Space h="md" />
-                <PasswordInput
-                  leftSection={<IconLock strokeWidth={1.2} />}
-                  placeholder="비밀번호를 입력해 주세요."
-                  key={form.key("password")}
-                  {...form.getInputProps("password")}
-                  size="md"
-                />
+                <PasswordInput leftSection={<IconLock strokeWidth={1.2} />} placeholder="비밀번호를 입력해 주세요." key={form.key("password")} {...form.getInputProps("password")} size="md" />
 
                 <Group justify="center" mt="md">
                   <Button fullWidth type="submit">
@@ -88,15 +75,7 @@ export default function page() {
                   </Button>
                 </Group>
                 <Group justify="end">
-                  <Checkbox
-                    mt="md"
-                    size="xs"
-                    radius={"sm"}
-                    labelPosition="left"
-                    label="아이디 기억하기"
-                    key={form.key("saveId")}
-                    {...form.getInputProps("saveId", { type: "checkbox" })}
-                  />
+                  <Checkbox mt="md" size="xs" radius={"sm"} labelPosition="left" label="아이디 기억하기" key={form.key("saveId")} {...form.getInputProps("saveId", { type: "checkbox" })} />
                 </Group>
                 <Text c={"dimmed"} ta={"right"} fz={"xs"} mt={"xs"}>
                   계정 생성은 P&C팀에게 문의해 주세요.

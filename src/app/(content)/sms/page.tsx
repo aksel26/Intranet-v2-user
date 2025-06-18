@@ -2,7 +2,7 @@
 import PageContainer from "@/components/Global/container";
 import SmsDetails from "@/components/sms/details";
 import SmsDetailsModal from "@/components/sms/details/modal";
-import { ActionIcon, Button, Grid, GridCol, Group, Input, Paper, ScrollArea, Stack, Text, Textarea, TextInput } from "@mantine/core";
+import { ActionIcon, Button, Grid, GridCol, Group, Input, Paper, ScrollArea, Stack, Text, Textarea, TextInput, Title } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { IconUpload, IconX } from "@tabler/icons-react";
 import React from "react";
@@ -15,9 +15,7 @@ const SMS = () => {
     <PageContainer>
       <Group justify="space-between" align="end">
         <Stack gap={1}>
-          <Text size="lg" fw={600} component="a">
-            안내 SMS 전송
-          </Text>
+          <Title order={4}> 안내 SMS 전송</Title>
           <Text component="span" c={"gray.6"} fz={"sm"}>
             안내 SMS 전송 및 현황을 확인할 수 있습니다.
           </Text>

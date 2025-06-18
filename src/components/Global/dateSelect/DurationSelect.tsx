@@ -26,7 +26,7 @@ const DurationSelect = ({ setParams, ...props }: any) => {
       ]}
       size="md"
       variant="unstyled"
-      fw={600}
+      fw={500}
       dropdownOpened={isActive}
       onBlur={() => setIsActive(false)}
       onClick={() => {

@@ -16,7 +16,7 @@ export const ToptitleActivity = ({ stats, isLoading, isError }: any) => {
       <Paper bg={"white"} px="md" py="lg" radius={"lg"}>
         <Stack gap={"md"}>
           <Box>
-            <Text size="xl" fw={700}>
+            <Text size="lg" fw={500}>
               활동비
             </Text>
             <Text size="sm" fw={500} c={"gray.6"}>
@@ -25,7 +25,7 @@ export const ToptitleActivity = ({ stats, isLoading, isError }: any) => {
           </Box>
           <Group justify="space-between" align={"end"}>
             <Flex direction={"column"} rowGap={5}>
-              <Text fw={600} c={"blue.9"} fz={"lg"}>
+              <Text fw={500} c={"blue.9"} fz={"lg"}>
                 {stats.hqName || ""}
                 <Text c={"gray.9"} component="span" mr={0} fz={"sm"}>
                   의 잔여 활동비는
@@ -33,7 +33,7 @@ export const ToptitleActivity = ({ stats, isLoading, isError }: any) => {
               </Text>
 
               <Flex align={"center"}>
-                <Text mx={5} component="span" c={"blue.9"} fw={600} fz={"lg"} styles={{ root: { letterSpacing: 1.0 } }}>
+                <Text mx={5} component="span" c={"blue.9"} fw={500} fz={"lg"} styles={{ root: { letterSpacing: 1.0 } }}>
                   <NumberFlow
                     transformTiming={{ duration: 750, easing: "ease-out" }}
                     spinTiming={{ duration: 750, easing: "ease-out" }}

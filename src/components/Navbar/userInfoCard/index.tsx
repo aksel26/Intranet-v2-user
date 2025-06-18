@@ -29,29 +29,18 @@ const UserInfoCard = () => {
   }, [data, session]);
 
   const renderContent = () => {
-    if (isError)
-      return (
-        <ErrorViewSmall>
-          유저 정보를 불러오는 중 문제가 발생했습니다.
-        </ErrorViewSmall>
-      );
+    if (isError) return <ErrorViewSmall>유저 정보를 불러오는 중 문제가 발생했습니다.</ErrorViewSmall>;
 
     if (isLoading) return <LoadingView />;
-    const { userName, gradeName, hqName, teamName, userEmail, joinDate } =
-      myInfo;
+    const { userName, gradeName, hqName, teamName, userEmail, joinDate } = myInfo;
 
     return (
       <Skeleton visible={isLoading}>
         <Card padding="md" radius="md" bg={"primary.0"}>
-          <Flex
-            direction={"column"}
-            w={"100%"}
-            columnGap={"xl"}
-            style={{ position: "relative", borderRadius: 7 }}
-          >
+          <Flex direction={"column"} w={"100%"} columnGap={"xl"} style={{ position: "relative", borderRadius: 7 }}>
             <Flex direction={"column"} rowGap={"md"} w={"100%"}>
               <Box>
-                <Text fz={"lg"} fw={600} c={"primary.9"}>
+                <Text fz={"lg"} fw={500} c={"primary.9"}>
                   {userName}
                   <Text fz={"sm"} c={"primary.9"} component="span" ml={5}>
                     {gradeName}

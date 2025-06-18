@@ -56,12 +56,9 @@ export const UsedListWelfare = ({ welfares, isLoading, isError }: any) => {
                 {/* <Checkbox size="xs" checked={t.confirmYN === "Y" ? true : false} radius="sm" readOnly /> */}
                 <Stack gap={3}>
                   <Group gap={"xs"}>
-                    <NumberFormatter
-                      thousandSeparator
-                      value={t.amount || 0}
-                      suffix=" 원"
-                      style={{ fontSize: "var(--mantine-font-size-sm)", fontWeight: 600 }}
-                    />
+                    <Text fw={500} ta={"left"} fz={"sm"}>
+                      <NumberFormatter thousandSeparator value={t.amount || 0} suffix=" 원" />
+                    </Text>
                     <Divider orientation="vertical" />
                     <Text fz={"xs"} c={"dimmed"}>
                       {t.content}

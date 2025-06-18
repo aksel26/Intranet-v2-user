@@ -11,7 +11,7 @@ function GreetingMessage() {
   return (
     <Stack mb={"md"} gap={4}>
       <Text>
-        <Text fz={"lg"} component="span" fw={700}>
+        <Text fz={"lg"} component="span" fw={500}>
           {myInfo?.userName} {myInfo?.gradeName}
         </Text>
         님, 반가워요!

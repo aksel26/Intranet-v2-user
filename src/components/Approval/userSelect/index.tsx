@@ -35,7 +35,7 @@ const UserSelect = ({ setParams, ...props }: any) => {
       data={confirmList?.map((user: any) => ({ value: user.userIdx + "", label: user.userName }))}
       size="md"
       variant="unstyled"
-      fw={600}
+      fw={500}
       placeholder="승인 대상자를 선택해 주세요."
       dropdownOpened={isActive}
       onBlur={() => setIsActive(false)}

@@ -33,7 +33,7 @@ const BottomModal: React.FC<BottomModalProps> = ({ title, date, opened, onClose,
       }}
       title={
         <Flex align="end" columnGap="sm">
-          <Text fw={600} size="md">
+          <Text fw={500} size="md">
             {title}
           </Text>
           <Text c="gray.7" size="xs">

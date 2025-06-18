@@ -24,7 +24,7 @@ const YearSelect = ({ setParams, ...props }: any) => {
       data={yearsList().map((item) => ({ value: item.toString(), label: `${item}년` }))}
       size="md"
       variant="unstyled"
-      fw={600}
+      fw={500}
       dropdownOpened={isActive}
       onBlur={() => setIsActive(false)}
       onClick={() => setIsActive(true)}

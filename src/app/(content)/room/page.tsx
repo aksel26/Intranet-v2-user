@@ -6,7 +6,7 @@ import PageContainer from "@/components/Global/container";
 import ReserveModal from "@/components/roomReserve/reserveModal";
 import HorizontalTimeline from "@/components/roomReserve/timeline/horizontal";
 import ResourceTimeGridCalendar from "@/components/roomReserve/timeline/vertical";
-import { Group, Paper, Stack, Switch, Text } from "@mantine/core";
+import { Group, Paper, Stack, Switch, Text, Title } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { IconArrowsHorizontal, IconArrowsVertical } from "@tabler/icons-react";
 import "../../../styles/reserveRoom.css";
@@ -124,9 +124,7 @@ const TimelineCalendarWithPrint = () => {
     const description = event.extendedProps.description || "설명 없음";
 
     alert(`일정: ${event.title}
-시간: ${event.start ? event.start.toLocaleString() : "시간 정보 없음"} ~ ${
-      event.end ? event.end.toLocaleString() : ""
-    }
+시간: ${event.start ? event.start.toLocaleString() : "시간 정보 없음"} ~ ${event.end ? event.end.toLocaleString() : ""}
 설명: ${description}`);
 
     // 삭제 여부 확인
@@ -145,9 +143,7 @@ const TimelineCalendarWithPrint = () => {
     <PageContainer>
       <Group justify="space-between" align="end">
         <Stack gap={1}>
-          <Text size="lg" fw={600} component="a">
-            회의실 예약
-          </Text>
+          <Title order={4}> 회의실 예약</Title>
           <Text component="span" c={"gray.6"} fz={"sm"}>
             회의실 예약 현황을 확인할 수 있습니다.
           </Text>
@@ -164,36 +160,16 @@ const TimelineCalendarWithPrint = () => {
             },
           }}
           onChange={() => {
-            setCurrentView(
-              currentView === "resourceTimeline"
-                ? "resourceTimeGrid"
-                : "resourceTimeline"
-            );
+            setCurrentView(currentView === "resourceTimeline" ? "resourceTimeGrid" : "resourceTimeline");
           }}
           size="md"
           color="dark.4"
-          onLabel={
-            <IconArrowsVertical
-              size={16}
-              stroke={2.5}
-              color="var(--mantine-color-yellow-4)"
-            />
-          }
-          offLabel={
-            <IconArrowsHorizontal
-              size={16}
-              stroke={2.5}
-              color="var(--mantine-color-blue-6)"
-            />
-          }
+          onLabel={<IconArrowsVertical size={16} stroke={2.5} color="var(--mantine-color-yellow-4)" />}
+          offLabel={<IconArrowsHorizontal size={16} stroke={2.5} color="var(--mantine-color-blue-6)" />}
         />
       </Group>
       <Paper bg={"white"} px="xs" py="lg" radius={"lg"} mt={"md"}>
-        {currentView === "resourceTimeline" ? (
-          <HorizontalTimeline />
-        ) : (
-          <ResourceTimeGridCalendar />
-        )}
+        {currentView === "resourceTimeline" ? <HorizontalTimeline /> : <ResourceTimeGridCalendar />}
       </Paper>
       <ReserveModal opened={opened} close={close} />
     </PageContainer>

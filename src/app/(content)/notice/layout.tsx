@@ -1,6 +1,6 @@
 import { createServerApiClient } from "@/lib/axios/server-api";
 import { getQueryClient } from "@/lib/query-client/get-query-client";
-import { Group, Paper, Stack, Text } from "@mantine/core";
+import { Group, Paper, Stack, Text, Title } from "@mantine/core";
 import { dehydrate, HydrationBoundary, queryOptions } from "@tanstack/react-query";
 import React from "react";
 
@@ -30,9 +30,7 @@ export default async function layout({ children }: { children: React.ReactNode }
     <HydrationBoundary state={dehydrate(queryClient)}>
       <Stack gap={1} mb="xs">
         <Group justify="space-between">
-          <Text size="lg" fw={600}>
-            공지/일정
-          </Text>
+          <Title order={4}> 공지/일정</Title>
         </Group>
         <Text c={"gray.6"} fz={"sm"}>
           검사 외의 공지는 P&C팀에게 문의해 주시기 바랍니다.

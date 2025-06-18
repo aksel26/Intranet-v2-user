@@ -60,7 +60,7 @@ const AttendanceList = ({ params }: any) => {
                 출근 전
               </Text>
             ) : (
-              <Text fz={"xs"}>{formatTime(record.checkInTime)}</Text>
+              <Text fz={"sm"}>{formatTime(record.checkInTime)}</Text>
             )}
           </Group>
           <Group gap={"xs"}>

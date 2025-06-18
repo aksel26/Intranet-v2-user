@@ -1,7 +1,7 @@
 import { ErrorView } from "@/components/Global/view/ErrorView";
 import LoadingView from "@/components/Global/view/LoadingView";
 import { myInfoStore } from "@/lib/store/myInfoStore";
-import { Box, Button, Flex, Group, Paper, Stack, Text } from "@mantine/core";
+import { Box, Button, Flex, Group, Paper, Stack, Text, Title } from "@mantine/core";
 import NumberFlow from "@number-flow/react";
 import { IconCheck, IconCopy, IconX } from "@tabler/icons-react";
 import dayjs from "dayjs";
@@ -21,17 +21,15 @@ export const TopTitleMeal = ({ stats, isLoading, isError }: any) => {
       return (
         <Paper bg={"white"} px="md" py="lg" radius={"lg"}>
           <Stack gap={"md"}>
-            <Text size="xl" fw={700}>
-              식대
-            </Text>
+            <Title order={4}>식대</Title>
 
             <Group justify="space-between" align={"end"}>
               <Flex direction={"column"} rowGap={5}>
-                <Text fw={600} c={"blue.9"} fz={"lg"}>
+                <Text fw={500} c={"blue.9"} fz={"lg"}>
                   {myInfo.userName || ""}
                   <Text c={"gray.9"} component="span" mr={0} fz={"sm"}>
                     님의
-                    <Text fw={600} c={"blue.9"} fz={"lg"} component="span" mx={5}>
+                    <Text fw={500} c={"blue.9"} fz={"lg"} component="span" mx={5}>
                       {stats.month}월
                     </Text>
                     잔여 식대는
@@ -39,7 +37,7 @@ export const TopTitleMeal = ({ stats, isLoading, isError }: any) => {
                 </Text>
 
                 <Flex align={"center"}>
-                  <Text mx={5} component="span" c={"blue.9"} fw={600} fz={"lg"} styles={{ root: { letterSpacing: 0.8 } }}>
+                  <Text mx={5} component="span" c={"blue.9"} fw={500} fz={"lg"} styles={{ root: { letterSpacing: 0.8 } }}>
                     <NumberFlow
                       transformTiming={{ duration: 750, easing: "ease-out" }}
                       spinTiming={{ duration: 750, easing: "ease-out" }}

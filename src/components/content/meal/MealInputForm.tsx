@@ -132,7 +132,7 @@ const ModalInputForm = ({ opened, close, date, targetList }: any) => {
       }}
       title={
         <Flex align="end" columnGap="sm">
-          <Text fw={600} size="md">
+          <Text fw={500} size="md">
             식대 입력
           </Text>
           <Text c="gray.7" size="xs">

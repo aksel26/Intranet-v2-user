@@ -29,7 +29,7 @@ function Work() {
               {myInfo?.attendance}
             </Badge>
           </Group>
-          <Text pl={25} fz={"xs"} styles={{ root: { letterSpacing: "0.5px" } }}>
+          <Text pl={25} fz={"sm"} styles={{ root: { letterSpacing: "0.5px" } }}>
             {dayjs(myInfo?.checkInTime).format("HH시 mm분 ss초")}
           </Text>
         </Stack>
@@ -55,7 +55,7 @@ function Work() {
               </Text>
             </Group>
 
-            <Text pl={25} fz={"xs"} mb={5} styles={{ root: { letterSpacing: "0.5px" } }}>
+            <Text pl={25} fz={"sm"} mb={5} styles={{ root: { letterSpacing: "0.5px" } }}>
               {elapsedTime}
             </Text>
             <Progress value={percentage} />

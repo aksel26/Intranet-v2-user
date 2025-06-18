@@ -24,7 +24,7 @@ const MonthSelect = ({ setParams, ...props }: any) => {
       data={monthList().map((item) => ({ value: item.toString(), label: `${item}월` }))}
       size="md"
       variant="unstyled"
-      fw={600}
+      fw={500}
       dropdownOpened={isActive}
       onBlur={() => setIsActive(false)}
       onClick={() => setIsActive(true)}

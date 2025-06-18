@@ -5,7 +5,7 @@ import AssessmentCalendar from "@/components/assessment/calendar";
 import InterviewCard from "@/components/assessment/interview";
 import TrainigCard from "@/components/assessment/training";
 import PageContainer from "@/components/Global/container";
-import { Button, Grid, GridCol, Group, Stack, Table, Text } from "@mantine/core";
+import { Button, Grid, GridCol, Group, Stack, Table, Text, Title } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import CreateDrawer from "@/components/assessment/createDrawer";
 const testData = [
@@ -109,9 +109,7 @@ const AssessmentManage = () => {
   return (
     <PageContainer>
       <Stack gap={1}>
-        <Text size="lg" fw={600} component="a">
-          검사 * 교육
-        </Text>
+        <Title order={4}>검사 * 교육</Title>
         <Text component="span" c={"gray.6"} fz={"sm"}>
           검사 운영 관련 일정을 확인할 수 있습니다.
         </Text>

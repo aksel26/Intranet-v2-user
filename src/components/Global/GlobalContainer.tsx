@@ -23,7 +23,25 @@ export const GlobalContainer = ({ children }: { children: React.ReactNode }) => 
 
     primaryColor: "primary",
 
-    fontFamily: "NanumSquareNeoVariable, sans-serif",
+    fontFamily: "Pretendard, sans-serif", // 기본 폰트를 Pretendard로 설정
+
+    headings: {
+      // properties for all headings
+      fontWeight: "400",
+      fontFamily: "Roboto",
+
+      // properties for individual headings, all of them are optional
+      sizes: {
+        h1: {
+          fontWeight: "900",
+        },
+        h2: { fontWeight: "800" },
+        h3: { fontWeight: "700" },
+        h4: { fontWeight: "600" },
+        h5: { fontWeight: "500" },
+        h6: { fontWeight: "400" },
+      },
+    },
     components: {
       Button: {
         styles: {
@@ -58,7 +76,7 @@ export const GlobalContainer = ({ children }: { children: React.ReactNode }) => 
           day: {
             width: "100%",
             height: 50,
-            fontWeight: 600,
+            fontWeight: 400,
           },
         },
       },
