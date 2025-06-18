@@ -18,21 +18,19 @@ const Notice = () => {
   return (
     <>
       <Paper bg={"white"} px="md" py="lg" radius={"lg"} mt={"xs"}>
-        <Stack gap={"xs"}>
-          <Group justify="space-between" align="center">
-            <SearchNotice setParams={setParams} />
-            <Button visibleFrom="md" leftSection={<IconPlus size={15} />} onClick={open}>
-              등록
-            </Button>
-          </Group>
+        <Group justify="space-between" align="center">
+          <SearchNotice setParams={setParams} />
+          <Button visibleFrom="md" size="xs" leftSection={<IconPlus size={15} />} onClick={open}>
+            일정등록
+          </Button>
+        </Group>
 
-          <Suspense fallback={<Loading />}>
-            <NoticeList params={params} />
-          </Suspense>
-        </Stack>
+        <Suspense fallback={<Loading />}>
+          <NoticeList params={params} />
+        </Suspense>
       </Paper>
       <Affix position={{ bottom: 20, right: 20 }} hiddenFrom="md">
-        <Button leftSection={<IconPlus size={15} />} onClick={open}>
+        <Button leftSection={<IconPlus size={15} />} onClick={open} size="sm">
           등록
         </Button>
       </Affix>
