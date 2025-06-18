@@ -1,5 +1,19 @@
 "use client";
-import { AppShell, Box, Burger, Group, Image, ScrollArea, Select, Text } from "@mantine/core";
+import {
+  Anchor,
+  AppShell,
+  Box,
+  Burger,
+  Button,
+  Group,
+  Image,
+  NavLink,
+  Popover,
+  ScrollArea,
+  Select,
+  Stack,
+  Text,
+} from "@mantine/core";
 // import Image from "next/image";
 import NextImage from "next/image";
 import { useRouter } from "next/navigation";
@@ -12,7 +26,7 @@ import NavMenu from "@/components/Navbar/menu";
 import UserInfoCard from "@/components/Navbar/userInfoCard";
 import { BOOKMARKS } from "@/lib/bookmark";
 import { useNavStore } from "@/lib/store/toggleStore";
-import { IconBookmarkFilled } from "@tabler/icons-react";
+import { IconBookmarkFilled, IconHome2 } from "@tabler/icons-react";
 import { useQueryClient } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import "dayjs/locale/ko";
@@ -22,7 +36,11 @@ dayjs.locale("ko");
 const MemoizedUserInfoCard = memo(UserInfoCard);
 const MemoizedNavMenu = memo(NavMenu);
 
-export default function ContentLayout({ children }: { children: React.ReactNode }) {
+export default function ContentLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const mobileOpened = useNavStore((state) => state.mobileOpened);
   const toggleMobile = useNavStore((state) => state.toggleMobile);
   const setMobileClose = useNavStore((state) => state.setMobileClose);
@@ -38,7 +56,16 @@ export default function ContentLayout({ children }: { children: React.ReactNode 
     queryClient.invalidateQueries({
       predicate: (query) => {
         const queryKey = query.queryKey;
-        const targetKeys = ["me", "noticeNew", "approvalNew", "vacationSummary", "notices", "workHours", "attendanceAllStaff", "vacationAll"];
+        const targetKeys = [
+          "me",
+          "noticeNew",
+          "approvalNew",
+          "vacationSummary",
+          "notices",
+          "workHours",
+          "attendanceAllStaff",
+          "vacationAll",
+        ];
         return Array.isArray(queryKey) && targetKeys.includes(queryKey[0]);
       },
     });
@@ -69,29 +96,60 @@ export default function ContentLayout({ children }: { children: React.ReactNode 
       padding="md"
     >
       <AppShell.Header withBorder={false}>
-        <Group justify="space-between" align="center" h={"100%"} px="md">
+        <Group
+          justify="space-between"
+          align="center"
+          h={"100%"}
+          px="md"
+          wrap="nowrap"
+        >
           <Group>
-            <Burger opened={mobileOpened} onClick={toggleMobile} hiddenFrom="sm" size="sm" />
-            <Image onClick={clickLogo} component={NextImage} src={myImage} alt="My image" fit="contain" h={20} w={80} style={{ cursor: "pointer" }} />
+            <Burger
+              opened={mobileOpened}
+              onClick={toggleMobile}
+              hiddenFrom="sm"
+              size="sm"
+            />
+            <Image
+              onClick={clickLogo}
+              component={NextImage}
+              src={myImage}
+              alt="My image"
+              fit="contain"
+              h={20}
+              w={80}
+              style={{ cursor: "pointer" }}
+            />
           </Group>
 
-          <Select
-            clearable
-            comboboxProps={{
-              withinPortal: false,
-              transitionProps: { transition: "pop", duration: 200 },
-              size: "sm",
-              width: 210,
-              position: "bottom-end",
-            }}
-            data={BOOKMARKS}
-            variant="unstyled"
-            w={"auto"}
-            // miw={"max-content"}
-            size="xs"
-            placeholder="북마크"
-            leftSection={<IconBookmarkFilled size={15} color="#f7c401" />}
-          />
+          <Popover width={200} position="bottom" withArrow shadow="md">
+            <Popover.Target>
+              <Button
+                size="xs"
+                variant="subtle"
+                leftSection={<IconBookmarkFilled size={15} color="#f7c401" />}
+              >
+                북마크
+              </Button>
+            </Popover.Target>
+            <Popover.Dropdown>
+              <ScrollArea h={200}>
+                <Stack gap={"sm"}>
+                  {BOOKMARKS.map((bookmark) => (
+                    <Anchor
+                      underline="hover"
+                      size="xs"
+                      href={bookmark.value}
+                      target="_blank"
+                      key={bookmark.value}
+                    >
+                      {bookmark.label}
+                    </Anchor>
+                  ))}
+                </Stack>
+              </ScrollArea>
+            </Popover.Dropdown>
+          </Popover>
         </Group>
       </AppShell.Header>
 
@@ -109,7 +167,9 @@ export default function ContentLayout({ children }: { children: React.ReactNode 
       </AppShell.Navbar>
 
       <AppShell.Main>
-        <Box pb={{ base: "calc(50px + var(--mantine-spacing-sm))", md: 0 }}>{children}</Box>
+        <Box pb={{ base: "calc(50px + var(--mantine-spacing-sm))", md: 0 }}>
+          {children}
+        </Box>
       </AppShell.Main>
       <AppShell.Footer withBorder={false}>
         <Group align="center" h={"100%"} justify="center">
