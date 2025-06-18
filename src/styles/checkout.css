@@ -1,0 +1,14 @@
+.isCheckout {
+  animation: checkout 1s infinite;
+}
+@keyframes checkout {
+  0%,
+  100% {
+    transform: translateY(0);
+    animation-timing-function: ease-out;
+  }
+  50% {
+    transform: translateY(-5px);
+    animation-timing-function: ease-in;
+  }
+}
