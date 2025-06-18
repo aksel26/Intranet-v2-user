@@ -1,5 +1,5 @@
 "use client";
-import { AppShell, Box, Burger, Group, Image, ScrollArea, Text } from "@mantine/core";
+import { AppShell, Box, Burger, Group, Image, ScrollArea, Select, Text } from "@mantine/core";
 // import Image from "next/image";
 import NextImage from "next/image";
 import { useRouter } from "next/navigation";
@@ -10,7 +10,9 @@ import AttendanceInfo from "@/components/Navbar/attendanceInfo";
 import LogoutButton from "@/components/Navbar/logout";
 import NavMenu from "@/components/Navbar/menu";
 import UserInfoCard from "@/components/Navbar/userInfoCard";
+import { BOOKMARKS } from "@/lib/bookmark";
 import { useNavStore } from "@/lib/store/toggleStore";
+import { IconBookmarkFilled } from "@tabler/icons-react";
 import { useQueryClient } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import "dayjs/locale/ko";
@@ -67,9 +69,29 @@ export default function ContentLayout({ children }: { children: React.ReactNode 
       padding="md"
     >
       <AppShell.Header withBorder={false}>
-        <Group h={"100%"} px="md">
-          <Burger opened={mobileOpened} onClick={toggleMobile} hiddenFrom="sm" size="sm" />
-          <Image onClick={clickLogo} component={NextImage} src={myImage} alt="My image" fit="contain" h={20} w={80} style={{ cursor: "pointer" }} />
+        <Group justify="space-between" align="center" h={"100%"} px="md">
+          <Group>
+            <Burger opened={mobileOpened} onClick={toggleMobile} hiddenFrom="sm" size="sm" />
+            <Image onClick={clickLogo} component={NextImage} src={myImage} alt="My image" fit="contain" h={20} w={80} style={{ cursor: "pointer" }} />
+          </Group>
+
+          <Select
+            clearable
+            comboboxProps={{
+              withinPortal: false,
+              transitionProps: { transition: "pop", duration: 200 },
+              size: "sm",
+              width: 210,
+              position: "bottom-end",
+            }}
+            data={BOOKMARKS}
+            variant="unstyled"
+            w={"auto"}
+            // miw={"max-content"}
+            size="xs"
+            placeholder="북마크"
+            leftSection={<IconBookmarkFilled size={15} color="#f7c401" />}
+          />
         </Group>
       </AppShell.Header>
 
