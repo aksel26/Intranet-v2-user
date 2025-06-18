@@ -5,7 +5,7 @@ import "@mantine/dates/styles.css";
 import "./globals.css";
 
 import { GlobalContainer } from "@/components/Global/GlobalContainer";
-import { Metadata } from "next";
+import { Metadata, Viewport } from "next";
 import Providers from "@/components/Global/config/providers";
 import { ColorSchemeScript } from "@mantine/core";
 // import StoreProvider from "@/components/Global/config/StoreProvider";
@@ -22,28 +22,22 @@ import localFont from "next/font/local";
 import dayjs from "dayjs";
 import "dayjs/locale/ko";
 dayjs.locale("ko");
-const myFont = localFont({
-  src: "./static/font/NanumSquareNeo-Variable.ttf",
-  display: "swap",
-});
+// const myFont = localFont({
+//   src: "./static/font/NanumSquareNeo-Variable.ttf",
+//   display: "swap",
+// });
 
 export const metadata: Metadata = {
-  title: "ACG 인트라넷",
-  description: "ACG 인트라넷",
-  viewport: {
-    width: "device-width",
-    initialScale: 1,
-    minimumScale: 1,
-    maximumScale: 1,
-    userScalable: false,
-    viewportFit: "cover", // iPhone X 등의 노치 대응
-  },
-  other: {
-    "apple-mobile-web-app-capable": "yes",
-    "apple-mobile-web-app-status-bar-style": "default",
-    "mobile-web-app-capable": "yes",
-    "format-detection": "telephone=no",
-  },
+  title: "ALBA",
+  description: "ACG_alba",
+  // viewport: "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no", // <-- here
+};
+
+export const viewport: Viewport = {
+  initialScale: 1,
+  width: "device-width",
+  maximumScale: 1, // 확대 방지
+  userScalable: false, // 확대/축소 기능 비활성화
 };
 
 export default function RootLayout({
@@ -54,14 +48,13 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <head>
-        <title>하이</title>
-        <meta
-          name="viewport"
-          content="minimum-scale=1, initial-scale=1, width=device-width"
-        />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <ColorSchemeScript />
       </head>
-      <body className={myFont.className}>
+      <body
+      // className={myFont.className}
+      >
         <Providers>
           {/* <StoreProvider> */}
           <GlobalContainer>{children}</GlobalContainer>
