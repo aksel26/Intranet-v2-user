@@ -18,6 +18,7 @@ body {
   -webkit-overflow-scrolling: touch; /* iOS 부드러운 스크롤 */
   background-color: oklch(0.985 0.002 247.839);
   overscroll-behavior: none;
+  word-break: keep-all;
 }
 
 .navbar-open {

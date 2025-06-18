@@ -1,16 +1,18 @@
 import { getApprovals } from "@/app/api/get/getApi";
+import EmptyView from "@/components/Global/view/EmptyView";
+import { useUpdateNew } from "@/hooks/useSubmitForm";
 import { TApprovalList } from "@/lib/types/approval";
-import { ActionIcon, Grid, Group, Indicator, List, Stack, Text } from "@mantine/core";
+import styles from "@/styles/list.module.css";
+import { ActionIcon, Group, Indicator, List, Stack, Text } from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
 import { IconChevronRight } from "@tabler/icons-react";
 import { useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
-import styles from "@/styles/list.module.css";
 import dayjs from "dayjs";
 import React, { useState } from "react";
-import { ApprovalStatus, ApprovalType } from "../badge";
-import EmptyView from "@/components/Global/view/EmptyView";
-import { useDisclosure } from "@mantine/hooks";
+import { ApprovalStatus } from "../badge";
 import ApprovalConfirm from "../confirm";
-import { useUpdateNew } from "@/hooks/useSubmitForm";
+import { ApprovalType } from "../type";
+
 const ApprovalList = ({ params }: any) => {
   const data = useSuspenseQuery({
     queryKey: ["approvals", params],
@@ -60,53 +62,47 @@ const ApprovalList = ({ params }: any) => {
     >
       <Stack gap={8} w={"100%"}>
         <Group justify="space-between" align="center" wrap="nowrap" w={"100%"}>
-          <Indicator disabled={record.isNew ? false : true} offset={-5}>
-            <Text fz={"sm"} fw={500}>
-              {`${dayjs(record?.commuteDate).format("YYYY-MM-DD (dd)")}`}
-            </Text>
+          <Indicator disabled={record.isNew ? false : true} offset={-3} size={7} position="top-start">
+            <Group align="center">
+              <Text fz={"sm"} fw={500}>
+                {`${dayjs(record?.commuteDate).format("YYYY-MM-DD (dd)")}`}
+              </Text>
+              <ApprovalType value={record.relationType} />
+            </Group>
           </Indicator>
           <ActionIcon variant="subtle" color="gray.4" size={"sm"}>
             <IconChevronRight />
           </ActionIcon>
         </Group>
-        <Grid align="center">
-          <Grid.Col span={{ base: 2, md: 0.7 }}>
-            <Group justify="center">
-              <ApprovalType value={record?.relationType} />
-            </Group>
-          </Grid.Col>
-          <Grid.Col span={{ base: 10 }}>
-            <Stack gap={6}>
-              <Group gap={"xs"}>
-                <Text fz={"xs"} c={"dimmed"} w={50}>
-                  성명
-                </Text>
-                <Text fz={"xs"}>{record?.userName}</Text>
-              </Group>
-              <Group gap={"xs"}>
-                <Text fz={"xs"} c={"dimmed"} w={50}>
-                  휴가유형
-                </Text>
-                <Text fz={"xs"}>{record?.leaveType}</Text>
-              </Group>
-              <Group gap={"xs"}>
-                <Text fz={"xs"} c={"dimmed"} w={50}>
-                  상태
-                </Text>
-                <ApprovalStatus record={record} />
-              </Group>
+        <Stack gap={6}>
+          <Group gap={"xs"}>
+            <Text fz={"xs"} c={"dimmed"} w={50}>
+              성명
+            </Text>
+            <Text fz={"xs"}>{record?.userName}</Text>
+          </Group>
+          <Group gap={"xs"}>
+            <Text fz={"xs"} c={"dimmed"} w={50}>
+              휴가유형
+            </Text>
+            <Text fz={"xs"}>{record?.leaveType}</Text>
+          </Group>
+          <Group gap={"xs"}>
+            <Text fz={"xs"} c={"dimmed"} w={50}>
+              상태
+            </Text>
+            <ApprovalStatus record={record} />
+          </Group>
 
-              <Group gap={"xs"}>
-                <Text fz={"xs"} c={"dimmed"} w={50}>
-                  내용
-                </Text>
-                <Text c={record?.note ? "black" : "dimmed"} fz={"xs"}>
-                  {record?.note || "작성 내용이 없습니다."}
-                </Text>
-              </Group>
-            </Stack>
-          </Grid.Col>
-        </Grid>
+          <Group gap={"xs"}>
+            <Text fz={"xs"} c={"dimmed"} w={50}>
+              내용
+            </Text>
+            <Text c={record?.note ? "black" : "dimmed"} fz={"xs"}>
+              {record?.note || "작성 내용이 없습니다."}
+            </Text>
+          </Group>
+        </Stack>
       </Stack>
     </List.Item>
   );

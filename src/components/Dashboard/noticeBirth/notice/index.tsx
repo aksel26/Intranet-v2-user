@@ -36,7 +36,7 @@ function Notice() {
     <React.Fragment key={notice.noticeIdx}>
       {index + 1 > LIST_LIMIT ? null : (
         <ListItem w={"100%"} onClick={() => goDetail(notice.noticeIdx)} key={notice.noticeIdx} className={styles.element} px={"sm"} py={4} styles={{ itemLabel: { width: "100%" } }}>
-          <Indicator offset={-14} disabled={notice.isNew ? false : true} position="middle-end">
+          <Indicator offset={-14} disabled={notice.isNew ? false : true} size={7} position="middle-end">
             <Group justify="space-between" w={"100%"}>
               <Text fz={"sm"}>{notice.title}</Text>
               <Group gap={"xs"}>
