@@ -2,9 +2,10 @@
 import { getHolidays } from "@/app/api/get/getApi";
 import { mainDateStore } from "@/lib/store/mainDateStore";
 import { myInfoStore } from "@/lib/store/myInfoStore";
-import { Badge, Box, Group, Paper, Text, Title } from "@mantine/core";
+import { getYearsRange, monthList } from "@/utils/dateFomat";
+import { ActionIcon, Badge, Box, Button, Group, Paper, Select, Text, Title } from "@mantine/core";
 import { DatePicker } from "@mantine/dates";
-import { IconChevronLeft, IconChevronRight } from "@tabler/icons-react";
+import { IconChevronDown, IconChevronLeft, IconChevronRight } from "@tabler/icons-react";
 import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
 const MainCalendar = ({ allAttendance }: any) => {
@@ -31,6 +32,12 @@ const MainCalendar = ({ allAttendance }: any) => {
   const handleChangeMonth = (date: Date) => {
     setInnerValue(date);
     setDateValue(date);
+  };
+
+  const handleToday = () => {
+    const today = dayjs().toDate();
+    setInnerValue(today);
+    setDateValue(today);
   };
 
   const renderDay = (date: any, allAttendance: any) => {
@@ -72,22 +79,63 @@ const MainCalendar = ({ allAttendance }: any) => {
 
   return (
     <Paper p={"lg"} radius={"lg"}>
-      <Group mb={"sm"} align="center">
-        {/* <Title order={4}>
-          {dayjs(innerValue).year()}
-          <Text component="span" ml={2}>
-            년
-          </Text>
-        </Title> */}
-        <IconChevronLeft color="gray" size={"14"} />
-        <Title order={4}>
-          {dayjs(innerValue).month() + 1}
-          <Text component="span" ml={2}>
-            월
-          </Text>
-        </Title>
-        <Title order={4}>{dayjs(innerValue).year()}</Title>
-        <IconChevronRight color="gray" size={"14"} />
+      <Group align="center" justify="space-between" mb={"md"}>
+        <Title order={5}>캘린더</Title>
+        <Button variant="light" size="xs" onClick={handleToday}>
+          오늘
+        </Button>
+      </Group>
+      <Group mb={"md"} align="center" justify="space-between">
+        <ActionIcon variant="subtle" onClick={() => handleChangeMonth(dayjs(innerValue).subtract(1, "month").toDate())}>
+          <IconChevronLeft color="gray" size={18} />
+        </ActionIcon>
+        <Group>
+          <Select
+            comboboxProps={{
+              withinPortal: false, // 포털 비활성화로 외부 클릭 감지 개선
+              transitionProps: { transition: "pop", duration: 200 },
+              size: "sm",
+              width: 100,
+            }}
+            rightSectionPointerEvents="none"
+            rightSection={<IconChevronDown size={16} />}
+            value={dayjs(innerValue).year().toString()}
+            onChange={(value: any) => {
+              const newDate = dayjs(innerValue).year(parseInt(value)).toDate();
+              handleChangeMonth(newDate);
+            }}
+            w={100}
+            data={getYearsRange().map((item) => ({ value: item.toString(), label: `${item}년` }))}
+            size="md"
+            variant="unstyled"
+            fw={500}
+          />
+          <Select
+            comboboxProps={{
+              withinPortal: false, // 포털 비활성화로 외부 클릭 감지 개선
+              transitionProps: { transition: "pop", duration: 200 },
+              size: "sm",
+              width: 80,
+            }}
+            data={monthList().map((item) => ({ value: item.toString(), label: `${item}월` }))}
+            size="md"
+            variant="unstyled"
+            fw={500}
+            w={80}
+            rightSectionPointerEvents="none"
+            rightSection={<IconChevronDown size={16} />}
+            value={(dayjs(innerValue).month() + 1).toString()}
+            onChange={(value: any) => {
+              const newDate = dayjs(innerValue)
+                .month(parseInt(value) - 1)
+                .toDate();
+              handleChangeMonth(newDate);
+            }}
+          />
+        </Group>
+        <ActionIcon variant="subtle" onClick={() => handleChangeMonth(dayjs(innerValue).add(1, "month").toDate())}>
+          <IconChevronRight color="gray" size={18} />
+        </ActionIcon>
       </Group>
       <DatePicker
         styles={{ calendarHeader: { display: "none" } }}
