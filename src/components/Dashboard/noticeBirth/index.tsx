@@ -19,7 +19,7 @@ const NoticeBirth = () => {
   const cardHeight = heightRef?.current?.offsetHeight || 0;
 
   return (
-    <Paper p={"lg"} radius={"lg"} className={activeTab === "birth" ? "bg-gradient-to-r from-yellow-100 to-red-100" : ""} ref={heightRef} mah={500} styles={{ root: { overflow: "scroll" } }}>
+    <Paper p={"lg"} radius={"lg"} className={activeTab === "birth" ? "bg-gradient-to-r from-yellow-100 to-red-100" : ""} ref={heightRef} mah={200} styles={{ root: { overflow: "hidden" } }}>
       <Tabs value={activeTab} onChange={setActiveTab} variant="pills" radius={"md"}>
         <Tabs.List justify="space-between">
           <Group styles={{ root: { zIndex: 1 } }}>

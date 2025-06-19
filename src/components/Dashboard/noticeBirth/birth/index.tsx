@@ -28,22 +28,24 @@ const Birth = ({ month }: BirthProps) => {
       return <EmptyView />;
     }
     return (
-      <Stack gap={"xs"} pt={"xs"}>
-        {birth.map((item: any) => (
-          <Group key={item.userIdx} ml={"xs"} style={{ zIndex: 1 }}>
-            <Text fz={"sm"}>🎉</Text>
-            <Text miw={35} fz={"sm"}>
-              {item.userName}
-            </Text>
-            <Text miw={40} fz={"sm"}>
-              {item.gradeName}
-            </Text>
-            <Text c="dimmed" fz={"sm"}>
-              {dayjs(item.userBirth).format("MM월 DD일")}
-            </Text>
-          </Group>
-        ))}
-      </Stack>
+      <ScrollArea h={120}>
+        <Stack gap={"xs"} pt={"xs"}>
+          {birth.map((item: any) => (
+            <Group key={item.userIdx} ml={"xs"} style={{ zIndex: 1 }}>
+              <Text fz={"sm"}>🎉</Text>
+              <Text miw={35} fz={"sm"}>
+                {item.userName}
+              </Text>
+              <Text miw={40} fz={"sm"}>
+                {item.gradeName}
+              </Text>
+              <Text c="dimmed" fz={"sm"}>
+                {dayjs(item.userBirth).format("MM월 DD일")}
+              </Text>
+            </Group>
+          ))}
+        </Stack>
+      </ScrollArea>
     );
   };
 
