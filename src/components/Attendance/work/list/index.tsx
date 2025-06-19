@@ -52,11 +52,11 @@ const AttendanceList = ({ params }: any) => {
       <Group gap={"md"}>
         <Stack gap={"xs"} flex={1}>
           <Group gap={"xs"}>
-            <Text fz={"sm"} c={"dimmed"}>
+            <Text fz={"sm"} c={"gray.5"}>
               출근시간
             </Text>
             {!record.checkInTime ? (
-              <Text fz={"sm"} c={"gray.4"}>
+              <Text fz={"sm"} c={"gray.5"}>
                 출근 전
               </Text>
             ) : (
@@ -64,11 +64,11 @@ const AttendanceList = ({ params }: any) => {
             )}
           </Group>
           <Group gap={"xs"}>
-            <Text fz={"sm"} c={"dimmed"}>
+            <Text fz={"sm"} c={"gray.5"}>
               퇴근시간
             </Text>
             {!record.checkOutTime ? (
-              <Text fz={"sm"} c={"gray.4"}>
+              <Text fz={"sm"} c={"gray.5"}>
                 퇴근 전
               </Text>
             ) : (
@@ -78,13 +78,13 @@ const AttendanceList = ({ params }: any) => {
         </Stack>
         <Stack gap={"xs"} flex={1}>
           <Group gap={"xs"}>
-            <Text fz={"sm"} c={"dimmed"}>
+            <Text fz={"sm"} c={"gray.5"}>
               근무시간
             </Text>
             <Text fz={"sm"}>{`${calculateNumberToTime(record.workingMinutes)}`}</Text>
           </Group>
           <Group gap={"xs"}>
-            <Text fz={"sm"} c={"dimmed"}>
+            <Text fz={"sm"} c={"gray.5"}>
               초과시간
             </Text>
             <Text fz={"sm"}>{`${calculateNumberToTime(record.overtimeWorkingMinutes)}`}</Text>
@@ -93,11 +93,11 @@ const AttendanceList = ({ params }: any) => {
       </Group>
       <Group align="center" justify="space-between" styles={{ root: { cursor: "pointer" } }} onClick={() => openModal(record)}>
         <Group gap={"xs"}>
-          <Text fz={"sm"} c={"dimmed"}>
+          <Text fz={"sm"} c={"gray.5"}>
             비고
           </Text>
           <Box w={"60vw"}>
-            <Text truncate="end" c={record.note ? "black" : "gray.4"} fz={"sm"}>
+            <Text truncate="end" c={record.note ? "black" : "gray.5"} fz={"sm"}>
               {record.note ? record.note : "내용이 없습니다."}
             </Text>
           </Box>

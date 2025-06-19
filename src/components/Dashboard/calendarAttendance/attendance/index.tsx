@@ -4,10 +4,8 @@ import { Badge, Box, Group, Paper, ScrollArea, Stack, Text, Title } from "@manti
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 const AttendanceAll = ({ allAttendance }: any) => {
-  console.log("allAttendance:", allAttendance);
   const { dateValue } = mainDateStore();
   const [filteredEvents, setFilteredEvents] = useState([]);
-  console.log("filteredEvents:", filteredEvents);
 
   useEffect(() => {
     // 선택된 날짜를 YYYY-MM-DD 형식으로 변환
