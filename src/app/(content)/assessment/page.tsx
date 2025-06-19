@@ -107,14 +107,7 @@ const AssessmentManage = () => {
     </Table.Tr>
   ));
   return (
-    <PageContainer>
-      <Stack gap={1}>
-        <Title order={4}>검사 * 교육</Title>
-        <Text component="span" c={"gray.6"} fz={"sm"}>
-          검사 운영 관련 일정을 확인할 수 있습니다.
-        </Text>
-      </Stack>
-
+    <>
       <Grid mt={"xs"}>
         <GridCol span={{ base: 12, md: 9 }}>
           <Stack gap={"md"}>
@@ -141,7 +134,7 @@ const AssessmentManage = () => {
         </GridCol>
       </Grid>
       <CreateDrawer open={opened} close={close} />
-    </PageContainer>
+    </>
   );
 };
 
