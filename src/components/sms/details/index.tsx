@@ -6,8 +6,10 @@ const Value = ({ content }: { content: string }) => {
 const SmsDetails = () => {
   return (
     <Stack gap={2} visibleFrom="md">
-      <Text fz="sm">발송내역(PC화면)</Text>
-      <ScrollArea h={"78vh"}>
+      <Text fz="sm" c={"gray"}>
+        발송내역(PC화면)
+      </Text>
+      <ScrollArea h={"75vh"}>
         <Stack gap={"md"}>
           <Paper radius={"md"} bg={"white"} p={"md"}>
             <Stack gap={"xs"}>
