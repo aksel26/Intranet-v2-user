@@ -40,3 +40,15 @@ export const yearsList = () => {
 
   return years;
 };
+
+export const getYearsRange = () => {
+  const currentYear = new Date().getFullYear(); // 현재 연도
+  const years = [];
+  const offset = 3;
+
+  for (let i = -offset; i <= offset; i++) {
+    years.push(currentYear + i);
+  }
+
+  return years;
+};
