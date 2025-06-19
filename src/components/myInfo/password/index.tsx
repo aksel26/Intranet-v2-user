@@ -35,7 +35,7 @@ const UpdatePassword = () => {
   };
 
   return (
-    <Paper bg={"white"} px="md" py="lg" radius={"lg"} mt={"md"}>
+    <Paper bg={"white"} px="md" py="lg" radius={"lg"} mt={"sm"}>
       <Text mb={"xs"}>비밀번호 수정</Text>
       <Box w={{ base: "100%", sm: "400px" }}>
         <form onSubmit={passwordForm.onSubmit(submitChangePassword)}>
