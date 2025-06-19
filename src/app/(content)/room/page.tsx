@@ -140,15 +140,8 @@ const TimelineCalendarWithPrint = () => {
   //   }
 
   return (
-    <PageContainer>
-      <Group justify="space-between" align="end">
-        <Stack gap={1}>
-          <Title order={4}> 회의실 예약</Title>
-          <Text component="span" c={"gray.6"} fz={"sm"}>
-            회의실 예약 현황을 확인할 수 있습니다.
-          </Text>
-        </Stack>
-
+    <>
+      <Group justify="end" align="end" mb={"md"}>
         <Switch
           label="보기 설정"
           styles={{
@@ -163,16 +156,16 @@ const TimelineCalendarWithPrint = () => {
             setCurrentView(currentView === "resourceTimeline" ? "resourceTimeGrid" : "resourceTimeline");
           }}
           size="md"
-          color="dark.4"
-          onLabel={<IconArrowsVertical size={16} stroke={2.5} color="var(--mantine-color-yellow-4)" />}
+          color="gray.2"
+          onLabel={<IconArrowsVertical size={16} stroke={2.5} color="var(--mantine-color-blue-6)" />}
           offLabel={<IconArrowsHorizontal size={16} stroke={2.5} color="var(--mantine-color-blue-6)" />}
         />
       </Group>
-      <Paper bg={"white"} px="xs" py="lg" radius={"lg"} mt={"md"}>
+      <Paper bg={"white"} px="lg" py="xl" radius={"lg"} mt={"md"}>
         {currentView === "resourceTimeline" ? <HorizontalTimeline /> : <ResourceTimeGridCalendar />}
       </Paper>
       <ReserveModal opened={opened} close={close} />
-    </PageContainer>
+    </>
   );
 };
 

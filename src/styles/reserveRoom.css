@@ -27,7 +27,7 @@
 
 /* 헤더 영역 */
 .fc-toolbar-title {
-  font-size: 0.9rem !important;
+  font-size: 1rem !important;
   font-weight: semibold;
 }
 
@@ -61,14 +61,33 @@
   margin-left: 3px;
 }
 
+.fc-header-toolbar > div:first-child > div {
+  display: flex;
+  align-items: center;
+}
+.fc .fc-button {
+  padding: 0em 0.5em;
+}
 /* 오른쪽 왼쪽 버튼 */
 .fc-button-group {
   column-gap: 8px;
 }
+
+.fc .fc-button-primary:not(:disabled):active {
+  background-color: transparent;
+}
+.fc .fc-button-primary:not(:disabled).fc-button-active:focus,
+.fc .fc-button-primary:focus,
+.fc .fc-button-primary:not(:disabled):active:focus {
+  box-shadow: none;
+  background-color: var(--mantine-color-gray-2);
+  transition: all 0.2s ease-in-out;
+  color: var(--mantine-color-gray-6);
+}
 .fc .fc-button-primary.fc-prev-button,
 .fc .fc-button-primary.fc-next-button {
-  background-color: var(--mantine-color-blue-1);
-  color: var(--mantine-color-blue-3);
+  background-color: transparent;
+  color: var(--mantine-color-gray-5);
   border: none;
   border-radius: 8px;
   font-size: 0.8em;
