@@ -12,20 +12,14 @@ const SMS = () => {
   const [opened, { open, close }] = useDisclosure(false);
 
   return (
-    <PageContainer>
-      <Group justify="space-between" align="end">
-        <Stack gap={1}>
-          <Title order={4}> 안내 SMS 전송</Title>
-          <Text component="span" c={"gray.6"} fz={"sm"}>
-            안내 SMS 전송 및 현황을 확인할 수 있습니다.
-          </Text>
-        </Stack>
-      </Group>
+    <>
       <Grid mt={"md"}>
         <GridCol span={{ base: 12, md: 4 }}>
           <Stack gap={2}>
             <Group justify="space-between" align="end">
-              <Text fz={"sm"}>발신정보</Text>
+              <Text fz={"sm"} c={"gray"}>
+                발신정보
+              </Text>
               <Button variant="outline" size="xs" onClick={open} hiddenFrom="md">
                 내역
               </Button>
@@ -44,7 +38,9 @@ const SMS = () => {
           </Stack>
 
           <Stack gap={2} mt={"md"}>
-            <Text fz={"sm"}>수신정보</Text>
+            <Text fz={"sm"} c={"gray"}>
+              수신정보
+            </Text>
             <Paper p={"lg"}>
               <Group wrap="nowrap" align="end" mb={"md"}>
                 <TextInput flex={1} styles={{ label: { fontSize: "var(--mantine-font-size-xs)", color: "var(--mantine-color-gray-6)" } }} placeholder="010-0000-0000" label="수신번호" />
@@ -71,7 +67,7 @@ const SMS = () => {
       </Grid>
 
       <SmsDetailsModal opened={opened} close={close} />
-    </PageContainer>
+    </>
   );
 };
 
