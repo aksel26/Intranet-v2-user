@@ -1,8 +1,7 @@
 "use client";
-import { Anchor, AppShell, Box, Burger, Button, Group, Image, NavLink, Popover, ScrollArea, Select, Stack, Text } from "@mantine/core";
+import { Anchor, AppShell, Box, Burger, Button, Group, Image, Popover, ScrollArea, Stack, Text } from "@mantine/core";
 // import Image from "next/image";
 import NextImage from "next/image";
-import { useRouter } from "next/navigation";
 import React, { memo, useEffect } from "react";
 import myImage from "/public/images/ACG_LOGO_GRAY.png";
 
@@ -12,10 +11,10 @@ import NavMenu from "@/components/Navbar/menu";
 import UserInfoCard from "@/components/Navbar/userInfoCard";
 import { BOOKMARKS } from "@/lib/bookmark";
 import { useNavStore } from "@/lib/store/toggleStore";
-import { IconBookmarkFilled, IconHome2 } from "@tabler/icons-react";
-import { useQueryClient } from "@tanstack/react-query";
+import { IconBookmarkFilled } from "@tabler/icons-react";
 import dayjs from "dayjs";
 import "dayjs/locale/ko";
+import Link from "next/link";
 
 dayjs.locale("ko");
 
@@ -26,23 +25,6 @@ export default function ContentLayout({ children }: { children: React.ReactNode 
   const mobileOpened = useNavStore((state) => state.mobileOpened);
   const toggleMobile = useNavStore((state) => state.toggleMobile);
   const setMobileClose = useNavStore((state) => state.setMobileClose);
-
-  const router = useRouter();
-
-  const clickLogo = () => {
-    setMobileClose();
-    router.push("/main");
-  };
-  const queryClient = useQueryClient();
-  useEffect(() => {
-    queryClient.invalidateQueries({
-      predicate: (query) => {
-        const queryKey = query.queryKey;
-        const targetKeys = ["me", "noticeNew", "approvalNew", "vacationSummary", "notices", "workHours", "attendanceAllStaff", "vacationAll"];
-        return Array.isArray(queryKey) && targetKeys.includes(queryKey[0]);
-      },
-    });
-  }, []);
 
   useEffect(() => {
     if (mobileOpened) {
@@ -72,7 +54,9 @@ export default function ContentLayout({ children }: { children: React.ReactNode 
         <Group justify="space-between" align="center" h={"100%"} px="md" wrap="nowrap">
           <Group>
             <Burger opened={mobileOpened} onClick={toggleMobile} hiddenFrom="sm" size="sm" />
-            <Image onClick={clickLogo} component={NextImage} src={myImage} alt="My image" fit="contain" h={20} w={80} style={{ cursor: "pointer" }} />
+            <Link href={"/main"} onClick={() => setMobileClose()} style={{ textDecoration: "none" }}>
+              <Image component={NextImage} src={myImage} alt="My image" fit="contain" h={20} w={80} style={{ cursor: "pointer" }} />
+            </Link>
           </Group>
 
           <Popover width={200} position="bottom" withArrow shadow="md">
