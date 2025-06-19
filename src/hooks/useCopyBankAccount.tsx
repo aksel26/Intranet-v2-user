@@ -7,7 +7,7 @@ const useCopyBankAccount = () => {
     try {
       await navigator.clipboard.writeText("국민 005701-04-142344 ㈜에이시지알").then(() => {
         notification({
-          title: "입금 계좌번호 복사",
+          title: "입금 계좌번호 복사 완료",
           message: "국민 005701-04-142344 ㈜에이시지알",
           color: "green",
           icon: <IconCheck size={16} />,
