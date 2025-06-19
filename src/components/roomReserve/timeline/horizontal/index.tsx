@@ -119,9 +119,7 @@ const HorizontalTimeline = () => {
     const description = event.extendedProps.description || "설명 없음";
 
     alert(`일정: ${event.title}
-시간: ${event.start ? event.start.toLocaleString() : "시간 정보 없음"} ~ ${
-      event.end ? event.end.toLocaleString() : ""
-    }
+시간: ${event.start ? event.start.toLocaleString() : "시간 정보 없음"} ~ ${event.end ? event.end.toLocaleString() : ""}
 설명: ${description}`);
 
     // 삭제 여부 확인
@@ -133,17 +131,11 @@ const HorizontalTimeline = () => {
   return (
     <div className="calendar-container calendar-print-container">
       <FullCalendar
-        plugins={[
-          resourceTimelinePlugin,
-          timelinePlugin,
-          dayGridPlugin,
-          interactionPlugin,
-          listPlugin,
-        ]}
+        plugins={[resourceTimelinePlugin, timelinePlugin, dayGridPlugin, interactionPlugin, listPlugin]}
         initialView="resourceTimeline"
         headerToolbar={{
-          left: "title",
-          right: "prev,next today",
+          left: "prev,title,next",
+          right: "today",
           center: "",
         }}
         resourceAreaColumns={[
