@@ -1,9 +1,11 @@
 import { getVacationSummary } from "@/app/api/get/getApi";
 import ToolTipDetailsVacation from "@/components/Attendance/ToolTipDetailsVacation";
 import { TYearMonth } from "@/types/apiTypes";
-import { ActionIcon, Grid, Group, Paper, Stack, Text } from "@mantine/core";
-import { IconDots } from "@tabler/icons-react";
+import { ActionIcon, Grid, Group, Paper, Popover, Stack, Text } from "@mantine/core";
+import { IconDots, IconInfoCircle } from "@tabler/icons-react";
 import { useSuspenseQuery } from "@tanstack/react-query";
+import dayjs from "dayjs";
+import { useMemo } from "react";
 
 const VacationSummary = ({ params }: { params: TYearMonth }) => {
   const { data } = useSuspenseQuery({
@@ -14,6 +16,9 @@ const VacationSummary = ({ params }: { params: TYearMonth }) => {
   const leaveSummary = data?.data.leaveSummary;
   const leaveUsageStats = data?.data.leaveUsageStats;
 
+  const isDateAfter = useMemo(() => {
+    return dayjs().isAfter(dayjs(leaveSummary?.oneYearAfterJoin), "day");
+  }, [leaveSummary]);
   return (
     <Stack gap={2} w={"100%"}>
       <Text fz={"sm"} fw={500} c={"gray"}>
@@ -24,7 +29,7 @@ const VacationSummary = ({ params }: { params: TYearMonth }) => {
           <Grid.Col span={{ base: 12, md: 6 }}>
             <Group gap={"xl"} justify="space-around" align="end" maw={350} mx={"auto"}>
               <Stack gap={4}>
-                <Text c={"dimmed"} fz={"xs"}>
+                <Text c={"dimmed"} fz={"sm"}>
                   총 연차 개수
                 </Text>
                 <Text fz={"sm"} ta={"center"}>
@@ -35,7 +40,7 @@ const VacationSummary = ({ params }: { params: TYearMonth }) => {
                 </Text>
               </Stack>
               <Stack gap={4}>
-                <Text c={"dimmed"} fz={"xs"}>
+                <Text c={"dimmed"} fz={"sm"}>
                   사용 연차
                 </Text>
                 <Text fz={"sm"} ta={"center"}>
@@ -46,7 +51,7 @@ const VacationSummary = ({ params }: { params: TYearMonth }) => {
                 </Text>
               </Stack>
               <Stack gap={4}>
-                <Text c={"dimmed"} fz={"xs"}>
+                <Text c={"dimmed"} fz={"sm"}>
                   잔여 연차
                 </Text>
                 <Text fz={"sm"} ta={"center"}>
@@ -61,35 +66,48 @@ const VacationSummary = ({ params }: { params: TYearMonth }) => {
 
           {/* <Divider my={"sm"} /> */}
           <Grid.Col span={{ base: 12, md: 6 }}>
-            <Group justify="space-between" align="end">
+            <Group justify="space-between" align="end" wrap="nowrap">
               <Stack gap={"xs"}>
-                <Group gap={"xs"}>
-                  <Text fz={"xs"} c={"gray"}>
+                <Group gap={"xs"} wrap="nowrap">
+                  <Text fz={"sm"} c={"gray.5"} w={50}>
                     입사일
                   </Text>
-                  <Text fz={"xs"}>2022-03-01</Text>
+                  <Group gap={"xs"}>
+                    <Text fz={"sm"}>{leaveSummary?.joinDate}</Text>
+                    <Popover position="bottom" withArrow shadow="md">
+                      <Popover.Target>
+                        <ActionIcon size="compact-xs" variant="subtle" radius={"xs"} hidden={isDateAfter}>
+                          <IconInfoCircle size={18} />
+                        </ActionIcon>
+                      </Popover.Target>
+                      <Popover.Dropdown>
+                        <Stack gap={"xs"}>
+                          <Group gap={"xs"} wrap="nowrap">
+                            <Text fz={"sm"} c={"gray.5"} w={110}>
+                              만 1년 날짜
+                            </Text>
+                            <Text fz={"sm"}>{leaveSummary?.oneYearAfterJoin}</Text>
+                          </Group>
+                          <Group gap={"xs"}>
+                            <Text fz={"sm"} c={"gray.5"} w={110}>
+                              중도입사 연차 부여
+                            </Text>
+                            <Text fz={"sm"}>{leaveSummary?.midJoinReceivedAnnualLeave}개</Text>
+                          </Group>
+                        </Stack>
+                      </Popover.Dropdown>
+                    </Popover>
+                  </Group>
                 </Group>
                 <Group gap={"xs"}>
-                  <Text fz={"xs"} c={"gray"}>
+                  <Text fz={"sm"} c={"gray.5"} w={50}>
                     근속년수
                   </Text>
-                  <Text fz={"xs"}>3년</Text>
+                  <Text fz={"sm"}>{leaveSummary?.yearsSinceJoin}년</Text>
                 </Group>
               </Stack>
-              <Stack gap={"xs"}>
-                <Group gap={"xs"}>
-                  <Text fz={"xs"} c={"gray"}>
-                    만 1년 날짜
-                  </Text>
-                  <Text fz={"xs"}>2022-03-01</Text>
-                </Group>
-                <Group gap={"xs"}>
-                  <Text fz={"xs"} c={"gray"}>
-                    중도입사 연차 부여
-                  </Text>
-                  <Text fz={"xs"}>3년</Text>
-                </Group>
-              </Stack>
+
+              {/* */}
               <ToolTipDetailsVacation details={leaveUsageStats}>
                 <ActionIcon size="compact-xs" variant="subtle" radius={"xs"}>
                   <IconDots />

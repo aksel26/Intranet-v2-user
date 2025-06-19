@@ -37,7 +37,7 @@ const AttendanceList = ({ params }: any) => {
   const Items = ({ record, arr, index }: { record: any; arr: any; index: number }) => (
     <Stack key={record.commuteIdx} gap={10}>
       <Group gap={2} align="center" justify="space-between" wrap="nowrap">
-        <Group gap={"xs"} align="end">
+        <Group gap={"xs"} align="center">
           <Text fz={"sm"} fw={500}>
             {dayjs(record.commuteDate).format("YYYY-MM-DD (dd)")}
           </Text>

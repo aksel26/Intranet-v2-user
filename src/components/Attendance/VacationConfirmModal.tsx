@@ -40,20 +40,22 @@ function VacationConfirmModal({ opened, close, submitInfo, confirmPerson, closeD
     <Modal opened={opened} onClose={close} title="휴가 신청 확인" centered>
       {/* Modal content */}
 
-      <Alert variant="light" color="lime" title="휴가 신청 내용" icon={<IconInfoCircle />}>
+      <Alert variant="outline" color="lime" title="휴가 신청 내용" icon={<IconInfoCircle />}>
         <Stack gap={"xs"}>
-          <Text fz={"sm"} fw={500}>
+          <Text fz={"md"} fw={500}>
             {getLeaveTypeKey(submitInfo?.leaveInfo[0].leaveTypeIdx)}
           </Text>
 
-          {submitInfo?.leaveInfo?.map((info: any, key: number) => (
-            <Group key={key}>
-              <Text fz={"xs"} c={"dimmed"}>{`${dayjs(info?.commuteDate).format("YYYY-MM-DD (dd요일)")} `}</Text>
-            </Group>
-          ))}
-          <Text c={"dimmed"} fz={"xs"}>
-            승인자 : {confirmPerson?.map((person: any) => person.label).join(", ")}
-          </Text>
+          <Stack gap={2}>
+            {submitInfo?.leaveInfo?.map((info: any, key: number) => (
+              <Group key={key}>
+                <Text fz={"sm"} c={"dimmed"}>{`${dayjs(info?.commuteDate).format("YYYY-MM-DD (dd요일)")} `}</Text>
+              </Group>
+            ))}
+            <Text c={"dimmed"} fz={"sm"}>
+              승인자 : {confirmPerson?.map((person: any) => person.label).join(", ")}
+            </Text>
+          </Stack>
         </Stack>
       </Alert>
       <Group wrap="nowrap" mt={"md"}>

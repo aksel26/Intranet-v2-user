@@ -28,7 +28,7 @@ const ToolTipDetailsVacation = ({ details, children }: any) => {
   } = details;
 
   return (
-    <Popover width={"auto"} position="bottom-start" withArrow shadow="md">
+    <Popover width={"auto"} position="bottom-end" withArrow shadow="md">
       <Popover.Target>{children}</Popover.Target>
       <Popover.Dropdown py={"md"}>
         <Paper bg={"white"} radius={"lg"}>

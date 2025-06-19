@@ -5,8 +5,8 @@ const ConfirmStatus = ({ record }: any) => {
   if (record.confirmYN === "R") {
     if (record.rejectDate) {
       return (
-        <Group gap={"xs"} align="end">
-          <Badge variant="outline" color="red" radius="sm" size="sm">
+        <Group gap={3} align="end">
+          <Badge variant="light" color="red" radius="sm" size="sm">
             반려
           </Badge>
           <Text c={"dimmed"} fz={11}>
@@ -17,13 +17,13 @@ const ConfirmStatus = ({ record }: any) => {
     }
   } else if (record.confirmYN === "Y") {
     return (
-      <Badge variant="outline" color="green" radius="sm" size="sm">
+      <Badge variant="light" color="lime" radius="sm" size="sm">
         승인
       </Badge>
     );
   } else {
     return (
-      <Badge variant="outline" color="yellow" radius="sm" size="sm">
+      <Badge variant="light" color="yellow" radius="sm" size="sm">
         승인 대기
       </Badge>
     );
