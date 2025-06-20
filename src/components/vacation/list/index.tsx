@@ -2,10 +2,12 @@ import { getMyVacations } from "@/app/api/get/getApi";
 import ConfirmStatus from "@/components/Attendance/ConfirmStatus";
 import MonthFilter from "@/components/ui/monthFilter";
 import { isDateBeforeToday } from "@/utils/date/isBeforeToday";
-import { Button, Divider, Grid, Group, Paper, Popover, Stack, Text } from "@mantine/core";
-import { IconDots, IconUpload } from "@tabler/icons-react";
+import { Button, Divider, Grid, Group, Paper, Stack, Text } from "@mantine/core";
+import { IconUpload } from "@tabler/icons-react";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
+import CcList from "../cc";
+import MonthBadge from "../monthBadge";
 
 const VacationList = ({ params, setParams, openAttachmentModal, openVacationModal }: any) => {
   const { data } = useSuspenseQuery({
@@ -17,60 +19,50 @@ const VacationList = ({ params, setParams, openAttachmentModal, openVacationModa
 
   const ListWrapper = () => {
     return (
-      <Stack gap={2} w={"100%"}>
-        <Group align="center" justify="space-between" mt={"md"} mb={"xs"}>
-          <Text fz={"sm"} fw={500} c={"gray"}>
-            휴가 사용 내역
-          </Text>
-          <MonthFilter trigger={setParams} />
-        </Group>
+      <Stack gap={2} w={"100%"} mt={"md"}>
+        <Text fz={"sm"} fw={500} c={"gray"}>
+          휴가 사용 내역
+        </Text>
+
         <Paper bg={"white"} p="lg" py={"lg"} radius={"lg"}>
-          <Stack gap={"xs"}>
-            {vacations?.map((record: any, index: number, arr: any) => {
-              return <Items key={record.commuteIdx} record={record} index={index} arr={arr} />;
-            })}
-          </Stack>
+          {vacations?.length < 1 ? (
+            <Stack gap={"xs"}>
+              <Group justify="space-between" align="center" wrap="nowrap">
+                <Text c={"dimmed"} fz={"sm"}>
+                  휴가 사용 내역이 없습니다.
+                </Text>
+                <MonthFilter trigger={setParams} />
+              </Group>
+              <Group>
+                <MonthBadge params={params} setParams={setParams} />
+              </Group>
+            </Stack>
+          ) : (
+            <Stack gap={"xs"}>
+              <Group justify="space-between" align="center" wrap="nowrap">
+                <Text c={"gray.5"} fz={"sm"}>
+                  총{" "}
+                  <Text component="span" c={"black"} fz={"sm"}>
+                    {vacations.length}건
+                  </Text>
+                  의 휴가 내역이 있습니다.
+                </Text>
+                <MonthFilter trigger={setParams} />
+              </Group>
+              <Group>
+                <MonthBadge params={params} setParams={setParams} />
+              </Group>
+              <Divider my={"xs"} color="gray.1" />
+              {vacations?.map((record: any, index: number, arr: any) => {
+                return <Items key={record.commuteIdx} record={record} index={index} arr={arr} />;
+              })}
+            </Stack>
+          )}
         </Paper>
       </Stack>
     );
   };
 
-  const CcList = ({ ccUserInfo }: any) => {
-    console.log(ccUserInfo);
-    if (ccUserInfo.length < 1) {
-      return (
-        <Text c={"dimmed"} fz={"xs"}>
-          참조자가 없습니다.
-        </Text>
-      );
-    } else if (ccUserInfo.length === 1) {
-      return (
-        <Text c={"dimmed"} fz={"xs"}>
-          {ccUserInfo[0].ccUserName}
-        </Text>
-      );
-    } else if (ccUserInfo.length > 1) {
-      return (
-        <Popover position="bottom" withArrow shadow="md">
-          <Popover.Target>
-            <Group gap={"xs"} align="center" style={{ cursor: "pointer" }}>
-              <Text c="gray" size="xs">
-                {ccUserInfo[0].ccUserName} 외 {ccUserInfo.length - 1}인
-              </Text>
-              <IconDots color="var(--mantine-color-blue-5)" size={15} />
-            </Group>
-          </Popover.Target>
-          <Popover.Dropdown>
-            {ccUserInfo.map((cc: any, index: number) => (
-              <Text key={index} c={"dimmed"} fz={"xs"}>
-                {cc.ccUserName}
-              </Text>
-            ))}
-          </Popover.Dropdown>
-        </Popover>
-      );
-    }
-  };
   const Items = ({ record, index, arr }: any) => {
     return (
       <Stack key={record.commuteIdx} gap={"xs"}>
@@ -155,7 +147,6 @@ const VacationList = ({ params, setParams, openAttachmentModal, openVacationModa
                 <Text c={"dimmed"} fz={"xs"}>
                   {record.confirmDate || "-"}
                 </Text>
-                {/* <ConfirmStatus record={record} /> */}
               </Group>
             </Stack>
           </Grid.Col>
