@@ -158,7 +158,7 @@ const ApprovalConfirm = ({ opened, close, details }: any) => {
             <Text fz={"xs"}>{details?.leaveType}</Text>
           </Group>
 
-          <StackLabelButton value={details?.imageName} open={previewOpen} label={"청부파일"} />
+          <StackLabelButton value={details?.imageName} open={previewOpen} label={"첨부파일"} />
         </Stack>
         <Stack pb={"md"} gap={"xs"}>
           <Group gap={"xs"}>
