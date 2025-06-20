@@ -23,6 +23,8 @@ export enum LEAVE_TYPE {
   "병가" = 20,
 }
 
+export const ADMIN_URL = "https://test-benefit-admin.insahr.co.kr/";
+
 export enum RELATION_TYPE {
   "APPROVER" = "승인요청",
   "CC" = "참조",

@@ -11,10 +11,11 @@ import NavMenu from "@/components/Navbar/menu";
 import UserInfoCard from "@/components/Navbar/userInfoCard";
 import { BOOKMARKS } from "@/lib/bookmark";
 import { useNavStore } from "@/lib/store/toggleStore";
-import { IconBookmarkFilled } from "@tabler/icons-react";
+import { IconBookmarkFilled, IconExternalLink } from "@tabler/icons-react";
 import dayjs from "dayjs";
 import "dayjs/locale/ko";
 import Link from "next/link";
+import { ADMIN_URL } from "@/lib/enums";
 
 dayjs.locale("ko");
 
@@ -58,25 +59,29 @@ export default function ContentLayout({ children }: { children: React.ReactNode 
               <Image component={NextImage} src={myImage} alt="My image" fit="contain" h={20} w={80} style={{ cursor: "pointer" }} />
             </Link>
           </Group>
-
-          <Popover width={200} position="bottom" withArrow shadow="md">
-            <Popover.Target>
-              <Button visibleFrom="md" size="xs" variant="subtle" leftSection={<IconBookmarkFilled size={15} color="#f7c401" />}>
-                북마크
-              </Button>
-            </Popover.Target>
-            <Popover.Dropdown>
-              <ScrollArea h={200}>
-                <Stack gap={"sm"}>
-                  {BOOKMARKS.map((bookmark) => (
-                    <Anchor underline="hover" size="xs" href={bookmark.value} target="_blank" key={bookmark.value}>
-                      {bookmark.label}
-                    </Anchor>
-                  ))}
-                </Stack>
-              </ScrollArea>
-            </Popover.Dropdown>
-          </Popover>
+          <Group>
+            <Button gradient={{ from: "teal", to: "blue", deg: 233 }} size="xs" leftSection={<IconExternalLink size={16} />} variant="gradient" onClick={() => window.open(ADMIN_URL, "_blank")}>
+              Admin
+            </Button>
+            <Popover width={200} position="bottom" withArrow shadow="md">
+              <Popover.Target>
+                <Button visibleFrom="md" size="sm" variant="subtle" leftSection={<IconBookmarkFilled size={15} color="#f7c401" />}>
+                  북마크
+                </Button>
+              </Popover.Target>
+              <Popover.Dropdown>
+                <ScrollArea h={200}>
+                  <Stack gap={"sm"}>
+                    {BOOKMARKS.map((bookmark) => (
+                      <Anchor underline="hover" size="xs" href={bookmark.value} target="_blank" key={bookmark.value}>
+                        {bookmark.label}
+                      </Anchor>
+                    ))}
+                  </Stack>
+                </ScrollArea>
+              </Popover.Dropdown>
+            </Popover>
+          </Group>
         </Group>
       </AppShell.Header>
 
