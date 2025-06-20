@@ -1,27 +1,28 @@
 // src/components/AuthGuard.tsx
-import { useEffect, useState } from "react";
-
+import { useEffect } from "react";
+// import { useAuthStore } from "../store/useAuthStore";
+import { useAuthStore } from "@/store/useAuthStore";
 import { LoadingOverlay } from "@mantine/core";
-import { useAuthStore } from "../../store/useAuthStore";
 
 interface AuthGuardProps {
   children: React.ReactNode;
 }
 
 export const AuthGuard = ({ children }: AuthGuardProps) => {
-  const { initializeAuth } = useAuthStore();
-  const [isLoading, setIsLoading] = useState(true);
+  const { initializeAuth, isInitialized } = useAuthStore();
 
   useEffect(() => {
-    // sessionStorage에서 인증 정보 복원
-    initializeAuth();
-    setIsLoading(false);
-  }, [initializeAuth]);
+    // 앱 시작 시 sessionStorage에서 인증 정보 복원
+    if (!isInitialized) {
+      initializeAuth();
+    }
+  }, [initializeAuth, isInitialized]);
 
-  if (isLoading) {
+  // 초기화가 완료되지 않은 경우 로딩 표시
+  if (!isInitialized) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <LoadingOverlay visible />
+        <LoadingOverlay visible overlayProps={{ radius: "sm", blur: 2 }} />
       </div>
     );
   }

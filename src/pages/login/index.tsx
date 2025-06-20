@@ -23,13 +23,14 @@ import { ChevronRight, Lock } from "lucide-react";
 
 import logo from "@/assets/logo/ACG_LOGO_GRAY.png";
 import { useAuthStore } from "../../store/useAuthStore";
-import notification from "../../components/notification";
+import notification from "@/components/global/notification";
+// import notification from "../../components/global/notification";
 
 // 로그인 API 함수
 const loginApi = async (id: string, password: string) => {
   try {
     // 실제 API 엔드포인트로 교체하세요
-    const response = await fetch(`${import.meta.env.VITE_TEST_DATA}/login`, {
+    const response = await fetch(`${import.meta.env.VITE_BASE_URL}/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -43,8 +44,8 @@ const loginApi = async (id: string, password: string) => {
 
     const data = await response.json();
     return {
-      token: data.token,
-      user: data.user,
+      token: data.data.accessToken,
+      user: data.data.userName,
     };
   } catch (error: any) {
     // 개발용 mock 데이터 (실제 API 구현 후 제거)
