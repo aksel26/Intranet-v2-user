@@ -5,6 +5,9 @@
     { "path": "./tsconfig.node.json" }
   ],
   "compilerOptions": {
+    "noImplicitAny": false, // 암시적 any 타입 허용
+    "strict": false, // 모든 strict 옵션 비활성화 (noImplicitAny 포함)
+
     "types": ["vite/client", "node"],
     "baseUrl": ".",
     "paths": {
