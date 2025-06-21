@@ -19,6 +19,7 @@
     "@tailwindcss/vite": "^4.1.10",
     "@tanstack/react-query": "^5.80.10",
     "@vitejs/plugin-react-swc": "^3.10.2",
+    "axios": "^1.10.0",
     "dayjs": "^1.11.13",
     "lucide-react": "^0.518.0",
     "path": "^0.12.7",
