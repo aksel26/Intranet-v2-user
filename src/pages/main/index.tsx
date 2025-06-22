@@ -1,5 +1,10 @@
+import ScrollToTop from "@/components/global/scrollTop";
+import CalendarAttendance from "@/components/main/calendar";
 import GreetingMessage from "@/components/main/greeting";
-import { Button } from "@mantine/core";
+import NoticeBirth from "@/components/main/noticeBirth";
+import WelfareButtons from "@/components/main/welfareButtons";
+import VacationCard from "@/components/vacation";
+import { Grid, GridCol, Stack } from "@mantine/core";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -8,7 +13,28 @@ const Main = () => {
   return (
     <div>
       <GreetingMessage />
-      Main<Button onClick={() => navigate("/approval")}>asdfasf</Button>
+      <Grid>
+        <GridCol span={{ base: 12, md: 6 }}>
+          {/* <Suspense fallback={<Loading />}> */}
+          <CalendarAttendance />
+          {/* </Suspense> */}
+        </GridCol>
+        <GridCol span={{ base: 12, md: 6 }}>
+          <Stack>
+            <WelfareButtons />
+            {/* <Suspense fallback={<Loading />}> */}
+            <NoticeBirth />
+            {/* </Suspense> */}
+            {/* <Suspense fallback={<Loading />}> */}
+            <VacationCard />
+            {/* </Suspense> */}
+            {/* <Suspense fallback={<Loading />}> */}
+            {/* <WorkHourStats /> */}
+            {/* </Suspense> */}
+          </Stack>
+        </GridCol>
+        <ScrollToTop />
+      </Grid>
     </div>
   );
 };

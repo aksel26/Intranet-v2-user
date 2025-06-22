@@ -1,5 +1,5 @@
 //import { getMe } from "@/app/api/get/getApi";
-import { userService } from "@/api/services/user.services";
+import { userService } from "@/api/services/user/user.services";
 import { useApiQuery } from "@/api/useApi";
 import { myInfoStore } from "@/store/myInfoStore";
 import { getDDayCount } from "@/utils/dday/ddayCount";

@@ -12,6 +12,9 @@ import NotFound from "./pages/404";
 // import Layout from "./components/global/layout";
 import Approval from "./pages/approval";
 import "@mantine/core/styles.css";
+import "@mantine/notifications/styles.css";
+import "@mantine/charts/styles.css";
+import "@mantine/dates/styles.css";
 import Layout from "./components/global/layout";
 
 // import Login from './pages/Login'

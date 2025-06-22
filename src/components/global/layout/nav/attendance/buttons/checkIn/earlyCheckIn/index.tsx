@@ -1,19 +1,48 @@
 // import { useCheckIn } from "@/hooks/useSubmitForm";
 import { Alert, Button, Group, Modal, Text } from "@mantine/core";
-import { useQueryClient } from "@tanstack/react-query";
+
 import dayjs from "dayjs";
 // import notification from "../GNB/Notification";
 // import { checkMorningLeave } from "@/utils/earlyCheckIn";
 import { myInfoStore } from "@/store/myInfoStore";
 import notification from "@/components/global/notification";
 import { checkMorningLeave } from "@/utils/commute/checkEarly";
+import { useApiMutation } from "@/api/useApi";
+import { commuteService } from "@/api/services/commute/commute.services";
 // import { myInfoStore } from "@/lib/store/myInfoStore";
 
 const EarlyCheckIn = ({ opened, close, checkInModalClose }: any) => {
-  const { mutate: checkIn } = useCheckIn();
-  const queryClient = useQueryClient();
   const { myInfo } = myInfoStore();
   const result = checkMorningLeave(myInfo?.leave ?? []);
+  // const {mutate:checkIn}= useApiMutation()
+  // ✅ 사용 예시 - 타입을 명시적으로 지정
+  const checkIn = useApiMutation<
+    any, // 응답 타입
+    any, // 에러 타입
+    { checkInTime: Date | string } // 요청 파라미터 타입
+  >(commuteService.checkIn, {
+    invalidateKeys: [["me"]],
+    onSuccess: async (data: any) => {
+      const { checkInTime } = data.data;
+      const checkInTimeFormat = dayjs(checkInTime).format("HH:mm:ss");
+      notification({
+        color: "green",
+        message: `${checkInTimeFormat}에 출근완료 되었습니다.`,
+        title: "출석체크",
+      });
+      close();
+      checkInModalClose();
+    },
+    onError: (error: any) => {
+      const { message: err } = error.response.data || "";
+      notification({
+        color: "red",
+        message: err,
+        title: "출석체크",
+      });
+      close();
+    },
+  });
 
   const handleCheckIn = () => {
     if (!result) {
@@ -24,32 +53,8 @@ const EarlyCheckIn = ({ opened, close, checkInModalClose }: any) => {
       });
       return;
     }
-    checkIn(
-      { checkInTime: result?.targetTime },
-      {
-        onSuccess: async (data) => {
-          const { checkInTime } = data.data;
-          const checkInTimeFormat = dayjs(checkInTime).format("HH:mm:ss");
-          notification({
-            color: "green",
-            message: `${checkInTimeFormat}에 출근완료 되었습니다.`,
-            title: "출석체크",
-          });
-          await queryClient.invalidateQueries({ queryKey: ["me"] });
-          close();
-          checkInModalClose();
-        },
-        onError: (error: any) => {
-          const { message: err } = error.response.data || "";
-          notification({
-            color: "red",
-            message: err,
-            title: "출석체크",
-          });
-          close();
-        },
-      }
-    );
+
+    checkIn.mutate({ checkInTime: result?.targetTime });
   };
   return (
     <Modal

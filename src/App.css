@@ -1,1 +1,6 @@
 @import "tailwindcss";
+
+.navbar-open {
+  overflow: hidden;
+  height: 100dvh;
+}

@@ -1,0 +1,7 @@
+.element {
+  &:hover {
+    transition: all 0.3s;
+    color: var(--mantine-color-blue-5);
+  }
+  cursor: pointer;
+}
