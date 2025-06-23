@@ -3,13 +3,12 @@ import CalendarAttendance from "@/components/main/calendar";
 import GreetingMessage from "@/components/main/greeting";
 import NoticeBirth from "@/components/main/noticeBirth";
 import WelfareButtons from "@/components/main/welfareButtons";
+import WorkHourStats from "@/components/main/workHourStats";
 import VacationCard from "@/components/vacation";
 import { Grid, GridCol, Stack } from "@mantine/core";
 import React from "react";
-import { useNavigate } from "react-router-dom";
 
 const Main = () => {
-  const navigate = useNavigate();
   return (
     <div>
       <GreetingMessage />
@@ -29,7 +28,7 @@ const Main = () => {
             <VacationCard />
             {/* </Suspense> */}
             {/* <Suspense fallback={<Loading />}> */}
-            {/* <WorkHourStats /> */}
+            <WorkHourStats />
             {/* </Suspense> */}
           </Stack>
         </GridCol>

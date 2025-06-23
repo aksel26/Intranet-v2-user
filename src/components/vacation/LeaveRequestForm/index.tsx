@@ -1,21 +1,9 @@
 // import * as api from "@/app/api/get/getApi";
 // import { LEAVE_TYPE } from "@/lib/enums";
 // import { getWeekdaysBetweenDates } from "@/utils/vacationDate";
-import {
-  Badge,
-  Box,
-  Button,
-  Drawer,
-  FileButton,
-  Group,
-  Indicator,
-  MultiSelect,
-  Text,
-  TextInput,
-} from "@mantine/core";
+import { Badge, Box, Button, Drawer, FileButton, Group, Indicator, MultiSelect, Text, TextInput } from "@mantine/core";
 import { DatePicker } from "@mantine/dates";
 import { useDisclosure } from "@mantine/hooks";
-import { useQuery, useSuspenseQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 // import notification from "../../GNB/Notification";
@@ -48,32 +36,22 @@ function Vacation({ opened, close }: any) {
     month: (dayjs().month() + 1).toString(),
   });
 
-  const { data, isLoading, isError } = useApiQuery(
-    ["users"],
-    userService.getAll
-  );
+  const { data, isLoading, isError } = useApiQuery(["users"], userService.getAll);
 
-  const {
-    data: vacations,
-    isLoading: isLoading_vacations,
-    isError: isError_vacations,
-  } = useQuery({
-    queryKey: ["vacationAll", params],
-    queryFn: () => api.getMyVacations(params),
-    enabled: !!opened,
-  });
+  const { data: vacations, isLoading: isLoading_vacations, isError: isError_vacations } = useApiQuery(["vacationAll", params], () => leaveService.getLeaves(params));
 
   const {
     data: vacationSummary,
     isLoading: isLoading_vacationSummary,
     isError: isError_vacationSummary,
-  } = useApiQuery(["vacationSummary", { year: params.year }], () =>
-    leaveService.getLeaveSummary({ year: params.year })
-  );
+  } = useApiQuery(["vacationSummary", { year: params.year }], () => leaveService.getLeaveSummary({ year: params.year }));
 
-  const leaveUsageStats = vacationSummary?.data.leaveUsageStats || {};
+  const leaveUsageStats = vacationSummary?.data.data.leaveUsageStats || {};
+  console.log("leaveUsageStats:", leaveUsageStats);
 
   const commuteData = vacations?.data.data;
+  console.log("vacations:", vacations);
+  console.log("commuteData:", commuteData);
 
   const [confirmList, setConfirmList] = useState([]);
 
@@ -81,9 +59,7 @@ function Vacation({ opened, close }: any) {
 
   const [confirmPerson, setConfirmPerson] = useState<any[]>();
 
-  const [attendance, setAttendance] = useState<string | number>(
-    LEAVE_TYPE.연차
-  );
+  const [attendance, setAttendance] = useState<string | number>(LEAVE_TYPE.연차);
 
   const [file, setFile] = useState<File | null>(null);
 
@@ -100,9 +76,7 @@ function Vacation({ opened, close }: any) {
     // setConfirmPerson(data);
 
     const selectedItems = values
-      .map((value: any) =>
-        confirmList.find((user: any) => user.userIdx + "" === value)
-      )
+      .map((value: any) => confirmList.find((user: any) => user.userIdx + "" === value))
       .map((user: any) => ({
         value: user.userIdx + "",
         label: user.userName,
@@ -149,9 +123,7 @@ function Vacation({ opened, close }: any) {
 
     const leaveInfo = getWeekdaysBetweenDates(dateValue, attendance);
     submitData.leaveInfo = leaveInfo;
-    submitData.confirmPerson = confirmPerson.map((item: TSelect) =>
-      Number(item.value)
-    );
+    submitData.confirmPerson = confirmPerson.map((item: TSelect) => Number(item.value));
     submitData.note = note;
     submitData.ccUserIdxs = refs.map((ref) => Number(ref));
 
@@ -163,35 +135,24 @@ function Vacation({ opened, close }: any) {
   useEffect(() => {
     setConfirmList(data?.data.data.filter((item: any) => item.gradeIdx <= 4));
   }, [data]);
-  const [
-    submitConfirm,
-    { open: openSubmitConfirm, close: closeSubmitConfirm },
-  ] = useDisclosure(false);
-  const [preview, { open: openPreview, close: closePreview }] =
-    useDisclosure(false);
+  const [submitConfirm, { open: openSubmitConfirm, close: closeSubmitConfirm }] = useDisclosure(false);
+  const [preview, { open: openPreview, close: closePreview }] = useDisclosure(false);
 
   const renderDay = (date: any) => {
-    const day = date.getDate();
+    const day = dayjs(date).day();
 
     // Format date to match the format in commuteData
     const formattedDate = dayjs(date).format("YYYY-MM-DD");
 
     // Find if this date is in the commuteData
-    const commuteEntry = commuteData?.find(
-      (entry: any) => entry.commuteDate === formattedDate
-    );
+    const commuteEntry = commuteData?.find((entry: any) => entry.commuteDate === formattedDate);
 
     if (commuteEntry) {
       // If commuteDate exists, show blue indicator for confirmYN="Y", yellow for "N"
       const indicatorColor = commuteEntry.confirmYN === "Y" ? "blue" : "yellow";
 
       return (
-        <Indicator
-          color={indicatorColor}
-          position="top-end"
-          size={10}
-          offset={-5}
-        >
+        <Indicator color={indicatorColor} position="top-end" size={10} offset={-5}>
           <div>{day}</div>
         </Indicator>
       );
@@ -201,16 +162,11 @@ function Vacation({ opened, close }: any) {
   };
 
   const isWeekend = (date: any) => {
-    const day = date.getDay();
+    const day = dayjs(date).day();
     return day === 0 || day === 6; // 0: 일요일, 6: 토요일
   };
   return (
-    <Drawer
-      opened={opened}
-      onClose={closeDrawer}
-      position="right"
-      title="휴가 신청하기"
-    >
+    <Drawer opened={opened} onClose={closeDrawer} position="right" title="휴가 신청하기">
       <DatePicker
         highlightToday
         type="range"
@@ -235,11 +191,7 @@ function Vacation({ opened, close }: any) {
 
       <Group justify="space-between" align="center">
         <ToolTipDetailsVacation details={leaveUsageStats}>
-          <Button
-            variant="subtle"
-            size="compact-xs"
-            leftSection={<MousePointerClick strokeWidth={1.2} size={18} />}
-          >
+          <Button variant="subtle" size="compact-xs" leftSection={<MousePointerClick strokeWidth={1.2} size={18} />}>
             휴가 사용현황 보기
           </Button>
         </ToolTipDetailsVacation>
@@ -298,14 +250,7 @@ function Vacation({ opened, close }: any) {
         // value={confirmPerson?.value + ""}
       />
 
-      <TextInput
-        mb={"md"}
-        styles={{ label: { fontSize: "var(--mantine-font-size-xs" } }}
-        label="특이사항 입력"
-        placeholder="특이사항을 입력해 주세요."
-        onChange={handleNote}
-        value={note}
-      />
+      <TextInput mb={"md"} styles={{ label: { fontSize: "var(--mantine-font-size-xs" } }} label="특이사항 입력" placeholder="특이사항을 입력해 주세요." onChange={handleNote} value={note} />
 
       <Group mb={"sm"}>
         {file && (
@@ -326,14 +271,7 @@ function Vacation({ opened, close }: any) {
         신청하기
       </Button>
 
-      <VacationConfirmModal
-        opened={submitConfirm}
-        close={closeSubmitConfirm}
-        closeDrawer={closeDrawer}
-        confirmPerson={confirmPerson}
-        submitInfo={submitInfo}
-        file={file}
-      />
+      <VacationConfirmModal opened={submitConfirm} close={closeSubmitConfirm} closeDrawer={closeDrawer} confirmPerson={confirmPerson} submitInfo={submitInfo} file={file} />
       <AttachmentPreview opened={preview} close={closePreview} file={file} />
     </Drawer>
   );

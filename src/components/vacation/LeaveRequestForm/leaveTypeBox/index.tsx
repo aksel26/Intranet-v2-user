@@ -1,30 +1,23 @@
 import { Button, Divider, FloatingIndicator, Text } from "@mantine/core";
 import { useState } from "react";
-import classes from "./LeaveTypeBox.module.css";
+import classes from "@/styles/leave/leaveType.module.css";
 import { LEAVE_TYPE } from "@/lib/enums/leaveType/leaveType";
 
 export default function LeaveTypeBox({ attendance, setAttendance }: any) {
   const [rootRef, setRootRef] = useState<HTMLDivElement | null>(null);
-  const [controlsRefs, setControlsRefs] = useState<
-    Record<string, HTMLButtonElement | null>
-  >({});
+  const [controlsRefs, setControlsRefs] = useState<Record<string, HTMLButtonElement | null>>({});
 
   const vacationType = (type: string | number) => {
     setAttendance(type);
   };
 
-  const setControlRef =
-    (name: string | number) => (node: HTMLButtonElement) => {
-      controlsRefs[name] = node;
-      setControlsRefs(controlsRefs);
-    };
+  const setControlRef = (name: string | number) => (node: HTMLButtonElement) => {
+    controlsRefs[name] = node;
+    setControlsRefs(controlsRefs);
+  };
   return (
     <div className={classes.root} dir="ltr" ref={setRootRef}>
-      <FloatingIndicator
-        target={controlsRefs[attendance]}
-        parent={rootRef}
-        className={classes.indicator}
-      />
+      <FloatingIndicator target={controlsRefs[attendance]} parent={rootRef} className={classes.indicator} />
       <div className={classes.label}>
         <Text fz={"xs"}>종일</Text>
         <Text fz={"xs"}>오전</Text>
@@ -238,18 +231,8 @@ export default function LeaveTypeBox({ attendance, setAttendance }: any) {
           >
             대체휴무
           </Button>
-          <Button
-            size="xs"
-            variant="transparent"
-            className={classes.control}
-            styles={{ root: { cursor: "default" } }}
-          ></Button>
-          <Button
-            size="xs"
-            variant="transparent"
-            className={classes.control}
-            styles={{ root: { cursor: "default" } }}
-          ></Button>
+          <Button size="xs" variant="transparent" className={classes.control} styles={{ root: { cursor: "default" } }}></Button>
+          <Button size="xs" variant="transparent" className={classes.control} styles={{ root: { cursor: "default" } }}></Button>
         </div>
       </div>
     </div>

@@ -3,19 +3,9 @@ import { createTheme } from "@mantine/core";
 export const theme = createTheme({
   defaultRadius: "md",
   // primaryColor: "indigo",
+
   colors: {
-    primary: [
-      "#e0fbff",
-      "#cff1fd",
-      "#a4dff4",
-      "#76ccec",
-      "#4fbce5",
-      "#36b2e1",
-      "#21aee1",
-      "#0498c8",
-      "#0087b4",
-      "#0075a0",
-    ],
+    primary: ["#e0fbff", "#cff1fd", "#a4dff4", "#76ccec", "#4fbce5", "#36b2e1", "#21aee1", "#0498c8", "#0087b4", "#0075a0"],
   },
   cursorType: "pointer",
 

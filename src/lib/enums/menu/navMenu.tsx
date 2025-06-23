@@ -28,9 +28,9 @@ export const MENU_ITEMS: MenuItem[] = [
     label: "복지",
     childrenOffset: 28,
     children: [
-      { label: "식대", href: "/welfare/meal" },
-      { label: "복지포인트", href: "/welfare/welfarePoint" },
-      { label: "활동비", href: "/welfare/activity" },
+      { label: "식대", href: "/meal" },
+      { label: "복지포인트", href: "/welfarePoint" },
+      { label: "활동비", href: "/activity" },
     ],
   },
   {

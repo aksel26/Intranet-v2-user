@@ -16,6 +16,10 @@ import "@mantine/notifications/styles.css";
 import "@mantine/charts/styles.css";
 import "@mantine/dates/styles.css";
 import Layout from "./components/global/layout";
+import Notice from "./pages/notice";
+import NoticeDetails from "./components/notice/detail";
+import MyInfo from "./pages/myInfo";
+import Meal from "./pages/meal";
 
 // import Login from './pages/Login'
 // import Main from './pages/Main'
@@ -33,10 +37,7 @@ function App() {
           element={
             !isInitialized ? (
               <div className="min-h-screen flex items-center justify-center">
-                <LoadingOverlay
-                  visible
-                  overlayProps={{ radius: "sm", blur: 2 }}
-                />
+                <LoadingOverlay visible overlayProps={{ radius: "sm", blur: 2 }} />
               </div>
             ) : isAuthenticated ? (
               <Navigate to="/main" replace />
@@ -52,10 +53,7 @@ function App() {
           element={
             !isInitialized ? (
               <div className="min-h-screen flex items-center justify-center">
-                <LoadingOverlay
-                  visible
-                  overlayProps={{ radius: "sm", blur: 2 }}
-                />
+                <LoadingOverlay visible overlayProps={{ radius: "sm", blur: 2 }} />
               </div>
             ) : isAuthenticated ? (
               <Navigate to="/main" replace />
@@ -77,6 +75,10 @@ function App() {
           {/* 중첩 라우트들 */}
           <Route path="main" element={<Main />} />
           <Route path="approval" element={<Approval />} />
+          <Route path="notice" element={<Notice />} />
+          <Route path="notice/:id" element={<NoticeDetails />} />
+          <Route path="myInfo" element={<MyInfo />} />
+          <Route path="meal" element={<Meal />} />
           {/* <Route path="profile" element={<Profile />} />
         <Route path="settings" element={<Settings />} />
         <Route path="analytics" element={<Analytics />} />
