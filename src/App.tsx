@@ -20,6 +20,7 @@ import Notice from "./pages/notice";
 import NoticeDetails from "./components/notice/detail";
 import MyInfo from "./pages/myInfo";
 import Meal from "./pages/meal";
+import Points from "./pages/points";
 
 // import Login from './pages/Login'
 // import Main from './pages/Main'
@@ -79,6 +80,7 @@ function App() {
           <Route path="notice/:id" element={<NoticeDetails />} />
           <Route path="myInfo" element={<MyInfo />} />
           <Route path="meal" element={<Meal />} />
+          <Route path="points" element={<Points />} />
           {/* <Route path="profile" element={<Profile />} />
         <Route path="settings" element={<Settings />} />
         <Route path="analytics" element={<Analytics />} />
