@@ -1,21 +1,6 @@
 import React, { useState } from "react";
 // import notification from "@/components/GNB/Notification";
-import {
-  AppShell,
-  Center,
-  Container,
-  Box,
-  Button,
-  Checkbox,
-  Group,
-  Image,
-  PasswordInput,
-  Space,
-  Stack,
-  Text,
-  TextInput,
-  Affix,
-} from "@mantine/core";
+import { AppShell, Center, Container, Box, Button, Checkbox, Group, Image, PasswordInput, Space, Stack, Text, TextInput, Affix } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { useNavigate } from "react-router-dom";
 
@@ -23,8 +8,8 @@ import { ChevronRight, Lock } from "lucide-react";
 
 import logo from "@/assets/logo/ACG_LOGO_GRAY.png";
 import { useAuthStore } from "../../store/useAuthStore";
-import notification from "@/components/global/notification";
-// import notification from "../../components/global/notification";
+import notification from "@/components/common/notification";
+// import notification from "../../components/common/notification";
 
 // 로그인 API 함수
 const loginApi = async (id: string, password: string) => {
@@ -68,8 +53,7 @@ const Login = () => {
     },
 
     validate: {
-      id: (value) =>
-        /^[a-z|A-Z|0-9|]+$/.test(value) ? null : "영문으로 입력해 주세요.",
+      id: (value) => (/^[a-z|A-Z|0-9|]+$/.test(value) ? null : "영문으로 입력해 주세요."),
     },
   });
   const submit = async (value: any) => {
@@ -95,12 +79,7 @@ const Login = () => {
     <AppShell>
       <AppShell.Main>
         <Affix position={{ bottom: 40, right: 40 }}>
-          <Button
-            variant="gradient"
-            gradient={{ from: "rgba(156, 219, 175, 1)", to: "yellow", deg: 90 }}
-            leftSection={<ChevronRight size={16} />}
-            onClick={() => alert("검사운영관리 페이지로 이동")}
-          >
+          <Button variant="gradient" gradient={{ from: "rgba(156, 219, 175, 1)", to: "yellow", deg: 90 }} leftSection={<ChevronRight size={16} />} onClick={() => alert("검사운영관리 페이지로 이동")}>
             검사운영 관리
           </Button>
         </Affix>
@@ -109,32 +88,14 @@ const Login = () => {
             <Box w={"70%"}>
               <Stack justify="center" mb="md" align="center">
                 <Image src={logo} w={"7rem"} />
-                <Text
-                  fz={{ base: "sm", xs: "sm", sm: "sm", md: "md" }}
-                  variant="gradient"
-                  gradient={{ from: "blue", to: "pink", deg: 90 }}
-                  fw={600}
-                >
+                <Text fz={{ base: "sm", xs: "sm", sm: "sm", md: "md" }} variant="gradient" gradient={{ from: "blue", to: "pink", deg: 90 }} fw={600}>
                   Valid Approach, Valuable People
                 </Text>
               </Stack>
               <form onSubmit={form.onSubmit((values) => submit(values))}>
-                <TextInput
-                  size="md"
-                  withAsterisk
-                  leftSection={"ID"}
-                  placeholder="아이디를 입력해 주세요."
-                  key={form.key("id")}
-                  {...form.getInputProps("id")}
-                />
+                <TextInput size="md" withAsterisk leftSection={"ID"} placeholder="아이디를 입력해 주세요." key={form.key("id")} {...form.getInputProps("id")} />
                 <Space h="md" />
-                <PasswordInput
-                  leftSection={<Lock strokeWidth={1.2} />}
-                  placeholder="비밀번호를 입력해 주세요."
-                  key={form.key("password")}
-                  {...form.getInputProps("password")}
-                  size="md"
-                />
+                <PasswordInput leftSection={<Lock strokeWidth={1.2} />} placeholder="비밀번호를 입력해 주세요." key={form.key("password")} {...form.getInputProps("password")} size="md" />
 
                 <Group justify="center" mt="md">
                   <Button fullWidth type="submit" loading={loading}>
@@ -142,15 +103,7 @@ const Login = () => {
                   </Button>
                 </Group>
                 <Group justify="end">
-                  <Checkbox
-                    mt="md"
-                    size="xs"
-                    radius={"sm"}
-                    labelPosition="left"
-                    label="아이디 기억하기"
-                    key={form.key("saveId")}
-                    {...form.getInputProps("saveId", { type: "checkbox" })}
-                  />
+                  <Checkbox mt="md" size="xs" radius={"sm"} labelPosition="left" label="아이디 기억하기" key={form.key("saveId")} {...form.getInputProps("saveId", { type: "checkbox" })} />
                 </Group>
                 <Text c={"dimmed"} ta={"right"} fz={"xs"} mt={"xs"}>
                   계정 생성은 P&C팀에게 문의해 주세요.

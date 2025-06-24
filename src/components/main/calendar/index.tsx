@@ -1,7 +1,7 @@
 // import { getAllAttendanceStaff, getHolidays } from "@/app/api/get/getApi";
-// import EmptyView from "@/components/Global/view/EmptyView";
-// import { ErrorView } from "@/components/Global/view/ErrorView";
-// import LoadingView from "@/components/Global/view/LoadingView";
+// import EmptyView from "@/components/common/view/EmptyView";
+// import { ErrorView } from "@/components/common/view/ErrorView";
+// import LoadingView from "@/components/common/view/LoadingView";
 // import { mainDateStore } from "@/lib/store/mainDateStore";
 import { Stack } from "@mantine/core";
 
@@ -15,16 +15,11 @@ import { attendanceService } from "@/api/services/attendance/commute.services";
 const CalendarAttendance = () => {
   const { dateValue } = mainDateStore();
 
-  const { data, isLoading, isError } = useApiQuery(
-    [
-      "attendanceAllStaff",
-      { year: dayjs(dateValue).year(), month: dayjs(dateValue).month() + 1 },
-    ],
-    () =>
-      attendanceService.getUsersAttendance({
-        year: dayjs(dateValue).year().toString(),
-        month: (dayjs(dateValue).month() + 1).toString(),
-      })
+  const { data, isLoading, isError } = useApiQuery(["attendanceAllStaff", { year: dayjs(dateValue).year(), month: dayjs(dateValue).month() + 1 }], () =>
+    attendanceService.getUsersAttendance({
+      year: dayjs(dateValue).year().toString(),
+      month: (dayjs(dateValue).month() + 1).toString(),
+    })
   );
 
   console.log("data: ", data);

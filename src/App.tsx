@@ -9,18 +9,19 @@ import Login from "./pages/login";
 import { ProtectedRoute } from "./components/auth/ProtectedRoute";
 import Main from "./pages/main";
 import NotFound from "./pages/404";
-// import Layout from "./components/global/layout";
 import Approval from "./pages/approval";
 import "@mantine/core/styles.css";
 import "@mantine/notifications/styles.css";
 import "@mantine/charts/styles.css";
 import "@mantine/dates/styles.css";
-import Layout from "./components/global/layout";
+import Layout from "./components/common/layout";
 import Notice from "./pages/notice";
 import NoticeDetails from "./components/notice/detail";
 import MyInfo from "./pages/myInfo";
 import Meal from "./pages/meal";
 import Points from "./pages/points";
+import Activity from "./pages/activity";
+import Leave from "./pages/attendance/leave";
 
 // import Login from './pages/Login'
 // import Main from './pages/Main'
@@ -81,6 +82,8 @@ function App() {
           <Route path="myInfo" element={<MyInfo />} />
           <Route path="meal" element={<Meal />} />
           <Route path="points" element={<Points />} />
+          <Route path="activity" element={<Activity />} />
+          <Route path="leave" element={<Leave />} />
           {/* <Route path="profile" element={<Profile />} />
         <Route path="settings" element={<Settings />} />
         <Route path="analytics" element={<Analytics />} />

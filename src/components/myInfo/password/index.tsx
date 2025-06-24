@@ -2,7 +2,7 @@
 // import { useChangePassword } from "@/hooks/useSubmitForm";
 import { userService } from "@/api/services/user/user.services";
 import { useApiMutation } from "@/api/useApi";
-import notification from "@/components/global/notification";
+import notification from "@/components/common/notification";
 import { Box, Button, Paper, PasswordInput, Text } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { useState } from "react";

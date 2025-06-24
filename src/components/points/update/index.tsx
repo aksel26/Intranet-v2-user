@@ -1,7 +1,7 @@
 import { pointsService } from "@/api/services/points/points.services";
 import { userService } from "@/api/services/user/user.services";
 import { useApiMutation, useApiQuery } from "@/api/useApi";
-import notification from "@/components/global/notification";
+import notification from "@/components/common/notification";
 import type { TUsers } from "@/types/users";
 import type { TPayeeList, TWelfare } from "@/types/welfare";
 import { Button, Flex, Group, LoadingOverlay, MultiSelect, NumberInput, Popover, rem, Text, TextInput } from "@mantine/core";

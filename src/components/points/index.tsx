@@ -1,12 +1,14 @@
-import { pointsService } from "@/api/services/points/points.services";
 import { useApiQuery } from "@/api/useApi";
+import { groupByDate } from "@/utils/points/groupByDate";
 import { Group, Stack } from "@mantine/core";
 import dayjs from "dayjs";
 import { useState } from "react";
-import { groupByDate } from "@/utils/points/groupByDate";
-import ScrollToTop from "../global/scrollTop";
-import DurationSelect from "../global/select/halfYear";
-import YearSelect from "../global/select/year";
+import ScrollToTop from "../common/scrollTop";
+// import DurationSelect from "../common/select/halfYear";
+// import YearSelect from "../common/select/year";
+import { pointsService } from "@/api/services/points/points.services";
+import DurationSelect from "../common/select/halfYear";
+import YearSelect from "../common/select/year";
 import { UsedListWelfare } from "./list";
 import { TopTitleWelfare } from "./title";
 
@@ -16,7 +18,8 @@ export const WelfareFetchWrapper = () => {
     halfYear: Number(dayjs().month() + 1) > 6 ? "H2" : "H1",
   });
 
-  const { data, isLoading } = useApiQuery(["welfares", params], () => pointsService.getUsedPoint(params));
+  const { data, isLoading, isError } = useApiQuery(["welfares", params], () => pointsService.getUsedPoint(params));
+  console.log("data:", data);
 
   const welfares = data && groupByDate(data?.data.data.welfares);
   const welfareStats = data?.data.data.welfareStats;

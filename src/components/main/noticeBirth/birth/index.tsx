@@ -1,7 +1,7 @@
 // import * as api from "@/app/api/get/getApi";
-// import EmptyView from "@/components/Global/view/EmptyView";
-// import { ErrorView } from "@/components/Global/view/ErrorView";
-// import LoadingView from "@/components/Global/view/LoadingView";
+// import EmptyView from "@/components/common/view/EmptyView";
+// import { ErrorView } from "@/components/common/view/ErrorView";
+// import LoadingView from "@/components/common/view/LoadingView";
 import { userService } from "@/api/services/user/user.services";
 import { useApiQuery } from "@/api/useApi";
 import { Group, ScrollArea, Stack, Text } from "@mantine/core";
@@ -13,12 +13,10 @@ interface BirthProps {
 }
 
 const Birth = ({ month }: BirthProps) => {
-  const { data, isLoading, isError } = useApiQuery(
-    ["birth", { month: month }],
-    () =>
-      userService.getBirth({
-        month: (dayjs(month).month() + 1).toString(),
-      })
+  const { data, isLoading, isError } = useApiQuery(["birth", { month: month }], () =>
+    userService.getBirth({
+      month: (dayjs(month).month() + 1).toString(),
+    })
   );
 
   const birth = data?.data.data;

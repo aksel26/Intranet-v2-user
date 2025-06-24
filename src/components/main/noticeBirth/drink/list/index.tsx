@@ -1,7 +1,7 @@
 // import notification from "@/components/GNB/Notification";
 import { drinkService } from "@/api/services/drink/drink.services";
 import { useApiMutation } from "@/api/useApi";
-import notification from "@/components/global/notification";
+import notification from "@/components/common/notification";
 // import { useUpdateDrink } from "@/hooks/useSubmitForm";
 import { Group, Modal, Select, Stack, Text } from "@mantine/core";
 import { useQueryClient } from "@tanstack/react-query";
@@ -49,13 +49,7 @@ const DrinkList = ({ opened, close, details, configId }: any) => {
     mutate(params);
   };
   return (
-    <Modal
-      opened={opened}
-      onClose={close}
-      title="Monthly Meeting 음료 신청 현황"
-      centered
-      size={"sm"}
-    >
+    <Modal opened={opened} onClose={close} title="Monthly Meeting 음료 신청 현황" centered size={"sm"}>
       <Stack gap={1}>
         {details.map((item: any, index: number) => (
           <Group key={index} wrap="nowrap">
@@ -70,15 +64,7 @@ const DrinkList = ({ opened, close, details, configId }: any) => {
               value={item.baverage}
               onChange={(value) => updateDrink(value, item)}
               styles={{ option: { fontSize: "var(--mantine-font-size-sm)" } }}
-              data={[
-                "HOT 아메리카노",
-                "ICE 아메리카노",
-                "HOT 디카페인 아메리카노",
-                "ICE 디카페인 아메리카노",
-                "바닐라크림 콜드브루",
-                "ICE 자몽허니블랙티",
-                "선택안함",
-              ]}
+              data={["HOT 아메리카노", "ICE 아메리카노", "HOT 디카페인 아메리카노", "ICE 디카페인 아메리카노", "바닐라크림 콜드브루", "ICE 자몽허니블랙티", "선택안함"]}
               fz={"sm"}
               placeholder="음료를 선택해 주세요."
             />

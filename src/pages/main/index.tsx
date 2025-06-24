@@ -1,10 +1,10 @@
-import ScrollToTop from "@/components/global/scrollTop";
+import ScrollToTop from "@/components/common/scrollTop";
 import CalendarAttendance from "@/components/main/calendar";
 import GreetingMessage from "@/components/main/greeting";
 import NoticeBirth from "@/components/main/noticeBirth";
 import WelfareButtons from "@/components/main/welfareButtons";
 import WorkHourStats from "@/components/main/workHourStats";
-import VacationCard from "@/components/vacation";
+import VacationCard from "@/components/main/vacation";
 import { Grid, GridCol, Stack } from "@mantine/core";
 import React from "react";
 

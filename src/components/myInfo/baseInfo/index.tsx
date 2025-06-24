@@ -4,7 +4,7 @@
 // import { formatPhoneNumber } from "@/utils/phoneNumber";
 import { userService } from "@/api/services/user/user.services";
 import { useApiMutation } from "@/api/useApi";
-import notification from "@/components/global/notification";
+import notification from "@/components/common/notification";
 import { myInfoStore } from "@/store/myInfoStore";
 import { formatMobileNumber } from "@/utils/mobile/formatMobileNumber";
 import { Box, Button, Paper, Text, TextInput } from "@mantine/core";

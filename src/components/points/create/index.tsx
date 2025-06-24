@@ -4,7 +4,7 @@
 import { pointsService } from "@/api/services/points/points.services";
 import { userService } from "@/api/services/user/user.services";
 import { useApiMutation, useApiQuery } from "@/api/useApi";
-import notification from "@/components/global/notification";
+import notification from "@/components/common/notification";
 import { myInfoStore } from "@/store/myInfoStore";
 import { Button, Flex, MultiSelect, NumberInput, rem, TextInput } from "@mantine/core";
 import { DatePickerInput } from "@mantine/dates";

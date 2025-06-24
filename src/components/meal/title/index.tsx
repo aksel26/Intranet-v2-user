@@ -1,7 +1,7 @@
-// import { ErrorView } from "@/components/Global/view/ErrorView";
-// import LoadingView from "@/components/Global/view/LoadingView";
+// import { ErrorView } from "@/components/common/view/ErrorView";
+// import LoadingView from "@/components/common/view/LoadingView";
 // import { myInfoStore } from "@/lib/store/myInfoStore";
-import { ErrorView } from "@/components/global/error";
+import { ErrorView } from "@/components/common/error";
 import LoadingView from "@/components/loading";
 import useCopyBankAccount from "@/hooks/useCopyBankAccount";
 // import useCopyBankAccount from "@/hooks/useCopyBankAccount";

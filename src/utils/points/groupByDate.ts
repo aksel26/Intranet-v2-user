@@ -1,7 +1,8 @@
 import dayjs from "dayjs";
 
 export const groupByDate = (data: any) => {
-  const grouped = data.reduce((acc: any, curr: any) => {
+  if (!data) return [];
+  const grouped = data?.reduce((acc: any, curr: any) => {
     const date = curr.targetDay;
     if (!acc[date]) {
       acc[date] = [];

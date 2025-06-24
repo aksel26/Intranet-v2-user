@@ -1,4 +1,4 @@
-import notification from "@/components/global/notification";
+import notification from "@/components/common/notification";
 import { Check, X } from "lucide-react";
 
 const useCopyBankAccount = () => {

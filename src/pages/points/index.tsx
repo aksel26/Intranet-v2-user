@@ -1,4 +1,4 @@
-import ScrollToTop from "@/components/global/scrollTop";
+import ScrollToTop from "@/components/common/scrollTop";
 import { WelfareFetchWrapper } from "@/components/points";
 import WelfareInputForm from "@/components/points/create";
 import { Grid, GridCol, Paper, Title } from "@mantine/core";

@@ -1,7 +1,7 @@
 import { mealService } from "@/api/services/meal/meal.services";
 import { useApiMutation } from "@/api/useApi";
-import notification from "@/components/global/notification";
-import SearchableSelect from "@/components/global/select/searchable";
+import notification from "@/components/common/notification";
+import SearchableSelect from "@/components/common/select/searchable";
 // import notification from "@/components/GNB/Notification";
 // import SearchableSelect from "@/components/SearchableSelect";
 // import { useDeleteMeals, useSubmitFormMeal } from "@/hooks/useSubmitForm";

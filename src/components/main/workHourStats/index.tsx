@@ -1,10 +1,10 @@
 // import * as api from "@/app/api/get/getApi";
-// import { ErrorView } from "@/components/Global/view/ErrorView";
-// import LoadingView from "@/components/Global/view/LoadingView";
+// import { ErrorView } from "@/components/common/view/ErrorView";
+// import LoadingView from "@/components/common/view/LoadingView";
 // import { mainDateStore } from "@/lib/store/mainDateStore";
 import { statsService } from "@/api/services/stats/stats.services";
 import { useApiQuery } from "@/api/useApi";
-import { ErrorView } from "@/components/global/error";
+import { ErrorView } from "@/components/common/error";
 import LoadingView from "@/components/loading";
 import { mainDateStore } from "@/store/mainDateStore";
 import { ActionIcon, Group, Paper, Title } from "@mantine/core";

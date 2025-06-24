@@ -1,6 +1,6 @@
 import ApprovalList from "@/components/approval/list";
 import SearchApprovals from "@/components/approval/search";
-import ScrollToTop from "@/components/global/scrollTop";
+import ScrollToTop from "@/components/common/scrollTop";
 import type { TApproval } from "@/types/apiTypes/apiTypes";
 import { Paper, Stack, Text, Title } from "@mantine/core";
 import dayjs from "dayjs";

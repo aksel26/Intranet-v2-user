@@ -1,6 +1,6 @@
-// import BottomModal from "@/components/Global/BottomModal";
-// import EmptyView from "@/components/Global/view/EmptyView";
-// import LoadingView from "@/components/Global/view/LoadingView";
+// import BottomModal from "@/components/common/BottomModal";
+// import EmptyView from "@/components/common/view/EmptyView";
+// import LoadingView from "@/components/common/view/LoadingView";
 // import { TPayeeList, TWelfare } from "@/lib/types/welfare";
 import { ActionIcon, Affix, Badge, Button, Checkbox, Divider, Flex, Group, NumberFormatter, Paper, rem, Stack, Text, Title } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
@@ -11,14 +11,14 @@ import React, { useState } from "react";
 // import WelfareUpdateForm from "./WelfareUpdateForm";
 // import ArrowRight from "/public/icons/arrow-right.svg";
 import LoadingView from "@/components/loading";
-import { ErrorView } from "@/components/global/error";
+import { ErrorView } from "@/components/common/error";
 import { ChevronRight, Plus } from "lucide-react";
-import EmptyView from "@/components/global/empty";
+import EmptyView from "@/components/common/empty";
 import type { TPayeeList, TWelfare } from "@/types/welfare";
-import BottomModal from "@/components/global/modal/bottom";
+import BottomModal from "@/components/common/modal/bottom";
 import WelfareUpdateForm from "../update";
 import WelfareInputForm from "../create";
-// import { ErrorView } from "@/components/Global/view/ErrorView";
+// import { ErrorView } from "@/components/common/view/ErrorView";
 
 export const UsedListWelfare = ({ welfares, isLoading, isError }: any) => {
   const [opened, { toggle, close }] = useDisclosure(false);

@@ -5,7 +5,7 @@ import dayjs from "dayjs";
 // import notification from "@/components/GNB/Notification";
 import { useQueryClient } from "@tanstack/react-query";
 import { useDisclosure } from "@mantine/hooks";
-import notification from "@/components/global/notification";
+import notification from "@/components/common/notification";
 import { useApiMutation } from "@/api/useApi";
 import { approvalService } from "@/api/services/approval/approval.service";
 

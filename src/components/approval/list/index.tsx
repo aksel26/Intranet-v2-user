@@ -6,7 +6,7 @@ import dayjs from "dayjs";
 import React, { useState } from "react";
 import { useApiMutation, useApiQuery } from "@/api/useApi";
 import { approvalService } from "@/api/services/approval/approval.service";
-import EmptyView from "@/components/global/empty";
+import EmptyView from "@/components/common/empty";
 import type { TApprovalList } from "@/types/approval";
 import { ChevronRight } from "lucide-react";
 import { ApprovalType } from "../badge/ApprovalType";

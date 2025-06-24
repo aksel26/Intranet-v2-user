@@ -3,9 +3,9 @@ import { useDisclosure } from "@mantine/hooks";
 import dayjs from "dayjs";
 import { useApiMutation, useApiQuery } from "@/api/useApi";
 import { drinkService } from "@/api/services/drink/drink.services";
-import notification from "@/components/global/notification";
+import notification from "@/components/common/notification";
 import LoadingView from "@/components/loading";
-import { ErrorView } from "@/components/global/error";
+import { ErrorView } from "@/components/common/error";
 import { ChevronRight } from "lucide-react";
 import { myInfoStore } from "@/store/myInfoStore";
 import { mainDateStore } from "@/store/mainDateStore";
@@ -19,12 +19,10 @@ const MonthlyDrink = () => {
   const { dateValue } = mainDateStore();
   const [opened, { open, close }] = useDisclosure(false);
 
-  const { data, isLoading, isError } = useApiQuery(
-    ["monthlyDrink", { month: dayjs(dateValue).month() + 1 }],
-    () =>
-      drinkService.getDrinks({
-        month: (dayjs(dateValue).month() + 1).toString(),
-      })
+  const { data, isLoading, isError } = useApiQuery(["monthlyDrink", { month: dayjs(dateValue).month() + 1 }], () =>
+    drinkService.getDrinks({
+      month: (dayjs(dateValue).month() + 1).toString(),
+    })
   );
 
   //   const { mutate } = useUpdateDrink();
@@ -99,15 +97,7 @@ const MonthlyDrink = () => {
           w={200}
           value={myBaverage}
           onChange={(value) => updateDrink(value)}
-          data={[
-            "HOT 아메리카노",
-            "ICE 아메리카노",
-            "HOT 디카페인 아메리카노",
-            "ICE 디카페인 아메리카노",
-            "바닐라크림 콜드브루",
-            "ICE 자몽허니블랙티",
-            "선택안함",
-          ]}
+          data={["HOT 아메리카노", "ICE 아메리카노", "HOT 디카페인 아메리카노", "ICE 디카페인 아메리카노", "바닐라크림 콜드브루", "ICE 자몽허니블랙티", "선택안함"]}
           // fz={"xsm"}
           placeholder="음료를 선택해 주세요."
         />
@@ -132,22 +122,12 @@ const MonthlyDrink = () => {
             )}
           </Group>
         </Group>
-        <Button
-          size="compact-xs"
-          variant="subtle"
-          rightSection={<ChevronRight size={15} strokeWidth={1.2} />}
-          onClick={open}
-        >
+        <Button size="compact-xs" variant="subtle" rightSection={<ChevronRight size={15} strokeWidth={1.2} />} onClick={open}>
           전체보기
         </Button>
       </Group>
 
-      <DrinkList
-        opened={opened}
-        close={close}
-        details={details}
-        configId={config.configId}
-      />
+      <DrinkList opened={opened} close={close} details={details} configId={config.configId} />
     </Box>
   );
 };
