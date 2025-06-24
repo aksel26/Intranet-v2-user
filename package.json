@@ -10,6 +10,15 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@fullcalendar/core": "^6.1.17",
+    "@fullcalendar/daygrid": "^6.1.17",
+    "@fullcalendar/interaction": "^6.1.17",
+    "@fullcalendar/list": "^6.1.17",
+    "@fullcalendar/react": "^6.1.17",
+    "@fullcalendar/resource": "^6.1.17",
+    "@fullcalendar/resource-timegrid": "^6.1.17",
+    "@fullcalendar/resource-timeline": "^6.1.17",
+    "@fullcalendar/timeline": "^6.1.17",
     "@mantine/charts": "^8.1.1",
     "@mantine/core": "^8.1.1",
     "@mantine/dates": "^8.1.1",

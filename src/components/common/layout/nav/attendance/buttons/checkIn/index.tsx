@@ -9,13 +9,13 @@ import dayjs from "dayjs";
 // import { checkMorningLeave } from "@/utils/earlyCheckIn";
 import { useDisclosure } from "@mantine/hooks";
 // import EarlyCheckIn from "./EarlyCheckIn";
+import { attendanceService } from "@/api/services/attendance/attendance.services";
+import { useApiMutation } from "@/api/useApi";
 import notification from "@/components/common/notification";
 import { myInfoStore } from "@/store/myInfoStore";
+import type { TLeaveMyInfo } from "@/types/myInfo";
 import { checkMorningLeave } from "@/utils/commute/checkEarly";
 import EarlyCheckIn from "./earlyCheckIn";
-import type { TLeaveMyInfo } from "@/types/myInfo";
-import { useApiMutation } from "@/api/useApi";
-import { commuteService } from "@/api/services/commute/commute.services";
 
 function CheckIn({ checkInModalClose, checkInTimeOpened }: any) {
   const { myInfo } = myInfoStore();
@@ -29,7 +29,7 @@ function CheckIn({ checkInModalClose, checkInTimeOpened }: any) {
     any, // 응답 타입
     any, // 에러 타입
     { checkInTime: Date | string } // 요청 파라미터 타입
-  >(commuteService.checkIn, {
+  >(attendanceService.checkIn, {
     invalidateKeys: [["me"]],
     onSuccess: async (data: any) => {
       const { checkInTime } = data.data;

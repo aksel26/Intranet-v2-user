@@ -1,24 +1,15 @@
-// import BottomModal from "@/components/common/BottomModal";
-// import EmptyView from "@/components/common/view/EmptyView";
-// import LoadingView from "@/components/common/view/LoadingView";
-// import { TPayeeList, TWelfare } from "@/lib/types/welfare";
-import { ActionIcon, Affix, Badge, Button, Checkbox, Divider, Flex, Group, NumberFormatter, Paper, rem, Stack, Text, Title } from "@mantine/core";
-import { useDisclosure } from "@mantine/hooks";
-// import { IconPlus } from "@tabler/icons-react";
-import dayjs from "dayjs";
-import React, { useState } from "react";
-// import WelfareInputForm from "./WelfareInputForm";
-// import WelfareUpdateForm from "./WelfareUpdateForm";
-// import ArrowRight from "/public/icons/arrow-right.svg";
-import LoadingView from "@/components/loading";
-import { ErrorView } from "@/components/common/error";
-import { ChevronRight, Plus } from "lucide-react";
 import EmptyView from "@/components/common/empty";
-import type { TPayeeList, TWelfare } from "@/types/welfare";
+import { ErrorView } from "@/components/common/error";
 import BottomModal from "@/components/common/modal/bottom";
-import WelfareUpdateForm from "../update";
+import LoadingView from "@/components/loading";
+import type { TPayeeList, TWelfare } from "@/types/welfare";
+import { ActionIcon, Affix, Badge, Button, Divider, Flex, Group, NumberFormatter, Paper, rem, Stack, Text } from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
+import dayjs from "dayjs";
+import { ChevronRight, Plus } from "lucide-react";
+import React, { useState } from "react";
 import WelfareInputForm from "../create";
-// import { ErrorView } from "@/components/common/view/ErrorView";
+import WelfareUpdateForm from "../update";
 
 export const UsedListWelfare = ({ welfares, isLoading, isError }: any) => {
   const [opened, { toggle, close }] = useDisclosure(false);

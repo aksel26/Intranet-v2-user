@@ -18,9 +18,9 @@ export const MENU_ITEMS: MenuItem[] = [
     label: "근태",
     childrenOffset: 28,
     children: [
-      { label: "출퇴근 관리", href: "/attendance/work" },
+      { label: "출퇴근 관리", href: "/work" },
       { label: "휴가/연차 관리", href: "/leave" },
-      { label: "시간외 근무 관리", href: "/attendance/overtime" },
+      { label: "시간외 근무 관리", href: "/overtime" },
     ],
   },
 

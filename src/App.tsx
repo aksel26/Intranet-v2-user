@@ -22,6 +22,9 @@ import Meal from "./pages/meal";
 import Points from "./pages/points";
 import Activity from "./pages/activity";
 import Leave from "./pages/attendance/leave";
+import Work from "./pages/attendance/work";
+import Room from "./pages/room";
+import SMS from "./pages/sms";
 
 // import Login from './pages/Login'
 // import Main from './pages/Main'
@@ -84,6 +87,9 @@ function App() {
           <Route path="points" element={<Points />} />
           <Route path="activity" element={<Activity />} />
           <Route path="leave" element={<Leave />} />
+          <Route path="work" element={<Work />} />
+          <Route path="room" element={<Room />} />
+          <Route path="sms" element={<SMS />} />
           {/* <Route path="profile" element={<Profile />} />
         <Route path="settings" element={<Settings />} />
         <Route path="analytics" element={<Analytics />} />

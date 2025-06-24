@@ -13,20 +13,13 @@ const VacationCard = () => {
   //   const router = useRouter();
   const navigate = useNavigate();
   const [opened, { open, close }] = useDisclosure(false);
-  const goVacation = () => navigate("/attendance/vacation");
+  const goVacation = () => navigate("/leave");
   return (
     <Paper bg={"white"} px="md" py="lg" radius={"lg"}>
       <Group justify="space-between" mb={"xs"}>
         <Title order={5}>휴가 요약</Title>
         <Group>
-          <Button
-            variant="gradient"
-            gradient={{ from: "lime", to: "cyan", deg: 90 }}
-            size="xs"
-            w={150}
-            onClick={open}
-            leftSection={<Palmtree size={22} strokeWidth={1.2} />}
-          >
+          <Button variant="gradient" gradient={{ from: "lime", to: "cyan", deg: 90 }} size="xs" w={150} onClick={open} leftSection={<Palmtree size={22} strokeWidth={1.2} />}>
             휴가 신청
           </Button>
           <ActionIcon onClick={goVacation} variant="default">

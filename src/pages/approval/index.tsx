@@ -19,7 +19,7 @@ const Approval = () => {
           결재 및 승인 요청 내역이 보여지며, 참조 내역도 확인할 수 있습니다.
         </Text>
       </Stack>
-      <SearchApprovals />
+      <SearchApprovals setParams={setParams} />
       <Paper bg={"white"} px="md" py="md" radius={"lg"}>
         <ApprovalList params={params} />
         <ScrollToTop />

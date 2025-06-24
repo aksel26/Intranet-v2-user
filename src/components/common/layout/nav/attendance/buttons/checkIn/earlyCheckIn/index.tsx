@@ -4,11 +4,11 @@ import { Alert, Button, Group, Modal, Text } from "@mantine/core";
 import dayjs from "dayjs";
 // import notification from "../GNB/Notification";
 // import { checkMorningLeave } from "@/utils/earlyCheckIn";
-import { myInfoStore } from "@/store/myInfoStore";
-import notification from "@/components/common/notification";
-import { checkMorningLeave } from "@/utils/commute/checkEarly";
+import { attendanceService } from "@/api/services/attendance/attendance.services";
 import { useApiMutation } from "@/api/useApi";
-import { commuteService } from "@/api/services/commute/commute.services";
+import notification from "@/components/common/notification";
+import { myInfoStore } from "@/store/myInfoStore";
+import { checkMorningLeave } from "@/utils/commute/checkEarly";
 // import { myInfoStore } from "@/lib/store/myInfoStore";
 
 const EarlyCheckIn = ({ opened, close, checkInModalClose }: any) => {
@@ -20,7 +20,7 @@ const EarlyCheckIn = ({ opened, close, checkInModalClose }: any) => {
     any, // 응답 타입
     any, // 에러 타입
     { checkInTime: Date | string } // 요청 파라미터 타입
-  >(commuteService.checkIn, {
+  >(attendanceService.checkIn, {
     invalidateKeys: [["me"]],
     onSuccess: async (data: any) => {
       const { checkInTime } = data.data;

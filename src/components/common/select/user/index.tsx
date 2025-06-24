@@ -1,14 +1,14 @@
 // import { getUsers } from "@/app/api/get/getApi";
 // import { TApproval } from "@/types/apiTypes";
+import { userService } from "@/api/services/user/user.services";
+import { useApiQuery } from "@/api/useApi";
+import type { TApproval } from "@/types/apiTypes/apiTypes";
 import { Select } from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
 import React, { useEffect, useState } from "react";
 
 const UserSelect = ({ setParams, ...props }: any) => {
-  const { data, isLoading, isError } = useQuery({
-    queryKey: ["users"],
-    queryFn: () => getUsers(),
-  });
+  const { data, isLoading, isError } = useApiQuery(["users"], userService.getAll);
   const [isActive, setIsActive] = useState(false);
   const [confirmList, setConfirmList] = useState([]);
   const [userValue, setUserValue] = useState<string | null>();
@@ -30,12 +30,14 @@ const UserSelect = ({ setParams, ...props }: any) => {
         transitionProps: { transition: "pop", duration: 200 },
         size: "sm",
       }}
+      clearable
       onChange={selectUser}
       value={userValue}
       data={confirmList?.map((user: any) => ({
         value: user.userIdx + "",
         label: user.userName,
       }))}
+      unselectable
       size="md"
       variant="unstyled"
       fw={500}

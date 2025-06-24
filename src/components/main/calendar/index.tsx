@@ -10,7 +10,7 @@ import AttendanceAll from "./attendance";
 import MainCalendar from "./calendar";
 import { mainDateStore } from "@/store/mainDateStore";
 import { useApiQuery } from "@/api/useApi";
-import { attendanceService } from "@/api/services/attendance/commute.services";
+import { attendanceService } from "@/api/services/attendance/attendance.services";
 
 const CalendarAttendance = () => {
   const { dateValue } = mainDateStore();
