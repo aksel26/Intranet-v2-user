@@ -25,6 +25,7 @@ import Leave from "./pages/attendance/leave";
 import Work from "./pages/attendance/work";
 import Room from "./pages/room";
 import SMS from "./pages/sms";
+import Assessment from "./pages/assessment";
 
 // import Login from './pages/Login'
 // import Main from './pages/Main'
@@ -90,6 +91,7 @@ function App() {
           <Route path="work" element={<Work />} />
           <Route path="room" element={<Room />} />
           <Route path="sms" element={<SMS />} />
+          <Route path="assessment" element={<Assessment />} />
           {/* <Route path="profile" element={<Profile />} />
         <Route path="settings" element={<Settings />} />
         <Route path="analytics" element={<Analytics />} />

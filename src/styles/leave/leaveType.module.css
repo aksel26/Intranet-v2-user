@@ -35,13 +35,14 @@
 }
 
 .control {
-  width: 110px;
+  width: 110px !important;
   /* height: 50px; */
   /* padding: 0 30px; */
   display: flex;
   align-items: center;
   justify-content: center;
   color: light-dark(var(--mantine-color-gray-6), var(--mantine-color-dark-2));
+
   border-radius: var(--mantine-radius-md);
 
   &[data-active] {
@@ -49,8 +50,9 @@
   }
 
   @mixin hover {
-    color: light-dark(var(--mantine-color-black), var(--mantine-color-white));
-    background-color: light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-7));
+    /* color: light-dark(var(--mantine-color-black), var(--mantine-color-white)); */
+    background-color: var(--mantine-color-blue-0) !important;
+    color: var(--mantine-color-blue-5) !important;
   }
 
   & svg {
