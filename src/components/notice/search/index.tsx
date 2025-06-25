@@ -1,120 +1,26 @@
-import { searchNotice } from "@/app/api/get/getApi";
-import {
-  Combobox,
-  Highlight,
-  Loader,
-  ScrollArea,
-  TextInput,
-  useCombobox,
-} from "@mantine/core";
-import { IconSearch } from "@tabler/icons-react";
-import { useQuery } from "@tanstack/react-query";
-import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import { Button, Group, TextInput } from "@mantine/core";
+import { Search } from "lucide-react";
+// import { IconSearch } from "@tabler/icons-react";
+import { useRef } from "react";
 
-//! 임시 코드
-
-const Search = () => {
-  const router = useRouter();
-  const combobox = useCombobox({
-    onDropdownClose: () => combobox.resetSelectedOption(),
-  });
-
-  const [value, setValue] = useState("");
-  const [debouncedValue, setDebouncedValue] = useState({
-    searchWord: "",
-    pageNo: 1,
-  });
-
-  // 디바운스 처리
-  React.useEffect(() => {
-    const timeoutId = setTimeout(() => {
-      setDebouncedValue((prev) => ({ ...prev, searchWord: value, pageNo: 1 }));
-    }, 300);
-
-    return () => clearTimeout(timeoutId);
-  }, [value]);
-
-  const { data, isLoading, isFetching } = useQuery({
-    queryKey: ["notices", debouncedValue],
-    queryFn: () => searchNotice(debouncedValue),
-    enabled: debouncedValue.searchWord.length > 0,
-    staleTime: 1000 * 60 * 5, // 5분
-    gcTime: 1000 * 60 * 10, // 10분
-  });
-
-  const options = (data?.data.data.notices || []).map((item: any) => (
-    <Combobox.Option
-      value={item.title}
-      key={item.noticeIdx}
-      onClick={() => movePage(item.noticeIdx)}
-    >
-      <Highlight highlight={value} size="sm">
-        {item.title}
-      </Highlight>
-    </Combobox.Option>
-  ));
-
-  const loading = isLoading || isFetching;
-  const empty = data?.data.data?.notices.length === 0;
-
-  const movePage = (index: number) => {
-    router.push(`/notice/${index}`);
+const SearchNotice = ({ setParams }: any) => {
+  const searchRef = useRef<HTMLInputElement>(null);
+  const search = (e: any) => {
+    if (e.key === "Enter" || e.key === "NumpadEnter" || e.type === "click") {
+      if (searchRef.current) {
+        const value = searchRef.current.value || null;
+        setParams((prev: any) => ({ ...prev, searchWord: value }));
+      }
+    }
   };
-
   return (
-    <Combobox
-      onOptionSubmit={(optionValue) => {
-        setValue(optionValue);
-        combobox.closeDropdown();
-      }}
-      withinPortal={false}
-      store={combobox}
-    >
-      <Combobox.Target>
-        <TextInput
-          styles={{
-            input: {
-              background: "white",
-              border: "1px solid var(--mantine-color-gray-4)",
-              position: "relative",
-            },
-          }}
-          w={400}
-          placeholder="제목 또는 내용을 입력하세요."
-          radius={"md"}
-          rightSection={
-            loading ? <Loader size={18} /> : <IconSearch size={18} />
-          }
-          variant="filled"
-          value={value}
-          onChange={(event) => {
-            setValue(event.currentTarget.value);
-            combobox.resetSelectedOption();
-            if (event.currentTarget.value) {
-              combobox.openDropdown();
-            }
-          }}
-          onClick={() => combobox.openDropdown()}
-          onFocus={() => {
-            if (value) {
-              combobox.openDropdown();
-            }
-          }}
-          onBlur={() => combobox.closeDropdown()}
-        />
-      </Combobox.Target>
-
-      <Combobox.Dropdown hidden={!data}>
-        <Combobox.Options mah={200}>
-          <ScrollArea.Autosize mah={200} type="scroll">
-            {options}
-          </ScrollArea.Autosize>
-          {empty && <Combobox.Empty>검색 결과가 없습니다</Combobox.Empty>}
-        </Combobox.Options>
-      </Combobox.Dropdown>
-    </Combobox>
+    <Group wrap="nowrap">
+      <TextInput onKeyUp={(e) => search(e)} ref={searchRef} placeholder="제목 또는 내용을 입력하세요." miw={240} leftSection={<Search size={18} />} />
+      <Button onClick={search} onKeyUp={(e) => search(e)} variant="light">
+        검색
+      </Button>
+    </Group>
   );
 };
 
-export default Search;
+export default SearchNotice;

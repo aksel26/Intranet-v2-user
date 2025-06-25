@@ -1,13 +1,5 @@
 import { Badge, Group, Modal, Paper, ScrollArea, Stack, Text } from "@mantine/core";
-import React from "react";
 
-const Label = ({ content }: { content: string }) => {
-  return (
-    <Text fz={"xs"} c={"gray"} w={50}>
-      {content}
-    </Text>
-  );
-};
 const Value = ({ content }: { content: string }) => {
   return <Text fz={"xs"}>{content}</Text>;
 };

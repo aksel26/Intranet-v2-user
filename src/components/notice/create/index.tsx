@@ -1,16 +1,9 @@
-import {
-  Button,
-  Group,
-  Modal,
-  Select,
-  Stack,
-  Textarea,
-  TextInput,
-} from "@mantine/core";
+import { Button, Modal, Select, Stack, Textarea, TextInput } from "@mantine/core";
 import { DatePickerInput } from "@mantine/dates";
 import { useForm } from "@mantine/form";
-import { IconCalendar } from "@tabler/icons-react";
-import React, { useState } from "react";
+import { Calendar } from "lucide-react";
+//   import { IconCalendar } from "@tabler/icons-react";
+import { useState } from "react";
 
 const CreateNotice = ({ opened, close }: any) => {
   const form = useForm({
@@ -24,10 +17,7 @@ const CreateNotice = ({ opened, close }: any) => {
       email: (value) => (/^\S+@\S+$/.test(value) ? null : "Invalid email"),
     },
   });
-  const [dateValue, setDateValue] = useState<[Date | null, Date | null]>([
-    null,
-    null,
-  ]);
+  const [dateValue, setDateValue] = useState<[Date | null, Date | null]>([null, null]);
 
   const dateSelect = (val: [Date | null, Date | null]) => {
     setDateValue(val);
@@ -64,7 +54,7 @@ const CreateNotice = ({ opened, close }: any) => {
               },
             }}
             valueFormat="YYYY/MM/DD"
-            leftSection={<IconCalendar size={20} strokeWidth={1.2} />}
+            leftSection={<Calendar size={20} strokeWidth={1.2} />}
             onChange={dateSelect}
             value={dateValue}
           />

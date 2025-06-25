@@ -1,7 +1,12 @@
-import notification from "@/components/GNB/Notification";
-import { useChangeMyInfo } from "@/hooks/useSubmitForm";
-import { myInfoStore } from "@/lib/store/myInfoStore";
-import { formatPhoneNumber } from "@/utils/phoneNumber";
+// import notification from "@/components/GNB/Notification";
+// import { useChangeMyInfo } from "@/hooks/useSubmitForm";
+// import { myInfoStore } from "@/lib/store/myInfoStore";
+// import { formatPhoneNumber } from "@/utils/phoneNumber";
+import { userService } from "@/api/services/user/user.services";
+import { useApiMutation } from "@/api/useApi";
+import notification from "@/components/common/notification";
+import { myInfoStore } from "@/store/myInfoStore";
+import { formatMobileNumber } from "@/utils/mobile/formatMobileNumber";
 import { Box, Button, Paper, Text, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { useQueryClient } from "@tanstack/react-query";
@@ -10,7 +15,26 @@ import React, { useEffect } from "react";
 const UpdateBaseInfo = () => {
   const { myInfo } = myInfoStore();
   const queryClient = useQueryClient();
-  const { mutate: changeMyInfo } = useChangeMyInfo();
+
+  const updateInfo = useApiMutation<
+    any, // 응답 타입
+    any, // 에러 타입
+    any // 요청 파라미터 타입
+  >(userService.updateUserInfo, {
+    invalidateKeys: [["me"]],
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ["me"] });
+      notification({ title: "내 정보 변경", color: "green", message: "내 정보가 변경되었습니다." });
+
+      userInfoform.reset();
+    },
+    onError: (error: any) => {
+      if (error.message) {
+        notification({ title: "내 정보 변경", color: "red", message: "내 정보 변경을 실패하였습니다." });
+      }
+    },
+  });
+
   const userInfoform = useForm({
     initialValues: {
       userAddress: "",
@@ -28,12 +52,12 @@ const UpdateBaseInfo = () => {
   });
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const formatted = formatPhoneNumber(event.target.value);
+    const formatted = formatMobileNumber(event.target.value);
     userInfoform.setFieldValue("userCell", formatted);
   };
 
   const submitChangeMyInfo = (values: any) => {
-    changeMyInfo(values, {
+    updateInfo.mutate(values, {
       onSuccess: async () => {
         await queryClient.invalidateQueries({ queryKey: ["me"] });
         notification({ title: "내 정보 변경", color: "green", message: "내 정보가 변경되었습니다." });

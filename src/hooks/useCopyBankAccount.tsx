@@ -1,6 +1,5 @@
-import notification from "@/components/GNB/Notification";
-import { IconCheck, IconX } from "@tabler/icons-react";
-import React from "react";
+import notification from "@/components/common/notification";
+import { Check, X } from "lucide-react";
 
 const useCopyBankAccount = () => {
   const copyBankAccount = async () => {
@@ -10,7 +9,7 @@ const useCopyBankAccount = () => {
           title: "입금 계좌번호 복사 완료",
           message: "국민 005701-04-142344 ㈜에이시지알",
           color: "green",
-          icon: <IconCheck size={16} />,
+          icon: <Check size={16} />,
         });
       });
     } catch (error) {
@@ -18,7 +17,7 @@ const useCopyBankAccount = () => {
         title: "입금 계좌번호 복사",
         message: "입금 계좌번호 복사 중 문제가 발생했습니다.",
         color: "red",
-        icon: <IconX size={16} />,
+        icon: <X size={16} />,
       });
     }
   };

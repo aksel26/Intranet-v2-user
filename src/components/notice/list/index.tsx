@@ -1,17 +1,18 @@
-"use client";
-import { getNotices } from "@/app/api/get/getApi";
-import { TNotice } from "@/lib/types/notice";
-import { formatYYYYMMDD } from "@/utils/dateFomat";
+import { noticeService } from "@/api/services/notice/notice.services";
+import { useApiQuery } from "@/api/useApi";
+import type { TNotice } from "@/types/notice";
+import { formatYYYYMMDD } from "@/utils/date/format";
 import { Badge, Group, Stack, Text } from "@mantine/core";
-import { useSuspenseQuery } from "@tanstack/react-query";
-import Link from "next/link";
 import React from "react";
-import styles from "../../../styles/list.module.css";
+import styles from "@/styles/list/list.module.css";
+import { useNavigate } from "react-router-dom";
+
 const NoticeList = ({ params }: any) => {
-  const { data } = useSuspenseQuery({
-    queryKey: ["notices", params],
-    queryFn: () => getNotices(params).then((res) => res.data),
-  });
+  const { data, isLoading, isError } = useApiQuery(["notices", params], () => noticeService.getNotices(params));
+
+  const navigate = useNavigate();
+
+  const goDetail = (notice: TNotice) => navigate(`/notice/${notice.noticeIdx}`);
 
   const ListWrapper = ({ result }: any) => {
     return (
@@ -21,7 +22,7 @@ const NoticeList = ({ params }: any) => {
             내용이 없습니다.
           </Text>
         ) : (
-          result?.map((record: TNotice, index: number, arr: any) => {
+          result?.map((record: TNotice, index: number) => {
             return (
               <React.Fragment key={index}>
                 <Items key={record.noticeIdx} record={record} />
@@ -34,31 +35,29 @@ const NoticeList = ({ params }: any) => {
   };
 
   const Items = ({ record }: { record: TNotice }) => (
-    <Link href={`/notice/${record.noticeIdx}`} key={record.noticeIdx}>
-      <Stack gap={2} className={styles.element}>
-        <Group>
-          <Text fz={"sm"}>{record.title}</Text>
-          {record.isNew && (
-            <Badge size="xs" variant="light">
-              New
-            </Badge>
-          )}
-        </Group>
-        <Group>
-          <Text c={"dimmed"} fz={"sm"}>
-            {record.creatorName}
-          </Text>
-          <Text c={"dimmed"} fz={"sm"}>
-            {formatYYYYMMDD(record.createdAt)}
-          </Text>
-        </Group>
-      </Stack>
-    </Link>
+    <Stack gap={2} className={styles.element} key={record.noticeIdx} onClick={() => goDetail(record)}>
+      <Group>
+        <Text fz={"sm"}>{record.title}</Text>
+        {record.isNew && (
+          <Badge size="xs" variant="light">
+            New
+          </Badge>
+        )}
+      </Group>
+      <Group>
+        <Text c={"dimmed"} fz={"sm"}>
+          {record.creatorName}
+        </Text>
+        <Text c={"dimmed"} fz={"sm"}>
+          {formatYYYYMMDD(record.createdAt)}
+        </Text>
+      </Group>
+    </Stack>
   );
 
   return (
     <Stack mt={"md"} gap={"lg"}>
-      <ListWrapper result={data?.data?.result} />
+      {isLoading ? <Text ta={"center"}>Loading...</Text> : <ListWrapper result={data?.data?.data.result} />}
     </Stack>
   );
 };

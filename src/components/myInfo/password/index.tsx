@@ -1,12 +1,33 @@
-import notification from "@/components/GNB/Notification";
-import { useChangePassword } from "@/hooks/useSubmitForm";
+// import notification from "@/components/GNB/Notification";
+// import { useChangePassword } from "@/hooks/useSubmitForm";
+import { userService } from "@/api/services/user/user.services";
+import { useApiMutation } from "@/api/useApi";
+import notification from "@/components/common/notification";
 import { Box, Button, Paper, PasswordInput, Text } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { useState } from "react";
 
 const UpdatePassword = () => {
-  const { mutate: changePassword } = useChangePassword();
   const [prePasswordErr, setPrePasswordErr] = useState(false);
+
+  const updateInfo = useApiMutation<
+    any, // 응답 타입
+    any, // 에러 타입
+    any // 요청 파라미터 타입
+  >(userService.updatePassword, {
+    invalidateKeys: [["me"]],
+    onSuccess: async () => {
+      notification({ title: "비밀번호 변경", color: "green", message: "비밀번호가 변경되었습니다." });
+      setPrePasswordErr(false);
+      passwordForm.reset();
+    },
+    onError: (error: any) => {
+      if (error.message) {
+        setPrePasswordErr(true);
+      }
+    },
+  });
+
   const passwordForm = useForm({
     mode: "uncontrolled",
     initialValues: {
@@ -20,7 +41,7 @@ const UpdatePassword = () => {
   });
 
   const submitChangePassword = (values: any) => {
-    changePassword(values, {
+    updateInfo.mutate(values, {
       onSuccess: () => {
         notification({ title: "비밀번호 변경", color: "green", message: "비밀번호가 변경되었습니다." });
         setPrePasswordErr(false);

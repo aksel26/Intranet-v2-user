@@ -1,5 +1,4 @@
-import React from "react";
-import { Badge, Group, Modal, Paper, ScrollArea, Stack, Text } from "@mantine/core";
+import { Badge, Group, Paper, ScrollArea, Stack, Text } from "@mantine/core";
 const Value = ({ content }: { content: string }) => {
   return <Text fz={"xs"}>{content}</Text>;
 };
