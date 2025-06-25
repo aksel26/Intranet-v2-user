@@ -1,20 +1,13 @@
-// import { approvalHasNew, noticeHasNew } from "@/app/api/get/getApi";
-// import { useQuery } from "@tanstack/react-query";
+import { newService } from "@/api/services/new/new.services";
+import { useApiQuery } from "@/api/useApi";
 
 export const useHasNew = () => {
-  //   const { data: approvalData } = useQuery({
-  //     queryKey: ["approvalNew"],
-  //     queryFn: approvalHasNew,
-  //   });
+  const { data: approvalData } = useApiQuery(["approvalNew"], newService.approvalHasNew);
 
-  //   const { data: noticeData } = useQuery({
-  //     queryKey: ["noticeNew"], // 고유한 키로 변경
-  //     queryFn: noticeHasNew,
-  //   });
+  const { data: noticeData } = useApiQuery(["noticeNew"], newService.noticeHasNew);
 
-  return { approval: true, notice: true };
-  //   return {
-  //     approval: approvalData?.data?.data?.hasNew ?? false,
-  //     notice: noticeData?.data?.data?.hasNew ?? false,
-  //   };
+  return {
+    approval: approvalData?.data?.data?.hasNew ?? false,
+    notice: noticeData?.data?.data?.hasNew ?? false,
+  };
 };

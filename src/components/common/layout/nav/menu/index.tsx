@@ -17,8 +17,8 @@ interface NavItemWithIndicatorProps {
 }
 
 // Indicator가 있는 NavLink 컴포넌트를 별도로 분리
-const NavItemWithIndicator = memo(
-  ({ child, index, hasNew, clickMenu }: NavItemWithIndicatorProps) => (
+const NavItemWithIndicator = memo(({ child, index, hasNew, clickMenu }: NavItemWithIndicatorProps) => {
+  return (
     <NavLink
       pos="relative"
       onClick={clickMenu}
@@ -35,22 +35,15 @@ const NavItemWithIndicator = memo(
         </Group>
       }
     />
-  )
-);
+  );
+});
 
 NavItemWithIndicator.displayName = "NavItemWithIndicator";
 
 // 일반 NavLink 컴포넌트
-const RegularNavItem = memo(
-  ({ child, index, clickMenu }: Omit<NavItemWithIndicatorProps, "hasNew">) => (
-    <NavLink
-      onClick={clickMenu}
-      key={`${child.label}-${index}`}
-      href={child.href}
-      label={child.label}
-    />
-  )
-);
+const RegularNavItem = memo(({ child, index, clickMenu }: Omit<NavItemWithIndicatorProps, "hasNew">) => (
+  <NavLink onClick={clickMenu} key={`${child.label}-${index}`} href={child.href} label={child.label} />
+));
 
 RegularNavItem.displayName = "RegularNavItem";
 
@@ -59,34 +52,11 @@ const NavItem = memo(({ item, clickMenu, hasNew }: NavItemProps) => {
     (child: any, index: number) => {
       switch (child.label) {
         case "결재/승인":
-          return (
-            <NavItemWithIndicator
-              key={`${child.label}-${index}`}
-              child={child}
-              index={index}
-              hasNew={hasNew.approval}
-              clickMenu={clickMenu}
-            />
-          );
+          return <NavItemWithIndicator key={`${child.label}-${index}`} child={child} index={index} hasNew={hasNew.approval} clickMenu={clickMenu} />;
         case "공지/일정":
-          return (
-            <NavItemWithIndicator
-              key={`${child.label}-${index}`}
-              child={child}
-              index={index}
-              hasNew={hasNew.notice}
-              clickMenu={clickMenu}
-            />
-          );
+          return <NavItemWithIndicator key={`${child.label}-${index}`} child={child} index={index} hasNew={hasNew.notice} clickMenu={clickMenu} />;
         default:
-          return (
-            <RegularNavItem
-              key={`${child.label}-${index}`}
-              child={child}
-              index={index}
-              clickMenu={clickMenu}
-            />
-          );
+          return <RegularNavItem key={`${child.label}-${index}`} child={child} index={index} clickMenu={clickMenu} />;
       }
     },
     [hasNew, clickMenu]
@@ -109,21 +79,13 @@ const NavMenu = memo(() => {
   const clickMenu = useCallback(async () => {
     setMobileClose();
     // 관련된 모든 쿼리 무효화
-    await Promise.all([
-      queryClient.invalidateQueries({ queryKey: ["approvalNew"] }),
-      queryClient.invalidateQueries({ queryKey: ["noticeNew"] }),
-    ]);
+    await Promise.all([queryClient.invalidateQueries({ queryKey: ["approvalNew"] }), queryClient.invalidateQueries({ queryKey: ["noticeNew"] })]);
   }, [setMobileClose, queryClient]);
 
   return (
     <Box mt="xs">
       {MENU_ITEMS.map((item, index) => (
-        <NavItem
-          key={`${item.label}-${index}`}
-          hasNew={hasNew}
-          item={item}
-          clickMenu={clickMenu}
-        />
+        <NavItem key={`${item.label}-${index}`} hasNew={hasNew} item={item} clickMenu={clickMenu} />
       ))}
     </Box>
   );
