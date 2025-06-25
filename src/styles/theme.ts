@@ -11,7 +11,7 @@ export const theme = createTheme({
 
   primaryColor: "primary",
 
-  fontFamily: "Pretendard, sans-serif", // 기본 폰트를 Pretendard로 설정
+  fontFamily: "Pretendard Variable, Pretendard, sans-serif", // 기본 폰트를 Pretendard로 설정
 
   headings: {
     // properties for all headings
