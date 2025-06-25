@@ -26,7 +26,7 @@ const WorkHourStats = () => {
   const { data, isLoading, isError } = useApiQuery(["workHours", { year: dayjs(dateValue).year(), month: dayjs(dateValue).month() + 1 }], () => statsService.getWorkHourStats(param));
 
   const navigate = useNavigate();
-  const goWorkDetails = () => navigate("/attendance/work");
+  const goWorkDetails = () => navigate("/work");
   const workStats = data?.data.data.weeklyWorkHours || [];
   const renderContent = () => {
     if (isLoading) return <LoadingView />;

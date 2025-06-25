@@ -33,7 +33,7 @@ interface OutputPayload {
   payeeIdxs: number[];
 }
 
-export default function WelfareInputForm({ onClose, opened }: any) {
+export default function WelfareInputForm() {
   const { myInfo } = myInfoStore();
   const queryClient = useQueryClient();
   const { data: userList, isLoading, isError } = useApiQuery(["users"], userService.getAll);
@@ -45,7 +45,7 @@ export default function WelfareInputForm({ onClose, opened }: any) {
     any, // 응답 타입
     any, // 에러 타입
     any // 요청 파라미터 타입
-  >(pointsService.updatePoint, {
+  >(pointsService.createPoint, {
     invalidateKeys: [["welfares"]],
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ["welfares"] });
@@ -105,6 +105,7 @@ export default function WelfareInputForm({ onClose, opened }: any) {
 
   const handleSubmit = (values: InputPayload) => {
     const payload = transformPayload(values);
+    console.log("payload:", payload);
     mutate(payload);
   };
 

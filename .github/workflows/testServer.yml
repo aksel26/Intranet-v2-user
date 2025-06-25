@@ -20,12 +20,11 @@ jobs:
             echo "############# CREATE .ENV #############"
             cd ../../main/testServer/benefit2024/user/
             [ -f .env.local ] && rm .env.local
-            touch .env.local
+            touch .env
 
-            echo "NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_URL }}" >> .env.local
-            echo "NEXTAUTH_SECRET=${{ secrets.NEXTAUTH_SECRET }}" >> .env.local
+            echo "VITE_BASE_URL=${{ secrets.VITE_BASE_URL }}" >> .env
 
-            cat .env.local
+            cat .env
 
             cd ../../main/testServer/benefit2024/user/
             sh script.sh
