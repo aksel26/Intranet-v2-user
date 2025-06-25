@@ -9,7 +9,6 @@ const MemoizedVacation = memo(Vacation);
 
 const AttendanceInfo = () => {
   const { myInfo } = myInfoStore();
-  console.log("myInfo:", myInfo);
   if (myInfo?.attendance === "연차") return <MemoizedVacation />;
   else {
     if (myInfo?.checkInTime) return <Work />;
