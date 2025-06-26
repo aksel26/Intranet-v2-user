@@ -33,7 +33,7 @@ const GroupDisplay = ({ data, matches }: any) => {
                 {members.map((member: any, index: number) => {
                   if (!member) {
                     return (
-                      <Box key={index} fz={"xs"} w={44} style={{ border: "2px dotted var(--mantine-color-gray-4)", borderRadius: 5 }} py={2} px={5} c={"gray.6"} ta={"center"}>
+                      <Box key={`blank-${index}`} fz={"xs"} w={44} style={{ border: "2px dotted var(--mantine-color-gray-4)", borderRadius: 5 }} py={2} px={5} c={"gray.6"} ta={"center"}>
                         ?
                       </Box>
                     );
