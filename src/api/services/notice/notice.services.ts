@@ -10,4 +10,11 @@ export const noticeService = {
     apiClient.get(`/users/notices/${noticeIdx}`, {
       params: { noticeIdx: noticeIdx },
     }),
+
+  createNotice: (params: TNotice) =>
+    apiClient.post(`/users/notices`, params, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }),
 };
