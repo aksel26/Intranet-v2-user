@@ -2,14 +2,9 @@
 import type { EarlyCheckResult, TLeaveMyInfo } from "@/types/myInfo";
 import dayjs from "dayjs";
 
-export const checkMorningLeave = (
-  leaveData: TLeaveMyInfo[]
-): EarlyCheckResult | null => {
+export const checkMorningLeave = (leaveData: TLeaveMyInfo[]): EarlyCheckResult | null => {
   // 오전이 포함된 휴가 찾기
-  const morningLeave = leaveData.find(
-    (item: TLeaveMyInfo) =>
-      item.leaveType.includes("오전") && item.confirmYN === "Y"
-  );
+  const morningLeave = leaveData.find((item: TLeaveMyInfo) => item.leaveType.includes("오전") && item.confirmYN === "Y");
 
   if (!morningLeave) {
     return null;
@@ -17,11 +12,7 @@ export const checkMorningLeave = (
 
   // 휴가 타입에 따른 시간 설정
   let targetTime;
-  if (
-    morningLeave.leaveType.includes("오전") &&
-    (morningLeave.leaveType.includes("반반") ||
-      morningLeave.leaveType.includes("반반차"))
-  ) {
+  if (morningLeave.leaveType.includes("오전") && (morningLeave.leaveType.includes("반반") || morningLeave.leaveType.includes("반반차"))) {
     // 오전 + (반반 또는 반반차) → 오전 10시
     targetTime = dayjs().hour(10).minute(0).second(0);
   } else if (morningLeave.leaveType.includes("오전")) {

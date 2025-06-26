@@ -16,12 +16,15 @@ import { myInfoStore } from "@/store/myInfoStore";
 import type { TLeaveMyInfo } from "@/types/myInfo";
 import { checkMorningLeave } from "@/utils/commute/checkEarly";
 import EarlyCheckIn from "./earlyCheckIn";
+import useCheckInTime from "@/hooks/useCheckInTime";
 
 function CheckIn({ checkInModalClose, checkInTimeOpened }: any) {
   const { myInfo } = myInfoStore();
   // const { mutate: checkIn } = useCheckIn();
   const queryClient = useQueryClient();
   const [opened, { open, close }] = useDisclosure(false);
+
+  const { isBefore8AM, checkIsBefore6AM } = useCheckInTime();
 
   const leaveList = myInfo?.leave || [];
 
@@ -55,6 +58,14 @@ function CheckIn({ checkInModalClose, checkInTimeOpened }: any) {
   });
 
   const handleCheckIn = () => {
+    if (checkIsBefore6AM()) {
+      return notification({
+        color: "yellow",
+        message: "오전 6시 이후로 출근이 가능합니다.",
+        title: "출석체크",
+      });
+    }
+
     const result = checkMorningLeave(myInfo?.leave ?? []);
     if (result?.shouldExecute) {
       open();
@@ -85,6 +96,11 @@ function CheckIn({ checkInModalClose, checkInTimeOpened }: any) {
       <Text c={"dimmed"} fz={"sm"} mt={"md"}>
         아래 버튼을 눌러 출근을 완료해 주세요.
       </Text>
+      {isBefore8AM ? (
+        <Text c={"yellow.7"} fz={"sm"} mt={"md"}>
+          ☝️ 오전 8시 이전에는 '현장출근'으로 기록됩니다.
+        </Text>
+      ) : null}
       <Group wrap="nowrap" mt={"md"}>
         <Button fullWidth onClick={handleCheckIn} data-autofocus>
           출근하기
