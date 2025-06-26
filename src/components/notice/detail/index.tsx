@@ -168,7 +168,7 @@ function NoticeDetails() {
                   </Table.Tr>
                   <Table.Tr>
                     <Table.Th>최종 수정일</Table.Th>
-                    <Table.Td>{formatTimeFull(noticeDetails?.lastEditorName)}</Table.Td>
+                    <Table.Td>{formatTimeFull(noticeDetails?.lastUpdateAt)}</Table.Td>
                   </Table.Tr>
                 </Table.Tbody>
               </Table>

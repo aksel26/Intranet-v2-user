@@ -8,6 +8,7 @@ export interface TNotice {
   startDate: string;
   endDate: string;
   createdAt: string;
+  lastUpdateAt: string;
   attendeeInfo: AttendeeInfo[];
   ccUserInfo: CcUserInfo[];
   isNew: boolean;
