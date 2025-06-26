@@ -9,13 +9,8 @@ import { myInfoStore } from "@/store/myInfoStore";
 import { ChevronRight, Plus } from "lucide-react";
 import EmptyView from "@/components/common/empty";
 import BottomModal from "@/components/common/modal/bottom";
-
-// import BottomModal from "@/components/common/BottomModal";
-// import EmptyView from "@/components/common/view/EmptyView";
-// import { myInfoStore } from "@/lib/store/myInfoStore";
-// import { TActivityDetail } from "@/lib/types/activity";
-// import ActivityInputForm from "./ActivityInputForm";
-// import ActivityUpdateForm from "./ActivityUpdateForm";
+import ActivityInputForm from "../create";
+import ActivityUpdateForm from "../update";
 
 export const UsedListActivity = ({ activities, isLoading, isError }: any) => {
   const [opened, { toggle, close }] = useDisclosure(false);
@@ -100,11 +95,11 @@ export const UsedListActivity = ({ activities, isLoading, isError }: any) => {
       {renderContent()}
 
       <BottomModal opened={opened} onClose={close} title={"활동비 입력"}>
-        {/* <ActivityInputForm onClose={close} opened={opened} /> */}
+        <ActivityInputForm onClose={close} opened={opened} />
       </BottomModal>
 
       <BottomModal opened={openedUpdateForm} onClose={closeUpdateForm} title={"활동비 수정"}>
-        {/* <ActivityUpdateForm opened={openedUpdateForm} onClose={closeUpdateForm} updateActivityDetail={updateActivityDetail} /> */}
+        <ActivityUpdateForm opened={openedUpdateForm} onClose={closeUpdateForm} updateActivityDetail={updateActivityDetail} />
       </BottomModal>
       <Affix position={{ bottom: 80, right: 20 }} zIndex={199} hidden={!isAuthorized} hiddenFrom="md">
         <Button radius={"lg"} onClick={toggle} color="blue.9" leftSection={<Plus style={{ width: rem(16), height: rem(16) }} />}>
