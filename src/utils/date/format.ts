@@ -11,6 +11,11 @@ export const formatTime = (date: string | null) => {
   return dayjs(date).format("HH:mm:ss");
 };
 
+export const formatTimeFull = (date: string | null) => {
+  if (!date) return "시간 정보가 없습니다.";
+  return dayjs(date).format("YYYY-MM-DD HH:mm:ss");
+};
+
 export const calculateNumberToTime = (minutes: number) => {
   const hours = Math.floor(minutes / 60);
   const remainingMinutes = Math.floor(minutes % 60);

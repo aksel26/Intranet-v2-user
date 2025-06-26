@@ -2,13 +2,16 @@ import { noticeService } from "@/api/services/notice/notice.services";
 import { useApiQuery } from "@/api/useApi";
 import LoadingView from "@/components/loading";
 import { convertFileUnit } from "@/utils/file/convertFileUnit";
-import { Box, Button, Group, Modal, Paper, Stack, Text, Title } from "@mantine/core";
+import { Box, Button, Group, Modal, Paper, Stack, Table, Text, Title } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { useQueryClient } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import ModifyNotice from "../update";
+import NoticeCategory from "../category";
+import Car from "./car";
+import { formatTimeFull, formatYYYYMMDD } from "@/utils/date/format";
 
 function NoticeDetails() {
   const { id } = useParams();
@@ -37,6 +40,12 @@ function NoticeDetails() {
 
   return (
     <>
+      <Stack gap={1} mb="xs">
+        <Title order={4}> 공지/일정</Title>
+        <Text c={"gray.6"} fz={"sm"}>
+          검사 외의 공지는 P&C팀에게 문의해 주시기 바랍니다.
+        </Text>
+      </Stack>
       <Paper bg={"white"} px="md" py="lg" radius={"lg"} h={"100%"}>
         {isLoading ? (
           <LoadingView />
@@ -46,18 +55,17 @@ function NoticeDetails() {
               <Stack gap={2}>
                 <Title order={4}>{noticeDetails?.title}</Title>
                 <Group>
-                  <Group>
+                  <Group gap={"xs"}>
                     <Text fz={"sm"} c={"dimmed"}>
-                      작성일
+                      카테고리
                     </Text>
-                    <Text fz={"sm"} c={"dimmed"}>
-                      {dayjs(noticeDetails?.createdAt).format("YYYY-MM-DD")}
-                    </Text>{" "}
+                    <NoticeCategory record={noticeDetails} />
                   </Group>
                   <Text fz={"sm"} c={"dimmed"}>
                     ·
                   </Text>
-                  <Group>
+
+                  <Group gap={"xs"}>
                     <Text fz={"sm"} c={"dimmed"}>
                       작성자
                     </Text>
@@ -65,16 +73,105 @@ function NoticeDetails() {
                       {noticeDetails?.creatorName}
                     </Text>
                   </Group>
+
+                  <Text fz={"sm"} c={"dimmed"}>
+                    ·
+                  </Text>
+
+                  <Group gap={"xs"}>
+                    <Text fz={"sm"} c={"dimmed"}>
+                      작성일
+                    </Text>
+                    <Text fz={"sm"} c={"dimmed"}>
+                      {dayjs(noticeDetails?.createdAt).format("YYYY-MM-DD")}
+                    </Text>{" "}
+                  </Group>
+                </Group>
+                <Group>
+                  <Group gap={"xs"}>
+                    <Text fz={"sm"} c={"dimmed"}>
+                      장소
+                    </Text>
+                    <Text fz={"sm"} c={"dimmed"}>
+                      {noticeDetails?.place}
+                    </Text>
+                  </Group>
+
+                  <Text fz={"sm"} c={"dimmed"}>
+                    ·
+                  </Text>
+                  <Group gap={"xs"}>
+                    <Text fz={"sm"} c={"dimmed"}>
+                      차량 사용
+                    </Text>
+                    <Car noticeDetails={noticeDetails} />
+                  </Group>
+                  <Text fz={"sm"} c={"dimmed"}>
+                    ·
+                  </Text>
+
+                  <Group gap={"xs"}>
+                    <Text fz={"sm"} c={"dimmed"}>
+                      게시 기간
+                    </Text>
+                    <Text fz={"sm"} c={"dimmed"}>
+                      {`${dayjs(noticeDetails?.startDate).format("YYYY-MM-DD")} ~ ${dayjs(noticeDetails?.endDate).format("YYYY-MM-DD")}`}
+                    </Text>{" "}
+                  </Group>
                 </Group>
               </Stack>
-              <Group>
-                <Button variant="default" size="xs" onClick={open}>
-                  수정하기
-                </Button>
-                <Button variant="outline" size="xs" color="red">
-                  삭제하기
-                </Button>
+              <Group justify="space-between" align="start" w={"100%"}>
+                <Title order={4}>{noticeDetails?.title}</Title>{" "}
+                <Group>
+                  <Button variant="default" size="xs" onClick={open}>
+                    수정하기
+                  </Button>
+                  <Button variant="outline" size="xs" color="red">
+                    삭제하기
+                  </Button>
+                </Group>
               </Group>
+
+              <Table variant="vertical" layout="fixed" verticalSpacing={3} fz={"xs"}>
+                <Table.Tbody>
+                  <Table.Tr>
+                    <Table.Th w={80}> 카테고리</Table.Th>
+                    <Table.Td>
+                      <NoticeCategory record={noticeDetails} />
+                    </Table.Td>
+                  </Table.Tr>
+
+                  <Table.Tr>
+                    <Table.Th>장소</Table.Th>
+                    <Table.Td>{noticeDetails.place}</Table.Td>
+                  </Table.Tr>
+
+                  <Table.Tr>
+                    <Table.Th>차량 사용</Table.Th>
+                    <Table.Td>
+                      <Car noticeDetails={noticeDetails} />
+                    </Table.Td>
+                  </Table.Tr>
+
+                  <Table.Tr>
+                    <Table.Th>작성자</Table.Th>
+                    <Table.Td> {noticeDetails?.creatorName}</Table.Td>
+                  </Table.Tr>
+                  <Table.Tr>
+                    <Table.Th>작성일</Table.Th>
+                    <Table.Td>{formatYYYYMMDD(noticeDetails?.createdAt)}</Table.Td>
+                  </Table.Tr>
+
+                  <Table.Tr>
+                    <Table.Th>최종수정</Table.Th>
+                    <Table.Td>{noticeDetails?.lastEditorName}</Table.Td>
+                  </Table.Tr>
+                  <Table.Tr>
+                    <Table.Th>최종 수정일</Table.Th>
+                    <Table.Td>{formatTimeFull(noticeDetails?.lastEditorName)}</Table.Td>
+                  </Table.Tr>
+                </Table.Tbody>
+              </Table>
             </Group>
             <Box py={"md"} dangerouslySetInnerHTML={createMarkup(noticeDetails?.content)} mih={200} fz={"sm"} />
             <Text fz={"sm"}>첨부파일</Text>

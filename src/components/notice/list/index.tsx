@@ -6,6 +6,7 @@ import { Badge, Group, Stack, Text } from "@mantine/core";
 import React from "react";
 import styles from "@/styles/list/list.module.css";
 import { useNavigate } from "react-router-dom";
+import NoticeCategory from "../category";
 
 const NoticeList = ({ params }: any) => {
   const { data, isLoading, isError } = useApiQuery(["notices", params], () => noticeService.getNotices(params));
@@ -35,7 +36,7 @@ const NoticeList = ({ params }: any) => {
   };
 
   const Items = ({ record }: { record: TNotice }) => (
-    <Stack gap={2} className={styles.element} key={record.noticeIdx} onClick={() => goDetail(record)}>
+    <Stack gap={5} className={styles.element} key={record.noticeIdx} onClick={() => goDetail(record)}>
       <Group>
         <Text fz={"sm"}>{record.title}</Text>
         {record.isNew && (
@@ -45,10 +46,11 @@ const NoticeList = ({ params }: any) => {
         )}
       </Group>
       <Group>
-        <Text c={"dimmed"} fz={"sm"}>
+        <NoticeCategory record={record} />
+        <Text c={"gray"} fz={"sm"}>
           {record.creatorName}
         </Text>
-        <Text c={"dimmed"} fz={"sm"}>
+        <Text c={"gray"} fz={"sm"}>
           {formatYYYYMMDD(record.createdAt)}
         </Text>
       </Group>

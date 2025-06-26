@@ -99,7 +99,7 @@ const CreateNotice = ({ opened, close }: any) => {
               label="카테고리"
               withAsterisk
             >
-              <Group mt={3} justify="space-between">
+              <Group mt={3} gap={"xl"}>
                 <Radio size="xs" styles={{ label: { fontSize: "var(--mantine-font-size-sm)" } }} value="공지사항" label="공지사항" />
                 <Radio size="xs" styles={{ label: { fontSize: "var(--mantine-font-size-sm)" } }} value="내부미팅" label="내부미팅" />
                 <Radio size="xs" styles={{ label: { fontSize: "var(--mantine-font-size-sm)" } }} value="외부미팅" label="외부미팅" />
