@@ -238,7 +238,7 @@ const CreateNotice = ({ opened, close }: any) => {
             />
 
             <FileInput
-              placeholder="Input placeholder"
+              placeholder="첨부파일을 선택해 주세요."
               styles={{
                 label: {
                   fontSize: "var(--mantine-font-size-xs",
