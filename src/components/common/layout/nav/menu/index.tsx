@@ -1,29 +1,27 @@
-// import { useHasNew } from "@/hooks/useHasNew";
 import { useHasNew } from "@/hooks/useHasNew";
 import { MENU_ITEMS, type NavItemProps } from "@/lib/enums/menu/navMenu";
 import { useNavStore } from "@/store/navStore";
-// import {  NavItemProps } from "@/lib/enums";
-// import { useNavStore } from "@/lib/store/toggleStore";
 import { Badge, Box, Group, NavLink, Text } from "@mantine/core";
 import { useQueryClient } from "@tanstack/react-query";
-// import Link from "next/link";
 import { memo, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 
 interface NavItemWithIndicatorProps {
   child: any;
   index: number;
   hasNew: boolean;
-  clickMenu: () => void;
+  clickMenu: (item: any) => void;
 }
 
 // Indicator가 있는 NavLink 컴포넌트를 별도로 분리
-const NavItemWithIndicator = memo(({ child, index, hasNew, clickMenu }: NavItemWithIndicatorProps) => {
+const NavItemWithIndicator = memo(({ child, index, hasNew }: NavItemWithIndicatorProps) => {
+  const navigate = useNavigate();
+  const move = (href: string) => navigate(href);
   return (
     <NavLink
       pos="relative"
-      onClick={clickMenu}
+      onClick={() => move(child.href)}
       key={`${child.label}-${index}`}
-      href={child.href}
       label={
         <Group>
           <Text fz="sm">{child.label}</Text>
@@ -41,9 +39,12 @@ const NavItemWithIndicator = memo(({ child, index, hasNew, clickMenu }: NavItemW
 NavItemWithIndicator.displayName = "NavItemWithIndicator";
 
 // 일반 NavLink 컴포넌트
-const RegularNavItem = memo(({ child, index, clickMenu }: Omit<NavItemWithIndicatorProps, "hasNew">) => (
-  <NavLink onClick={clickMenu} key={`${child.label}-${index}`} href={child.href} label={child.label} />
-));
+const RegularNavItem = memo(({ child, index }: Omit<NavItemWithIndicatorProps, "hasNew">) => {
+  const navigate = useNavigate();
+  const move = (href: string) => navigate(href);
+
+  return <NavLink key={`${child.label}-${index}`} onClick={() => move(child.href)} label={child.label} />;
+});
 
 RegularNavItem.displayName = "RegularNavItem";
 
@@ -74,10 +75,12 @@ NavItem.displayName = "NavItem";
 const NavMenu = memo(() => {
   const queryClient = useQueryClient();
   const hasNew = useHasNew();
+  console.log("hasNew:", hasNew);
   const setMobileClose = useNavStore((state) => state.setMobileClose);
 
   const clickMenu = useCallback(async () => {
     setMobileClose();
+    // setActive()
     // 관련된 모든 쿼리 무효화
     await Promise.all([queryClient.invalidateQueries({ queryKey: ["approvalNew"] }), queryClient.invalidateQueries({ queryKey: ["noticeNew"] })]);
   }, [setMobileClose, queryClient]);
