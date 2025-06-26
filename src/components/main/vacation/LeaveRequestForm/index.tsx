@@ -140,7 +140,7 @@ function Vacation({ opened, close }: any) {
   const [preview, { open: openPreview, close: closePreview }] = useDisclosure(false);
 
   const renderDay = (date: any) => {
-    const day = dayjs(date).day();
+    const day = dayjs(date).date();
 
     // Format date to match the format in commuteData
     const formattedDate = dayjs(date).format("YYYY-MM-DD");
