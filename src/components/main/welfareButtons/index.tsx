@@ -15,7 +15,7 @@ const WelfareButtons = () => {
     <Group wrap="nowrap">
       <Button
         fullWidth
-        onClick={() => handleButtonClick("/welfare/meal")}
+        onClick={() => handleButtonClick("/meal")}
         variant="gradient"
         gradient={{ from: "lime.2", to: "yellow.2", deg: 154 }}
         c={"lime.9"}
@@ -26,7 +26,7 @@ const WelfareButtons = () => {
       </Button>
       <Button
         fullWidth
-        onClick={() => handleButtonClick("/welfare/welfarePoint")}
+        onClick={() => handleButtonClick("/points")}
         variant="gradient"
         gradient={{ from: "cyan", to: "green", deg: 154 }}
         c={"cyan.1"}
@@ -37,7 +37,7 @@ const WelfareButtons = () => {
       </Button>
       <Button
         fullWidth
-        onClick={() => handleButtonClick("/welfare/activity")}
+        onClick={() => handleButtonClick("/activity")}
         variant="gradient"
         leftSection={<Users2 color="white" size={16} />}
         gradient={{ from: "violet", to: "teal", deg: 154 }}
