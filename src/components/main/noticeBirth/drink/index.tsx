@@ -106,7 +106,7 @@ const MonthlyDrink = () => {
       <Group justify="space-between" align="center">
         <Group>
           <Text fz={"sm"} c={"gray"}>
-            픽업 :
+            🏃‍♀️‍➡️ 픽업 :
           </Text>
           <Group>
             {config?.pickup.length < 1 ? (
