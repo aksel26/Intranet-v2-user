@@ -21,7 +21,7 @@ export const noticeService = {
 
   // 사용자 공지사항 수정 API
   updateNotice: (params: any) =>
-    apiClient.post(`/users/notices/${params.noticeIdx}`, params, {
+    apiClient.put(`/users/notices/${params.noticeIdx}`, params, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
