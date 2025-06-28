@@ -2,6 +2,7 @@ import { noticeService } from "@/api/services/notice/notice.services";
 import { userService } from "@/api/services/user/user.services";
 import { useApiMutation, useApiQuery } from "@/api/useApi";
 import notification from "@/components/common/notification";
+import { myInfoStore } from "@/store/myInfoStore";
 import type { TUsers } from "@/types/users";
 import {
   Button,
@@ -10,9 +11,11 @@ import {
   Loader,
   Modal,
   MultiSelect,
+  Popover,
   Radio,
   Select,
   Stack,
+  Text,
   Textarea,
   TextInput,
 } from "@mantine/core";
@@ -30,6 +33,9 @@ const CreateNotice = ({ opened, close }: any) => {
   );
   // // const users = data?.data.data;
   const users = data?.data.data;
+
+  const { myInfo } = myInfoStore();
+  console.log("myInfo: ", myInfo);
 
   // console.log("users:", users);
   const form = useForm({
@@ -138,7 +144,9 @@ const CreateNotice = ({ opened, close }: any) => {
                   }}
                   value="공지사항"
                   label="공지사항"
+                  disabled={myInfo?.adminRole === "Y" ? false : true}
                 />
+
                 <Radio
                   size="xs"
                   styles={{
@@ -268,8 +276,8 @@ const CreateNotice = ({ opened, close }: any) => {
               comboboxProps={{
                 transitionProps: { transition: "pop", duration: 200 },
               }}
-              key={form.key("useCarYN")}
-              {...form.getInputProps("useCarYN")}
+              key={form.key("useCar")}
+              {...form.getInputProps("useCar")}
             />
 
             <Textarea

@@ -68,7 +68,7 @@ function NoticeDetails() {
           <LoadingView />
         ) : (
           <>
-            <Group justify="space-between" align="start" w={"100%"}>
+            <Group align="start" w={"100%"}>
               <Stack gap={"xs"} w={"100%"}>
                 <Group gap={"xs"}>
                   <Title order={4}>{noticeDetails?.title}</Title>
@@ -81,9 +81,7 @@ function NoticeDetails() {
                         <Text fz={"xs"} c={"dimmed"} w={LABEL_WIDTH}>
                           장소
                         </Text>
-                        <Text fz={"xs"} c={"dimmed"}>
-                          {noticeDetails?.place}
-                        </Text>
+                        <Text fz={"xs"}>{noticeDetails?.place}</Text>
                       </Group>
 
                       <Group gap={"xs"}>
@@ -117,9 +115,7 @@ function NoticeDetails() {
                         >
                           작성자
                         </Text>
-                        <Text fz={"xs"} c={"dimmed"}>
-                          {noticeDetails?.creatorName}
-                        </Text>
+                        <Text fz={"xs"}>{noticeDetails?.creatorName}</Text>
                       </Group>
 
                       <Group gap={"xs"}>
@@ -130,8 +126,10 @@ function NoticeDetails() {
                         >
                           작성일
                         </Text>
-                        <Text fz={"xs"} c={"dimmed"}>
-                          {dayjs(noticeDetails?.createdAt).format("YYYY-MM-DD")}
+                        <Text fz={"xs"}>
+                          {dayjs(noticeDetails?.createdAt).format(
+                            "YYYY-MM-DD (dd)"
+                          )}
                         </Text>{" "}
                       </Group>
                     </Stack>
@@ -140,16 +138,14 @@ function NoticeDetails() {
                         <Text fz={"xs"} c={"dimmed"} w={LABEL_WIDTH}>
                           수정
                         </Text>
-                        <Text fz={"xs"} c={"dimmed"}>
-                          {noticeDetails?.lastEditorName}
-                        </Text>
+                        <Text fz={"xs"}>{noticeDetails?.lastEditorName}</Text>
                       </Group>
 
                       <Group gap={"xs"}>
                         <Text fz={"xs"} c={"dimmed"} w={LABEL_WIDTH}>
                           최종 수정일
                         </Text>
-                        <Text fz={"xs"} c={"dimmed"}>
+                        <Text fz={"xs"}>
                           {formatTimeFull(noticeDetails?.lastUpdateAt)}
                         </Text>{" "}
                       </Group>
@@ -160,7 +156,7 @@ function NoticeDetails() {
                   <Text fz={"xs"} c={"dimmed"} w={LABEL_WIDTH}>
                     게시 기간
                   </Text>
-                  <Text fz={"xs"} c={"dimmed"}>
+                  <Text fz={"xs"}>
                     {`${dayjs(noticeDetails?.startDate).format(
                       "YYYY-MM-DD"
                     )} ~ ${dayjs(noticeDetails?.endDate).format("YYYY-MM-DD")}`}

@@ -8,6 +8,8 @@ import { MantineProvider } from "@mantine/core";
 import { BrowserRouter } from "react-router-dom";
 import { Notifications } from "@mantine/notifications";
 import dayjs from "dayjs";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+
 import "dayjs/locale/ko";
 import { theme } from "./styles/theme.ts";
 dayjs.locale("ko");
@@ -29,6 +31,8 @@ const queryClient = new QueryClient({
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
+      <ReactQueryDevtools initialIsOpen={false} />
+
       <MantineProvider theme={theme}>
         <Notifications />
 

@@ -7,7 +7,7 @@ const People = ({ list }: { list: any }) => {
       <Popover width={200} position="bottom" withArrow shadow="md">
         <Popover.Target>
           <Group gap={"xs"} align="center" style={{ cursor: "pointer" }}>
-            <Text c="gray" size="xs">
+            <Text size="xs">
               {list[0].attendeeUserName || list[0].ccUserName} 외{" "}
               {list.length - 1}인
             </Text>
@@ -16,7 +16,7 @@ const People = ({ list }: { list: any }) => {
         </Popover.Target>
         <Popover.Dropdown>
           {list.map((cc: any, index: number) => (
-            <Text key={index} c={"dimmed"} fz={"xs"}>
+            <Text key={index} fz={"xs"}>
               {cc.attendeeUserName || cc.ccUserName}
             </Text>
           ))}
@@ -26,7 +26,7 @@ const People = ({ list }: { list: any }) => {
   } else {
     return (
       <Text c="gray" size="xs">
-        {list[0].attendeeUserName || list[0].ccUserName}
+        {list[0]?.attendeeUserName || list[0]?.ccUserName || "-"}
       </Text>
     );
   }

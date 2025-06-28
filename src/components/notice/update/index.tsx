@@ -66,7 +66,7 @@ const ModifyNotice = ({ opened, close, details }: any) => {
 
       const ccUserIdxs =
         details.ccUserInfo?.map(
-          (user: any) => user.userIdx?.toString() || ""
+          (user: any) => user.ccUserIdx?.toString() || ""
         ) || [];
 
       // DatePickerInput용 날짜 배열 생성
@@ -119,7 +119,10 @@ const ModifyNotice = ({ opened, close, details }: any) => {
       queryClient.invalidateQueries({
         predicate: (query) => {
           const queryKey = query.queryKey;
-          const targetKeys = ["notices"];
+          const targetKeys = [
+            "noticesDetail",
+            { noticeIdx: details.noticeIdx },
+          ];
           return Array.isArray(queryKey) && targetKeys.includes(queryKey[0]);
         },
       });
@@ -164,7 +167,7 @@ const ModifyNotice = ({ opened, close, details }: any) => {
     // 불필요한 필드 제거
     delete input.date;
 
-    console.log("Submit data:", input); // 디버깅용
+    // console.log("Submit data:", input); // 디버깅용
     updateNotice.mutate(input);
   };
 

@@ -8,15 +8,17 @@ const NoticeCategory = ({ record }: { record: TNotice }) => {
 
   const color = useMemo(() => {
     const { category } = record;
-    if (category === "외부미팅" || category === "내부미팅") {
+    if (category === "내부미팅") {
       return "blue";
+    } else if (category === "외부미팅") {
+      return "blue.3";
     } else if (category === "공지사항") {
       return "lime";
     } else return "gray";
   }, [record]);
 
   return (
-    <Badge size="sm" color={color}>
+    <Badge size="sm" color={color} radius={"sm"}>
       {record.category}
     </Badge>
   );
