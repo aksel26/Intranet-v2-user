@@ -1,5 +1,5 @@
 import { AppShell, ScrollArea } from "@mantine/core";
-import React from "react";
+import React, { useEffect } from "react";
 import { Outlet } from "react-router-dom";
 import Header from "./header";
 import NavMenu from "./nav/menu";
@@ -9,12 +9,41 @@ import Footer from "./footer";
 import AttendanceInfo from "./nav/attendance";
 import UserInfoCard from "./nav/userInfo";
 import { useNavStore } from "@/store/navStore";
+import { useQueryClient } from "@tanstack/react-query";
+import { myInfoStore } from "@/store/myInfoStore";
 
 interface LayoutProps {
   children?: React.ReactNode; // children prop을 선택적으로 받음
 }
 const Layout = ({ children }: LayoutProps) => {
   const mobileOpened = useNavStore((state) => state.mobileOpened);
+
+  const { myInfo } = myInfoStore();
+
+  const queryClient = useQueryClient();
+
+  useEffect(() => {
+    if (!myInfo?.userIdx) return;
+
+    queryClient.invalidateQueries({
+      queryKey: ["me", { userIdx: myInfo?.userIdx }],
+    });
+    queryClient.invalidateQueries({
+      predicate: (query) => {
+        const queryKey = query.queryKey;
+        const targetKeys = [
+          "workHours",
+          "vacationSummary",
+          "vacationAll",
+          "notices",
+          "attendanceAllStaff",
+          "noticeNew",
+          "approvalNew",
+        ];
+        return Array.isArray(queryKey) && targetKeys.includes(queryKey[0]);
+      },
+    });
+  }, [myInfo?.userIdx]);
 
   return (
     <AppShell

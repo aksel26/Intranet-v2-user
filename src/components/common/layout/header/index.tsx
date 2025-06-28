@@ -11,24 +11,24 @@ import {
   Stack,
 } from "@mantine/core";
 // import { IconBookmarkFilled, IconExternalLink } from "@tabler/icons-react";
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 // import NextImage from "next/image";
 // import logo from "/public/images/ACG_LOGO_GRAY.png";
 // import { ADMIN_URL } from "@/lib/enums";
 // import { myInfoStore } from "@/lib/store/myInfoStore";
 import logo from "@/assets/logo/ACG_LOGO_GRAY.png";
-import { BOOKMARKS } from "@/lib/enums/link/bookmark";
-import { useNavigate } from "react-router-dom";
-import { Bookmark, ExternalLink } from "lucide-react";
 import { ADMIN_URL } from "@/lib/enums/link/adminURL";
+import { BOOKMARKS } from "@/lib/enums/link/bookmark";
 import { myInfoStore } from "@/store/myInfoStore";
 import { useNavStore } from "@/store/navStore";
+import { Bookmark, ExternalLink } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 const Header = () => {
   const mobileOpened = useNavStore((state) => state.mobileOpened);
   const toggleMobile = useNavStore((state) => state.toggleMobile);
   const setMobileClose = useNavStore((state) => state.setMobileClose);
   const { myInfo } = myInfoStore();
-  console.log("myInfo:", myInfo);
+
   useEffect(() => {
     if (mobileOpened) {
       document.body.classList.add("navbar-open");
