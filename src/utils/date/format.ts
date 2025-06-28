@@ -13,7 +13,7 @@ export const formatTime = (date: string | null) => {
 
 export const formatTimeFull = (date: string | null) => {
   if (!date) return "시간 정보가 없습니다.";
-  return dayjs(date).format("YYYY-MM-DD HH:mm:ss");
+  return dayjs(date).format("YYYY-MM-DD(dd) HH:mm:ss");
 };
 
 export const calculateNumberToTime = (minutes: number) => {
