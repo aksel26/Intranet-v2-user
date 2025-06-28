@@ -1,12 +1,6 @@
-export enum NOTICE_CATEGORY {
-  NOTICE = "NOTICE",
-  ETC = "ETC",
-  INTERNAL_MEETING = "INTERNAL_MEETING",
-  EXTERNAL_MEETING = "EXTERNAL_MEETING",
-}
-
-export const NOTICE_CAR = {
-  RENT: { label: "렌트", value: "RENT" },
-  COMPANY: { label: "렌트", value: "COMPANY" },
-  PERSONAL: { label: "렌트", value: "PERSONAL" },
+export const NOTICE_CATEGORY = {
+  NOTICE: { label: "공지사항", value: "NOTICE" },
+  ETC: { label: "기타", value: "ETC" },
+  INTERNAL_MEETING: { label: "내부미팅", value: "INTERNAL_MEETING" },
+  EXTERNAL_MEETING: { label: "외부미팅", value: "EXTERNAL_MEETING" },
 };
