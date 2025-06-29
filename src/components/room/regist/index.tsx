@@ -18,12 +18,12 @@ import {
 import { useForm } from "@mantine/form";
 
 const RegistMeeting = ({ opened, close, target }: any) => {
-  const { data, isLoading, isError } = useApiQuery(
-    ["users"],
-    userService.getAll,
-    { enabled: !!opened }
-  );
-  const users = data?.data.data;
+  // const { data, isLoading, isError } = useApiQuery(
+  //   ["users"],
+  //   userService.getAll,
+  //   { enabled: !!opened }
+  // );
+  // const users = data?.data.data;
 
   const { myInfo } = myInfoStore();
 
@@ -122,11 +122,12 @@ const RegistMeeting = ({ opened, close, target }: any) => {
             },
           }}
           label="참석자"
-          data={users?.map((user: TUsers) => ({
-            value: user.userIdx.toString(),
-            label: user.userName,
-            searchValue: user.userName,
-          }))}
+          data={["하나", "둘", "셋"]}
+          // data={users?.map((user: TUsers) => ({
+          //   value: user.userIdx.toString(),
+          //   label: user.userName,
+          //   searchValue: user.userName,
+          // }))}
           comboboxProps={{
             transitionProps: { transition: "pop", duration: 200 },
           }}
@@ -144,11 +145,12 @@ const RegistMeeting = ({ opened, close, target }: any) => {
             },
           }}
           label="침조자"
-          data={users?.map((user: TUsers) => ({
-            value: user.userIdx.toString(),
-            label: user.userName,
-            searchValue: user.userName,
-          }))}
+          data={["하나", "둘", "셋"]}
+          // data={users?.map((user: TUsers) => ({
+          //   value: user.userIdx.toString(),
+          //   label: user.userName,
+          //   searchValue: user.userName,
+          // }))}
           comboboxProps={{
             transitionProps: { transition: "pop", duration: 200 },
           }}
