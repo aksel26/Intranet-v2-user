@@ -112,9 +112,9 @@ export default function VerticalTimeline() {
     // open();
     // let title = prompt("새 일정 제목을 입력하세요:");
     // let description = prompt("일정 설명을 입력하세요:");
-    // let calendarApi = selectInfo.view.calendar;
+    const calendarApi = selectInfo.view.calendar;
 
-    // calendarApi.unselect();
+    calendarApi.unselect();
 
     // if (title) {
     //   const newEvent = {
