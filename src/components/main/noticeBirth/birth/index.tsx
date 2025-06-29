@@ -13,10 +13,12 @@ interface BirthProps {
 }
 
 const Birth = ({ month }: BirthProps) => {
-  const { data, isLoading, isError } = useApiQuery(["birth", { month: month }], () =>
-    userService.getBirth({
-      month: (dayjs(month).month() + 1).toString(),
-    })
+  const { data, isLoading, isError } = useApiQuery(
+    ["birth", { month: month }],
+    () =>
+      userService.getBirth({
+        month: month,
+      })
   );
 
   const birth = data?.data.data;
