@@ -4,20 +4,26 @@ import resourceTimeGridPlugin from "@fullcalendar/resource-timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import koLocale from "@fullcalendar/core/locales/ko";
 import "@/styles/room/room.css";
+import { useDisclosure } from "@mantine/hooks";
+import RegistMeeting from "../regist";
 export default function VerticalTimeline() {
   // 리소스 데이터
   const [resources, setResources] = useState([
-    { id: "A", title: "A", limit: "6인" },
-    { id: "C", title: "C", limit: "12인" },
-    { id: "C2", title: "C2", limit: "12인" },
-    { id: "G", title: "G", limit: "6인" },
-    { id: "R", title: "R", limit: "12인" },
-    { id: "L1", title: "L1", limit: "1인" },
-    { id: "L2", title: "L2", limit: "1인" },
-    { id: "S1", title: "S1", limit: "1인" },
-    { id: "S2", title: "S2", limit: "1인" },
+    { id: "A", room: "A", limit: "6인" },
+    { id: "C", room: "C", limit: "12인" },
+    { id: "C2", room: "C2", limit: "12인" },
+    { id: "G", room: "G", limit: "6인" },
+    { id: "R", room: "R", limit: "12인" },
+    { id: "L1", room: "L1", limit: "1인" },
+    { id: "L2", room: "L2", limit: "1인" },
+    { id: "S1", room: "S1", limit: "1인" },
+    { id: "S2", room: "S2", limit: "1인" },
   ]);
 
+  const [
+    registMeetingOpened,
+    { open: openRegistMeeting, close: closeRegistMeeting },
+  ] = useDisclosure(false);
   // 이벤트 데이터
   const [events, setEvents] = useState<any>([
     {
@@ -67,7 +73,11 @@ export default function VerticalTimeline() {
 
   // 이벤트 클릭 핸들러
   const handleEventClick = (clickInfo: any) => {
-    alert(`이벤트: ${clickInfo.event.title}\n시작: ${clickInfo.event.start.toLocaleString()}\n종료: ${clickInfo.event.end.toLocaleString()}`);
+    alert(
+      `이벤트: ${
+        clickInfo.event.title
+      }\n시작: ${clickInfo.event.start.toLocaleString()}\n종료: ${clickInfo.event.end.toLocaleString()}`
+    );
   };
 
   // 날짜 클릭 핸들러
@@ -84,6 +94,40 @@ export default function VerticalTimeline() {
       // 실제 구현시에는 setState를 통해 events 배열에 추가
       alert(`새 이벤트 "${title}"가 ${arg.resource.title}에 추가되었습니다.`);
     }
+  };
+
+  const [currentTarget, setCurrentTarget] = useState();
+  console.log("currentTarget: ", currentTarget);
+
+  const handleDateSelect = (selectInfo: any) => {
+    console.log("selectInfo: ", selectInfo);
+    if (!selectInfo.resource) {
+      alert("자원을 선택해야 합니다.");
+      return;
+    }
+
+    setCurrentTarget(selectInfo);
+
+    openRegistMeeting();
+    // open();
+    // let title = prompt("새 일정 제목을 입력하세요:");
+    // let description = prompt("일정 설명을 입력하세요:");
+    // let calendarApi = selectInfo.view.calendar;
+
+    // calendarApi.unselect();
+
+    // if (title) {
+    //   const newEvent = {
+    //     id: String(Date.now()),
+    //     resourceId: selectInfo.resource.id,
+    //     title,
+    //     description,
+    //     start: selectInfo.startStr,
+    //     end: selectInfo.endStr,
+    //   };
+
+    //   setEvents([...events, newEvent]);
+    // }
   };
 
   return (
@@ -120,7 +164,7 @@ export default function VerticalTimeline() {
         slotMaxTime="20:00"
         slotDuration="00:30:00"
         // 상호작용 설정
-
+        select={handleDateSelect}
         editable={true}
         selectable={true}
         locale={koLocale}
@@ -136,10 +180,11 @@ export default function VerticalTimeline() {
         nowIndicator={true}
         // 리소스 라벨 커스터마이징
         resourceLabelContent={(arg) => {
-          return <div className="font-semibold text-xs">{arg.resource.title}</div>;
+          return (
+            <div className="font-semibold text-xs">{arg.resource.title}</div>
+          );
         }}
         slotLabelContent={(arg) => {
-          console.log("arg: ", arg);
           return <div className="font-semibold text-xs">{arg.text}</div>;
         }}
         // 이벤트 내용 커스터마이징
@@ -151,6 +196,11 @@ export default function VerticalTimeline() {
             </div>
           );
         }}
+      />
+      <RegistMeeting
+        opened={registMeetingOpened}
+        close={closeRegistMeeting}
+        target={currentTarget}
       />
     </div>
   );

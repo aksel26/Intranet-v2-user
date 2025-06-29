@@ -8,7 +8,14 @@ import listPlugin from "@fullcalendar/list";
 // import printPlugin from '@fullcalendar/print';
 import koLocale from "@fullcalendar/core/locales/ko";
 import "@/styles/room/room.css";
+import RegistMeeting from "../regist";
+import { useDisclosure } from "@mantine/hooks";
 const HorizontalTimeline = () => {
+  const [
+    registMeetingOpened,
+    { open: openRegistMeeting, close: closeRegistMeeting },
+  ] = useDisclosure(false);
+
   const [resources, setResources] = useState([
     { id: "A", room: "A Room", limit: "6인" },
     { id: "C", room: "C Room", limit: "12인" },
@@ -84,13 +91,19 @@ const HorizontalTimeline = () => {
     }
   };
 
+  const [currentTarget, setCurrentTarget] = useState();
+
   const handleDateSelect = (selectInfo: any) => {
+    console.log("selectInfo: ", selectInfo);
     if (!selectInfo.resource) {
       alert("자원을 선택해야 합니다.");
       return;
     }
 
-    open();
+    setCurrentTarget(selectInfo);
+
+    openRegistMeeting();
+    // open();
     // let title = prompt("새 일정 제목을 입력하세요:");
     // let description = prompt("일정 설명을 입력하세요:");
     // let calendarApi = selectInfo.view.calendar;
@@ -119,7 +132,9 @@ const HorizontalTimeline = () => {
     const description = event.extendedProps.description || "설명 없음";
 
     alert(`일정: ${event.title}
-시간: ${event.start ? event.start.toLocaleString() : "시간 정보 없음"} ~ ${event.end ? event.end.toLocaleString() : ""}
+시간: ${event.start ? event.start.toLocaleString() : "시간 정보 없음"} ~ ${
+      event.end ? event.end.toLocaleString() : ""
+    }
 설명: ${description}`);
 
     // 삭제 여부 확인
@@ -131,7 +146,13 @@ const HorizontalTimeline = () => {
   return (
     <div className="calendar-container calendar-print-container">
       <FullCalendar
-        plugins={[resourceTimelinePlugin, timelinePlugin, dayGridPlugin, interactionPlugin, listPlugin]}
+        plugins={[
+          resourceTimelinePlugin,
+          timelinePlugin,
+          dayGridPlugin,
+          interactionPlugin,
+          listPlugin,
+        ]}
         initialView="resourceTimeline"
         headerToolbar={{
           left: "prev,title,next",
@@ -193,6 +214,11 @@ const HorizontalTimeline = () => {
         //     },
         //   },
         // }}
+      />
+      <RegistMeeting
+        opened={registMeetingOpened}
+        close={closeRegistMeeting}
+        target={currentTarget}
       />
     </div>
   );
