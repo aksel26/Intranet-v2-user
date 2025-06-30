@@ -33,7 +33,7 @@ export default function ActivityInputForm({ onClose, opened }: any) {
     any, // 에러 타입
     any // 요청 파라미터 타입
   >(activityService.createActivity, {
-    invalidateKeys: [["meals"]],
+    invalidateKeys: [["activity"]],
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ["activity"] });
       notification({
@@ -45,9 +45,10 @@ export default function ActivityInputForm({ onClose, opened }: any) {
       form.setFieldValue("targetDay", ""); // form의 name 필드값을 업데이트
       form.setFieldValue("content", ""); // form의 name 필드값을 업데이트
       form.setFieldValue("amount", null); // form의 name 필드값을 업데이트
-      onClose();
+      if (opened) onClose();
     },
     onError: (error: Error) => {
+      console.log("error:", error);
       const axiosError = error as AxiosError<{ message: string }>;
       const errorMessage = axiosError.response?.data?.message || "오류가 발생했습니다.";
       notification({ title: "활동비 입력", color: "red", message: errorMessage });
