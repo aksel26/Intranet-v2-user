@@ -20,7 +20,7 @@ const queryClient = new QueryClient({
       staleTime: 1000 * 60 * 5, // 5분
       gcTime: 1000 * 60 * 10, // 10분 (v5에서 cacheTime이 gcTime으로 변경)
       retry: 1,
-      refetchOnWindowFocus: false,
+      refetchOnWindowFocus: true,
     },
     mutations: {
       retry: 1,
