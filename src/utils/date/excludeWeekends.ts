@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
 
-type TDateRange = [Date | null, Date | null];
+type TDateRange = [string | null, string | null];
 
 /**
  * 두 날짜 사이의 날짜 목록 중 주말(토, 일)을 제외한 날짜들을 YYYY-MM-DD 형식으로 반환합니다.

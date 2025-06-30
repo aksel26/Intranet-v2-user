@@ -1,4 +1,15 @@
-import { Badge, Box, Button, Drawer, FileButton, Group, Indicator, MultiSelect, Text, TextInput } from "@mantine/core";
+import {
+  Badge,
+  Box,
+  Button,
+  Drawer,
+  FileButton,
+  Group,
+  Indicator,
+  MultiSelect,
+  Text,
+  TextInput,
+} from "@mantine/core";
 import { DatePicker } from "@mantine/dates";
 import { useDisclosure } from "@mantine/hooks";
 import dayjs from "dayjs";
@@ -17,7 +28,7 @@ import { userService } from "@/api/services/user/user.services";
 import { leaveService } from "@/api/services/leave/leave.services";
 import ToolTipDetailsVacation from "@/components/common/tooltip/ToolTipDetailsVacation";
 
-type TDateRange = [Date | null, Date | null];
+type TDateRange = [string | null, string | null];
 type TSelect = { value: string | undefined; label: string | undefined };
 function Vacation({ opened, close }: any) {
   const [params, setParams] = useState<TYearMonth>({
@@ -25,30 +36,43 @@ function Vacation({ opened, close }: any) {
     month: (dayjs().month() + 1).toString(),
   });
 
-  const { data, isLoading, isError } = useApiQuery(["users"], userService.getAll);
+  const { data, isLoading, isError } = useApiQuery(
+    ["users"],
+    userService.getAll
+  );
 
-  const { data: vacations, isLoading: isLoading_vacations, isError: isError_vacations } = useApiQuery(["vacationAll", params], () => leaveService.getLeaves(params));
+  const {
+    data: vacations,
+    isLoading: isLoading_vacations,
+    isError: isError_vacations,
+  } = useApiQuery(["vacationAll", params], () =>
+    leaveService.getLeaves(params)
+  );
 
   const {
     data: vacationSummary,
     isLoading: isLoading_vacationSummary,
     isError: isError_vacationSummary,
-  } = useApiQuery(["vacationSummary", { year: params.year }], () => leaveService.getLeaveSummary({ year: params.year }));
+  } = useApiQuery(["vacationSummary", { year: params.year }], () =>
+    leaveService.getLeaveSummary({ year: params.year })
+  );
 
   const leaveUsageStats = vacationSummary?.data.data.leaveUsageStats || {};
-  console.log("leaveUsageStats:", leaveUsageStats);
 
   const commuteData = vacations?.data.data;
-  console.log("vacations:", vacations);
-  console.log("commuteData:", commuteData);
 
   const [confirmList, setConfirmList] = useState([]);
 
-  const [dateValue, setDateValue] = useState<TDateRange>([null, null]);
+  const [dateValue, setDateValue] = useState<[string | null, string | null]>([
+    null,
+    null,
+  ]);
 
   const [confirmPerson, setConfirmPerson] = useState<any[]>();
 
-  const [attendance, setAttendance] = useState<string | number>(LEAVE_TYPE.연차);
+  const [attendance, setAttendance] = useState<string | number>(
+    LEAVE_TYPE.연차
+  );
 
   const [file, setFile] = useState<File | null>(null);
 
@@ -65,7 +89,9 @@ function Vacation({ opened, close }: any) {
     // setConfirmPerson(data);
 
     const selectedItems = values
-      .map((value: any) => confirmList.find((user: any) => user.userIdx + "" === value))
+      .map((value: any) =>
+        confirmList.find((user: any) => user.userIdx + "" === value)
+      )
       .map((user: any) => ({
         value: user.userIdx + "",
         label: user.userName,
@@ -90,9 +116,7 @@ function Vacation({ opened, close }: any) {
   };
 
   const submit = () => {
-    let submitData: any = {};
-
-    if (dateValue.some((date: Date | null) => !date)) {
+    if (dateValue.some((date) => !date)) {
       notification({
         title: "휴가 신청",
         color: "yellow",
@@ -109,10 +133,12 @@ function Vacation({ opened, close }: any) {
       });
       return;
     }
-
+    const submitData: any = {};
     const leaveInfo = getWeekdaysBetweenDates(dateValue, attendance);
     submitData.leaveInfo = leaveInfo;
-    submitData.confirmPerson = confirmPerson.map((item: TSelect) => Number(item.value));
+    submitData.confirmPerson = confirmPerson.map((item: TSelect) =>
+      Number(item.value)
+    );
     submitData.note = note;
     submitData.ccUserIdxs = refs.map((ref) => Number(ref));
 
@@ -124,8 +150,12 @@ function Vacation({ opened, close }: any) {
   useEffect(() => {
     setConfirmList(data?.data.data.filter((item: any) => item.gradeIdx <= 4));
   }, [data]);
-  const [submitConfirm, { open: openSubmitConfirm, close: closeSubmitConfirm }] = useDisclosure(false);
-  const [preview, { open: openPreview, close: closePreview }] = useDisclosure(false);
+  const [
+    submitConfirm,
+    { open: openSubmitConfirm, close: closeSubmitConfirm },
+  ] = useDisclosure(false);
+  const [preview, { open: openPreview, close: closePreview }] =
+    useDisclosure(false);
 
   const renderDay = (date: any) => {
     const day = dayjs(date).date();
@@ -134,14 +164,21 @@ function Vacation({ opened, close }: any) {
     const formattedDate = dayjs(date).format("YYYY-MM-DD");
 
     // Find if this date is in the commuteData
-    const commuteEntry = commuteData?.find((entry: any) => entry.commuteDate === formattedDate);
+    const commuteEntry = commuteData?.find(
+      (entry: any) => entry.commuteDate === formattedDate
+    );
 
     if (commuteEntry) {
       // If commuteDate exists, show blue indicator for confirmYN="Y", yellow for "N"
       const indicatorColor = commuteEntry.confirmYN === "Y" ? "blue" : "yellow";
 
       return (
-        <Indicator color={indicatorColor} position="top-end" size={10} offset={-5}>
+        <Indicator
+          color={indicatorColor}
+          position="top-end"
+          size={10}
+          offset={-5}
+        >
           <div>{day}</div>
         </Indicator>
       );
@@ -155,7 +192,12 @@ function Vacation({ opened, close }: any) {
     return day === 0 || day === 6; // 0: 일요일, 6: 토요일
   };
   return (
-    <Drawer opened={opened} onClose={closeDrawer} position="right" title="휴가 신청하기">
+    <Drawer
+      opened={opened}
+      onClose={closeDrawer}
+      position="right"
+      title="휴가 신청하기"
+    >
       <DatePicker
         highlightToday
         type="range"
@@ -180,7 +222,11 @@ function Vacation({ opened, close }: any) {
 
       <Group justify="space-between" align="center">
         <ToolTipDetailsVacation details={leaveUsageStats}>
-          <Button variant="subtle" size="compact-xs" leftSection={<MousePointerClick strokeWidth={1.2} size={18} />}>
+          <Button
+            variant="subtle"
+            size="compact-xs"
+            leftSection={<MousePointerClick strokeWidth={1.2} size={18} />}
+          >
             휴가 사용현황 보기
           </Button>
         </ToolTipDetailsVacation>
@@ -239,7 +285,14 @@ function Vacation({ opened, close }: any) {
         // value={confirmPerson?.value + ""}
       />
 
-      <TextInput mb={"md"} styles={{ label: { fontSize: "var(--mantine-font-size-xs" } }} label="특이사항 입력" placeholder="특이사항을 입력해 주세요." onChange={handleNote} value={note} />
+      <TextInput
+        mb={"md"}
+        styles={{ label: { fontSize: "var(--mantine-font-size-xs" } }}
+        label="특이사항 입력"
+        placeholder="특이사항을 입력해 주세요."
+        onChange={handleNote}
+        value={note}
+      />
 
       <Group mb={"sm"}>
         {file && (
@@ -260,7 +313,14 @@ function Vacation({ opened, close }: any) {
         신청하기
       </Button>
 
-      <VacationConfirmModal opened={submitConfirm} close={closeSubmitConfirm} closeDrawer={closeDrawer} confirmPerson={confirmPerson} submitInfo={submitInfo} file={file} />
+      <VacationConfirmModal
+        opened={submitConfirm}
+        close={closeSubmitConfirm}
+        closeDrawer={closeDrawer}
+        confirmPerson={confirmPerson}
+        submitInfo={submitInfo}
+        file={file}
+      />
       <AttachmentPreview opened={preview} close={closePreview} file={file} />
     </Drawer>
   );
