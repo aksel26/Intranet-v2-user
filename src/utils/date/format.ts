@@ -1,7 +1,7 @@
 import dayjs from "dayjs";
 
 // 2024-02-01
-export const formatYYYYMMDD = (date: string | null) => {
+export const formatYYYYMMDD = (date: string | null | Date) => {
   return dayjs(date).format("YYYY-MM-DD");
 };
 
@@ -10,8 +10,12 @@ export const formatTime = (date: string | null) => {
   if (!date) return "시간 정보가 없습니다.";
   return dayjs(date).format("HH:mm:ss");
 };
+export const formatTimeHHmm = (date: string | null | Date) => {
+  if (!date) return "시간 정보가 없습니다.";
+  return dayjs(date).format("HH:mm");
+};
 
-export const formatTimeFull = (date: string | null) => {
+export const formatTimeFull = (date: string | null | Date) => {
   if (!date) return "시간 정보가 없습니다.";
   return dayjs(date).format("YYYY-MM-DD(dd) HH:mm:ss");
 };
