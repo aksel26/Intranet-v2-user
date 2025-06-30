@@ -5,165 +5,198 @@ import type { TUsers } from "@/types/users";
 import { formatYYYYMMDD } from "@/utils/date/format";
 import { Button, Group, Modal, MultiSelect, Paper, Select, Stack, Text, Textarea, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { useEffect, useState } from "react";
+import { useCallback, useMemo } from "react";
 
-const RegistMeeting = ({ opened, close, target }: any) => {
+// Types
+interface RegistMeetingProps {
+  opened: boolean;
+  close: () => void;
+  target: {
+    resource: {
+      _resource: {
+        extendedProps: {
+          room: string;
+        };
+      };
+    };
+    start: Date | string;
+  };
+}
+
+interface MeetingFormValues {
+  title: string;
+  meetingType: string;
+  attendeeUserIdxs: string[];
+  referenceUserIdxs: string[];
+  content: string;
+}
+
+// Constants
+const MEETING_TYPES = ["검사", "면접", "회의", "고객사미팅", "협력사미팅"];
+
+const LABEL_STYLES = {
+  label: {
+    fontSize: "var(--mantine-font-size-xs)",
+    color: "var(--mantine-color-gray-5)",
+  },
+} as const;
+
+const RegistMeeting = ({ opened, close, target }: RegistMeetingProps) => {
   const { data, isLoading, isError } = useApiQuery(["users"], userService.getAll, { enabled: !!opened });
-  // const users = data?.data.data;
-
-  const [users, setUsers] = useState<any>([]);
-
-  useEffect(() => {
-    if (data) setUsers(data?.data.data);
-  }, [data]);
 
   const { myInfo } = myInfoStore();
 
-  const form = useForm({
+  // Memoized user options for MultiSelect
+  const userOptions = useMemo(() => {
+    const users = data?.data?.data as TUsers[] | undefined;
+    return (
+      users?.map((user: TUsers) => ({
+        value: user.userIdx.toString(),
+        label: user.userName,
+      })) || []
+    );
+  }, [data]);
+
+  const form = useForm<MeetingFormValues>({
     mode: "uncontrolled",
-    // initialValues: {
-    //   userAddress: "",
-    //   userCell: "",
-    // },
-    // validate: {
-    //   userCell: (value) => {
-    //     if (!value) return "휴대폰 번호를 입력해주세요";
-    //     if (value.replace(/-/g, "").length !== 11) {
-    //       return "올바른 휴대폰 번호를 입력해주세요";
-    //     }
-    //     return null;
-    //   },
-    // },
+    initialValues: {
+      title: "",
+      meetingType: "",
+      attendeeUserIdxs: [],
+      referenceUserIdxs: [],
+      content: "",
+    },
+    validate: {
+      title: (value) => (!value?.trim() ? "제목을 입력해주세요" : null),
+      meetingType: (value) => (!value ? "회의 유형을 선택해주세요" : null),
+      attendeeUserIdxs: (value) => (value.length === 0 ? "참석자를 선택해주세요" : null),
+    },
   });
 
-  const submit = (values: any) => {
-    console.log("values: ", values);
-    alert("회의실 등록");
-  };
+  const handleSubmit = useCallback(
+    (values: MeetingFormValues) => {
+      console.log("Meeting registration values:", values);
+      // TODO: API 호출 로직 구현
+      alert("회의실 등록");
+      close();
+    },
+    [close]
+  );
 
-  return (
-    <Modal opened={opened} onClose={close} title="회의 일정 등록" centered size={"sm"}>
-      {/* <form onSubmit={form.onSubmit(submit)}> */}
-      <Stack>
-        <Paper>
-          <Group justify="space-between" align="center" mt={"sm"}>
-            <Stack gap={2}>
-              <Text c={"gray"} fz={"sm"}>
-                예약자
-              </Text>
-              <Text fz={"sm"}>{myInfo?.userName}</Text>
-            </Stack>
-            <Stack gap={2}>
-              <Text c={"gray"} fz={"sm"}>
-                회의실
-              </Text>
-              <Text fz={"sm"}>{target?.resource._resource.extendedProps.room}</Text>
-            </Stack>
-            <Stack gap={2}>
-              <Text c={"gray"} fz={"sm"}>
-                일자
-              </Text>
-              <Text fz={"sm"}>{formatYYYYMMDD(target?.start)}</Text>
-            </Stack>
-          </Group>
-        </Paper>
-        <TextInput
-          styles={{
-            label: {
-              fontSize: "var(--mantine-font-size-xs",
-              color: "var(--mantine-color-gray-5)",
-            },
-          }}
-          placeholder="제목을 입력해 주세요."
-          label="제목"
-          // key={form.key("title")}
-          // {...form.getInputProps("title")}
-        />
-        <Select
-          placeholder="회의 유형을 선택해 주세요."
-          styles={{
-            label: {
-              fontSize: "var(--mantine-font-size-xs",
-              color: "var(--mantine-color-gray-5)",
-            },
-          }}
-          label="회의 유형"
-          data={["검사", "면접", "회의", "고객사미팅", "협력사미팅"]}
-          comboboxProps={{
-            transitionProps: { transition: "pop", duration: 200 },
-          }}
-          // key={form.key("useCar")}
-          // {...form.getInputProps("useCar")}
-        />
+  const handleClose = useCallback(() => {
+    form.reset();
+    close();
+  }, [form, close]);
 
-        <MultiSelect
-          searchable
-          placeholder="참석자를 선택해 주세요."
-          styles={{
-            label: {
-              fontSize: "var(--mantine-font-size-xs",
-              color: "var(--mantine-color-gray-5)",
-            },
-          }}
-          label="참석자"
-          data={users?.map((user: TUsers) => ({
-            value: user.userIdx.toString(),
-            label: user.userName,
-            searchValue: user.userName,
-          }))}
-          comboboxProps={{
-            transitionProps: { transition: "pop", duration: 200 },
-          }}
-          // key={form.key("attendeeUserIdxs")}
-          // {...form.getInputProps("attendeeUserIdxs")}
-        />
+  // Loading state
+  if (isLoading) {
+    return (
+      <Modal opened={opened} onClose={close} title="회의 일정 등록" centered size="sm">
+        <Text>사용자 정보를 불러오는 중...</Text>
+      </Modal>
+    );
+  }
 
-        <MultiSelect
-          searchable
-          placeholder="참조자를 선택해 주세요."
-          styles={{
-            label: {
-              fontSize: "var(--mantine-font-size-xs",
-              color: "var(--mantine-color-gray-5)",
-            },
-          }}
-          label="침조자"
-          data={users?.map((user: TUsers) => ({
-            value: user.userIdx.toString(),
-            label: user.userName,
-            searchValue: user.userName,
-          }))}
-          comboboxProps={{
-            transitionProps: { transition: "pop", duration: 200 },
-          }}
-          // key={form.key("attendeeUserIdxs")}
-          // {...form.getInputProps("attendeeUserIdxs")}
-        />
-        <Textarea
-          placeholder="내용을 입력해 주세요."
-          styles={{
-            label: {
-              fontSize: "var(--mantine-font-size-xs",
-              color: "var(--mantine-color-gray-5)",
-            },
-          }}
-          label="내용"
-          autosize
-          minRows={4}
-          // key={form.key("content")}
-          // {...form.getInputProps("content")}
-        />
-
-        <Group wrap="nowrap">
-          <Button fullWidth variant="light" type="submit">
-            등록하기
-          </Button>
-          <Button fullWidth variant="light" color="gray">
+  // Error state
+  if (isError) {
+    return (
+      <Modal opened={opened} onClose={close} title="회의 일정 등록" centered size="sm">
+        <Text c="red">사용자 정보를 불러오는데 실패했습니다.</Text>
+        <Group mt="md">
+          <Button onClick={close} variant="light" color="gray">
             닫기
           </Button>
         </Group>
-      </Stack>
-      {/* </form> */}
+      </Modal>
+    );
+  }
+
+  return (
+    <Modal opened={opened} onClose={handleClose} title="회의 일정 등록" centered size="sm">
+      <form onSubmit={form.onSubmit(handleSubmit)}>
+        <Stack>
+          {/* Meeting Info Display */}
+          <Paper withBorder p="sm">
+            <Group justify="space-between" align="flex-start">
+              <Stack gap={2}>
+                <Text c="gray" fz="sm">
+                  예약자
+                </Text>
+                <Text fz="sm">{myInfo?.userName || "알 수 없음"}</Text>
+              </Stack>
+
+              <Stack gap={2}>
+                <Text c="gray" fz="sm">
+                  회의실
+                </Text>
+                <Text fz="sm">{target?.resource?._resource?.extendedProps?.room || "알 수 없음"}</Text>
+              </Stack>
+
+              <Stack gap={2}>
+                <Text c="gray" fz="sm">
+                  일자
+                </Text>
+                <Text fz="sm">{target?.start ? formatYYYYMMDD(target?.start) : "알 수 없음"}</Text>
+              </Stack>
+            </Group>
+          </Paper>
+
+          {/* Form Fields */}
+          <TextInput styles={LABEL_STYLES} placeholder="제목을 입력해 주세요." label="제목" required key={form.key("title")} {...form.getInputProps("title")} />
+
+          <Select
+            placeholder="회의 유형을 선택해 주세요."
+            styles={LABEL_STYLES}
+            label="회의 유형"
+            data={MEETING_TYPES}
+            required
+            comboboxProps={{
+              transitionProps: { transition: "pop", duration: 200 },
+            }}
+            key={form.key("meetingType")}
+            {...form.getInputProps("meetingType")}
+          />
+
+          <MultiSelect
+            searchable
+            placeholder="참석자를 선택해 주세요."
+            styles={LABEL_STYLES}
+            label="참석자"
+            data={userOptions}
+            required
+            comboboxProps={{
+              transitionProps: { transition: "pop", duration: 200 },
+            }}
+            key={form.key("attendeeUserIdxs")}
+            {...form.getInputProps("attendeeUserIdxs")}
+          />
+
+          <MultiSelect
+            searchable
+            placeholder="참조자를 선택해 주세요."
+            styles={LABEL_STYLES}
+            label="참조자"
+            data={userOptions}
+            comboboxProps={{
+              transitionProps: { transition: "pop", duration: 200 },
+            }}
+            key={form.key("referenceUserIdxs")}
+            {...form.getInputProps("referenceUserIdxs")}
+          />
+
+          <Textarea placeholder="내용을 입력해 주세요." styles={LABEL_STYLES} label="내용" autosize minRows={4} key={form.key("content")} {...form.getInputProps("content")} />
+
+          {/* Action Buttons */}
+          <Group grow>
+            <Button type="submit" variant="filled">
+              등록하기
+            </Button>
+            <Button variant="light" color="gray" onClick={handleClose}>
+              닫기
+            </Button>
+          </Group>
+        </Stack>
+      </form>
     </Modal>
   );
 };

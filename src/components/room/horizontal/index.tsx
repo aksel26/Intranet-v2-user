@@ -10,8 +10,10 @@ import koLocale from "@fullcalendar/core/locales/ko";
 import "@/styles/room/room.css";
 import RegistMeeting from "../regist";
 import { useDisclosure } from "@mantine/hooks";
+import UpdateMeeting from "../update";
 const HorizontalTimeline = () => {
   const [registMeetingOpened, { open: openRegistMeeting, close: closeRegistMeeting }] = useDisclosure(false);
+  const [udpateMeetingOpened, { open: openUpdateMeeting, close: closeUpdateMeeting }] = useDisclosure(false);
 
   const [resources, setResources] = useState([
     { id: "A", room: "A Room", limit: "6인" },
@@ -134,88 +136,93 @@ const HorizontalTimeline = () => {
   const handleEventClick = (clickInfo: any) => {
     // 인쇄 모드일 때는 이벤트 클릭 처리 무시
 
+    openUpdateMeeting();
+
     // 일정 상세 정보 표시
-    const event = clickInfo.event;
-    const description = event.extendedProps.description || "설명 없음";
+    //     const event = clickInfo.event;
+    //     const description = event.extendedProps.description || "설명 없음";
 
-    alert(`일정: ${event.title}
-시간: ${event.start ? event.start.toLocaleString() : "시간 정보 없음"} ~ ${event.end ? event.end.toLocaleString() : ""}
-설명: ${description}`);
+    //     alert(`일정: ${event.title}
+    // 시간: ${event.start ? event.start.toLocaleString() : "시간 정보 없음"} ~ ${event.end ? event.end.toLocaleString() : ""}
+    // 설명: ${description}`);
 
-    // 삭제 여부 확인
-    if (confirm("이 일정을 삭제하시겠습니까?")) {
-      event.remove();
-      setEvents(events.filter((e: any) => e.id !== event.id));
-    }
+    //     // 삭제 여부 확인
+    //     if (confirm("이 일정을 삭제하시겠습니까?")) {
+    //       event.remove();
+    //       setEvents(events.filter((e: any) => e.id !== event.id));
+    //     }
   };
   return (
-    <div className="calendar-container calendar-print-container">
-      <FullCalendar
-        plugins={[resourceTimelinePlugin, timelinePlugin, dayGridPlugin, interactionPlugin, listPlugin]}
-        initialView="resourceTimeline"
-        headerToolbar={{
-          left: "prev,title,next",
-          right: "today",
-          center: "",
-        }}
-        resourceAreaColumns={[
-          {
-            field: "room",
-            headerContent: "회의실",
-            width: 80,
-          },
-          {
-            field: "limit",
-            headerContent: "정원",
-            width: 60,
-          },
-        ]}
-        resources={resources}
-        events={events}
-        editable
-        selectable
-        selectMirror
-        eventClick={handleEventClick}
-        select={handleDateSelect}
-        resourceAreaWidth={"130px"}
-        // resourceAreaHeaderContent="회의실"
-        locale={koLocale}
-        viewDidMount={handleViewChange}
-        slotMinTime="08:00:00"
-        slotMaxTime="20:00:00"
-        height="auto"
-        nowIndicator={true}
-        eventDidMount={(info) => {
-          // 툴팁 추가
-          const description = info.event.extendedProps.description;
-          if (description) {
-            info.el.title = description;
-          }
-        }}
-        slotLabelFormat={{
-          hour: "numeric",
-          hour12: false,
-        }}
-        // views={{
-        //   resourceTimelineDay: {
-        //     slotDuration: "00:30:00",
-        //   },
-        //   //   resourceTimelineWeek: {
-        //   //     slotDuration: "01:00:00",
-        //   //   },
-        //   listWeek: {
-        //     displayEventTime: true,
-        //     displayEventEnd: true,
-        //     eventTimeFormat: {
-        //       hour: "2-digit",
-        //       minute: "2-digit",
-        //       hour12: false,
-        //     },
-        //   },
-        // }}
-      />
+    <>
+      <div>
+        <FullCalendar
+          plugins={[resourceTimelinePlugin, timelinePlugin, dayGridPlugin, interactionPlugin, listPlugin]}
+          initialView="resourceTimeline"
+          headerToolbar={{
+            left: "prev,title,next",
+            right: "today",
+            center: "",
+          }}
+          resourceAreaColumns={[
+            {
+              field: "room",
+              headerContent: "회의실",
+              width: 80,
+            },
+            {
+              field: "limit",
+              headerContent: "정원",
+              width: 60,
+            },
+          ]}
+          resources={resources}
+          events={events}
+          editable
+          selectable
+          selectMirror
+          eventClick={handleEventClick}
+          select={handleDateSelect}
+          resourceAreaWidth={"130px"}
+          // resourceAreaHeaderContent="회의실"
+          locale={koLocale}
+          viewDidMount={handleViewChange}
+          slotMinTime="08:00:00"
+          slotMaxTime="20:00:00"
+          height="auto"
+          nowIndicator={true}
+          eventDidMount={(info) => {
+            // 툴팁 추가
+            const description = info.event.extendedProps.description;
+            if (description) {
+              info.el.title = description;
+            }
+          }}
+          slotLabelFormat={{
+            hour: "numeric",
+            hour12: false,
+          }}
+          // views={{
+          //   resourceTimelineDay: {
+          //     slotDuration: "00:30:00",
+          //   },
+          //   //   resourceTimelineWeek: {
+          //   //     slotDuration: "01:00:00",
+          //   //   },
+          //   listWeek: {
+          //     displayEventTime: true,
+          //     displayEventEnd: true,
+          //     eventTimeFormat: {
+          //       hour: "2-digit",
+          //       minute: "2-digit",
+          //       hour12: false,
+          //     },
+          //   },
+          // }}
+        />
+      </div>
       <RegistMeeting opened={registMeetingOpened} close={closeRegistMeeting} target={currentTarget} />
-    </div>
+      <UpdateMeeting opened={udpateMeetingOpened} close={closeUpdateMeeting} target={currentTarget} />
+    </>
   );
 };
 
