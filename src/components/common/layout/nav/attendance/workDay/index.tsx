@@ -8,7 +8,6 @@ import { calculateNumberToTime } from "@/utils/date/format";
 import CommuteButton from "../buttons";
 function Work() {
   const { myInfo } = myInfoStore();
-  console.log("myInfo:", myInfo);
 
   const { percentage, remainingTime, elapsedTime, isCheckOutAvailable, isBeforeCheckIn } = useCheckInProgress(myInfo?.checkInTime, myInfo?.availCheckOutTime, {
     updateInterval: 1000, // 1초마다 업데이트
@@ -24,11 +23,9 @@ function Work() {
           </Badge>
           {myInfo?.leave.map((leave, index) => (
             <Badge key={index} variant="light" radius={"sm"} size="md" fw={500} color="green">
-              <Text fz={"sm"}>
-                {leave.leaveType}
-                <Text fz={"xs"} component="span" ml={2} hidden={leave.confirmYN === "Y" ? true : false}>
-                  (미)
-                </Text>
+              {leave.leaveType}
+              <Text fz={"xs"} component="span" ml={2} hidden={leave.confirmYN === "Y" ? true : false}>
+                (미)
               </Text>
             </Badge>
           ))}
