@@ -12,8 +12,14 @@ import RegistMeeting from "../regist";
 import { useDisclosure } from "@mantine/hooks";
 import UpdateMeeting from "../update";
 const HorizontalTimeline = () => {
-  const [registMeetingOpened, { open: openRegistMeeting, close: closeRegistMeeting }] = useDisclosure(false);
-  const [udpateMeetingOpened, { open: openUpdateMeeting, close: closeUpdateMeeting }] = useDisclosure(false);
+  const [
+    registMeetingOpened,
+    { open: openRegistMeeting, close: closeRegistMeeting },
+  ] = useDisclosure(false);
+  const [
+    udpateMeetingOpened,
+    { open: openUpdateMeeting, close: closeUpdateMeeting },
+  ] = useDisclosure(false);
 
   const [resources, setResources] = useState([
     { id: "A", room: "A Room", limit: "6인" },
@@ -133,13 +139,14 @@ const HorizontalTimeline = () => {
     // }
   };
 
-  const handleEventClick = (clickInfo: any) => {
+  const handleEventClick = (selectInfo: any) => {
     // 인쇄 모드일 때는 이벤트 클릭 처리 무시
-
+    const event = selectInfo.event;
+    console.log("event: ", event);
+    setCurrentTarget(event);
     openUpdateMeeting();
 
     // 일정 상세 정보 표시
-    //     const event = clickInfo.event;
     //     const description = event.extendedProps.description || "설명 없음";
 
     //     alert(`일정: ${event.title}
@@ -156,7 +163,13 @@ const HorizontalTimeline = () => {
     <>
       <div>
         <FullCalendar
-          plugins={[resourceTimelinePlugin, timelinePlugin, dayGridPlugin, interactionPlugin, listPlugin]}
+          plugins={[
+            resourceTimelinePlugin,
+            timelinePlugin,
+            dayGridPlugin,
+            interactionPlugin,
+            listPlugin,
+          ]}
           initialView="resourceTimeline"
           headerToolbar={{
             left: "prev,title,next",
@@ -189,14 +202,14 @@ const HorizontalTimeline = () => {
           slotMinTime="08:00:00"
           slotMaxTime="20:00:00"
           height="auto"
-          nowIndicator={true}
-          eventDidMount={(info) => {
-            // 툴팁 추가
-            const description = info.event.extendedProps.description;
-            if (description) {
-              info.el.title = description;
-            }
-          }}
+          nowIndicator
+          // eventDidMount={(info) => {
+          //   // 툴팁 추가
+          //   const description = info.event.extendedProps.description;
+          //   if (description) {
+          //     info.el.title = description;
+          //   }
+          // }}
           slotLabelFormat={{
             hour: "numeric",
             hour12: false,
@@ -220,8 +233,16 @@ const HorizontalTimeline = () => {
           // }}
         />
       </div>
-      <RegistMeeting opened={registMeetingOpened} close={closeRegistMeeting} target={currentTarget} />
-      <UpdateMeeting opened={udpateMeetingOpened} close={closeUpdateMeeting} target={currentTarget} />
+      <RegistMeeting
+        opened={registMeetingOpened}
+        close={closeRegistMeeting}
+        target={currentTarget}
+      />
+      <UpdateMeeting
+        opened={udpateMeetingOpened}
+        close={closeUpdateMeeting}
+        target={currentTarget}
+      />
     </>
   );
 };
