@@ -10,10 +10,6 @@ import { ProtectedRoute } from "./components/auth/ProtectedRoute";
 import Main from "./pages/main";
 import NotFound from "./pages/404";
 import Approval from "./pages/approval";
-import "@mantine/core/styles.css";
-import "@mantine/notifications/styles.css";
-import "@mantine/charts/styles.css";
-import "@mantine/dates/styles.css";
 import Layout from "./components/common/layout";
 import Notice from "./pages/notice";
 import NoticeDetails from "./components/notice/detail";
@@ -43,7 +39,10 @@ function App() {
           element={
             !isInitialized ? (
               <div className="min-h-screen flex items-center justify-center">
-                <LoadingOverlay visible overlayProps={{ radius: "sm", blur: 2 }} />
+                <LoadingOverlay
+                  visible
+                  overlayProps={{ radius: "sm", blur: 2 }}
+                />
               </div>
             ) : isAuthenticated ? (
               <Navigate to="/main" replace />
@@ -59,7 +58,10 @@ function App() {
           element={
             !isInitialized ? (
               <div className="min-h-screen flex items-center justify-center">
-                <LoadingOverlay visible overlayProps={{ radius: "sm", blur: 2 }} />
+                <LoadingOverlay
+                  visible
+                  overlayProps={{ radius: "sm", blur: 2 }}
+                />
               </div>
             ) : isAuthenticated ? (
               <Navigate to="/main" replace />
