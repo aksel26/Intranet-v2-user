@@ -11,10 +11,7 @@ import "@/styles/room/room.css";
 import RegistMeeting from "../regist";
 import { useDisclosure } from "@mantine/hooks";
 const HorizontalTimeline = () => {
-  const [
-    registMeetingOpened,
-    { open: openRegistMeeting, close: closeRegistMeeting },
-  ] = useDisclosure(false);
+  const [registMeetingOpened, { open: openRegistMeeting, close: closeRegistMeeting }] = useDisclosure(false);
 
   const [resources, setResources] = useState([
     { id: "A", room: "A Room", limit: "6인" },
@@ -32,8 +29,8 @@ const HorizontalTimeline = () => {
       id: "1",
       resourceId: "A",
       title: "팀 미팅",
-      start: "2025-05-22T14:00:00",
-      end: "2025-05-22T16:00:00",
+      start: "2025-06-30T14:00:00",
+      end: "2025-06-30T16:00:00",
       backgroundColor: "#3788d8",
       textColor: "white",
     },
@@ -41,30 +38,40 @@ const HorizontalTimeline = () => {
       id: "2",
       resourceId: "C",
       title: "제품 기획 회의",
-      start: "2025-05-22T11:00:00",
-      end: "2025-05-22T12:30:00",
+      start: "2025-06-30T11:00:00",
+      end: "2025-06-30T12:30:00",
       description: "신규 기능 브레인스토밍",
       backgroundColor: "#40c057",
       textColor: "white",
     },
     {
       id: "3",
-      resourceId: "C2",
-      title: "프로젝터 대여",
-      start: "2025-05-22T13:00:00",
-      end: "2025-05-22T17:00:00",
-      description: "외부 고객 미팅용",
+      resourceId: "C",
+      title: "제품 기획 회의",
+      start: "2025-06-30T15:00:00",
+      end: "2025-06-30T17:30:00",
+      description: "신규 기능 브레인스토밍2",
+      backgroundColor: "#40c057",
+      textColor: "white",
     },
     {
       id: "4",
-      resourceId: "L1",
-      title: "스프린트 계획",
-      start: "2025-05-22T10:00:00",
-      end: "2025-05-22T16:00:00",
-      description: "다음 스프린트 작업 계획 및 할당",
+      resourceId: "C2",
+      title: "프로젝터 대여",
+      start: "2025-06-30T13:00:00",
+      end: "2025-06-30T17:00:00",
+      description: "외부 고객 미팅용",
     },
     {
       id: "5",
+      resourceId: "L1",
+      title: "스프린트 계획",
+      start: "2025-06-30T10:00:00",
+      end: "2025-06-30T16:00:00",
+      description: "다음 스프린트 작업 계획 및 할당",
+    },
+    {
+      id: "6",
       resourceId: "G",
       title: "UI 디자인 작업",
       start: "2025-05-21T09:00:00",
@@ -132,9 +139,7 @@ const HorizontalTimeline = () => {
     const description = event.extendedProps.description || "설명 없음";
 
     alert(`일정: ${event.title}
-시간: ${event.start ? event.start.toLocaleString() : "시간 정보 없음"} ~ ${
-      event.end ? event.end.toLocaleString() : ""
-    }
+시간: ${event.start ? event.start.toLocaleString() : "시간 정보 없음"} ~ ${event.end ? event.end.toLocaleString() : ""}
 설명: ${description}`);
 
     // 삭제 여부 확인
@@ -146,13 +151,7 @@ const HorizontalTimeline = () => {
   return (
     <div className="calendar-container calendar-print-container">
       <FullCalendar
-        plugins={[
-          resourceTimelinePlugin,
-          timelinePlugin,
-          dayGridPlugin,
-          interactionPlugin,
-          listPlugin,
-        ]}
+        plugins={[resourceTimelinePlugin, timelinePlugin, dayGridPlugin, interactionPlugin, listPlugin]}
         initialView="resourceTimeline"
         headerToolbar={{
           left: "prev,title,next",
@@ -215,11 +214,7 @@ const HorizontalTimeline = () => {
         //   },
         // }}
       />
-      <RegistMeeting
-        opened={registMeetingOpened}
-        close={closeRegistMeeting}
-        target={currentTarget}
-      />
+      <RegistMeeting opened={registMeetingOpened} close={closeRegistMeeting} target={currentTarget} />
     </div>
   );
 };

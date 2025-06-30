@@ -3,27 +3,19 @@ import { useApiQuery } from "@/api/useApi";
 import { myInfoStore } from "@/store/myInfoStore";
 import type { TUsers } from "@/types/users";
 import { formatYYYYMMDD } from "@/utils/date/format";
-import {
-  Button,
-  Group,
-  Modal,
-  MultiSelect,
-  Paper,
-  Select,
-  Stack,
-  Text,
-  Textarea,
-  TextInput,
-} from "@mantine/core";
+import { Button, Group, Modal, MultiSelect, Paper, Select, Stack, Text, Textarea, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
+import { useEffect, useState } from "react";
 
 const RegistMeeting = ({ opened, close, target }: any) => {
-  // const { data, isLoading, isError } = useApiQuery(
-  //   ["users"],
-  //   userService.getAll,
-  //   { enabled: !!opened }
-  // );
+  const { data, isLoading, isError } = useApiQuery(["users"], userService.getAll, { enabled: !!opened });
   // const users = data?.data.data;
+
+  const [users, setUsers] = useState<any>([]);
+
+  useEffect(() => {
+    if (data) setUsers(data?.data.data);
+  }, [data]);
 
   const { myInfo } = myInfoStore();
 
@@ -50,13 +42,7 @@ const RegistMeeting = ({ opened, close, target }: any) => {
   };
 
   return (
-    <Modal
-      opened={opened}
-      onClose={close}
-      title="회의 일정 등록"
-      centered
-      size={"sm"}
-    >
+    <Modal opened={opened} onClose={close} title="회의 일정 등록" centered size={"sm"}>
       {/* <form onSubmit={form.onSubmit(submit)}> */}
       <Stack>
         <Paper>
@@ -71,9 +57,7 @@ const RegistMeeting = ({ opened, close, target }: any) => {
               <Text c={"gray"} fz={"sm"}>
                 회의실
               </Text>
-              <Text fz={"sm"}>
-                {target?.resource._resource.extendedProps.room}
-              </Text>
+              <Text fz={"sm"}>{target?.resource._resource.extendedProps.room}</Text>
             </Stack>
             <Stack gap={2}>
               <Text c={"gray"} fz={"sm"}>
@@ -122,12 +106,11 @@ const RegistMeeting = ({ opened, close, target }: any) => {
             },
           }}
           label="참석자"
-          data={["하나", "둘", "셋"]}
-          // data={users?.map((user: TUsers) => ({
-          //   value: user.userIdx.toString(),
-          //   label: user.userName,
-          //   searchValue: user.userName,
-          // }))}
+          data={users?.map((user: TUsers) => ({
+            value: user.userIdx.toString(),
+            label: user.userName,
+            searchValue: user.userName,
+          }))}
           comboboxProps={{
             transitionProps: { transition: "pop", duration: 200 },
           }}
@@ -145,12 +128,11 @@ const RegistMeeting = ({ opened, close, target }: any) => {
             },
           }}
           label="침조자"
-          data={["하나", "둘", "셋"]}
-          // data={users?.map((user: TUsers) => ({
-          //   value: user.userIdx.toString(),
-          //   label: user.userName,
-          //   searchValue: user.userName,
-          // }))}
+          data={users?.map((user: TUsers) => ({
+            value: user.userIdx.toString(),
+            label: user.userName,
+            searchValue: user.userName,
+          }))}
           comboboxProps={{
             transitionProps: { transition: "pop", duration: 200 },
           }}
