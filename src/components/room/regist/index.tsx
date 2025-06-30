@@ -2,8 +2,20 @@ import { userService } from "@/api/services/user/user.services";
 import { useApiQuery } from "@/api/useApi";
 import { myInfoStore } from "@/store/myInfoStore";
 import type { TUsers } from "@/types/users";
-import { formatYYYYMMDD } from "@/utils/date/format";
-import { Button, Group, Modal, MultiSelect, Paper, Select, Stack, Text, Textarea, TextInput } from "@mantine/core";
+import { formatTimeHHmm, formatYYYYMMDD } from "@/utils/date/format";
+import {
+  Badge,
+  Button,
+  Group,
+  Modal,
+  MultiSelect,
+  Paper,
+  Select,
+  Stack,
+  Text,
+  Textarea,
+  TextInput,
+} from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { useCallback, useMemo } from "react";
 
@@ -11,16 +23,7 @@ import { useCallback, useMemo } from "react";
 interface RegistMeetingProps {
   opened: boolean;
   close: () => void;
-  target: {
-    resource: {
-      _resource: {
-        extendedProps: {
-          room: string;
-        };
-      };
-    };
-    start: Date | string;
-  };
+  target: any;
 }
 
 interface MeetingFormValues {
@@ -42,7 +45,11 @@ const LABEL_STYLES = {
 } as const;
 
 const RegistMeeting = ({ opened, close, target }: RegistMeetingProps) => {
-  const { data, isLoading, isError } = useApiQuery(["users"], userService.getAll, { enabled: !!opened });
+  const { data, isLoading, isError } = useApiQuery(
+    ["users"],
+    userService.getAll,
+    { enabled: !!opened }
+  );
 
   const { myInfo } = myInfoStore();
 
@@ -69,7 +76,8 @@ const RegistMeeting = ({ opened, close, target }: RegistMeetingProps) => {
     validate: {
       title: (value) => (!value?.trim() ? "제목을 입력해주세요" : null),
       meetingType: (value) => (!value ? "회의 유형을 선택해주세요" : null),
-      attendeeUserIdxs: (value) => (value.length === 0 ? "참석자를 선택해주세요" : null),
+      attendeeUserIdxs: (value) =>
+        value.length === 0 ? "참석자를 선택해주세요" : null,
     },
   });
 
@@ -91,7 +99,13 @@ const RegistMeeting = ({ opened, close, target }: RegistMeetingProps) => {
   // Loading state
   if (isLoading) {
     return (
-      <Modal opened={opened} onClose={close} title="회의 일정 등록" centered size="sm">
+      <Modal
+        opened={opened}
+        onClose={close}
+        title="회의 일정 등록"
+        centered
+        size="sm"
+      >
         <Text>사용자 정보를 불러오는 중...</Text>
       </Modal>
     );
@@ -100,7 +114,13 @@ const RegistMeeting = ({ opened, close, target }: RegistMeetingProps) => {
   // Error state
   if (isError) {
     return (
-      <Modal opened={opened} onClose={close} title="회의 일정 등록" centered size="sm">
+      <Modal
+        opened={opened}
+        onClose={close}
+        title="회의 일정 등록"
+        centered
+        size="sm"
+      >
         <Text c="red">사용자 정보를 불러오는데 실패했습니다.</Text>
         <Group mt="md">
           <Button onClick={close} variant="light" color="gray">
@@ -112,37 +132,64 @@ const RegistMeeting = ({ opened, close, target }: RegistMeetingProps) => {
   }
 
   return (
-    <Modal opened={opened} onClose={handleClose} title="회의 일정 등록" centered size="sm">
+    <Modal
+      opened={opened}
+      onClose={handleClose}
+      title="회의 일정 등록"
+      centered
+      size="sm"
+    >
       <form onSubmit={form.onSubmit(handleSubmit)}>
         <Stack>
           {/* Meeting Info Display */}
-          <Paper withBorder p="sm">
+          <Badge radius={"sm"} size="lg">
+            {target?.resource?._resource?.extendedProps?.room || "알 수 없음"}
+          </Badge>
+          <Paper>
             <Group justify="space-between" align="flex-start">
               <Stack gap={2}>
-                <Text c="gray" fz="sm">
+                <Text c="gray.5" fz="xs">
                   예약자
                 </Text>
                 <Text fz="sm">{myInfo?.userName || "알 수 없음"}</Text>
               </Stack>
 
               <Stack gap={2}>
-                <Text c="gray" fz="sm">
-                  회의실
-                </Text>
-                <Text fz="sm">{target?.resource?._resource?.extendedProps?.room || "알 수 없음"}</Text>
-              </Stack>
-
-              <Stack gap={2}>
-                <Text c="gray" fz="sm">
+                <Text c="gray.5" fz="xs">
                   일자
                 </Text>
-                <Text fz="sm">{target?.start ? formatYYYYMMDD(target?.start) : "알 수 없음"}</Text>
+                <Text fz="sm">
+                  {target?.start ? formatYYYYMMDD(target?.start) : "알 수 없음"}
+                </Text>
+              </Stack>
+              <Stack gap={2}>
+                <Text c="gray.5" fz="xs">
+                  시간
+                </Text>
+                <Group gap={3}>
+                  <Text fz="sm">
+                    {target?.start
+                      ? formatTimeHHmm(target?.start)
+                      : "알 수 없음"}
+                  </Text>
+                  ~
+                  <Text fz="sm">
+                    {target?.end ? formatTimeHHmm(target?.end) : "알 수 없음"}
+                  </Text>
+                </Group>
               </Stack>
             </Group>
           </Paper>
 
           {/* Form Fields */}
-          <TextInput styles={LABEL_STYLES} placeholder="제목을 입력해 주세요." label="제목" required key={form.key("title")} {...form.getInputProps("title")} />
+          <TextInput
+            styles={LABEL_STYLES}
+            placeholder="제목을 입력해 주세요."
+            label="제목"
+            required
+            key={form.key("title")}
+            {...form.getInputProps("title")}
+          />
 
           <Select
             placeholder="회의 유형을 선택해 주세요."
@@ -184,7 +231,15 @@ const RegistMeeting = ({ opened, close, target }: RegistMeetingProps) => {
             {...form.getInputProps("referenceUserIdxs")}
           />
 
-          <Textarea placeholder="내용을 입력해 주세요." styles={LABEL_STYLES} label="내용" autosize minRows={4} key={form.key("content")} {...form.getInputProps("content")} />
+          <Textarea
+            placeholder="내용을 입력해 주세요."
+            styles={LABEL_STYLES}
+            label="내용"
+            autosize
+            minRows={4}
+            key={form.key("content")}
+            {...form.getInputProps("content")}
+          />
 
           {/* Action Buttons */}
           <Group grow>

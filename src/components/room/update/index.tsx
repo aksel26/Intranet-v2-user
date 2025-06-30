@@ -1,46 +1,81 @@
 import { userService } from "@/api/services/user/user.services";
 import { useApiQuery } from "@/api/useApi";
 import type { TUsers } from "@/types/users";
-import { formatYYYYMMDD } from "@/utils/date/format";
-import { Button, Group, Modal, MultiSelect, Paper, Select, Stack, Text, Textarea, TextInput } from "@mantine/core";
+import { formatTimeHHmm, formatYYYYMMDD } from "@/utils/date/format";
+import {
+  Badge,
+  Button,
+  Group,
+  Modal,
+  MultiSelect,
+  Paper,
+  Select,
+  Stack,
+  Text,
+  Textarea,
+  TextInput,
+} from "@mantine/core";
 import { useEffect, useState } from "react";
 
 const UpdateMeeting = ({ opened, close, target }: any) => {
-  const { data, isLoading, isError } = useApiQuery(["users"], userService.getAll);
+  const { data, isLoading, isError } = useApiQuery(
+    ["users"],
+    userService.getAll
+  );
   const [users, setUsers] = useState<any>([]);
   useEffect(() => {
     if (data) setUsers(data?.data.data);
   }, [data]);
   return (
-    <Modal opened={opened} onClose={close} title="회의 일정 수정" centered size={"sm"}>
+    <Modal
+      opened={opened}
+      onClose={close}
+      title="회의 일정 수정"
+      centered
+      size={"sm"}
+    >
       {/* <form onSubmit={form.onSubmit(submit)}> */}
       <Stack>
+        <Badge radius={"sm"} size="lg">
+          {target?.resource?._resource?.extendedProps?.room || "알 수 없음"}
+        </Badge>
         <Paper>
-          <Group justify="space-between" align="center" mt={"sm"}>
+          <Group justify="space-between" align="flex-start">
             <Stack gap={2}>
-              <Text c={"gray"} fz={"sm"}>
+              <Text c="gray.5" fz="xs">
                 예약자
               </Text>
-              <Text fz={"sm"}>{"하이"}</Text>
+              <Text fz="sm">{"알 수 없음"}</Text>
             </Stack>
+
             <Stack gap={2}>
-              <Text c={"gray"} fz={"sm"}>
-                회의실
-              </Text>
-              <Text fz={"sm"}>{target?.resource._resource.extendedProps.room}</Text>
-            </Stack>
-            <Stack gap={2}>
-              <Text c={"gray"} fz={"sm"}>
+              <Text c="gray.5" fz="xs">
                 일자
               </Text>
-              <Text fz={"sm"}>{formatYYYYMMDD(target?.start)}</Text>
+              <Text fz="sm">
+                {target?.start ? formatYYYYMMDD(target?.start) : "알 수 없음"}
+              </Text>
+            </Stack>
+            <Stack gap={2}>
+              <Text c="gray.5" fz="xs">
+                시간
+              </Text>
+              <Group gap={3}>
+                <Text fz="sm">
+                  {target?.start ? formatTimeHHmm(target?.start) : "알 수 없음"}
+                </Text>
+                ~
+                <Text fz="sm">
+                  {target?.end ? formatTimeHHmm(target?.end) : "알 수 없음"}
+                </Text>
+              </Group>
             </Stack>
           </Group>
         </Paper>
         <TextInput
           styles={{
             label: {
-              fontSize: "var(--mantine-font-size-xs",
+              fontSize: "var(--mantine-font-size-xs)",
               color: "var(--mantine-color-gray-5)",
             },
           }}
@@ -53,7 +88,7 @@ const UpdateMeeting = ({ opened, close, target }: any) => {
           placeholder="회의 유형을 선택해 주세요."
           styles={{
             label: {
-              fontSize: "var(--mantine-font-size-xs",
+              fontSize: "var(--mantine-font-size-xs)",
               color: "var(--mantine-color-gray-5)",
             },
           }}
@@ -113,7 +148,7 @@ const UpdateMeeting = ({ opened, close, target }: any) => {
           placeholder="내용을 입력해 주세요."
           styles={{
             label: {
-              fontSize: "var(--mantine-font-size-xs",
+              fontSize: "var(--mantine-font-size-xs)",
               color: "var(--mantine-color-gray-5)",
             },
           }}
