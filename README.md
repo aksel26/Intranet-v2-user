@@ -1,54 +1,189 @@
-# React + TypeScript + Vite
+# 사내 인트라넷 시스템 (Intranet v2 User)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+사내 업무 효율성과 직원 복리후생을 위한 종합 인트라넷 웹 애플리케이션입니다.
 
-Currently, two official plugins are available:
+## 🌐 배포 사이트
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **사용자 사이트**: https://test-benefit-hub.insahr.co.kr/
+- **관리자 사이트**: 별도 Admin 시스템 제공
 
-## Expanding the ESLint configuration
+## ✨ 주요 기능
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### 👤 사용자 관리
+- 로그인/로그아웃 및 사용자 인증
+- 개인정보 관리 및 비밀번호 변경
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+### 📅 근태 관리
+- 출퇴근 체크인/체크아웃
+- 근무시간 통계 및 차트
+- 휴가 신청 및 승인 시스템
+- 캘린더 기반 일정 관리
+
+### 🍽️ 식사 관리
+- 식사 신청 및 관리
+- 점심 그룹 관리
+- 식사 통계 및 방문 기록
+- 추첨 시스템
+
+### 📋 업무 관리
+- 공지사항 작성 및 조회
+- 결재 시스템
+- 업무 활동 관리
+- 포인트 시스템
+
+### 🏢 시설 관리
+- 회의실 예약 시스템
+- 시설 이용 관리
+
+### 💬 커뮤니케이션
+- SMS 알림 시스템
+- 생일 알림
+- 음료 신청
+
+### 📊 평가 시스템
+- 직원 평가 관리
+- 면접 및 교육 일정
+
+## 🛠️ 기술 스택
+
+### Frontend
+- **React 19** - UI 라이브러리
+- **TypeScript** - 정적 타입 검사
+- **Vite** - 빌드 도구 및 개발 서버
+- **Mantine** - UI 컴포넌트 라이브러리
+- **Tailwind CSS** - 유틸리티 우선 CSS 프레임워크
+
+### 상태 관리 & 데이터 페칭
+- **Zustand** - 상태 관리
+- **TanStack React Query** - 서버 상태 관리 및 캐싱
+
+### UI/UX 라이브러리
+- **FullCalendar** - 캘린더 및 일정 관리
+- **Recharts** - 차트 및 데이터 시각화
+- **Lucide React** - 아이콘
+- **GSAP** - 애니메이션
+- **Day.js** - 날짜 처리
+
+### 네트워킹
+- **Axios** - HTTP 클라이언트
+
+## 🚀 개발 환경 설정
+
+### 사전 요구사항
+- Node.js (권장 버전: 18 이상)
+- npm 또는 yarn
+
+### 설치 및 실행
+
+1. 저장소 클론
+```bash
+git clone [repository-url]
+cd Intranet-v2-user
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+2. 의존성 설치
+```bash
+npm install
 ```
+
+3. 개발 서버 실행
+```bash
+npm run dev
+```
+
+4. 빌드
+```bash
+npm run build
+```
+
+5. 프리뷰
+```bash
+npm run preview
+```
+
+6. 린트 검사
+```bash
+npm run lint
+```
+
+## 📁 프로젝트 구조
+
+```
+src/
+├── api/                 # API 서비스 및 클라이언트
+├── components/          # 재사용 가능한 컴포넌트
+│   ├── common/         # 공통 컴포넌트
+│   ├── activity/       # 활동 관련 컴포넌트
+│   ├── approval/       # 결재 관련 컴포넌트
+│   ├── auth/           # 인증 관련 컴포넌트
+│   ├── leave/          # 휴가 관련 컴포넌트
+│   ├── meal/           # 식사 관련 컴포넌트
+│   ├── notice/         # 공지사항 관련 컴포넌트
+│   └── ...
+├── hooks/              # 커스텀 훅
+├── pages/              # 페이지 컴포넌트
+├── store/              # 상태 관리 (Zustand)
+├── types/              # TypeScript 타입 정의
+├── utils/              # 유틸리티 함수
+└── styles/             # 스타일 파일
+```
+
+## 🔧 주요 스크립트
+
+- `npm run dev` - 개발 서버 실행
+- `npm run build` - 프로덕션 빌드
+- `npm run lint` - ESLint 검사
+- `npm run preview` - 빌드된 앱 미리보기
+
+## 🌟 주요 특징
+
+- **반응형 디자인**: 모바일 및 데스크톱 환경 모두 지원
+- **다국어 지원**: 한국어 기본 지원 (Day.js 한국어 로케일)
+- **실시간 알림**: 다양한 시스템 알림 기능
+- **권한 관리**: 사용자 권한에 따른 접근 제어
+- **캐싱**: React Query를 통한 효율적인 데이터 캐싱
+- **타입 안전성**: TypeScript를 통한 컴파일타임 오류 방지
+
+## 📱 지원 기능
+
+### 대시보드
+- 개인 근무 현황 요약
+- 오늘의 일정 및 할 일
+- 생일자 알림
+- 복리후생 버튼
+
+### 출근 관리
+- 출근/퇴근 체크
+- 조기 출근/퇴근 관리
+- 휴가 현황 표시
+
+### 휴가 관리
+- 휴가 신청 폼
+- 휴가 현황 및 잔여일수 확인
+- 휴가 승인 상태 추적
+
+### 식사 관리
+- 일별 식사 신청
+- 점심 그룹 배정
+- 식사 통계 및 이력
+
+### 회의실 예약
+- 실시간 회의실 현황
+- 예약 등록 및 수정
+- 사용자별 예약 관리
+
+## 🔒 보안
+
+- JWT 기반 인증 시스템
+- Protected Route를 통한 페이지 접근 제어
+- 사용자 세션 관리
+
+## 🚀 배포
+
+애플리케이션은 다음 URL에서 접근 가능합니다:
+- 메인 사이트: https://test-benefit-hub.insahr.co.kr/
+- 관리자 시스템은 별도로 제공됩니다.
+
+---
+
+이 프로젝트는 React + TypeScript + Vite를 기반으로 구축된 현대적인 웹 애플리케이션입니다.
