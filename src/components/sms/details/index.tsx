@@ -6,7 +6,10 @@ const Value = ({ content }: { content: string }) => {
   return <Text fz={"xs"}>{content}</Text>;
 };
 const SmsDetails = () => {
-  const { data, isLoading, isError } = useApiQuery(["sms"], smsService.getAllSMS);
+  const { data, isLoading, isError } = useApiQuery(
+    ["sms"],
+    smsService.getAllSMS
+  );
 
   const details = data?.data.data;
   return (
@@ -20,14 +23,19 @@ const SmsDetails = () => {
       <ScrollArea h={"75vh"}>
         <Stack gap={"md"}>
           {details?.map((content: any, index: number) => (
-            <Paper radius={"md"} bg={"white"} p={"md"} key={content.smsMessageIdx}>
+            <Paper
+              radius={"md"}
+              bg={"white"}
+              p={"md"}
+              key={content.smsMessageIdx}
+            >
               <Stack gap={"xs"}>
                 <Group justify="space-between">
                   <Group gap={"xs"}>
                     <Text fz={"xs"} c={"gray"} w={50}>
                       발송시간
                     </Text>
-                    <Value content={formatTimeFull(content.sendAt)} />
+                    <Value content={formatTimeFull(content.createdAt)} />
                   </Group>
                   <Badge size="xs" variant="light" radius={"sm"}>
                     LMS

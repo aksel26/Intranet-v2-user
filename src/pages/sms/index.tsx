@@ -3,7 +3,18 @@ import { useApiMutation } from "@/api/useApi";
 import notification from "@/components/common/notification";
 import SmsDetails from "@/components/sms/details";
 import SmsDetailsModal from "@/components/sms/details/modal";
-import { Button, Grid, GridCol, Group, Paper, Stack, Text, Textarea, TextInput, Title } from "@mantine/core";
+import {
+  Button,
+  Grid,
+  GridCol,
+  Group,
+  Paper,
+  Stack,
+  Text,
+  Textarea,
+  TextInput,
+  Title,
+} from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { useDisclosure } from "@mantine/hooks";
 import { useQueryClient } from "@tanstack/react-query";
@@ -57,7 +68,8 @@ const SMS = () => {
       });
     },
     onError: (error: any) => {
-      const errorMessage = error.response?.data?.message || "오류가 발생했습니다.";
+      const errorMessage =
+        error.response?.data?.message || "오류가 발생했습니다.";
       notification({
         title: "SMS 전송",
         color: "red",
@@ -104,10 +116,11 @@ const SMS = () => {
   };
   const submitSMS = (values: any) => {
     const submit = { ...values };
-    submit.toPhoneNumbers = formattedValue.split("\n").map((phone) => phone.trim());
+    submit.toPhoneNumbers = formattedValue
+      .split("\n")
+      .map((phone) => phone.trim());
     submit.totalCount = formattedValue.split("\n").length;
-
-    sendSMS.mutate(values);
+    sendSMS.mutate(submit);
   };
 
   return (
@@ -127,13 +140,23 @@ const SMS = () => {
                 <Text fz={"sm"} c={"gray"}>
                   발신정보
                 </Text>
-                <Button variant="outline" size="xs" onClick={open} hiddenFrom="md">
+                <Button
+                  variant="outline"
+                  size="xs"
+                  onClick={open}
+                  hiddenFrom="md"
+                >
                   내역
                 </Button>
               </Group>
               <Paper p={"lg"}>
                 <Textarea
-                  styles={{ label: { fontSize: "var(--mantine-font-size-xs)", color: "var(--mantine-color-gray-6)" } }}
+                  styles={{
+                    label: {
+                      fontSize: "var(--mantine-font-size-xs)",
+                      color: "var(--mantine-color-gray-6)",
+                    },
+                  }}
                   placeholder="안내 문구를 입력해 주세요."
                   autosize
                   label="안내문구"
@@ -145,7 +168,12 @@ const SMS = () => {
                 <TextInput
                   key={form.key("fromPhoneNumber")}
                   {...form.getInputProps("fromPhoneNumber")}
-                  styles={{ label: { fontSize: "var(--mantine-font-size-xs)", color: "var(--mantine-color-gray-6)" } }}
+                  styles={{
+                    label: {
+                      fontSize: "var(--mantine-font-size-xs)",
+                      color: "var(--mantine-color-gray-6)",
+                    },
+                  }}
                   placeholder="010-0000-0000"
                   label="회신번호"
                 />
