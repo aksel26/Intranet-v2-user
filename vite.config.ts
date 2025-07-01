@@ -8,7 +8,7 @@ export default defineConfig({
   server: {
     port: 3000,
     host: "0.0.0.0", // 또는 true
-    allowedHosts: ["test-benefit-hub.insahr.co.kr", "localhost"],
+    allowedHosts: true,
   },
   resolve: {
     alias: {
