@@ -48,7 +48,7 @@ const UpdateMeeting = ({ opened, close, target }: any) => {
   }, [data]);
 
   useEffect(() => {
-    if (target) setDetails((prev: any) => ({ ...prev, room: target._def.resourceIds[0], title: target._def.title, ...target._def.extendedProps }));
+    if (target) setDetails((prev: any) => ({ ...prev, room: target?._def?.resourceIds[0] || "", title: target.title, ...target?._def?.extendedProps }));
   }, [target]);
 
   useEffect(() => {
@@ -108,11 +108,11 @@ const UpdateMeeting = ({ opened, close, target }: any) => {
       title: values.title || "",
       content: values.content || "",
       meetingDate: meetingDate,
-      startTime: dayjs(`${meetingDate}T${values.startTime}:00`).toISOString(),
-      endTime: dayjs(`${meetingDate}T${values.endTime}:00`).toISOString(),
+      startTime: values.startTime || "",
+      endTime: values.endTime || "",
       meetingType: values.meetingType || "",
       roomId: values.roomId || "",
-      description: values.description || "",
+      description: values.description || null,
       attendeeUserIdxs: values.attendeeUserIdxs?.map((idx: string) => Number(idx)) || [],
       ccUserIdxs: values.ccUserIdxs?.map((idx: string) => Number(idx)) || [],
     };
@@ -126,7 +126,6 @@ const UpdateMeeting = ({ opened, close, target }: any) => {
 
     updateMeeting.mutate({ body: transformedValues, idx: target?.id });
   };
-
   return (
     <Modal opened={opened} onClose={close} title="회의 일정 수정" centered size={"md"}>
       <form onSubmit={meetingInfoForm.onSubmit(submit)}>
