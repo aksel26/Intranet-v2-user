@@ -1,27 +1,17 @@
 import { noticeService } from "@/api/services/notice/notice.services";
 import { useApiQuery } from "@/api/useApi";
 import LoadingView from "@/components/loading";
+import { formatTimeFull } from "@/utils/date/format";
 import { convertFileUnit } from "@/utils/file/convertFileUnit";
-import {
-  Box,
-  Button,
-  Group,
-  Modal,
-  Paper,
-  Stack,
-  Table,
-  Text,
-  Title,
-} from "@mantine/core";
+import { Box, Button, Group, Modal, Paper, Stack, Text, Title } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { useQueryClient } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
-import ModifyNotice from "../update";
 import NoticeCategory from "../category";
+import ModifyNotice from "../update";
 import Car from "./car";
-import { formatTimeFull, formatYYYYMMDD } from "@/utils/date/format";
 import People from "./people";
 
 function NoticeDetails() {
@@ -32,10 +22,7 @@ function NoticeDetails() {
 
   //   const { noticeDetails, isLoading, isError } = useGetNoticeDetail({ id });
 
-  const { data, isLoading, isError } = useApiQuery(
-    ["noticesDetail", { noticeIdx: id }],
-    () => noticeService.getNoticeDetail({ noticeIdx: Number(id) })
-  );
+  const { data, isLoading, isError } = useApiQuery(["noticesDetail", { noticeIdx: id }], () => noticeService.getNoticeDetail({ noticeIdx: Number(id) }));
   console.log("data:", data);
   const noticeDetails = data?.data.data[0];
 
@@ -45,8 +32,7 @@ function NoticeDetails() {
     }
   }
 
-  const [previewOpened, { open: previewOpen, close: previewClose }] =
-    useDisclosure(false);
+  const [previewOpened, { open: previewOpen, close: previewClose }] = useDisclosure(false);
 
   useEffect(() => {
     queryClient.invalidateQueries({ queryKey: ["notices"] });
@@ -108,29 +94,17 @@ function NoticeDetails() {
                   <Group>
                     <Stack gap={1}>
                       <Group gap={"xs"}>
-                        <Text
-                          fz={"xs"}
-                          c={"dimmed"}
-                          w={{ base: LABEL_WIDTH, md: 50 }}
-                        >
+                        <Text fz={"xs"} c={"dimmed"} w={{ base: LABEL_WIDTH, md: 50 }}>
                           작성자
                         </Text>
                         <Text fz={"xs"}>{noticeDetails?.creatorName}</Text>
                       </Group>
 
                       <Group gap={"xs"}>
-                        <Text
-                          fz={"xs"}
-                          c={"dimmed"}
-                          w={{ base: LABEL_WIDTH, md: 50 }}
-                        >
+                        <Text fz={"xs"} c={"dimmed"} w={{ base: LABEL_WIDTH, md: 50 }}>
                           작성일
                         </Text>
-                        <Text fz={"xs"}>
-                          {dayjs(noticeDetails?.createdAt).format(
-                            "YYYY-MM-DD (dd)"
-                          )}
-                        </Text>{" "}
+                        <Text fz={"xs"}>{dayjs(noticeDetails?.createdAt).format("YYYY-MM-DD (dd)")}</Text>{" "}
                       </Group>
                     </Stack>
                     <Stack gap={1}>
@@ -145,9 +119,7 @@ function NoticeDetails() {
                         <Text fz={"xs"} c={"dimmed"} w={LABEL_WIDTH}>
                           최종 수정일
                         </Text>
-                        <Text fz={"xs"}>
-                          {formatTimeFull(noticeDetails?.lastUpdateAt)}
-                        </Text>{" "}
+                        <Text fz={"xs"}>{formatTimeFull(noticeDetails?.lastUpdateAt)}</Text>{" "}
                       </Group>
                     </Stack>
                   </Group>
@@ -156,11 +128,7 @@ function NoticeDetails() {
                   <Text fz={"xs"} c={"dimmed"} w={LABEL_WIDTH}>
                     게시 기간
                   </Text>
-                  <Text fz={"xs"}>
-                    {`${dayjs(noticeDetails?.startDate).format(
-                      "YYYY-MM-DD"
-                    )} ~ ${dayjs(noticeDetails?.endDate).format("YYYY-MM-DD")}`}
-                  </Text>{" "}
+                  <Text fz={"xs"}>{`${dayjs(noticeDetails?.startDate).format("YYYY-MM-DD")} ~ ${dayjs(noticeDetails?.endDate).format("YYYY-MM-DD")}`}</Text>{" "}
                 </Group>
               </Stack>
               <Group justify="space-between" align="start" w={"100%"}>
@@ -175,23 +143,11 @@ function NoticeDetails() {
                 </Group>
               </Group>
             </Group>
-            <Box
-              py={"md"}
-              dangerouslySetInnerHTML={createMarkup(noticeDetails?.content)}
-              mih={200}
-              fz={"sm"}
-            />
+            <Box py={"md"} dangerouslySetInnerHTML={createMarkup(noticeDetails?.content)} mih={200} fz={"sm"} />
             <Text fz={"sm"}>첨부파일</Text>
             {noticeDetails?.imageUrl ? (
-              <Button
-                fz={"sm"}
-                variant="subtle"
-                w={"max-content"}
-                onClick={previewOpen}
-              >
-                {`${noticeDetails?.imageName}, [${convertFileUnit(
-                  noticeDetails?.imageSize
-                )}]`}
+              <Button fz={"sm"} variant="subtle" w={"max-content"} onClick={previewOpen}>
+                {`${noticeDetails?.imageName}, [${convertFileUnit(noticeDetails?.imageSize)}]`}
               </Button>
             ) : (
               <Text fz={"sm"} c={"dimmed"}>
@@ -202,11 +158,7 @@ function NoticeDetails() {
         )}
       </Paper>
 
-      <Modal
-        opened={previewOpened}
-        onClose={previewClose}
-        title="첨부 이미지 미리보기"
-      >
+      <Modal opened={previewOpened} onClose={previewClose} title="첨부 이미지 미리보기">
         <img src={noticeDetails?.imageUrl || ""} alt="preview" />
       </Modal>
       <ModifyNotice opened={opened} close={close} details={noticeDetails} />

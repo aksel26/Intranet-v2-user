@@ -19,9 +19,10 @@ import Points from "./pages/points";
 import Activity from "./pages/activity";
 import Leave from "./pages/attendance/leave";
 import Work from "./pages/attendance/work";
-import Room from "./pages/room";
+// import Room from "./pages/meeting";
 import SMS from "./pages/sms";
 import Assessment from "./pages/assessment";
+import Meeting from "./pages/meeting";
 
 // import Login from './pages/Login'
 // import Main from './pages/Main'
@@ -39,10 +40,7 @@ function App() {
           element={
             !isInitialized ? (
               <div className="min-h-screen flex items-center justify-center">
-                <LoadingOverlay
-                  visible
-                  overlayProps={{ radius: "sm", blur: 2 }}
-                />
+                <LoadingOverlay visible overlayProps={{ radius: "sm", blur: 2 }} />
               </div>
             ) : isAuthenticated ? (
               <Navigate to="/main" replace />
@@ -58,10 +56,7 @@ function App() {
           element={
             !isInitialized ? (
               <div className="min-h-screen flex items-center justify-center">
-                <LoadingOverlay
-                  visible
-                  overlayProps={{ radius: "sm", blur: 2 }}
-                />
+                <LoadingOverlay visible overlayProps={{ radius: "sm", blur: 2 }} />
               </div>
             ) : isAuthenticated ? (
               <Navigate to="/main" replace />
@@ -91,7 +86,7 @@ function App() {
           <Route path="activity" element={<Activity />} />
           <Route path="leave" element={<Leave />} />
           <Route path="work" element={<Work />} />
-          <Route path="room" element={<Room />} />
+          <Route path="meeting" element={<Meeting />} />
           <Route path="sms" element={<SMS />} />
           <Route path="assessment" element={<Assessment />} />
           {/* <Route path="profile" element={<Profile />} />

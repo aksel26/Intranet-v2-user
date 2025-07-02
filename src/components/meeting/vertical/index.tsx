@@ -3,7 +3,7 @@ import FullCalendar from "@fullcalendar/react";
 import resourceTimeGridPlugin from "@fullcalendar/resource-timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import koLocale from "@fullcalendar/core/locales/ko";
-import "@/styles/room/room.css";
+import "@/styles/meeting/meeting.css";
 import { useDisclosure } from "@mantine/hooks";
 import RegistMeeting from "../regist";
 export default function VerticalTimeline() {
@@ -20,10 +20,7 @@ export default function VerticalTimeline() {
     { id: "S2", room: "S2", limit: "1인" },
   ]);
 
-  const [
-    registMeetingOpened,
-    { open: openRegistMeeting, close: closeRegistMeeting },
-  ] = useDisclosure(false);
+  const [registMeetingOpened, { open: openRegistMeeting, close: closeRegistMeeting }] = useDisclosure(false);
   // 이벤트 데이터
   const [events, setEvents] = useState<any>([
     {
@@ -73,11 +70,7 @@ export default function VerticalTimeline() {
 
   // 이벤트 클릭 핸들러
   const handleEventClick = (clickInfo: any) => {
-    alert(
-      `이벤트: ${
-        clickInfo.event.title
-      }\n시작: ${clickInfo.event.start.toLocaleString()}\n종료: ${clickInfo.event.end.toLocaleString()}`
-    );
+    alert(`이벤트: ${clickInfo.event.title}\n시작: ${clickInfo.event.start.toLocaleString()}\n종료: ${clickInfo.event.end.toLocaleString()}`);
   };
 
   // 날짜 클릭 핸들러
@@ -180,9 +173,7 @@ export default function VerticalTimeline() {
         nowIndicator={true}
         // 리소스 라벨 커스터마이징
         resourceLabelContent={(arg) => {
-          return (
-            <div className="font-semibold text-xs">{arg.resource.title}</div>
-          );
+          return <div className="font-semibold text-xs">{arg.resource.title}</div>;
         }}
         slotLabelContent={(arg) => {
           return <div className="font-semibold text-xs">{arg.text}</div>;
@@ -197,11 +188,7 @@ export default function VerticalTimeline() {
           );
         }}
       />
-      <RegistMeeting
-        opened={registMeetingOpened}
-        close={closeRegistMeeting}
-        target={currentTarget}
-      />
+      <RegistMeeting opened={registMeetingOpened} close={closeRegistMeeting} target={currentTarget} />
     </div>
   );
 }
