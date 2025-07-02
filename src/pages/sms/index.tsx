@@ -78,7 +78,7 @@ const SMS = () => {
     },
   });
 
-  const formatPhoneNumbers = (input: string) => {
+  const convertPhoneNumbersToArray = (input: string) => {
     // 쉼표로 구분된 전화번호들을 배열로 변환
     const phoneNumbers = input
       .split(",")
@@ -103,7 +103,7 @@ const SMS = () => {
   };
 
   const handleBlur = () => {
-    const formatted = formatPhoneNumbers(value);
+    const formatted = convertPhoneNumbersToArray(value);
     setValue(formatted);
   };
 

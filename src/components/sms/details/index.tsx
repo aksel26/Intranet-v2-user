@@ -1,17 +1,23 @@
 import { smsService } from "@/api/services/sms/sms.services";
 import { useApiQuery } from "@/api/useApi";
+import type { SmsDetials } from "@/types/sms";
 import { formatTimeFull } from "@/utils/date/format";
-import { Badge, Group, Paper, ScrollArea, Stack, Text } from "@mantine/core";
+import { Badge, Group, Loader, Paper, ScrollArea, Stack, Text } from "@mantine/core";
 const Value = ({ content }: { content: string }) => {
   return <Text fz={"xs"}>{content}</Text>;
 };
 const SmsDetails = () => {
-  const { data, isLoading, isError } = useApiQuery(
-    ["sms"],
-    smsService.getAllSMS
-  );
+  const { data, isLoading, isError } = useApiQuery(["sms"], smsService.getAllSMS);
 
   const details = data?.data.data;
+
+  if (isLoading)
+    return (
+      <Group justify="center" align="center" h={300}>
+        <Loader size={18} type="dots" />
+      </Group>
+    );
+
   return (
     <Stack gap={2} visibleFrom="md">
       <Text fz="sm" c={"gray"}>
@@ -22,13 +28,8 @@ const SmsDetails = () => {
       </Text>
       <ScrollArea h={"75vh"}>
         <Stack gap={"md"}>
-          {details?.map((content: any, index: number) => (
-            <Paper
-              radius={"md"}
-              bg={"white"}
-              p={"md"}
-              key={content.smsMessageIdx}
-            >
+          {details?.map((content: SmsDetials) => (
+            <Paper radius={"md"} bg={"white"} p={"md"} key={content.smsMessageIdx}>
               <Stack gap={"xs"}>
                 <Group justify="space-between">
                   <Group gap={"xs"}>
@@ -38,7 +39,7 @@ const SmsDetails = () => {
                     <Value content={formatTimeFull(content.createdAt)} />
                   </Group>
                   <Badge size="xs" variant="light" radius={"sm"}>
-                    LMS
+                    {content.smsTag}
                   </Badge>
                 </Group>
                 <Group justify="space-between" align="start">
