@@ -83,6 +83,11 @@ const ModalInputForm = ({ opened, close, date, targetList }: any) => {
       });
       close();
     },
+    onError: (error: Error) => {
+      const axiosError = error as AxiosError<{ message: string }>;
+      const errorMessage = axiosError.response?.data?.message || "오류가 발생했습니다.";
+      notification({ title: "식대 입력", color: "red", message: errorMessage });
+    },
   });
 
   // console.log("🫠", data);
@@ -116,39 +121,11 @@ const ModalInputForm = ({ opened, close, date, targetList }: any) => {
   }, [date, targetList]);
 
   const handleSubmit = (values: FormValues) => {
-    console.log("🚀 ~ handleSubmit ~ values:", values);
-    mutate(values, {
-      onSuccess: async () => {
-        await queryClient.invalidateQueries({ queryKey: ["meals"] });
-        notification({
-          title: "식대 입력",
-          color: "green",
-          message: "식대 내역이 저장되었습니다.",
-        });
-        form.reset();
-        setCurrentTab("lunch");
-        close();
-      },
-      onError: (error: Error) => {
-        const axiosError = error as AxiosError<{ message: string }>;
-        const errorMessage = axiosError.response?.data?.message || "오류가 발생했습니다.";
-        notification({ title: "식대 입력", color: "red", message: errorMessage });
-      },
-    });
+    mutate(values);
   };
 
   const reset = () => {
-    deleteMeal(dayjs(date).format("YYYY-MM-DD"), {
-      onSuccess: async () => {
-        await queryClient.invalidateQueries({ queryKey: ["meals"] });
-        notification({
-          title: "식대 내역 삭제",
-          message: "정상적으로 삭제되었습니다.",
-          color: "green",
-        });
-        close();
-      },
-    });
+    deleteMeal(dayjs(date).format("YYYY-MM-DD"));
   };
 
   const matches = useMediaQuery("(max-width: 40em)", true, {
