@@ -41,18 +41,7 @@ const UpdatePassword = () => {
   });
 
   const submitChangePassword = (values: any) => {
-    updateInfo.mutate(values, {
-      onSuccess: () => {
-        notification({ title: "비밀번호 변경", color: "green", message: "비밀번호가 변경되었습니다." });
-        setPrePasswordErr(false);
-        passwordForm.reset();
-      },
-      onError: (error) => {
-        if (error.message) {
-          setPrePasswordErr(true);
-        }
-      },
-    });
+    updateInfo.mutate(values);
   };
 
   return (
