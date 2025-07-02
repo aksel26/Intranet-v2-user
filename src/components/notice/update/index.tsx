@@ -3,32 +3,19 @@ import { userService } from "@/api/services/user/user.services";
 import { useApiMutation, useApiQuery } from "@/api/useApi";
 import notification from "@/components/common/notification";
 import type { TUsers } from "@/types/users";
-import {
-  Button,
-  FileInput,
-  Group,
-  Modal,
-  MultiSelect,
-  Radio,
-  Select,
-  Stack,
-  Textarea,
-  TextInput,
-} from "@mantine/core";
+import { convertFileUnit } from "@/utils/file/convertFileUnit";
+import { Button, FileInput, Group, Modal, MultiSelect, Radio, Select, Stack, Text, Textarea, TextInput } from "@mantine/core";
 import { DatePickerInput } from "@mantine/dates";
 import { useForm } from "@mantine/form";
+import { useDisclosure } from "@mantine/hooks";
 import { useQueryClient } from "@tanstack/react-query";
 import { Calendar } from "lucide-react";
 import { useEffect } from "react";
 
 const ModifyNotice = ({ opened, close, details }: any) => {
   console.log("details: ", details);
-
-  const { data, isLoading, isError } = useApiQuery(
-    ["users"],
-    userService.getAll,
-    { enabled: !!opened }
-  );
+  const [previewOpened, { open: previewOpen, close: previewClose }] = useDisclosure(false);
+  const { data, isLoading, isError } = useApiQuery(["users"], userService.getAll, { enabled: !!opened });
   const users = data?.data.data;
 
   const form = useForm({
@@ -48,8 +35,7 @@ const ModifyNotice = ({ opened, close, details }: any) => {
     },
     validate: {
       title: (value) => (value.length < 1 ? "제목을 입력해 주세요." : null),
-      category: (value) =>
-        value.length < 1 ? "카테고리를 선택해 주세요." : null,
+      category: (value) => (value.length < 1 ? "카테고리를 선택해 주세요." : null),
     },
   });
 
@@ -59,24 +45,15 @@ const ModifyNotice = ({ opened, close, details }: any) => {
   useEffect(() => {
     if (details) {
       // attendeeInfo와 ccUserInfo를 userIdx 배열로 변환
-      const attendeeUserIdxs =
-        details.attendeeInfo?.map(
-          (user: any) => user.attendeeUserIdx?.toString() || ""
-        ) || [];
+      const attendeeUserIdxs = details.attendeeInfo?.map((user: any) => user.attendeeUserIdx?.toString() || "") || [];
 
-      const ccUserIdxs =
-        details.ccUserInfo?.map(
-          (user: any) => user.ccUserIdx?.toString() || ""
-        ) || [];
+      const ccUserIdxs = details.ccUserInfo?.map((user: any) => user.ccUserIdx?.toString() || "") || [];
 
       // DatePickerInput용 날짜 배열 생성
-      const dateRange = [
-        details.startDate ? new Date(details.startDate) : null,
-        details.endDate ? new Date(details.endDate) : null,
-      ].filter(Boolean);
+      const dateRange = [details.startDate ? new Date(details.startDate) : null, details.endDate ? new Date(details.endDate) : null].filter(Boolean);
 
       // 폼 초기값 설정
-      const formData = {
+      const formData: any = {
         title: details.title || "",
         category: details.category || "",
         place: details.place || "",
@@ -86,7 +63,7 @@ const ModifyNotice = ({ opened, close, details }: any) => {
         startDate: details.startDate || "",
         endDate: details.endDate || "",
         content: details.content || "",
-        noticeImage: null, // 파일은 초기값 설정 불가
+        imageUrl: null, // 파일은 초기값 설정 불가
         date: dateRange,
       };
 
@@ -119,17 +96,13 @@ const ModifyNotice = ({ opened, close, details }: any) => {
       queryClient.invalidateQueries({
         predicate: (query) => {
           const queryKey = query.queryKey;
-          const targetKeys = [
-            "noticesDetail",
-            { noticeIdx: details.noticeIdx },
-          ];
+          const targetKeys = ["noticesDetail", { noticeIdx: details.noticeIdx }];
           return Array.isArray(queryKey) && targetKeys.includes(queryKey[0]);
         },
       });
     },
     onError: (error: any) => {
-      const errorMessage =
-        error.response?.data?.message || "오류가 발생했습니다.";
+      const errorMessage = error.response?.data?.message || "오류가 발생했습니다.";
       notification({
         title: "공지사항 수정",
         color: "red",
@@ -143,29 +116,21 @@ const ModifyNotice = ({ opened, close, details }: any) => {
 
     // 날짜 정보 처리
     if (input.date && input.date.length > 0) {
-      input.startDate =
-        input.date[0]?.toISOString?.().split("T")[0] || input.date[0];
-      input.endDate =
-        input.date[1]?.toISOString?.().split("T")[0] ||
-        input.date[1] ||
-        input.startDate;
+      input.startDate = input.date[0]?.toISOString?.().split("T")[0] || input.date[0];
+      input.endDate = input.date[1]?.toISOString?.().split("T")[0] || input.date[1] || input.startDate;
     }
 
     // 사용자 인덱스 처리
-    input.attendeeUserIdxs =
-      input.attendeeUserIdxs.length < 1
-        ? null
-        : input.attendeeUserIdxs.map((user: string) => Number(user));
-    input.ccUserIdxs =
-      input.ccUserIdxs.length < 1
-        ? null
-        : input.ccUserIdxs.map((user: string) => Number(user));
+    input.attendeeUserIdxs = input.attendeeUserIdxs.length < 1 ? null : input.attendeeUserIdxs.map((user: string) => Number(user));
+    input.ccUserIdxs = input.ccUserIdxs.length < 1 ? null : input.ccUserIdxs.map((user: string) => Number(user));
 
     // noticeIdx 추가 (수정 시 필요)
     input.noticeIdx = details?.noticeIdx;
+    // input.noticeImage = details?.noticeImage;
 
     // 불필요한 필드 제거
     delete input.date;
+    console.log("input:", input);
 
     // console.log("Submit data:", input); // 디버깅용
     updateNotice.mutate(input);
@@ -348,7 +313,6 @@ const ModifyNotice = ({ opened, close, details }: any) => {
             key={form.key("content")}
             {...form.getInputProps("content")}
           />
-
           <FileInput
             placeholder="첨부파일을 선택해 주세요."
             styles={{
@@ -361,12 +325,24 @@ const ModifyNotice = ({ opened, close, details }: any) => {
             key={form.key("noticeImage")}
             {...form.getInputProps("noticeImage")}
           />
+          {details?.imageUrl ? (
+            <Button fz={"sm"} variant="light" size="sm" onClick={previewOpen} fullWidth>
+              {`${details?.imageName}, [${convertFileUnit(details?.imageSize)}]`}
+            </Button>
+          ) : (
+            <Text fz={"sm"} c={"dimmed"}>
+              첨부파일이 존재하지 않습니다.
+            </Text>
+          )}
 
           <Button fullWidth type="submit" loading={updateNotice.isPending}>
             수정하기
           </Button>
         </Stack>
       </form>
+      <Modal opened={previewOpened} onClose={previewClose} title="첨부 이미지 미리보기">
+        <img src={details?.imageUrl || ""} alt="preview" />
+      </Modal>
     </Modal>
   );
 };
