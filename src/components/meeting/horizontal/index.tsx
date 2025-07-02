@@ -59,8 +59,8 @@ const HorizontalTimeline = ({ details }: { details?: any }) => {
           }}
         />
       </div>
-      <RegistMeeting opened={registMeetingOpened} close={closeRegistMeeting} target={currentTarget} />
-      <UpdateMeeting opened={udpateMeetingOpened} close={closeUpdateMeeting} target={currentTarget} />
+      {registMeetingOpened && <RegistMeeting opened={registMeetingOpened} close={closeRegistMeeting} target={currentTarget} />}
+      {udpateMeetingOpened && <UpdateMeeting opened={udpateMeetingOpened} close={closeUpdateMeeting} target={currentTarget} />}
     </>
   );
 };

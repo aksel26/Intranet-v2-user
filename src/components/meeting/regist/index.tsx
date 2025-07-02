@@ -1,11 +1,14 @@
+import { meetingService } from "@/api/services/meeting/meeting.services";
 import { userService } from "@/api/services/user/user.services";
-import { useApiQuery } from "@/api/useApi";
+import { useApiMutation, useApiQuery } from "@/api/useApi";
+import notification from "@/components/common/notification";
 import { MEETING_TYPES } from "@/lib/enums/meeting/meeting";
 import { myInfoStore } from "@/store/myInfoStore";
 import type { TUsers } from "@/types/users";
 import { formatTimeHHmm, formatYYYYMMDD } from "@/utils/date/format";
 import { Badge, Button, Group, Modal, MultiSelect, Paper, Select, Stack, Text, Textarea, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
+import { useQueryClient } from "@tanstack/react-query";
 import { useCallback, useMemo } from "react";
 
 // Types
@@ -17,10 +20,15 @@ interface RegistMeetingProps {
 
 interface MeetingFormValues {
   title: string;
-  meetingType: string;
-  attendeeUserIdxs: string[];
-  referenceUserIdxs: string[];
   content: string;
+  meetingDate: string;
+  startTime: string;
+  endTime: string;
+  meetingType: string;
+  roomId: string;
+  description: string | null;
+  ccUserIdxs: number[];
+  attendeeUserIdxs: number[];
 }
 
 // Constants
@@ -33,9 +41,40 @@ const LABEL_STYLES = {
 } as const;
 
 const RegistMeeting = ({ opened, close, target }: RegistMeetingProps) => {
-  const { data, isLoading, isError } = useApiQuery(["users"], userService.getAll, { enabled: !!opened });
-
+  const queryClient = useQueryClient();
   const { myInfo } = myInfoStore();
+
+  const { data, isLoading, isError } = useApiQuery(["users"], userService.getAll, { enabled: !!opened });
+  const createMeeting = useApiMutation<
+    any, // 응답 타입
+    any, // 에러 타입
+    any // 요청 파라미터 타입
+  >(meetingService.createMeeting, {
+    onSuccess: async () => {
+      notification({
+        title: "회의실 예약",
+        color: "green",
+        message: "회의실 예약이 완료되었습니다.",
+      });
+      form.reset();
+      close();
+      queryClient.invalidateQueries({
+        predicate: (query) => {
+          const queryKey = query.queryKey;
+          const targetKeys = ["meeting"];
+          return Array.isArray(queryKey) && targetKeys.includes(queryKey[0]);
+        },
+      });
+    },
+    onError: (error: any) => {
+      const errorMessage = error.response?.data?.message || "오류가 발생했습니다.";
+      notification({
+        title: "회의실 예약",
+        color: "red",
+        message: errorMessage,
+      });
+    },
+  });
 
   // Memoized user options for MultiSelect
   const userOptions = useMemo(() => {
@@ -52,10 +91,15 @@ const RegistMeeting = ({ opened, close, target }: RegistMeetingProps) => {
     mode: "uncontrolled",
     initialValues: {
       title: "",
-      meetingType: "",
-      attendeeUserIdxs: [],
-      referenceUserIdxs: [],
       content: "",
+      meetingDate: "",
+      startTime: "",
+      endTime: "",
+      meetingType: "",
+      roomId: "",
+      description: "",
+      ccUserIdxs: [],
+      attendeeUserIdxs: [],
     },
     validate: {
       title: (value) => (!value?.trim() ? "제목을 입력해주세요" : null),
@@ -66,12 +110,20 @@ const RegistMeeting = ({ opened, close, target }: RegistMeetingProps) => {
 
   const handleSubmit = useCallback(
     (values: MeetingFormValues) => {
-      console.log("Meeting registration values:", values);
+      const submit = { ...values };
+
+      submit.startTime = target?.start ? formatTimeHHmm(target.start) : "";
+      submit.endTime = target?.end ? formatTimeHHmm(target.end) : "";
+      submit.meetingDate = target?.start ? formatYYYYMMDD(target.start) : "";
+      submit.roomId = target?.resource.id;
+      if (submit.description === "") submit.description = null;
+      console.log("Meeting registration values:", submit);
       // TODO: API 호출 로직 구현
-      alert("회의실 등록");
-      close();
+      // alert("회의실 등록");
+
+      createMeeting.mutate(submit);
     },
-    [close]
+    [createMeeting, target]
   );
 
   const handleClose = useCallback(() => {
@@ -175,8 +227,8 @@ const RegistMeeting = ({ opened, close, target }: RegistMeetingProps) => {
             comboboxProps={{
               transitionProps: { transition: "pop", duration: 200 },
             }}
-            key={form.key("referenceUserIdxs")}
-            {...form.getInputProps("referenceUserIdxs")}
+            key={form.key("ccUserIdxs")}
+            {...form.getInputProps("ccUserIdxs")}
           />
 
           <Textarea placeholder="내용을 입력해 주세요." styles={LABEL_STYLES} label="내용" autosize minRows={4} key={form.key("content")} {...form.getInputProps("content")} />
