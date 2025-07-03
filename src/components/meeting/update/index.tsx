@@ -94,7 +94,7 @@ const UpdateMeeting = ({ opened, close, target }: any) => {
     onError: (error: any) => {
       const errorMessage = error.response?.data?.message || "오류가 발생했습니다.";
       notification({
-        title: "회의실 취소하기",
+        title: "회의실 예약 수정",
         color: "red",
         message: errorMessage,
       });

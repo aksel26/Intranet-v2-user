@@ -12,9 +12,46 @@ import koLocale from "@fullcalendar/core/locales/ko";
 import { useDisclosure } from "@mantine/hooks";
 import RegistMeeting from "../regist";
 import UpdateMeeting from "../update";
+import { useApiMutation } from "@/api/useApi";
+import { meetingService } from "@/api/services/meeting/meeting.services";
+import notification from "@/components/common/notification";
+import { useQueryClient } from "@tanstack/react-query";
 const HorizontalTimeline = ({ details }: { details?: any }) => {
   const [registMeetingOpened, { open: openRegistMeeting, close: closeRegistMeeting }] = useDisclosure(false);
   const [udpateMeetingOpened, { open: openUpdateMeeting, close: closeUpdateMeeting }] = useDisclosure(false);
+
+  const queryClient = useQueryClient();
+
+  const updateMeeting = useApiMutation<
+    any, // 응답 타입
+    any, // 에러 타입
+    any // 요청 파라미터 타입
+  >(meetingService.updateMeetings, {
+    onSuccess: async () => {
+      close();
+      notification({
+        title: "회의실 예약 수정",
+        color: "green",
+        message: "회의실 내역이 삭제되었습니다.",
+      });
+
+      queryClient.invalidateQueries({
+        predicate: (query) => {
+          const queryKey = query.queryKey;
+          const targetKeys = ["meeting"];
+          return Array.isArray(queryKey) && targetKeys.includes(queryKey[0]);
+        },
+      });
+    },
+    onError: (error: any) => {
+      const errorMessage = error.response?.data?.message || "오류가 발생했습니다.";
+      notification({
+        title: "회의실 예약 수정",
+        color: "red",
+        message: errorMessage,
+      });
+    },
+  });
 
   const [currentTarget, setCurrentTarget] = useState();
 
@@ -100,21 +137,9 @@ const HorizontalTimeline = ({ details }: { details?: any }) => {
       end: event.end,
       resourceId: event.getResources()[0]?.id,
     };
+    console.log("eventData:", eventData);
 
-    // API 호출 예시
-    // const response = await fetch(`/api/events/${event.id}`, {
-    //   method: "PUT",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify(eventData),
-    // });
-
-    // if (!response.ok) {
-    //   throw new Error("서버 업데이트 실패");
-    // }
-
-    // return response.json();
+    updateMeeting.mutate({ body: eventData, idx: event.id });
   };
 
   return (

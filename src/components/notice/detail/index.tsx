@@ -62,28 +62,28 @@ function NoticeDetails() {
                 </Group>
                 <Group gap={"xs"} justify="space-between">
                   <Group>
-                    <Stack gap={2}>
+                    <Stack gap={4}>
                       <Group gap={"xs"}>
-                        <Text fz={"xs"} c={"dimmed"} w={LABEL_WIDTH}>
+                        <Text fz={"sm"} c={"dimmed"} w={LABEL_WIDTH}>
                           장소
                         </Text>
-                        <Text fz={"xs"}>{noticeDetails?.place}</Text>
+                        <Text fz={"sm"}>{noticeDetails?.place}</Text>
                       </Group>
 
                       <Group gap={"xs"}>
-                        <Text fz={"xs"} c={"dimmed"} w={LABEL_WIDTH}>
+                        <Text fz={"sm"} c={"dimmed"} w={LABEL_WIDTH}>
                           차량 사용
                         </Text>
                         <Car noticeDetails={noticeDetails} />
                       </Group>
                       <Group gap={"xs"}>
-                        <Text fz={"xs"} c={"dimmed"} w={LABEL_WIDTH}>
+                        <Text fz={"sm"} c={"dimmed"} w={LABEL_WIDTH}>
                           참석자
                         </Text>
                         <People list={noticeDetails.attendeeInfo} />
                       </Group>
                       <Group gap={"xs"}>
-                        <Text fz={"xs"} c={"dimmed"} w={LABEL_WIDTH}>
+                        <Text fz={"sm"} c={"dimmed"} w={LABEL_WIDTH}>
                           참조
                         </Text>
                         <People list={noticeDetails.ccUserInfo} />
@@ -94,41 +94,41 @@ function NoticeDetails() {
                   <Group>
                     <Stack gap={1}>
                       <Group gap={"xs"}>
-                        <Text fz={"xs"} c={"dimmed"} w={{ base: LABEL_WIDTH, md: 50 }}>
+                        <Text fz={"sm"} c={"dimmed"} w={{ base: LABEL_WIDTH, md: 50 }}>
                           작성자
                         </Text>
-                        <Text fz={"xs"}>{noticeDetails?.creatorName}</Text>
+                        <Text fz={"sm"}>{noticeDetails?.creatorName}</Text>
                       </Group>
 
                       <Group gap={"xs"}>
-                        <Text fz={"xs"} c={"dimmed"} w={{ base: LABEL_WIDTH, md: 50 }}>
+                        <Text fz={"sm"} c={"dimmed"} w={{ base: LABEL_WIDTH, md: 50 }}>
                           작성일
                         </Text>
-                        <Text fz={"xs"}>{dayjs(noticeDetails?.createdAt).format("YYYY-MM-DD (dd)")}</Text>{" "}
+                        <Text fz={"sm"}>{dayjs(noticeDetails?.createdAt).format("YYYY-MM-DD (dd)")}</Text>{" "}
                       </Group>
                     </Stack>
                     <Stack gap={1}>
                       <Group gap={"xs"}>
-                        <Text fz={"xs"} c={"dimmed"} w={LABEL_WIDTH}>
+                        <Text fz={"sm"} c={"dimmed"} w={LABEL_WIDTH}>
                           수정
                         </Text>
-                        <Text fz={"xs"}>{noticeDetails?.lastEditorName}</Text>
+                        <Text fz={"sm"}>{noticeDetails?.lastEditorName}</Text>
                       </Group>
 
                       <Group gap={"xs"}>
-                        <Text fz={"xs"} c={"dimmed"} w={LABEL_WIDTH}>
+                        <Text fz={"sm"} c={"dimmed"} w={LABEL_WIDTH}>
                           최종 수정일
                         </Text>
-                        <Text fz={"xs"}>{formatTimeFull(noticeDetails?.lastUpdateAt)}</Text>{" "}
+                        <Text fz={"sm"}>{formatTimeFull(noticeDetails?.lastUpdateAt)}</Text>{" "}
                       </Group>
                     </Stack>
                   </Group>
                 </Group>
                 <Group gap={"xs"}>
-                  <Text fz={"xs"} c={"dimmed"} w={LABEL_WIDTH}>
+                  <Text fz={"sm"} c={"dimmed"} w={LABEL_WIDTH}>
                     게시 기간
                   </Text>
-                  <Text fz={"xs"}>{`${dayjs(noticeDetails?.startDate).format("YYYY-MM-DD")} ~ ${dayjs(noticeDetails?.endDate).format("YYYY-MM-DD")}`}</Text>{" "}
+                  <Text fz={"sm"}>{`${dayjs(noticeDetails?.startDate).format("YYYY-MM-DD")} ~ ${dayjs(noticeDetails?.endDate).format("YYYY-MM-DD")}`}</Text>{" "}
                 </Group>
               </Stack>
               <Group justify="space-between" align="start" w={"100%"}>
