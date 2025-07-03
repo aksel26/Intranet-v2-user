@@ -39,7 +39,7 @@ function Work() {
               </Text>
             </Group>
           </Group>
-          <Text pl={25} fz={"sm"} styles={{ root: { letterSpacing: "0.5px" } }}>
+          <Text pl={28} fz={"sm"} styles={{ root: { letterSpacing: "0.5px" } }}>
             {dayjs(myInfo?.checkInTime).format("HH시 mm분 ss초")}
           </Text>
         </Stack>
@@ -71,7 +71,7 @@ function Work() {
               </Badge>
             </Group>
 
-            <Text pl={25} fz={"sm"} mb={5} styles={{ root: { letterSpacing: "0.5px" } }}>
+            <Text pl={28} fz={"sm"} mb={5} styles={{ root: { letterSpacing: "0.5px" } }}>
               {elapsedTime.formatted}
             </Text>
             <Progress value={percentage} />

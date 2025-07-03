@@ -23,11 +23,11 @@ const EarlyCheckIn = ({ opened, close, checkInModalClose }: any) => {
   >(attendanceService.checkIn, {
     invalidateKeys: [["me"]],
     onSuccess: async (data: any) => {
-      const { checkInTime } = data.data;
-      const checkInTimeFormat = dayjs(checkInTime).format("HH:mm:ss");
+      // const { checkInTime } = data.data;
+      // const checkInTimeFormat = dayjs(checkInTime).format("HH:mm:ss");
       notification({
         color: "green",
-        message: `${checkInTimeFormat}에 출근완료 되었습니다.`,
+        message: `출근완료 되었습니다.`,
         title: "출석체크",
       });
       close();
@@ -59,9 +59,21 @@ const EarlyCheckIn = ({ opened, close, checkInModalClose }: any) => {
   return (
     <Modal opened={opened} onClose={close} centered size={"xs"} withCloseButton={false}>
       <Alert color="blue" title="출근시간 확인">
-        <Text fz={"sm"}>
-          휴가 당일 오전 10시 이전 출근 시, <br /> 오전 10시 출근으로 기록됩니다.{" "}
+        <Text mb={4} fz={"sm"}>
+          ☝️ 출근 시간 기준
         </Text>
+        <Group gap={"xs"}>
+          <Text fz={"sm"} c={"gray"} w={70}>
+            오전 반반차:
+          </Text>
+          <Text fz={"sm"}>11:00 부터 시작</Text>
+        </Group>
+        <Group gap={"xs"}>
+          <Text fz={"sm"} c={"gray"} w={70}>
+            오전 반차:
+          </Text>
+          <Text fz={"sm"}>13:30 부터 시작</Text>
+        </Group>
       </Alert>
       <Group wrap="nowrap" mt={"md"}>
         <Button onClick={handleCheckIn} fullWidth>

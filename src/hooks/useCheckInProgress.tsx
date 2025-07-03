@@ -39,16 +39,10 @@ interface UseCheckInProgressOptions {
  * @param options - 옵션 설정
  * @returns 진행률 정보 객체
  */
-export function useCheckInProgress(
-  checkInTime: string,
-  availCheckOutTime?: string | undefined | null,
-  options: UseCheckInProgressOptions = {}
-): CheckInProgressResult {
+export function useCheckInProgress(checkInTime: string, availCheckOutTime?: string | undefined | null, options: UseCheckInProgressOptions = {}): CheckInProgressResult {
   const { updateInterval = 1000, timezone } = options;
 
-  const [currentTime, setCurrentTime] = useState<Dayjs>(() =>
-    timezone ? dayjs().tz(timezone) : dayjs()
-  );
+  const [currentTime, setCurrentTime] = useState<Dayjs>(() => (timezone ? dayjs().tz(timezone) : dayjs()));
 
   // 진행률 계산 함수
   const calculateProgress = useCallback(() => {
@@ -69,8 +63,7 @@ export function useCheckInProgress(
     const isBeforeCheckIn = current.isBefore(checkIn);
 
     // 체크아웃 가능한지 확인
-    const isCheckOutAvailable =
-      current.isAfter(checkOut) || current.isSame(checkOut);
+    const isCheckOutAvailable = current.isAfter(checkOut) || current.isSame(checkOut);
 
     // 백분율 계산
     let percentage = 0;
@@ -84,18 +77,12 @@ export function useCheckInProgress(
     percentage = Math.round(percentage * 100) / 100;
 
     // 남은 시간 계산
-    const remainingTimeDuration = dayjs.duration(
-      Math.max(0, remainingDuration)
-    );
+    const remainingTimeDuration = dayjs.duration(Math.max(0, remainingDuration));
     const remainingTime = {
       hours: Math.floor(remainingTimeDuration.asHours()),
       minutes: remainingTimeDuration.minutes(),
       seconds: remainingTimeDuration.seconds(),
-      formatted: isCheckOutAvailable
-        ? "체크아웃 가능"
-        : `${Math.floor(
-            remainingTimeDuration.asHours()
-          )}시간 ${remainingTimeDuration.minutes()}분 ${remainingTimeDuration.seconds()}초 남음`,
+      formatted: isCheckOutAvailable ? "체크아웃 가능" : `${Math.floor(remainingTimeDuration.asHours())}시간 ${remainingTimeDuration.minutes()}분 ${remainingTimeDuration.seconds()}초 남음`,
     };
 
     // 경과 시간 계산
@@ -104,11 +91,7 @@ export function useCheckInProgress(
       hours: Math.floor(elapsedTimeDuration.asHours()),
       minutes: elapsedTimeDuration.minutes(),
       seconds: elapsedTimeDuration.seconds(),
-      formatted: isBeforeCheckIn
-        ? "체크인 전"
-        : `${Math.floor(
-            elapsedTimeDuration.asHours()
-          )}시간 ${elapsedTimeDuration.minutes()}분 ${elapsedTimeDuration.seconds()}초 경과`,
+      formatted: isBeforeCheckIn ? "출근 시작 전" : `${Math.floor(elapsedTimeDuration.asHours())}시간 ${elapsedTimeDuration.minutes()}분 ${elapsedTimeDuration.seconds()}초 경과`,
     };
 
     return {
