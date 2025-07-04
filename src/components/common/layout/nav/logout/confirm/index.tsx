@@ -49,7 +49,7 @@ const ConfirmModal = ({ opened, close }: any) => {
   };
   return (
     <Modal opened={opened} onClose={close} withCloseButton={false} title="로그아웃" centered>
-      <Alert title="로그아웃 하시겠습니까?" color="red" variant="toned" radius="md">
+      <Alert title="로그아웃 하시겠습니까?" color="beige.5" radius="md">
         로그아웃 완료 후, 로그인 페이지로 이동합니다.
       </Alert>
       <Group wrap="nowrap" mt={"md"}>
