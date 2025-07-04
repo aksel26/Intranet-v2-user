@@ -76,7 +76,7 @@ const ApprovalList = ({ params }: any) => {
     >
       <Stack gap={8} w={"100%"}>
         <Group justify="space-between" align="center" wrap="nowrap" w={"100%"}>
-          <Indicator disabled={record.isNew ? false : true} offset={-3} size={7} position="top-start">
+          <Indicator disabled={record.isNew ? false : true} offset={-3} size={7} position="top-start" color="beige.5">
             <Group align="center">
               <Text fz={"sm"} fw={500}>
                 {`${dayjs(record?.commuteDate).format("YYYY-MM-DD (dd)")}`}
