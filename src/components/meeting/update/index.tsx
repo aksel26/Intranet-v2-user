@@ -4,12 +4,11 @@ import { useApiMutation, useApiQuery } from "@/api/useApi";
 import notification from "@/components/common/notification";
 import { MEETING_TIME } from "@/lib/enums/meeting/meeting";
 import type { TUsers } from "@/types/users";
-import { formatTimeHHmm } from "@/utils/date/format";
+import { formatTimeHHmm, formatYYYYMMDD } from "@/utils/date/format";
 import { Button, Group, Modal, MultiSelect, Select, Stack, Text, Textarea, TextInput } from "@mantine/core";
 import { DatePickerInput } from "@mantine/dates";
 import { useForm } from "@mantine/form";
 import { useQueryClient } from "@tanstack/react-query";
-import dayjs from "dayjs";
 import { Calendar } from "lucide-react";
 import { useEffect, useState } from "react";
 
@@ -62,8 +61,8 @@ const UpdateMeeting = ({ opened, close, target }: any) => {
       meetingType: details?.meetingType,
       roomId: details?.room,
       description: details?.description,
-      ccUserIdxs: details?.attendeeInfo.map((attendance: any) => attendance.attendeeIdx.toString()) || [],
-      attendeeUserIdxs: details?.ccUserInfo.map((cc: any) => cc.ccUserIdx.toString()) || [],
+      attendeeUserIdxs: details?.attendeeInfo.map((attendance: any) => attendance.attendeeIdx.toString()) || [],
+      ccUserIdxs: details?.ccUserInfo.map((cc: any) => cc.ccUserIdx.toString()) || [],
     };
 
     meetingInfoForm.setInitialValues(initialValues);
@@ -80,7 +79,7 @@ const UpdateMeeting = ({ opened, close, target }: any) => {
       notification({
         title: "회의실 예약 수정",
         color: "green",
-        message: "회의실 내역이 삭제되었습니다.",
+        message: "회의실 내역이 수정되었습니다.",
       });
 
       queryClient.invalidateQueries({
@@ -102,7 +101,7 @@ const UpdateMeeting = ({ opened, close, target }: any) => {
   });
 
   const transformValues = (values: any) => {
-    const meetingDate = dayjs(values.meetingDate).format("YYYY-MM-DD");
+    const meetingDate = formatYYYYMMDD(values.meetingDate);
 
     return {
       title: values.title || "",

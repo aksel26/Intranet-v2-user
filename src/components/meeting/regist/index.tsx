@@ -231,7 +231,7 @@ const RegistMeeting = ({ opened, close, target }: RegistMeetingProps) => {
             {...form.getInputProps("ccUserIdxs")}
           />
 
-          <Textarea placeholder="내용을 입력해 주세요." styles={LABEL_STYLES} label="내용" autosize minRows={4} key={form.key("content")} {...form.getInputProps("content")} />
+          <Textarea placeholder="내용을 입력해 주세요." styles={LABEL_STYLES} label="내용" autosize minRows={3} key={form.key("content")} {...form.getInputProps("content")} />
 
           {/* Action Buttons */}
           <Group grow>

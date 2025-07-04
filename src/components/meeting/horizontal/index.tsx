@@ -6,16 +6,17 @@ import resourceTimelinePlugin from "@fullcalendar/resource-timeline";
 import timelinePlugin from "@fullcalendar/timeline";
 import { useRef, useState } from "react";
 // import printPlugin from '@fullcalendar/print';
+import { meetingService } from "@/api/services/meeting/meeting.services";
+import { useApiMutation } from "@/api/useApi";
+import notification from "@/components/common/notification";
 import { MEETING_ROOMS, MEETING_ROOMS_COLUMNS } from "@/lib/enums/meeting/meeting";
 import "@/styles/meeting/meeting.css";
+import { formatTimeHHmm, formatYYYYMMDD } from "@/utils/date/format";
 import koLocale from "@fullcalendar/core/locales/ko";
 import { useDisclosure } from "@mantine/hooks";
+import { useQueryClient } from "@tanstack/react-query";
 import RegistMeeting from "../regist";
 import UpdateMeeting from "../update";
-import { useApiMutation } from "@/api/useApi";
-import { meetingService } from "@/api/services/meeting/meeting.services";
-import notification from "@/components/common/notification";
-import { useQueryClient } from "@tanstack/react-query";
 const HorizontalTimeline = ({ details }: { details?: any }) => {
   const [registMeetingOpened, { open: openRegistMeeting, close: closeRegistMeeting }] = useDisclosure(false);
   const [udpateMeetingOpened, { open: openUpdateMeeting, close: closeUpdateMeeting }] = useDisclosure(false);
@@ -32,7 +33,7 @@ const HorizontalTimeline = ({ details }: { details?: any }) => {
       notification({
         title: "회의실 예약 수정",
         color: "green",
-        message: "회의실 내역이 삭제되었습니다.",
+        message: "회의실 내역이 수정되었습니다.",
       });
 
       queryClient.invalidateQueries({
@@ -130,14 +131,23 @@ const HorizontalTimeline = ({ details }: { details?: any }) => {
 
   // 서버 업데이트 함수 (예시)
   const updateEventOnServer = async (event) => {
+    const moreInfo = event._def.extendedProps;
+
     const eventData = {
-      id: event.id,
-      title: event.title,
-      start: event.start,
-      end: event.end,
-      resourceId: event.getResources()[0]?.id,
+      title: event.title || "",
+      startTime: formatTimeHHmm(event.start) || "",
+      endTime: formatTimeHHmm(event.end) || "",
+      roomId: event.getResources()[0]?.id || "",
+      meetingDate: formatYYYYMMDD(event.start),
+      ccUserIdxs: moreInfo.ccUserInfo?.map((cc: any) => cc.ccUserIdx) || [],
+      attendeeUserIdxs: moreInfo.attendeeInfo?.map((attendance: any) => attendance.attendeeIdx) || [],
+
+      ...moreInfo,
     };
-    console.log("eventData:", eventData);
+
+    delete eventData.attendeeInfo;
+    delete eventData.ccUserInfo;
+    delete eventData.writerName;
 
     updateMeeting.mutate({ body: eventData, idx: event.id });
   };
