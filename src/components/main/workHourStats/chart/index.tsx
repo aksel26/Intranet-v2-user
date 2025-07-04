@@ -16,7 +16,7 @@ const WorkStatsChart = ({ workStats }: any) => {
       series={[
         {
           name: "hours",
-          color: "#23aee1",
+          color: "beige.5",
           type: "bar",
           label: "근무시간",
         },

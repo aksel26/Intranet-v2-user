@@ -20,7 +20,6 @@ function Notice() {
   const { data, isLoading, isError } = useApiQuery(["notices", params], () => noticeService.getNotices(params));
 
   const notices = data?.data.data.result;
-  console.log("notices: ", notices);
 
   //   const { notices, isLoading, isError } = useGetNotices({ params });
 
@@ -36,7 +35,7 @@ function Notice() {
     <React.Fragment key={notice.noticeIdx}>
       {index + 1 > LIST_LIMIT ? null : (
         <Box className={styles.element} onClick={() => goDetail(notice)} key={notice.noticeIdx}>
-          <Indicator offset={-14} disabled={notice.isNew ? false : true} size={7} position="middle-end">
+          <Indicator offset={-14} disabled={notice.isNew ? false : true} size={7} position="middle-start" color="beige.5">
             <Group justify="space-between" w={"100%"}>
               <Text fz={"sm"}>{notice.title}</Text>
               <Group gap={"xs"}>

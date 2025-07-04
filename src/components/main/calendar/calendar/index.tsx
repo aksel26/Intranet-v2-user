@@ -8,38 +8,22 @@ import { mainDateStore } from "@/store/mainDateStore";
 import { myInfoStore } from "@/store/myInfoStore";
 import { getYearsRange, monthList } from "@/utils/date/range";
 // import { getYearsRange, monthList } from "@/utils/dateFomat";
-import {
-  ActionIcon,
-  Badge,
-  Box,
-  Button,
-  Group,
-  Paper,
-  Select,
-  Text,
-  Title,
-} from "@mantine/core";
+import { ActionIcon, Badge, Box, Button, Group, Paper, Select, Text, Title } from "@mantine/core";
 import { DatePicker } from "@mantine/dates";
 // import { IconChevronDown, IconChevronLeft, IconChevronRight } from "@tabler/icons-react";
 // import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { ChevronDown, ChevronLeft, ChevronRight } from "lucide-react";
 const MainCalendar = ({ allAttendance }: any) => {
-  const { setDateValue, innerValue, setInnerValue, dateValue } =
-    mainDateStore();
+  const { setDateValue, innerValue, setInnerValue, dateValue } = mainDateStore();
   const { myInfo } = myInfoStore();
   const myName = myInfo?.userName || "";
 
-  const { data, isLoading, isError } = useApiQuery(
-    [
-      "holidays",
-      { year: dayjs(dateValue).year(), month: dayjs(dateValue).month() + 1 },
-    ],
-    () =>
-      holidaysService.getHolidays({
-        year: dayjs(dateValue).year().toString(),
-        month: (dayjs(dateValue).month() + 1).toString(),
-      })
+  const { data, isLoading, isError } = useApiQuery(["holidays", { year: dayjs(dateValue).year(), month: dayjs(dateValue).month() + 1 }], () =>
+    holidaysService.getHolidays({
+      year: dayjs(dateValue).year().toString(),
+      month: (dayjs(dateValue).month() + 1).toString(),
+    })
   );
 
   console.log("data: ", data);
@@ -66,9 +50,7 @@ const MainCalendar = ({ allAttendance }: any) => {
     const dateStr = dayjs(date).format("YYYY-MM-DD");
     const events = allAttendance[dateStr] || [];
 
-    const targetHoliday = holidays.find(
-      (item: any) => item.holidayDate === dateStr
-    );
+    const targetHoliday = holidays.find((item: any) => item.holidayDate === dateStr);
     const isInclude = events.some((obj: any) => obj["userName"] === myName);
     const count = events.filter((event: any) => event.confirmYN !== "R").length;
 
@@ -77,17 +59,13 @@ const MainCalendar = ({ allAttendance }: any) => {
         <Text c={targetHoliday ? "red" : "black"} fz={"sm"}>
           {dayjs(date).date()}
         </Text>
-        {targetHoliday && (
-          <div className="absolute text-center -bottom-4 w-[60px] left-1/2 -translate-x-1/2 text-[9px] text-red-400">
-            {targetHoliday.holidayName}
-          </div>
-        )}
+        {targetHoliday && <div className="absolute text-center -bottom-4 w-[60px] left-1/2 -translate-x-1/2 text-[9px] text-red-400">{targetHoliday.holidayName}</div>}
         {count > 0 && (
           <Badge
             size="sm"
             radius="sm"
             variant={isInclude ? "filled" : "light"}
-            color="lime"
+            color="beige.5"
             style={{
               position: "absolute",
               top: -14,
@@ -114,12 +92,7 @@ const MainCalendar = ({ allAttendance }: any) => {
         </Button>
       </Group>
       <Group mb={"md"} align="center" justify="space-between">
-        <ActionIcon
-          variant="subtle"
-          onClick={() =>
-            handleChangeMonth(dayjs(innerValue).subtract(1, "month").toDate())
-          }
-        >
+        <ActionIcon variant="subtle" onClick={() => handleChangeMonth(dayjs(innerValue).subtract(1, "month").toDate())}>
           <ChevronLeft color="gray" size={18} />
         </ActionIcon>
         <Group>
@@ -172,12 +145,7 @@ const MainCalendar = ({ allAttendance }: any) => {
             }}
           />
         </Group>
-        <ActionIcon
-          variant="subtle"
-          onClick={() =>
-            handleChangeMonth(dayjs(innerValue).add(1, "month").toDate())
-          }
-        >
+        <ActionIcon variant="subtle" onClick={() => handleChangeMonth(dayjs(innerValue).add(1, "month").toDate())}>
           <ChevronRight color="gray" size={18} />
         </ActionIcon>
       </Group>
@@ -200,7 +168,7 @@ const MainCalendar = ({ allAttendance }: any) => {
         <Box
           h={10}
           w={10}
-          bg={"lime"}
+          bg={"beige.5"}
           style={{
             borderRadius: 3,
           }}

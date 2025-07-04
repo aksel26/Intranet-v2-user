@@ -14,10 +14,7 @@ const UserInfoCard = () => {
 
   const [queryKey, setQueryKey] = useState<string>();
 
-  const { data: me, isLoading } = useApiQuery(
-    ["me", { userIdx: queryKey }],
-    userService.getMe
-  );
+  const { data: me, isLoading } = useApiQuery(["me", { userIdx: queryKey }], userService.getMe);
 
   useEffect(() => {
     setMyInfo(me?.data.data);
@@ -26,26 +23,21 @@ const UserInfoCard = () => {
 
   return (
     <Skeleton visible={isLoading}>
-      <Card padding="md" radius="md" bg={"primary.0"}>
-        <Flex
-          direction={"column"}
-          w={"100%"}
-          columnGap={"xl"}
-          style={{ position: "relative", borderRadius: 7 }}
-        >
+      <Card padding="md" radius="md" bg={"beige.1"}>
+        <Flex direction={"column"} w={"100%"} columnGap={"xl"} style={{ position: "relative", borderRadius: 7 }}>
           <Flex direction={"column"} rowGap={"md"} w={"100%"}>
             <Box>
-              <Text fz={"lg"} fw={500} c={"primary.9"}>
+              <Text fz={"lg"} fw={500} c={"beige.9"}>
                 {myInfo?.userName}
-                <Text fz={"sm"} c={"primary.9"} component="span" ml={5}>
+                <Text fz={"sm"} c={"beige.9"} component="span" ml={5}>
                   {myInfo?.gradeName}
                 </Text>
               </Text>
               <Group gap={"xs"} mt={3}>
-                <Text fz={"sm"} c={"primary.9"} component="span">
+                <Text fz={"sm"} c={"beige.9"} component="span">
                   {myInfo?.hqName}
                 </Text>
-                <Text fz={"sm"} c={"primary.9"} component="span">
+                <Text fz={"sm"} c={"beige.9"} component="span">
                   {myInfo?.teamName || ""}
                 </Text>
               </Group>
