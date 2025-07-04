@@ -24,4 +24,8 @@ export const MEETING_ROOMS_COLUMNS = [
   },
 ];
 
-export const MEETING_TIME = Array.from({ length: 26 }, (_, i) => `${8 + Math.floor(i / 2)}:${i % 2 === 0 ? "00" : "30"}`).slice(0, 26);
+export const MEETING_TIME = Array.from({ length: 26 }, (_, i) => {
+  const hour = 8 + Math.floor(i / 2);
+  const minute = i % 2 === 0 ? "00" : "30";
+  return `${hour.toString().padStart(2, "0")}:${minute}`;
+}).slice(0, 26);
