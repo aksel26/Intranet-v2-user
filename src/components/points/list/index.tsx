@@ -3,7 +3,7 @@ import { ErrorView } from "@/components/common/error";
 import BottomModal from "@/components/common/modal/bottom";
 import LoadingView from "@/components/loading";
 import type { TPayeeList, TWelfare } from "@/types/welfare";
-import { ActionIcon, Affix, Badge, Button, Divider, Flex, Group, NumberFormatter, Paper, rem, Stack, Text } from "@mantine/core";
+import { ActionIcon, Affix, Badge, Button, Flex, Group, NumberFormatter, Paper, rem, Stack, Text } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import dayjs from "dayjs";
 import { ChevronRight, Plus } from "lucide-react";
@@ -56,7 +56,7 @@ export const UsedListWelfare = ({ welfares, isLoading, isError }: any) => {
                     <Text fw={500} ta={"left"} fz={"sm"}>
                       <NumberFormatter thousandSeparator value={t.amount || 0} suffix=" 원" />
                     </Text>
-                    <Divider orientation="vertical" />
+                    <Text>·</Text>
                     <Text fz={"xs"} c={"dimmed"}>
                       {t.content}
                     </Text>
@@ -103,7 +103,7 @@ export const UsedListWelfare = ({ welfares, isLoading, isError }: any) => {
         <WelfareUpdateForm opened={openedUpdateForm} onClose={closeUpdateForm} updateWelfareDetail={updateWelfareDetail} />
       </BottomModal>
       <BottomModal opened={opened} onClose={close} title={"복지포인트 입력"}>
-        <WelfareInputForm onClose={close} opened={opened} />
+        <WelfareInputForm close={close} opened={opened} />
       </BottomModal>
 
       <Affix zIndex={199} position={{ bottom: 80, right: 20 }} hiddenFrom="md">

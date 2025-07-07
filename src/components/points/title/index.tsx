@@ -30,20 +30,21 @@ export const TopTitleWelfare = ({ stats, isLoading, isError }: any) => {
             </Box>
             <Group justify="space-between" align={"end"}>
               <Flex direction={"column"} rowGap={5}>
-                <Text fw={500} c={"blue.9"} fz={"lg"}>
+                <Text fw={500} c={"beige.7"} fz={"lg"}>
                   {myInfo.userName || ""}
-                  <Text c={"gray.9"} component="span" mr={0} fz={"sm"}>
+                  <Text c={"gray.9"} component="span" ml={4} fz={"sm"}>
                     님의 잔여 복지포인트는
                   </Text>
                 </Text>
 
-                <Flex align={"center"}>
-                  <Text mx={5} component="span" c={"blue.9"} fw={500} fz={"lg"} styles={{ root: { letterSpacing: 1.0 } }}>
+                <Flex align={"end"}>
+                  <Text component="span" c={"beige.7"} fw={500} fz={"lg"} styles={{ root: { letterSpacing: 0.8 } }} mr={2}>
                     <NumberFlow
                       transformTiming={{ duration: 750, easing: "ease-out" }}
                       spinTiming={{ duration: 750, easing: "ease-out" }}
                       opacityTiming={{ duration: 350, easing: "ease-out" }}
                       value={stats?.welfareBalance || 0}
+                      suffix="원 "
                       locales="ko-KR" // Intl.NumberFormat locales
                     />
                   </Text>

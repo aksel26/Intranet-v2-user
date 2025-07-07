@@ -26,11 +26,11 @@ export const TopTitleMeal = ({ stats, isLoading, isError }: any) => {
 
             <Group justify="space-between" align={"end"}>
               <Flex direction={"column"} rowGap={5}>
-                <Text fw={500} c={"blue.9"} fz={"lg"}>
+                <Text fw={500} c={"beige.6"} fz={"lg"}>
                   {myInfo.userName || ""}
                   <Text c={"gray.9"} component="span" mr={0} fz={"sm"}>
                     님의
-                    <Text fw={500} c={"blue.9"} fz={"lg"} component="span" mx={5}>
+                    <Text fw={500} c={"beige.6"} fz={"lg"} component="span" mx={5}>
                       {stats?.month}월
                     </Text>
                     잔여 식대는
@@ -38,16 +38,17 @@ export const TopTitleMeal = ({ stats, isLoading, isError }: any) => {
                 </Text>
 
                 <Flex align={"center"}>
-                  <Text mx={5} component="span" c={"blue.9"} fw={500} fz={"lg"} styles={{ root: { letterSpacing: 0.8 } }}>
+                  <Text component="span" c={"beige.7"} fw={500} fz={"lg"} styles={{ root: { letterSpacing: 0.8 } }} mr={2}>
                     <NumberFlow
                       transformTiming={{ duration: 750, easing: "ease-out" }}
                       spinTiming={{ duration: 750, easing: "ease-out" }}
                       opacityTiming={{ duration: 350, easing: "ease-out" }}
                       value={stats?.mealBalance}
                       locales="ko-KR" // Intl.NumberFormat locales
+                      suffix="원 "
                     />
                   </Text>
-                  <Text fz={"sm"}>원 입니다</Text>
+                  <Text fz={"sm"}>입니다</Text>
                 </Flex>
               </Flex>
               <Button size="xs" variant="subtle" leftSection={<Copy size={18} />} onClick={copyBankAccount}>

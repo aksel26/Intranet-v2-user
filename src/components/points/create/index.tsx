@@ -33,7 +33,7 @@ interface OutputPayload {
   payeeIdxs: number[];
 }
 
-export default function WelfareInputForm() {
+export default function WelfareInputForm({ close }: any) {
   const { myInfo } = myInfoStore();
   const queryClient = useQueryClient();
   const { data: userList, isLoading, isError } = useApiQuery(["users"], userService.getAll);

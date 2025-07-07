@@ -25,7 +25,7 @@ export const WelfareFetchWrapper = () => {
   const welfareStats = data?.data.data.welfareStats;
 
   return (
-    <Stack>
+    <>
       <TopTitleWelfare stats={welfareStats} />
 
       <Group mt={"lg"}>
@@ -35,6 +35,6 @@ export const WelfareFetchWrapper = () => {
 
       <UsedListWelfare welfares={welfares} />
       <ScrollToTop />
-    </Stack>
+    </>
   );
 };
