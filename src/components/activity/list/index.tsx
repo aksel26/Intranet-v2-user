@@ -57,13 +57,18 @@ export const UsedListActivity = ({ activities, isLoading, isError }: any) => {
         {dayjs(item.date).format("MM월 D일 dddd")}
       </Text>
       <Stack>
-        {item.list.map((t: any) => (
+        {item.list.map((t: any, index: number) => (
           <Paper key={t.activityIdx}>
             <Group justify="space-between" w="100%" h={"100%"}>
               <Flex align={"center"} columnGap={"sm"}>
-                <Badge radius={"sm"} size="sm" variant="light" color={t.confirmYN === "Y" ? "blue" : "yellow"} miw={48}>
-                  {t.confirmYN === "Y" ? "확정" : "미확정"}
-                </Badge>
+                <Stack gap={2}>
+                  <Badge radius={"sm"} size="sm" variant="light" color={t.confirmYN === "Y" ? "lime" : "yellow"} miw={48}>
+                    {t.confirmYN === "Y" ? "확정" : "미확정"}
+                  </Badge>
+                  <Badge radius={"sm"} size="sm" variant="light" color={index % 2 === 0 ? "cyan" : "violet"} miw={48}>
+                    {index % 2 === 0 ? "팀" : "본부"}
+                  </Badge>
+                </Stack>
                 {/* <Checkbox size="xs" checked={t.confirmYN === "Y" ? true : false} radius="sm" readOnly /> */}
                 <Stack gap={3}>
                   <Group gap={"xs"}>

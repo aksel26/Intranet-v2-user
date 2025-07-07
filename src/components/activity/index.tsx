@@ -1,4 +1,4 @@
-import { Group } from "@mantine/core";
+import { Box, Group, Select } from "@mantine/core";
 import dayjs from "dayjs";
 import { useState } from "react";
 import { activityService } from "@/api/services/activity/activity.services";
@@ -24,9 +24,24 @@ export const ActivityFetchWrapper = () => {
     <>
       <ToptitleActivity stats={activitiesStats} />
 
-      <Group mt={"lg"}>
-        <YearSelect setParams={setParams} w={120} />
-        <DurationSelect setParams={setParams} w={120} />
+      <Group mt={"lg"} justify="space-between" align="center">
+        <Group align="center" gap="xs">
+          <YearSelect setParams={setParams} w={120} />
+          <DurationSelect setParams={setParams} w={120} />
+        </Group>
+        <Select
+          data={["팀", "본부"]}
+          comboboxProps={{
+            withinPortal: false, // 포털 비활성화로 외부 클릭 감지 개선
+            transitionProps: { transition: "pop", duration: 200 },
+            size: "sm",
+          }}
+          w={120}
+          size="md"
+          variant="unstyled"
+          clearable
+          placeholder="활동비 구분"
+        />
       </Group>
 
       <UsedListActivity activities={activities} />
