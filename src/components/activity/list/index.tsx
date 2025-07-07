@@ -1,14 +1,14 @@
-import { ActionIcon, Affix, Button, Checkbox, Flex, Group, NumberFormatter, Paper, rem, Stack, Text } from "@mantine/core";
+import { ActionIcon, Affix, Badge, Button, Flex, Group, NumberFormatter, Paper, rem, Stack, Text } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 // import { IconPlus } from "@tabler/icons-react";
 import dayjs from "dayjs";
 import React, { useEffect, useState } from "react";
 // import ArrowRight from "/public/icons/arrow-right.svg";
-import type { TActivityDetail } from "@/types/activity";
-import { myInfoStore } from "@/store/myInfoStore";
-import { ChevronRight, Plus } from "lucide-react";
 import EmptyView from "@/components/common/empty";
 import BottomModal from "@/components/common/modal/bottom";
+import { myInfoStore } from "@/store/myInfoStore";
+import type { TActivityDetail } from "@/types/activity";
+import { ChevronRight, Plus } from "lucide-react";
 import ActivityInputForm from "../create";
 import ActivityUpdateForm from "../update";
 
@@ -52,31 +52,42 @@ export const UsedListActivity = ({ activities, isLoading, isError }: any) => {
   };
 
   const Items = ({ item }: any) => (
-    <Stack gap={10} my={"lg"}>
+    <Stack gap={8} my={"xl"}>
       <Text c={"dimmed"} size="xs">
         {dayjs(item.date).format("MM월 D일 dddd")}
       </Text>
-      {item.list.map((t: any) => (
-        <Paper key={t.activityIdx}>
-          <Group justify="space-between" w="100%" h={"100%"}>
-            <Flex align={"center"} columnGap={"sm"}>
-              <Checkbox size="xs" checked={t.confirmYN === "Y" ? true : false} radius="sm" readOnly />
-              <Stack gap={3}>
-                <Text fw={500} ta={"left"} fz={"sm"}>
-                  <NumberFormatter thousandSeparator value={t.amount || 0} suffix=" 원" />
-                </Text>
+      <Stack>
+        {item.list.map((t: any) => (
+          <Paper key={t.activityIdx}>
+            <Group justify="space-between" w="100%" h={"100%"}>
+              <Flex align={"center"} columnGap={"sm"}>
+                <Badge radius={"sm"} size="sm" variant="light" color={t.confirmYN === "Y" ? "blue" : "yellow"} miw={48}>
+                  {t.confirmYN === "Y" ? "확정" : "미확정"}
+                </Badge>
+                {/* <Checkbox size="xs" checked={t.confirmYN === "Y" ? true : false} radius="sm" readOnly /> */}
+                <Stack gap={3}>
+                  <Group gap={"xs"}>
+                    <Text fw={500} ta={"left"} fz={"sm"}>
+                      <NumberFormatter thousandSeparator value={t.amount || 0} suffix=" 원" />
+                    </Text>
+                    <Text>·</Text>
+                    <Text fz={"xs"} c={"dimmed"}>
+                      {t.content}
+                    </Text>
+                  </Group>
 
-                <Text fz={"xs"} c={"dimmed"}>
-                  {t.content}
-                </Text>
-              </Stack>
-            </Flex>
-            <ActionIcon variant="subtle" size="xl" onClick={(e) => handleUpdateActivity(e, item, t.activityIdx)}>
-              <ChevronRight color="gray" width={18} />
-            </ActionIcon>
-          </Group>
-        </Paper>
-      ))}
+                  <Text fz={"xs"} c={"dimmed"}>
+                    {t.payerName}
+                  </Text>
+                </Stack>
+              </Flex>
+              <ActionIcon variant="subtle" size="xl" onClick={(e) => handleUpdateActivity(e, item, t.activityIdx)}>
+                <ChevronRight color="gray" width={18} />
+              </ActionIcon>
+            </Group>
+          </Paper>
+        ))}
+      </Stack>
     </Stack>
   );
 
@@ -89,9 +100,14 @@ export const UsedListActivity = ({ activities, isLoading, isError }: any) => {
 
   return (
     <Paper bg={"white"} px="lg" py="lg" radius={"lg"}>
-      <Text mb={4} c={"dimmed"} fz={"sm"}>
-        사용내역
-      </Text>
+      <Stack gap={3}>
+        <Text c={"gray.7"} fz={"sm"}>
+          사용내역
+        </Text>
+        <Text fz={"xs"} c={"gray"}>
+          확정 / 미확정은 P&C 담당자의 사용내역 확인 결과를 나타냅니다.
+        </Text>
+      </Stack>
       {renderContent()}
 
       <BottomModal opened={opened} onClose={close} title={"활동비 입력"}>
